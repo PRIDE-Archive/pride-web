@@ -1,6 +1,6 @@
-# pride
+# pride-web
 
-> pride
+> pride-web based on Vue
 
 ## Build Setup
 
