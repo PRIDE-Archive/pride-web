@@ -1,23 +1,33 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
+  <div id="app"> 
+    <navComponent/>
     <router-view/>
   </div>
 </template>
 
 <script>
+import navComponent from '@/components/Nav'
 export default {
-  name: 'app'
+  name: 'app',
+  components:{
+    navComponent,
+  }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html,
+body {
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-size: 14px !important;
+    line-height: 1.42857143 !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
+a,
+a:-webkit-any-link {
+    cursor: pointer;
+    text-decoration: none;
+} 
 </style>
