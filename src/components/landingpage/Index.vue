@@ -1,13 +1,19 @@
 <template>
   <div class="index-container">
-      <div class="panel search"><SearchPanel/></div>
+      <div class="panel search"><Search/></div>
       <div class="panel"><Resource/></div>
+      <div class="panel"><Statistics/></div>
+      <div class="panel"><Tools/></div>
+      <div class="panel"><News/></div>
   </div>
 </template>
 
 <script>
-  import SearchPanel from '@/components/landingpage/SearchPanel'
+  import Search from '@/components/landingpage/Search'
   import Resource from '@/components/landingpage/Resource'
+  import Statistics from '@/components/landingpage/Statistics'
+  import Tools from '@/components/landingpage/Tools'
+  import News from '@/components/landingpage/News'
   export default {
     name: 'index',
     data(){
@@ -19,8 +25,11 @@
     
     },
     components: {
-      SearchPanel,
-      Resource
+      Search,
+      Resource,
+      Statistics,
+      Tools,
+      News
     },
     mounted: function(){
       
