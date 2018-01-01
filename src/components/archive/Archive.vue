@@ -184,7 +184,7 @@
           facetsURL: this.$store.state.baseApiURL + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
-          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/projects',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
@@ -332,6 +332,7 @@
           this.loading = true;
           let query = q || this.$route.query;
           query.dateGap = '+1YEAR';
+          query.sortDirection='DESC';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
@@ -342,14 +343,15 @@
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
 
+          console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
-                if(res.body._embedded && res.body._embedded.compactprojects){
+                if(res.body._embedded && res.body._embedded.projects){
                     this.setHighlightKeywords();
-                    let projectsList = res.body._embedded.compactprojects;
+                    let projectsList = res.body._embedded.projects;
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -381,8 +383,10 @@
                           this.publicaitionList.push(item);
                            
                       }
+                      console.log(this.publicaitionList)
                 }
                 else{
+
                   this.$Message.error({content:'No results', duration:1});
                 }
                 
@@ -671,15 +675,15 @@
       sortChange(type){
         console.log(type);
         if(type == 'Title')
-          this.sort = 'title'
+          this.sort = 'project_title'
         else if(type == 'Accession')
           this.sort = 'accession'
         else if(type == 'Relevance')
           this.sort = 'score'
         else if(type == 'Submission Date')
-          this.sort = 'submissionDate';
+          this.sort = 'submission_date';
         else if(type == 'Publication Date')
-          this.sort = 'publicationDate';
+          this.sort = 'publication_date';
        
         this.setFilter();
         this.$router.push({name: 'archive', query: this.query});
