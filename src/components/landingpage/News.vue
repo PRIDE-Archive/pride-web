@@ -1,7 +1,7 @@
 <template>
   <div class="news-container">
-    <Row class="row">
-        <Col span="6">
+     <Row class="row">
+        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                     <div class="title">Repository</div>
@@ -9,7 +9,7 @@
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                     <div class="title">Repository</div>
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                     <div class="title">Repository</div>
@@ -25,7 +25,7 @@
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                     <div class="title">Repository</div>
@@ -33,7 +33,7 @@
                 </div>
             </div>
         </Col>
-    </Row>
+     </Row>
   </div>
 </template>
 <script>
