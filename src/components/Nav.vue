@@ -13,12 +13,12 @@
                 <Icon type="stats-bars"></Icon>
                 XXXX
             </template>
-            <MenuGroup title="使用">
+            <MenuGroup title="subtitle1">
                 <MenuItem name="3-1">XXXXX</MenuItem>
                 <MenuItem name="3-2">XXXXX</MenuItem>
                 <MenuItem name="3-3">XXXXX</MenuItem>
             </MenuGroup>
-            <MenuGroup title="留存">
+            <MenuGroup title="subtitle2">
                 <MenuItem name="3-4">XXXXX</MenuItem>
                 <MenuItem name="3-5">XXXXX</MenuItem>
             </MenuGroup>
