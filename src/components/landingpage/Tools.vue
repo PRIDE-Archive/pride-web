@@ -1,7 +1,7 @@
 <template>
     <div class="tools-container">
         <div class="title"></div>
-        <Button class="tools-button">Submit Data</Button>
+        <Button class="tools-button" @click="submitData">Submit Data</Button>
     </div>
 </template>
 <script>
@@ -15,6 +15,24 @@
                 select1: 'http',
                 select2: 'com',
                 select3: 'day'
+            }
+        },
+        methods:{
+            submitData(){
+                this.$Message.error({content:'submit data coming soon', duration:3});
+                this.$http
+                  .post("/submitdata")
+                  .then(function(res){
+                    this.successSubmit();
+                  },function(err){
+                    this.failSubmit();
+                  });   
+            },
+            successSubmit(){
+                this.$Message.success({content:'success submit', duration:3});
+            },
+            failSubmit(){
+                this.$Message.error({content:'error submit', duration:3});
             }
         }
     }
