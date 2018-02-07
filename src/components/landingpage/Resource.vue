@@ -18,8 +18,8 @@
         </CarouselItem>
     </Carousel>
     <div class="button-container">
-        <Button class="resource-button">Cluster</Button>
-        <Button class="resource-button">Archive</Button>
+        <Button class="resource-button" @click="showCluster">Cluster</Button>
+        <Button class="resource-button" @click="showArchive">Archive</Button>
     </div>
   </div>
 </template>
@@ -31,6 +31,14 @@
                 setting: {
                     dots: 'none',
                 }
+            }
+        },
+        methods:{
+            showCluster(){
+                this.$Message.success({content:'Cluster Coming Soon', duration:1});
+            },
+            showArchive(){
+                this.$Message.success({content:'Archive Coming Soon', duration:1});
             }
         }
     }
