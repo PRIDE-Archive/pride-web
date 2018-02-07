@@ -1,11 +1,11 @@
 <template>
     <div class="search-container">
-        <Input v-model="keyword" class="search-input">
+        <Input v-model="keyword" placeholder="search" class="search-input" @on-keyup.enter.prevent="submit">
             <Select v-model="selected" slot="prepend" style="width: 80px">
                 <Option value="archive">Archive</Option>
                 <Option value="cluster">Cluster</Option>
             </Select>
-            <Button slot="append" icon="ios-search"></Button>
+            <Button slot="append" icon="ios-search" @click="submit"></Button>
         </Input>
     </div>
 </template>
@@ -15,13 +15,21 @@
             return {
                 keyword:'',
                 selected: 'archive',
-                value12: '',
-                value13: '',
-                select1: 'http',
-                select2: 'com',
-                select3: 'day'
             }
-        }
+        },
+        methods:{
+            submit(){
+                this.$Message.error({content:this.selected+' search coming soon', duration:3});
+                this.$http
+                      .post("/source/type")
+                      .then(function(res){
+                        //hide spinner
+                        this.successLogout();
+                      },function(err){
+                        console.log('coming soon');
+                      });   
+            },
+        },
     }
 </script>
 <style scoped>
