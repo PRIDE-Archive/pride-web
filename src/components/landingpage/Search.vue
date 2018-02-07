@@ -21,14 +21,19 @@
             submit(){
                 this.$Message.error({content:this.selected+' search coming soon', duration:3});
                 this.$http
-                      .post("/source/type")
-                      .then(function(res){
-                        //hide spinner
-                        this.successLogout();
-                      },function(err){
-                        console.log('coming soon');
-                      });   
+                  .post("/source/type")
+                  .then(function(res){
+                    this.successSearch();
+                  },function(err){
+                    this.failSearch();
+                  });   
             },
+            successSearch(){
+                this.$Message.success({content:'success search', duration:3});
+            },
+            failSearch(){
+                this.$Message.error({content:'error search', duration:3});
+            }
         },
     }
 </script>
