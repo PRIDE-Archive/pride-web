@@ -1,32 +1,33 @@
 <template>
   <div class="news-container">
-     <Row class="row">
-        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
+     <Row class="row" type="flex">
+        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
+                <div class="item-title">
+                  <div>Documentation</div>
+                </div>
                 <div class="item">
                     <div class="title">Repository</div>
                     <div class="content">200</div>
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
+                <div class="item-title">
+                  <div>Tweets</div>
+                </div>
                 <div class="item">
                     <div class="title">Repository</div>
                     <div class="content">200</div>
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
-                <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                <div class="item-title">
+                  <div>Citation</div>
                 </div>
-            </div>
-        </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 6}" :md="{ span: 6}" :lg="{ span: 6}">
-            <div class="item-container">
                 <div class="item">
                     <div class="title">Repository</div>
                     <div class="content">200</div>
