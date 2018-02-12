@@ -7,8 +7,8 @@
                   <div>Documentation</div>
                 </div>
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                    <div class="title">Documentation Content</div>
+                    <div class="content">{{info.document}}</div>
                 </div>
             </div>
         </Col>
@@ -18,8 +18,8 @@
                   <div>Tweets</div>
                 </div>
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                    <div class="title">Tweets Contents</div>
+                    <div class="content">{{info.tweet}}</div>
                 </div>
             </div>
         </Col>
@@ -29,8 +29,8 @@
                   <div>Citation</div>
                 </div>
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                    <div class="title">Citation Content</div>
+                    <div class="content">{{info.citation}}</div>
                 </div>
             </div>
         </Col>
@@ -44,8 +44,59 @@
                 value1: 0,
                 setting: {
                     dots: 'none',
+                },
+                info:{
+                    document: 0,
+                    tweet: 0,
+                    citation: 0,
                 }
             }
+        },
+        methods:{
+            documentQuery(){
+                this.$Message.success({content:'documents update', duration:1});
+                this.info.document = Math.floor(Math.random()* 1000);
+                /*
+                this.$http
+                  .get("/document/get")
+                  .then(function(res){
+                    this.info.document = res.body.data.documentNum;
+                  },function(err){
+                   
+                  }); 
+                */
+            },
+            tweetQuery(){
+                this.$Message.success({content:'documents update', duration:1});
+                this.info.tweet = Math.floor(Math.random()* 1000);
+                /*
+                this.$http
+                  .get("/tweet/get")
+                  .then(function(res){
+                    this.info.tweet = res.body.data.tweetNum;
+                  },function(err){
+                    
+                  }); 
+                */  
+            },
+            citationQuery(){
+                this.$Message.success({content:'documents update', duration:1});
+                this.info.citation = Math.floor(Math.random()* 1000);
+                /*
+                this.$http
+                  .get("/citation/get")
+                  .then(function(res){
+                    this.info.citation = res.body.data.citationNum;
+                  },function(err){
+                    
+                  });   
+                */
+            },
+        },
+        mounted:function(){
+            this.documentQuery();
+            this.tweetQuery();
+            this.citationQuery();
         }
     }
 </script>
@@ -72,5 +123,9 @@
         padding: 50px 0;
         background: red;
        
+    }
+    .item-title{
+        font-size:18px;
+        margin-bottom: 20px;
     }
 </style>
