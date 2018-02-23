@@ -1,7 +1,7 @@
 <template>
-    <div class="tools-container">
-        <div class="title"></div>
-        <Button class="tools-button" @click="submitData">Submit Data</Button>
+    <div class="submit-data-container">
+        
+      
     </div>
 </template>
 <script>
@@ -19,9 +19,6 @@
         },
         methods:{
             submitData(){
-                console.log(123);
-                this.$router.push({name:'submitdata'});
-                /*
                 this.$Message.error({content:'submit data coming soon', duration:3});
                 this.$http
                   .post("/submitdata")
@@ -29,8 +26,7 @@
                     this.successSubmit();
                   },function(err){
                     this.failSubmit();
-                  });
-                */
+                  });   
             },
             successSubmit(){
                 this.$Message.success({content:'success submit', duration:3});
@@ -42,20 +38,12 @@
     }
 </script>
 <style scoped>
-    .tools-container{
+    .submit-data-container{
         width:100%;
         height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #F0F0F0;
-    }
-    .search-input{
-        width:500px;
-    }
-    .tools-button{
-        padding: 12px 30px 14px 30px;
-        font-size: 18px;
-        margin: 0 30px;
+        background: #F0F0F3;
     }
 </style>

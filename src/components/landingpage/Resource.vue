@@ -76,7 +76,7 @@
         position: absolute;
         bottom:30%;
         left: 50%;
-        margin-left: -237px;
+        margin-left: -182px;
     }
     .resource-button{
         padding: 12px 30px 14px 30px;
