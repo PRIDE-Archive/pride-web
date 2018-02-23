@@ -1,9 +1,9 @@
 <template>
     <div class="search-container">
-        <Input v-model="keyword" placeholder="search" class="search-input" @on-keyup.enter.prevent="submit">
+        <Input v-model="keyword" placeholder="search" class="search-input search-pride" @on-keyup.enter.prevent="submit">
             <Select v-model="selected" slot="prepend" style="width: 80px">
                 <Option value="archive">Archive</Option>
-                <Option value="cluster">Cluster</Option>
+                <Option value="cluster">Peptidome</Option>
             </Select>
             <Button slot="append" icon="ios-search" @click="submit"></Button>
         </Input>
@@ -48,5 +48,8 @@
     }
     .search-input{
         width:500px;
+    }
+    .search-pride .ivu-select-single{
+        width: 90px !important;
     }
 </style>
