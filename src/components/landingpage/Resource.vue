@@ -5,16 +5,16 @@
         loop
         :dots="setting.dots">
         <CarouselItem>
-            <div class="demo-carousel">1</div>
+            <div class="bg bgone"></div>
         </CarouselItem>
         <CarouselItem>
-            <div class="demo-carousel">2</div>
+            <div class="bg bgtwo"></div>
         </CarouselItem>
         <CarouselItem>
-            <div class="demo-carousel">3</div>
+            <div class="bg bgthree"></div>
         </CarouselItem>
         <CarouselItem>
-            <div class="demo-carousel">4</div>
+            <div class="bg bgfour"></div>
         </CarouselItem>
     </Carousel>
     <div class="button-container">
@@ -49,13 +49,28 @@
         height: 100%;
         position: relative;
     }
-    .demo-carousel {
-        height: 100%;
-        line-height: 300px;
-        text-align: center;
-        color: #fff;
-        font-size: 20px;
-        background: #506b9e;
+    .bg{
+        height: 550px;
+    }
+    .bgone{
+        background-image: url("~/src/assets/landing_page_bg/test1.jpg");
+        background-position: center center; 
+        background-size: cover;
+    }
+    .bgtwo{
+        background-image: url("~/src/assets/landing_page_bg/test2.jpg");
+        background-position: center center; 
+        background-size: cover;
+    }
+    .bgthree{
+        background-image: url("~/src/assets/landing_page_bg/test3.jpg");
+        background-position: center center; 
+        background-size: cover;
+    }
+    .bgfour{
+        background-image: url("~/src/assets/landing_page_bg/test4.jpg");
+        background-position: center center; 
+        background-size: cover;
     }
     .button-container{
         position: absolute;

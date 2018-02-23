@@ -1,7 +1,7 @@
 <template>
   <div class="index-container">
       <div class="panel search"><Search/></div>
-      <div class="panel"><Resource/></div>
+      <div class="panel resource"><Resource/></div>
       <div class="panel"><Statistics/></div>
       <div class="panel"><Tools/></div>
       <div class="panel"><News/></div>
@@ -45,5 +45,8 @@
   }
   .panel.search{
     height: 150px;
+  }
+  .panel.resource{
+    height: 550px;
   }
 </style>
