@@ -1,39 +1,43 @@
 <template>
   <div class="news-container">
+     <div class="news-title">News</div>
      <Row class="row" type="flex">
-        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
-            <div class="item-container">
-                <div class="item-title">
-                  <div>Documentation</div>
+            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+                <div class="item-container">
+                    <div class="item-icon"><Icon type="document-text" size="80"></Icon></div>
+                    <div class="item-title">
+                      <div>Documentation</div>
+                    </div>
+                    <div class="item">
+                        <div class="title">Documentation Content</div>
+                        <div class="content">{{info.document}}</div>
+                    </div>
                 </div>
-                <div class="item">
-                    <div class="title">Documentation Content</div>
-                    <div class="content">{{info.document}}</div>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+                <div class="item-container">
+                    <div class="item-icon"><Icon type="social-twitter" size="80"></Icon></div>
+                    <div class="item-title">
+                      <div>Tweets</div>
+                    </div>
+                    <div class="item">
+                        <div class="title">Tweets Contents</div>
+                        <div class="content">{{info.tweet}}</div>
+                    </div>
                 </div>
-            </div>
-        </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
-            <div class="item-container">
-                <div class="item-title">
-                  <div>Tweets</div>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+                <div class="item-container">
+                    <div class="item-icon"><Icon type="social-twitch" size="80"></Icon></div>
+                    <div class="item-title">
+                      <div>Citation</div>
+                    </div>
+                    <div class="item">
+                        <div class="title">Citation Content</div>
+                        <div class="content">{{info.citation}}</div>
+                    </div>
                 </div>
-                <div class="item">
-                    <div class="title">Tweets Contents</div>
-                    <div class="content">{{info.tweet}}</div>
-                </div>
-            </div>
-        </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
-            <div class="item-container">
-                <div class="item-title">
-                  <div>Citation</div>
-                </div>
-                <div class="item">
-                    <div class="title">Citation Content</div>
-                    <div class="content">{{info.citation}}</div>
-                </div>
-            </div>
-        </Col>
+            </Col>
      </Row>
   </div>
 </template>
@@ -115,17 +119,26 @@
     }
     .item-container{
         text-align: center;
-        margin: 50px 10px;
+        margin: 10px;
     }
     .item{
         display: flex;
         flex-direction:column;
-        padding: 50px 0;
-        background: red;
-       
+        margin-top: 40px;
+        padding: 20px 0;
+        color: #666;
     }
     .item-title{
         font-size:18px;
         margin-bottom: 20px;
+    }
+    .item-icon{
+        margin-bottom: 12px;
+    }
+    .news-title{
+        text-align: center;
+        margin:60px 0;
+        font-size: 28px;
+        font-weight: 400;
     }
 </style>
