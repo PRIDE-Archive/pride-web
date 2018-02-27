@@ -48,7 +48,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #F0F0F0;
     }
     .search-input{
         width:500px;
