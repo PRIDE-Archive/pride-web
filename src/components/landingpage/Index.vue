@@ -2,9 +2,9 @@
   <div class="index-container">
       <div class="panel search"><Search/></div>
       <div class="panel resource"><Resource/></div>
-      <div class="panel"><Statistics/></div>
-      <div class="panel"><Tools/></div>
-      <div class="panel"><News/></div>
+      <div class="panel statistics"><Statistics/></div>
+      <div class="panel tools"><Tools/></div>
+      <div class="panel news"><News/></div>
   </div>
 </template>
 
@@ -39,5 +39,13 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  
+  .panel.statistics{
+    background: #F0F0F0;
+  }
+  .panel.tools{
+
+  }
+  .panel.news{
+    background: #F0F0F0;
+  }
 </style>
