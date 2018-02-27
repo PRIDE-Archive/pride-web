@@ -4,7 +4,7 @@
      <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="document-text" size="80"></Icon></div>
+                    <div class="item-icon"><Icon type="document-text" size="80" color="rgb(9, 177, 177)"></Icon></div>
                     <div class="item-title">
                       <div>Documentation</div>
                     </div>
@@ -16,7 +16,7 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitter" size="80"></Icon></div>
+                    <div class="item-icon"><Icon type="social-twitter" size="80" color="rgb(9, 177, 177)"></Icon></div>
                     <div class="item-title">
                       <div>Tweets</div>
                     </div>
@@ -28,7 +28,7 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitch" size="80"></Icon></div>
+                    <div class="item-icon"><Icon type="social-twitch" size="80" color="rgb(9, 177, 177)"></Icon></div>
                     <div class="item-title">
                       <div>Citation</div>
                     </div>
