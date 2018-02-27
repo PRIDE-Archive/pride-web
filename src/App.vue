@@ -1,33 +1,20 @@
 <template>
-  <div id="app"> 
-    <navComponent/>
+  <div id="app">
+    <defaultNav/>
     <router-view/>
+    <defaultFooter/>
   </div>
 </template>
 
 <script>
-import navComponent from '@/components/Nav'
+import defaultNav from '@/components/EBI/DefaultNav'
+import defaultFooter from '@/components/EBI/DefaultFooter'
 export default {
   name: 'app',
   components:{
-    navComponent,
+    defaultNav,
+    defaultFooter
   }
 }
 </script>
 
-<style>
-html,
-body {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-size: 14px !important;
-    line-height: 1.42857143 !important;
-    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-a,
-a:-webkit-any-link {
-    cursor: pointer;
-    text-decoration: none;
-} 
-</style>
