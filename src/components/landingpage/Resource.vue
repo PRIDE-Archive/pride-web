@@ -18,8 +18,8 @@
         </CarouselItem>
     </Carousel>
     <div class="button-container">
-        <Button class="resource-button" @click="showCluster">PRIDE Cluster</Button>
-        <Button class="resource-button" @click="showArchive">PRIDE Archive</Button>
+        <a class="button resource-button" @click="showCluster">PRIDE Cluster</a>
+        <a class="button resource-button" @click="showArchive">PRIDE Archive</a>
     </div>
   </div>
 </template>
@@ -74,13 +74,16 @@
     }
     .button-container{
         position: absolute;
-        bottom:30%;
-        left: 50%;
-        margin-left: -182px;
+        top: 60%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        text-align: center;
     }
     .resource-button{
         padding: 12px 30px 14px 30px;
         font-size: 18px;
         margin: 0 30px;
+        background-color: rgb(9, 177, 177);
     }
 </style>
