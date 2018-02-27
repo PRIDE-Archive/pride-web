@@ -39,14 +39,5 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .panel{
-    position: relative;
-    height: 300px;
-  }
-  .panel.search{
-    height: 150px;
-  }
-  .panel.resource{
-    height: 550px;
-  }
+  
 </style>
