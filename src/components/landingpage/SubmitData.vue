@@ -1,7 +1,6 @@
 <template>
     <div class="submit-data-container">
         
-      
     </div>
 </template>
 <script>

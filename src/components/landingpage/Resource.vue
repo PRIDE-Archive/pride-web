@@ -83,6 +83,8 @@
     .resource-button{
         padding: 12px 30px 14px 30px;
         font-size: 18px;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
         margin: 0 30px;
         background-color: rgb(9, 177, 177);
     }
