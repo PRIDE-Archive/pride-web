@@ -1,6 +1,6 @@
 <template>
   <div class="news-container">
-     <div class="news-title">News</div>
+     <div class="title">News</div>
      <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
@@ -20,9 +20,8 @@
                     <div class="item-title">
                       <div>Tweets</div>
                     </div>
-                    <div class="item">
-                        <div class="title">Tweets Contents</div>
-                        <div class="content">{{info.tweet}}</div>
+                    <div class="item tweet">
+                        <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#0bb1b1', borderColor:'#19b9b9'}"/>
                     </div>
                 </div>
             </Col>
@@ -42,7 +41,11 @@
   </div>
 </template>
 <script>
+    import Timeline from 'vue-tweet-embed/timeline'
     export default {
+        components: {
+          Timeline
+        },
         data () {
             return {
                 value1: 0,
@@ -109,9 +112,9 @@
         width:100%;
         height: 100%;
         position: relative;
+        padding: 90px 0;
     }
     .row{
-        height: 300px;
         width: 80%;
         margin:0 auto;
         display: flex;
@@ -119,26 +122,37 @@
     }
     .item-container{
         text-align: center;
-        margin: 10px;
+        margin: 15px 30px;
     }
     .item{
         display: flex;
         flex-direction:column;
-        margin-top: 40px;
         padding: 20px 0;
         color: #666;
+        height:300px;
+        background-color: white;
+    }
+    .item.tweet{
+        padding: 10px 0 !important;
     }
     .item-title{
         font-size:18px;
-        margin-bottom: 20px;
+        margin-bottom: 30px;
     }
     .item-icon{
         margin-bottom: 12px;
     }
-    .news-title{
+    .title{
         text-align: center;
-        margin:60px 0;
+        margin-bottom: 60px;
         font-size: 28px;
         font-weight: 400;
+    }
+    .tweet-class{
+        
+        overflow-y: scroll;
+    }
+    ::-webkit-scrollbar {
+        width: 1px;
     }
 </style>
