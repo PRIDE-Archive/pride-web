@@ -5,7 +5,13 @@
         <div class="content">
             <div class="item">
                 <div class="step-wrapper">
-                    <div class="step">1</div>
+                    <Poptip trigger="hover" placement="bottom-start">
+                        <div class="api" slot="content">
+                            XXXXXXXXX
+                            XXXXXXXXX
+                        </div>
+                        <div class="step">1</div>
+                    </Poptip>
                     <div class="horizontal"></div>
                 </div>
                 <div class="description">Register</div>
