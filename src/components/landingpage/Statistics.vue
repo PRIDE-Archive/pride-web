@@ -1,98 +1,119 @@
 <template>
   <div class="statistics-container">
-    <Carousel 
-        v-model="value1" 
-        loop
-        :dots="setting.dots">
-       
-        <CarouselItem class="carousel-container">
-            <Row class="row">
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-            </Row>
-        </CarouselItem>
-        <CarouselItem>
-            <Row class="row">
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-                <Col span="6">
-                    <div class="item-container">
-                        <div class="item">
-                            <div class="title">Repository</div>
-                            <div class="content">200</div>
-                        </div>
-                    </div>
-                </Col>
-            </Row>
-        </CarouselItem>
-    
     <!--
-        <CarouselItem>
-            <div class="demo-carousel">1</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">2</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">3</div>
-        </CarouselItem>
-        <CarouselItem>
-            <div class="demo-carousel">4</div>
-        </CarouselItem>
-    -->
-    </Carousel>
+        <Carousel 
+            v-model="value1" 
+            loop
+            :dots="setting.dots">
+           
+            <CarouselItem class="carousel-container">
+                <Row class="row">
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </CarouselItem>
+            <CarouselItem>
+                <Row class="row">
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="6">
+                        <div class="item-container">
+                            <div class="item">
+                                <div class="title">Repository</div>
+                                <div class="content">200</div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </CarouselItem>
+        </Carousel>
+     -->
+    <Row class="row">
+        <Col span="6">
+            <div class="item-container">
+                <div class="item">
+                    <div class="title">Repository</div>
+                    <div class="content">200</div>
+                </div>
+            </div>
+        </Col>
+        <Col span="6">
+            <div class="item-container">
+                <div class="item">
+                    <div class="title">Repository</div>
+                    <div class="content">200</div>
+                </div>
+            </div>
+        </Col>
+        <Col span="6">
+            <div class="item-container">
+                <div class="item">
+                    <div class="title">Repository</div>
+                    <div class="content">200</div>
+                </div>
+            </div>
+        </Col>
+        <Col span="6">
+            <div class="item-container">
+                <div class="item">
+                    <div class="title">Repository</div>
+                    <div class="content">200</div>
+                </div>
+            </div>
+        </Col>
+    </Row>
   </div>
 </template>
 <script>
@@ -108,7 +129,6 @@
     }
 </script>
 <style scoped>
-
     .statistics-container{
         width:100%;
         height: 100%;
@@ -135,7 +155,7 @@
         display: flex;
         flex-direction:column;
         padding: 50px 0;
-        background: red;
+        background: #0bb1b1;
        
     }
 </style>
