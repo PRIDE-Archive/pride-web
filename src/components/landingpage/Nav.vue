@@ -1,7 +1,7 @@
 <template>
     <div class="nav-container">
         <div data-sticky-container>
-          <header id="masthead" class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
+          <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
             <div class="masthead-inner row">
               <!-- local-title -->
               <div class="columns medium-2" id="local-title">
@@ -91,12 +91,25 @@
         justify-content: center;
         background: #F0F0F0;*/
     }
-
+    .masthead-inner{
+      color:#777;
+    }
     .ebi-fieldset{
         border: 0 !important;
     }
     .ebi-masthead{
-        background-color: rgb(9, 177, 177) !important;
+        background-image: url('../../assets/image/menu-bg.png');
+        background-color: rgba(255,255,255,0);
+        border-bottom: 1px solid #ddd;
+    }
+    .ebi-masthead nav ul.menu li{
+            border-right: 1px solid #7777776b;
+    }
+    .ebi-masthead nav ul.menu li:last-child{
+      border: 0;
+    }
+    .ebi-masthead h1, .ebi-masthead a{
+      color:#777;
     }
     .landingpage-title{
       font-size: 3rem;
