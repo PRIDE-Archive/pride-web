@@ -1,6 +1,6 @@
 <template>
   <div class="index-container">
-      <div class="panel search"><Search/></div>
+      <div class="panel nav"><Nav/></div>
       <div class="panel resource"><Resource/></div>
       <div class="panel statistics"><Statistics/></div>
       <div class="panel tools"><Tools/></div>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import Search from '@/components/landingpage/Search'
+  import Nav from '@/components/landingpage/Nav'
   import Resource from '@/components/landingpage/Resource'
   import Statistics from '@/components/landingpage/Statistics'
   import Tools from '@/components/landingpage/Tools'
@@ -25,7 +25,7 @@
     
     },
     components: {
-      Search,
+      Nav,
       Resource,
       Statistics,
       Tools,
@@ -39,6 +39,15 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+  .panel.nav{
+    position: absolute;
+    top: 37px;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .panel.resource{
+  }
   .panel.statistics{
     background: #F0F0F0;
   }
