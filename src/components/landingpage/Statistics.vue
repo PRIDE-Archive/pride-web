@@ -1,115 +1,31 @@
 <template>
   <div class="statistics-container">
-    <!--
-        <Carousel 
-            v-model="value1" 
-            loop
-            :dots="setting.dots">
-           
-            <CarouselItem class="carousel-container">
-                <Row class="row">
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-            </CarouselItem>
-            <CarouselItem>
-                <Row class="row">
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                    <Col span="6">
-                        <div class="item-container">
-                            <div class="item">
-                                <div class="title">Repository</div>
-                                <div class="content">200</div>
-                            </div>
-                        </div>
-                    </Col>
-                </Row>
-            </CarouselItem>
-        </Carousel>
-     -->
     <Row class="row">
         <Col span="6">
             <div class="item-container">
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                      <test></test>
                 </div>
             </div>
         </Col>
         <Col span="6">
             <div class="item-container">
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                      <test></test>
                 </div>
             </div>
         </Col>
         <Col span="6">
             <div class="item-container">
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                      <test></test>
                 </div>
             </div>
         </Col>
         <Col span="6">
             <div class="item-container">
                 <div class="item">
-                    <div class="title">Repository</div>
-                    <div class="content">200</div>
+                      <test></test>
                 </div>
             </div>
         </Col>
@@ -117,6 +33,7 @@
   </div>
 </template>
 <script>
+    import test from './statistics_chart/test.vue'
     export default {
         data () {
             return {
@@ -125,7 +42,10 @@
                     dots: 'none',
                 }
             }
-        }
+        },
+        components: {
+            test
+        },
     }
 </script>
 <style scoped>
@@ -139,8 +59,7 @@
         display:block;
     }
     .row{
-        width: 80%;
-        height: 300px;
+        width: 90%;
         margin:0 auto;
         display: flex;
         align-items: center;
@@ -152,10 +71,9 @@
     }
 
     .item{
-        display: flex;
-        flex-direction:column;
-        padding: 50px 0;
-        background: #0bb1b1;
+       
+       
+
        
     }
 </style>
