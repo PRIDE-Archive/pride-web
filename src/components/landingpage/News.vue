@@ -115,7 +115,7 @@
         padding: 90px 0;
     }
     .row{
-        width: 80%;
+        width: 90%;
         margin:0 auto;
         display: flex;
         align-items: center;
