@@ -1,12 +1,16 @@
 <template>
   <div class="resource-container">
+    <div class="resouce-title">
+        <h1>Find your resources today.</h1>
+        <!--<p>Search through thousands of resources from Pride that are looking.</p>-->
+    </div>
     <div class="search-container">
         <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
             <Select v-model="selected" slot="prepend" style="width: 100px">
                 <Option value="peptidome">Peptidome</Option>
                 <Option value="archive">Archive</Option>
             </Select>
-            <Button slot="append" icon="ios-search" @click="submitSearchCondition"></Button>
+            <Button slot="append" @click="submitSearchCondition">Search</Button>
         </Input>
         <div class="search-settings">
             <div class="example-wrapper">
@@ -30,8 +34,8 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="showCluster">PRIDE Cluster</a>
-        <a class="button resource-button" @click="showArchive">PRIDE Archive</a>
+        <a class="button resource-button" @click="showCluster">PRIDE PEPTIDOME</a>
+        <a class="button resource-button" @click="showArchive">PRIDE ARCHIVE</a>
     </div>
   </div>
 </template>
@@ -188,11 +192,12 @@
         height: 100%;
         position: relative;
         text-align: center;
-        padding-top: 250px;
+        padding-top: 350px;
         padding-bottom: 80px;
-        background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
+        background-color: #fafafa;
+        /*background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
         background-position: center center; 
-        background-size: cover;
+        background-size: cover;*/
     }
     .bg{
         height: 550px;
@@ -217,21 +222,42 @@
         background-position: center center; 
         background-size: cover;
     }
+    .resouce-title{
+        margin-bottom: 50px;
+    }
+    .resouce-title h1{
+        color: #656665;
+        font-size: 3.14285714em;
+        font-weight: bold;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        margin-bottom: 20px;
+    }
+    .resouce-title p{
+        font-weight: 400;
+        color: gray;
+        font-size: 20px;
+    }
+    
     .button-container{
         text-align: center;
     }
     .search-container{
-        margin: 50px  auto;
+        margin: 0 auto 50px auto;
         width:800px;
-        text-align: 
+        text-align: center;
+        border-radius:6px;
+        padding:2.78571429em;
+        background:#fff; 
     }
     .resource-button{
-        padding: 12px 30px 14px 30px;
+        padding: 50px 105px 50px 105px;
         font-size: 18px;
         /*padding: 20px 85px;
         font-size: 24px;*/
-        margin: 30px;
-        background-color: rgb(9, 177, 177);
+        font-weight: 700;
+        margin: 0 30px 0 30px;
+        background-color: #5bc0be;
+        border-radius: 6px;
     }
     #search-bar-pride .ivu-select-single{
         /*width: 100px !important;*/
@@ -255,11 +281,27 @@
         background-color: #3cc1c1 !important;
         border-color: #3cc1c1 !important;
     }
- 
+    @media (max-width: 992px) { 
+        
+    }
+    @media (max-width: 1599px) and (min-width: 1200px){ 
+        .resource-container{
+          
+        }
+    }
+    @media (min-width: 1200px) {
+        .resource-container{
+            padding-top: 300px;
+            padding-bottom: 100px;
+        }
+    }
 </style>
 <style>
     #search-bar-pride .ivu-input-group-prepend{
-        background-color: #0bb1b1 !important;
+        background-color: #5bc0be !important;
+    }
+    #search-bar-pride .ivu-input-group-prepend span{
+        font-weight:700;
     }
     #search-bar-pride .ivu-select-single .ivu-select-selection .ivu-select-placeholder{
         color: white !important;
@@ -268,8 +310,13 @@
         color: white !important;
     }
     #search-bar-pride .ivu-input-group-append{
-        background-color: #0bb1b1 !important;
+        background-color: #5bc0be !important;
         color: white !important;
+        width:100px;
+    }
+    #search-bar-pride .ivu-input-group-append span{
+        font-weight:700;
+        /*font-size: .85714286em;*/
     }
     #search-bar-pride .ivu-select-arrow{
         color: white !important;
