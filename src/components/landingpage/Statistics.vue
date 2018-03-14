@@ -1,28 +1,28 @@
 <template>
   <div class="statistics-container">
     <Row class="row">
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <test></test>
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <test></test>
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <test></test>
                 </div>
             </div>
         </Col>
-        <Col span="6">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <test></test>
@@ -61,8 +61,7 @@
     .row{
         width: 90%;
         margin:0 auto;
-        display: flex;
-        align-items: center;
+        max-width: 100% !important;
     }
 
     .item-container{
@@ -75,5 +74,25 @@
        
 
        
+    }
+    @media (min-width: 768px) { 
+        .row{
+            width: 750px;
+        }
+    }
+    @media (min-width: 992px) { 
+        .row{
+            width: 970px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .row{
+            width: 1170px;
+        }
+    }
+    @media (min-width: 1600px) {
+        .row{
+            width: 1552px;
+        }
     }
 </style>
