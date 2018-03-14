@@ -47,14 +47,16 @@
     z-index: 1000;
   }
   .panel.resource{
+    border-bottom: 1px solid #ececec;
   }
   .panel.statistics{
-    background: #F0F0F0;
+    /*background: #f7f8fa;*/
+    border-bottom: 1px solid #ececec;
   }
   .panel.tools{
-
+    border-bottom: 1px solid #ececec;
   }
   .panel.news{
-    background: #F0F0F0;
+    /*background: #f7f8fa;*/
   }
 </style>
