@@ -92,7 +92,7 @@
         background: #F0F0F0;*/
     }
     .masthead-inner{
-      color:#777;
+      color:#656665;
     }
     .ebi-fieldset{
         border: 0 !important;
@@ -109,7 +109,7 @@
       border: 0;
     }
     .ebi-masthead h1, .ebi-masthead a{
-      color:#777;
+      color:#656665;
     }
     .landingpage-title{
       font-size: 3rem;
