@@ -50,16 +50,16 @@
 </script>
 <style scoped>
     .statistics-container{
-        width:100%;
+        width:80%;
         height: 100%;
         position: relative;
         padding: 90px 0;
+        margin:0 auto;
     }
     .carousel-container{
         display:block;
     }
     .row{
-        width: 90%;
         margin:0 auto;
         max-width: 100% !important;
     }
@@ -76,22 +76,22 @@
        
     }
     @media (min-width: 768px) { 
-        .row{
+        .statistics-container{
             width: 750px;
         }
     }
     @media (min-width: 992px) { 
-        .row{
+        .statistics-container{
             width: 970px;
         }
     }
     @media (min-width: 1200px) {
-        .row{
+        .statistics-container{
             width: 1170px;
         }
     }
     @media (min-width: 1600px) {
-        .row{
+        .statistics-container{
             width: 1552px;
         }
     }
