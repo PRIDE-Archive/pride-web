@@ -4,7 +4,7 @@
      <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="document-text" size="80" color="#656665"></Icon></div>
+                    <div class="item-icon"><Icon type="document-text" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Documentation</div>
                     </div>
@@ -17,7 +17,7 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitter" size="80" color="#656665"></Icon></div>
+                    <div class="item-icon"><Icon type="social-twitter" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Tweets</div>
                     </div>
@@ -29,7 +29,7 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitch" size="80" color="#656665"></Icon></div>
+                    <div class="item-icon"><Icon type="social-twitch" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Citation</div>
                     </div>
@@ -112,13 +112,13 @@
 </script>
 <style scoped>
     .news-container{
-        width:100%;
+        width:80%;
         height: 100%;
         position: relative;
         padding: 90px 0;
+        margin:0 auto;
     }
     .row{
-        width: 80%;
         margin:0 auto;
         display: flex;
         align-items: center;
@@ -159,6 +159,14 @@
         font-size: 12px;
         margin-top: 20px;
     }
+    .news-button:hover{
+            opacity: .8;
+        /*
+        background-color:#5bc0be;
+        color:#f8f8f8;
+        border: 1px solid #5bc0be !important;
+        */
+    }
     h1{
         color: #656665;
         font-size: 3.14285714em;
@@ -174,19 +182,19 @@
         width: 1px;
     }
     @media (min-width: 768px) { 
-        .row{
+        .news-container{
             width: 750px;
         }
         
     }
     @media (min-width: 992px) { 
-        .row{
+        .news-container{
             width: 970px;
         }
         
     }
     @media (min-width: 1200px) {
-        .row{
+        .news-container{
             width: 1170px;
         }
         .item-container{
@@ -195,7 +203,7 @@
     }
     
     @media (min-width: 1600px) {
-        .row{
+        .news-container{
             width: 1300px;
         }
     }
