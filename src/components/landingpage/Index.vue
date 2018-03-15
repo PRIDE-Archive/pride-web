@@ -38,16 +38,18 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style scoped>  
   .panel.nav{
-    position: absolute;
+    /*position: absolute;
     top: 37px;
     left: 0;
     right: 0;
     z-index: 1000;
+    */
   }
   .panel.resource{
     border-bottom: 1px solid #ececec;
+    background-color: #fafafa;
   }
   .panel.statistics{
     /*background: #f7f8fa;*/
@@ -55,6 +57,7 @@
   }
   .panel.tools{
     border-bottom: 1px solid #ececec;
+    background-color: #fafafa;
   }
   .panel.news{
     /*background: #f7f8fa;*/
