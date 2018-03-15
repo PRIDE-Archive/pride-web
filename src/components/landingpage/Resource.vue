@@ -5,32 +5,35 @@
         <!--<p>Search through thousands of resources from Pride that are looking.</p>-->
     </div>
     <div class="search-container">
-        <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
-            <Select v-model="selected" slot="prepend" style="width: 100px">
-                <Option value="peptidome">Peptidome</Option>
-                <Option value="archive">Archive</Option>
-            </Select>
-            <Button slot="append" @click="submitSearchCondition">Search</Button>
-        </Input>
-        <div class="search-settings">
+        <div class="normal-search-wrapper" v-if="!advanceSearchDisplay">
+            <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
+                <Select v-model="selected" slot="prepend" style="width: 100px">
+                    <Option value="peptidome">Peptidome</Option>
+                    <Option value="archive">Archive</Option>
+                </Select>
+                <Button slot="append" @click="submitSearchCondition">Search</Button>
+            </Input>
+        </div>
+        <div class="advance-search-wrapper" v-if="advanceSearchDisplay">
+            <Table id="advance-search-table" border :columns="searchConditions" :data="searchItems" size="small" no-data-text="No Search Data"></Table>
+            <div class="advance-search-button-wrapper">
+                <div>
+                    <Button class="advance-search-action" @click="advanceSearchConditoinAdd" size="small">Add</Button>
+                    <Button class="advance-search-action" size="small">Search</Button>
+                </div>
+                <div>
+                    <Button type='error' class="advance-search-action close" @click="advanceSearchToggle" size="small">Close</Button>
+                </div>
+            </div>
+        </div>
+        <div class="search-settings" v-if="!advanceSearchDisplay">
             <div class="example-wrapper">
                 <a class="example-item">xxx</a>
                 <a class="example-item">xxx</a>
             </div>
-            <div class="advance=search">
-                <Poptip id="search-poptip" placement="top-end" :transfer="true" width="800" @on-popper-hide="hideAdvanceSearch">
-                    <a>Advance</a>
-                    <div class="api" slot="content">
-                        <Table id="advance-search-table" border :columns="searchConditions" :data="searchItems" size="small" no-data-text="No Search Data"></Table>
-                        <div class="advance-search-button-wrapper">
-                            <Button class="advance-search-action" @click="advanceSearchConditoinAdd">Add</Button>
-                            <Button class="advance-search-action">Search</Button>
-                        </div>
-                    </div>
-                    
-                </Poptip>
+            <div class="advance-search">
+                <a @click="advanceSearchToggle">Advance</a>
             </div>
-            
         </div>
     </div>
     <div class="button-container">
@@ -56,6 +59,7 @@
                     term: ''
                 },
                 searchItems: [],
+                advanceSearchDisplay:false,
                 searchConditions: [
                     {
                         title: 'Condition',
@@ -88,7 +92,7 @@
                     {
                         title: 'Type',
                         key: 'type',
-                        width: 300,
+                        width: 180,
                         align: 'center',
                         render: (h, params) => {
                             return h('Select', {
@@ -177,8 +181,9 @@
                 this.searchItems = [];
                 this.advanceSearchConditoinAdd();
             },
-            hideAdvanceSearch(){
+            advanceSearchToggle(){
                 this.initAdvanceSearch();
+                this.advanceSearchDisplay = !this.advanceSearchDisplay;
             }
         },
         mounted(){
@@ -188,13 +193,12 @@
 </script>
 <style scoped>
     .resource-container{
-        width:100%;
+        width:80%;
         height: 100%;
         position: relative;
         text-align: center;
-        padding-top: 350px;
-        padding-bottom: 80px;
-        background-color: #fafafa;
+        padding: 90px 0;
+        margin:0 auto;
         /*background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
         background-position: center center; 
         background-size: cover;*/
@@ -243,19 +247,20 @@
     }
     .search-container{
         margin: 0 auto 50px auto;
-        width:800px;
+        width:100%;
         text-align: center;
         border-radius:6px;
-        padding:2.78571429em;
+        padding:35px;
         background:#fff; 
     }
     .resource-button{
         padding: 50px 105px 50px 105px;
         font-size: 18px;
+        width: 100%;
         /*padding: 20px 85px;
         font-size: 24px;*/
         font-weight: 700;
-        margin: 0 30px 0 30px;
+        margin: 0 0 40px 0;
         background-color: #5bc0be;
         border-radius: 6px;
     }
@@ -273,26 +278,55 @@
     }
     .advance-search-button-wrapper .advance-search-action{
         color: white !important;
-        margin: 10px 5px 0 0;
         width: 70px;
+     
     }
     .advance-search-button-wrapper .advance-search-action:hover{
         opacity:.8 !important;
         background-color: #3cc1c1 !important;
         border-color: #3cc1c1 !important;
     }
-    @media (max-width: 992px) { 
-        
+    .advance-search-button-wrapper .advance-search-action.close:hover{
+        opacity:1!important;
+        background-color: #f16543 !important;
+        border-color: #f16543 !important;
     }
-    @media (max-width: 1599px) and (min-width: 1200px){ 
+    .advance-search-button-wrapper{
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+    .advance-search-button-wrapper button{
+        width: 50px !important;
+        padding: 2px 0 !important;
+    }
+       
+    @media (min-width: 768px) { 
         .resource-container{
-          
+            width: 750px;
+        }
+        .resource-button{
+            width: 380px;
+            margin: 40px 30px 0 30px;
+        }
+    }
+    @media (min-width: 992px) { 
+        .resource-container{
+            width: 970px;
         }
     }
     @media (min-width: 1200px) {
         .resource-container{
-            padding-top: 300px;
-            padding-bottom: 100px;
+            width: 1170px;
+        }
+        .item-container{
+            /*margin: 15px 50px;*/
+        }
+    }
+    
+    @media (min-width: 1600px) {
+        .resource-container{
+            width: 1300px;
         }
     }
 </style>
@@ -336,4 +370,5 @@
     .ivu-poptip-body{
         padding: 15px 16px;
     }
+    
 </style>
