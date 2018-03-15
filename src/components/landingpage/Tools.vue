@@ -1,7 +1,8 @@
 <template>
     <div class="tools-container">
-        <div class="title">How to submit data</div>
+        <h1 class="title">How to submit data</h1>
         <!--<div class="sub-title">PRIDE welcomes direct user submissions of protein and peptide identification/quantification data</div>-->
+        <div></div>
         <div class="content">
             <div class="item">
                 <div class="step-wrapper">
@@ -97,20 +98,22 @@
     .search-input{
         width:500px;
     }
+    h1{
+        color: #656665;
+        font-size: 3.14285714em;
+        font-weight: bold;
+        font-family: Open Sans,Helvetica,Arial,sans-serif;
+        margin-bottom: 50px;
+        text-align: center;
+    }
     .tools-button{
         margin: 0 auto;
         padding: 20px 85px;
         text-decoration: none;
         text-transform: uppercase;
-        background-color: rgb(9, 177, 177);
+        background-color: #5bc0be;
         font-size: 24px;
-    }
-    .title{
-        text-align: center;
-        margin-bottom: 60px;
-        font-size: 28px;
-        font-weight: 400;
-        color: #495060;
+        border-radius: 6px;
     }
     .step-wrapper{
         position: relative;
@@ -124,7 +127,7 @@
         text-align: center;
         border-radius: 50%;
         font-size: 24px;
-        background-color: #0bb1b1;
+        background-color: #5bc0be;
         color: white;
         margin-bottom: 20px;
     }
@@ -134,11 +137,10 @@
     }
     .tools-button-wrapper{
         text-align: center;
-        margin-top: 140px;
+        margin-top: 90px;
     }
     .content{
         text-align: center;
-        margin-top: 120px;
     }
     .item{
         display: inline-flex;
