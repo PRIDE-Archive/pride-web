@@ -8,9 +8,8 @@
                     <div class="item-title">
                       <div>Documentation</div>
                     </div>
-                    <div class="item">
-                        <div class="title">Documentation Content</div>
-                        <div class="content">{{info.document}}</div>
+                    <div class="item-content">
+            
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
@@ -21,7 +20,7 @@
                     <div class="item-title">
                       <div>Tweets</div>
                     </div>
-                    <div class="item tweet">
+                    <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
                     <Button class="news-button">SUBSCRIBE</Button>
@@ -33,9 +32,20 @@
                     <div class="item-title">
                       <div>Citation</div>
                     </div>
-                    <div class="item">
-                        <div class="title">Citation Content</div>
-                        <div class="content">{{info.citation}}</div>
+                    <div class="item-content citation">
+                        <span class="citing-general">
+                            {{citation.lineone}}
+                        </span>
+                        <span>
+                            {{citation.linetwo}} 
+                        </span>
+                        <span>
+                            <a>{{citation.linethree}}</a>
+                        </span>
+                        <span>
+                             {{citation.linefour}}
+                        </span>
+                        
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
@@ -59,22 +69,27 @@
                     document: 0,
                     tweet: 0,
                     citation: 0,
+                },
+                citation:{
+                    lineone:'',
+                    linetwo:'',
+                    linethree:'',
+                    linefour:'',
                 }
             }
         },
         methods:{
             documentQuery(){
-                this.$Message.success({content:'documents update', duration:1});
-                this.info.document = Math.floor(Math.random()* 1000);
-                /*
                 this.$http
-                  .get("/document/get")
+                  .get("/api/test")
                   .then(function(res){
-                    this.info.document = res.body.data.documentNum;
+                    this.citation.lineone = res.body.data.citation.lineone;
+                    this.citation.linetwo = res.body.data.citation.linetwo;
+                    this.citation.linethree = res.body.data.citation.linethree;
+                    this.citation.linefour = res.body.data.citation.linefour;
                   },function(err){
                    
                   }); 
-                */
             },
             tweetQuery(){
                 this.$Message.success({content:'documents update', duration:1});
@@ -131,17 +146,26 @@
 
         padding: 2.78571429em;
     }
-    .item{
+    .item-content{
         display: flex;
         flex-direction:column;
-        padding: 20px 0;
         color: #666;
         height:300px;
         background-color: white;
         margin-bottom: 20px;
     }
-    .item.tweet{
-        padding: 10px 0 !important;
+    .item-content.citation{
+        font-size: 16px;
+        text-align: justify;
+        /*padding: 10px 0;*/
+    }
+    .item-content span{
+        margin-bottom: 5px;
+    }
+    .item-content .citing-general{
+        margin-bottom: 10px;
+        font-size:18px;
+        font-weight: bold;
     }
     .item-title{
         font-size:18px;

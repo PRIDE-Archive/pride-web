@@ -119,7 +119,6 @@
         position: relative;
     }
     .step{
-        
         display: inline-block;
         width: 80px;
         height: 80px;
@@ -129,11 +128,11 @@
         font-size: 24px;
         background-color: #5bc0be;
         color: white;
-        margin-bottom: 20px;
     }
     .description{
         display: inline-block;
         font-size: 18px;
+        margin-top: 20px;
     }
     .tools-button-wrapper{
         text-align: center;
