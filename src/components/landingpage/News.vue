@@ -81,7 +81,7 @@
         methods:{
             documentQuery(){
                 this.$http
-                  .get("/api/test")
+                  .get("/api/editpage/get")
                   .then(function(res){
                     this.citation.lineone = res.body.data.citation.lineone;
                     this.citation.linetwo = res.body.data.citation.linetwo;
