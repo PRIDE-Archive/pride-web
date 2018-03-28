@@ -8,8 +8,7 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
-                            XXXXXXXXX
-                            XXXXXXXXX
+                            {{stepContent.one}}
                         </div>
                         <div class="step">1</div>
                     </Poptip>
@@ -19,29 +18,48 @@
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <div class="step">2</div>
+                    <Poptip trigger="hover" placement="bottom-start">
+                        <div class="api" slot="content">
+                                {{stepContent.two}}
+                            </div>
+                        <div class="step">2</div>
+                    </Poptip>
                     <div class="horizontal"></div>
                 </div>
                 <div class="description">Choose submission type</div>
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <div class="step">3</div>
+                    <Poptip trigger="hover" placement="bottom-start">
+                        <div class="api" slot="content">
+                                {{stepContent.three}}
+                            </div>
+                        <div class="step">3</div>
+                    </Poptip>
                     <div class="horizontal"></div>
                 </div>
                 <div class="description">Submit the dataset</div>
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <div class="step">4</div>
+                    <Poptip trigger="hover" placement="bottom-start">
+                        <div class="api" slot="content">
+                                {{stepContent.four}}
+                            </div>
+                        <div class="step">4</div>
+                    </Poptip>
                     <div class="horizontal"></div>
                 </div>
                 <div class="description">Accessing private data</div>
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <div class="step">5</div>
-                    <!--<div class="horizontal"></div>-->
+                    <Poptip trigger="hover" placement="bottom-start">
+                        <div class="api" slot="content">
+                                {{stepContent.five}}
+                            </div>
+                        <div class="step">5</div>
+                    </Poptip>
                 </div>
                 <div class="description">Post-submission steps</div>
             </div>
@@ -62,7 +80,14 @@
                 value13: '',
                 select1: 'http',
                 select2: 'com',
-                select3: 'day'
+                select3: 'day',
+                stepContent:{
+                    one: '',
+                    two: '',
+                    three: '',
+                    four: '',
+                    five: ''
+                }
             }
         },
         methods:{
@@ -85,7 +110,23 @@
             },
             failSubmit(){
                 this.$Message.error({content:'error submit', duration:3});
-            }
+            },
+            documentQuery(){
+                this.$http
+                  .get("/api/editpage/get")
+                  .then(function(res){
+                    this.stepContent.one = res.body.data.submitdata.one;
+                    this.stepContent.two = res.body.data.submitdata.two;
+                    this.stepContent.three = res.body.data.submitdata.three;
+                    this.stepContent.four = res.body.data.submitdata.four;
+                    this.stepContent.five = res.body.data.submitdata.five;
+                  },function(err){
+                   
+                  }); 
+            },
+        },
+        mounted:function(){
+            this.documentQuery();
         }
     }
 </script>
