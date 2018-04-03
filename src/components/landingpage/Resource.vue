@@ -28,8 +28,7 @@
         </div>
         <div class="search-settings" v-if="!advanceSearchDisplay">
             <div class="example-wrapper">
-                <a class="example-item">xxx</a>
-                <a class="example-item">xxx</a>
+                <a class="example-item" v-for="item in searchExample" v-bind:key = "item">{{item}}</a>
             </div>
             <div class="advance-search">
                 <a @click="advanceSearchToggle">Advance</a>
@@ -156,6 +155,7 @@
                         }
                     }
                 ],
+                searchExample:[],
             }
         },
         methods:{
@@ -175,7 +175,8 @@
                 this.$Message.success({content:'Cluster Coming Soon', duration:1});
             },
             showArchive(){
-                this.$Message.success({content:'Archive Coming Soon', duration:1});
+                //this.$Message.success({content:'Archive Coming Soon', duration:1});
+                this.$router.push({name:'archive'});
             },
             initAdvanceSearch(){
                 this.searchItems = [];
@@ -184,10 +185,21 @@
             advanceSearchToggle(){
                 this.initAdvanceSearch();
                 this.advanceSearchDisplay = !this.advanceSearchDisplay;
-            }
+            },
+            documentQuery(){
+                this.$http
+                  .get("/api/editpage/get")
+                  .then(function(res){
+                    this.searchExample = res.body.data.searchexample;
+                   
+                  },function(err){
+                   
+                  }); 
+            },
         },
         mounted(){
             this.init();
+            this.documentQuery();
         }
     }
 </script>

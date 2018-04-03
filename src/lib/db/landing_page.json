@@ -1,5 +1,6 @@
 {
-	"searchexample":["aaa","bbb"],
+	"navtitle": "",
+	"searchexample":["aaa","bbb","ccc"],
 	"citation":{
 		"lineone": "Citing PRIDE generally:",
 		"linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
