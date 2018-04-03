@@ -1,5 +1,5 @@
 <template>
-  <div class="index-container">
+  <div class="landingpage-container">
       <div class="panel nav"><Nav/></div>
       <div class="panel resource"><Resource/></div>
       <div class="panel statistics"><Statistics/></div>
@@ -15,7 +15,7 @@
   import Tools from '@/components/landingpage/Tools'
   import News from '@/components/landingpage/News'
   export default {
-    name: 'index',
+    name: 'landingpage',
     data(){
       return {
    
