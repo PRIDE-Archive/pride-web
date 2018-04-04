@@ -60,15 +60,28 @@
           </Row>
           <Row>
               <Card>
-                  <p slot="title">Publication List</p>
-                  <li v-for="item in publicaitionList" class="item" v-bind:key = "item._id">
-                      <p>Content of card</p>
-                      <p>Content of card</p>
-                      <p>Content of card</p>
-                  </li>
+                  <p slot="title" class="resource-list-title-container">
+                    <span>Resources List</span>
+                    <span>
+                        <span>Sort by</span>
+                        <!--
+                        <a class="sort-action">Accession</a>
+                        <a class="sort-action">Title</a>
+                        <a class="sort-action">Relevance</a>
+                        <a class="sort-action">Publication Date<Icon type="ios-arrow-up"></Icon></a>
+                      -->
+                    </span>
+                  </p>
+                  <div v-for="item in publicaitionList" class="resource-item" v-bind:key = "item.id">
+                      <a>{{item.id}}</a>
+                      <p>{{item.name}}</p>
+                      <p>{{item.species}}</p>
+                      <p>{{item.description}}</p>
+                      <p>{{item.date}}</p>
+                  </div>
                   
                   <div class="page-container">
-                    <Page :total="40" size="small" show-elevator show-sizer></Page>
+                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page"></Page>
                   </div>
               </Card>
           </Row>
@@ -229,7 +242,21 @@
   .search-condition-container a{
     border:none;
   }
-  .search-condition-container .ivu-select-dropdown{
-    
+  .resource-list-title-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  .sort-action{
+    font-size: 12px;
+    font-weight: normal;
+    color: #495060;
+    border:none;
+  }
+
+</style>
+
+<style>
+    .page .ivu-select-dropdown-list{
+    margin-left: 0 !important;
   }
 </style>
