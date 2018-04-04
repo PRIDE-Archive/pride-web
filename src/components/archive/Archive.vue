@@ -1,36 +1,78 @@
 <template>
-  <div class="landingpage-container">
+  <div class="archive-container">
       <!--<div class="panel nav"><Nav/></div>-->
-      <Row>
-        <Col span="6">
-          <Card>
-              <p slot="title">Filters</p>
-              <div class="field-filter">
-                <p>Field</p>
-                <Select v-model="fieldValue" size="small" style="width:100%">
-                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-              </div>
-              <div class="field-contains">
-                <p>Contains</p>
-                <Select v-model="containValue" size="small" style="width:100%">
-                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-              </div>
-          </Card>
-        </Col>
-        <Col span="15" offset="1">
-            <Card>
-                <p slot="title">The standard card</p>
-                <p>Content of card</p>
-                <p>Content of card</p>
-                <p>Content of card</p>
-                <Page :total="40" size="small" show-elevator show-sizer></Page>
-            </Card>
-          
-        </Col>
-      </Row>
-      
+      <div class="browse-data-container">
+          <Row class="search-row">
+              <Card>
+                <p slot="title">Search</p>
+                <div class="search-container">
+                  <div class="search-input">
+                     <Input v-model="value4" icon="ios-search" placeholder="Enter something..." style="width: 400px"></Input>
+                  </div>
+                  <div class="search-filter">
+                      <div class="filter-wrapper">
+                          <Select v-model="fieldValue" style="width:200px">
+                              <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                          </Select>
+                      </div>
+                      <div class="filter-wrapper">
+                          <Select v-model="containValue" style="width:200px">
+                              <Option v-for="item in containSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                          </Select>
+                      </div>
+                  </div>
+                </div>
+                <div class="search-condition-container">
+                  <div class="tag-container">
+                      <Tag type="border" closable>
+                        <span class="search-condition">And</span>
+                        <Dropdown trigger="click">
+                            <a href="javascript:void(0)">
+                                abcasdsa
+                                <Icon type="arrow-down-b"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>And</DropdownItem>
+                                <DropdownItem>Not</DropdownItem>
+                                <DropdownItem>Or</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                      </Tag>
+                  </div>
+                  <div class="tag-container">
+                      <Tag type="border" closable>
+                        <span class="search-condition">And</span>
+                        <Dropdown trigger="click">
+                            <a href="javascript:void(0)">
+                                abcasdsa
+                                <Icon type="arrow-down-b"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>And</DropdownItem>
+                                <DropdownItem>Not</DropdownItem>
+                                <DropdownItem>Or</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                      </Tag>
+                  </div>
+                </div>
+              </Card>
+          </Row>
+          <Row>
+              <Card>
+                  <p slot="title">Publication List</p>
+                  <li v-for="item in publicaitionList" class="item" v-bind:key = "item._id">
+                      <p>Content of card</p>
+                      <p>Content of card</p>
+                      <p>Content of card</p>
+                  </li>
+                  
+                  <div class="page-container">
+                    <Page :total="40" size="small" show-elevator show-sizer></Page>
+                  </div>
+              </Card>
+          </Row>
+      </div>
   </div>
 </template>
 
@@ -41,8 +83,12 @@
     data(){
       return {
           fieldValue:'Species',
-          containValue:'Any',
+          containValue:'Contains',
           fieldSelectors:[
+              {
+                  value: 'Fields',
+                  label: 'Fields'
+              },
               {
                   value: 'Species',
                   label: 'Species'
@@ -78,8 +124,8 @@
           ],
           containSelectors:[
               {
-                  value: 'Any',
-                  label: 'Any'
+                  value: 'Contains',
+                  label: 'Contains'
               },
               {
                   value: 'London',
@@ -102,6 +148,29 @@
                   label: 'Canberra'
               }
           ],
+          publicaitionList:[
+            {
+              id:'PRD000005',
+              name: 'GPMDB Submission: Aurum Spectra ',
+              species: 'Homo sapiens (Human)',
+              description:'Project description: Not available (More)',
+              date:'2005-08-16'
+            },
+            {
+              id:'PRD000005',
+              name: 'GPMDB Submission: Aurum Spectra ',
+              species: 'Homo sapiens (Human)',
+              description:'Project description: Not available (More)',
+              date:'2005-08-16'
+            },
+            {
+              id:'PRD000005',
+              name: 'GPMDB Submission: Aurum Spectra ',
+              species: 'Homo sapiens (Human)',
+              description:'Project description: Not available (More)',
+              date:'2005-08-16'
+            }
+          ]
       }
     },
     methods:{
@@ -116,7 +185,7 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
-  .landingpage-container{
+  .archive-container{
     width: 80%;
     margin:0 auto;
     /*position: absolute;
@@ -126,19 +195,41 @@
     z-index: 1000;
     */
   }
-  .panel.resource{
-    border-bottom: 1px solid #ececec;
-    background-color: #fafafa;
+  .browse-data-container{
+    padding: 90px 0;
   }
-  .panel.statistics{
-    /*background: #f7f8fa;*/
-    border-bottom: 1px solid #ececec;
+  .search-container{
+    display: flex;
+    justify-content:space-between;
+
   }
-  .panel.tools{
-    border-bottom: 1px solid #ececec;
-    background-color: #fafafa;
+  .search-filter{
+    display: flex;
   }
-  .panel.news{
-    /*background: #f7f8fa;*/
+  .search-row{
+    margin-bottom: 20px;
+  }
+  .search-condition{
+    display: none;
+  }
+  .tag-container{
+    display: inline-block;
+  }
+  .page-container{
+    text-align: center;
+  }
+  .filter-wrapper{
+    margin-left: 10px;
+  }
+  .search-condition-container .ivu-tag{
+    overflow: visible !important;
+    z-index: 1000 !important;
+    opacity: 1 !important;
+  }
+  .search-condition-container a{
+    border:none;
+  }
+  .search-condition-container .ivu-select-dropdown{
+    
   }
 </style>
