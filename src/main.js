@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import iView from 'iview';
+import locale from 'iview/dist/locale/en-US';
 import './assets/my-theme/index.less';
 import VueResource  from 'vue-resource'
 //import 'iview/dist/styles/iview.css';
@@ -19,7 +20,7 @@ import 'echarts/lib/component/polar'
 
 
 Vue.config.productionTip = false
-Vue.use(iView);
+Vue.use(iView, { locale });
 Vue.use(VueResource);
 Vue.component('chart', ECharts)
 
