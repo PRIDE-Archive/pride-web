@@ -1,7 +1,7 @@
 <template>
   <div class="resource-container">
     <div class="resouce-title">
-        <h1>Find your resources today.</h1>
+        <h1>{{title}}</h1>
         <!--<p>Search through thousands of resources from Pride that are looking.</p>-->
     </div>
     <div class="search-container">
@@ -36,8 +36,8 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="showCluster">PRIDE PEPTIDOME</a>
-        <a class="button resource-button" @click="showArchive">PRIDE ARCHIVE</a>
+        <a class="button resource-button" @click="showCluster">{{peptidomebutton}}</a>
+        <a class="button resource-button" @click="showArchive">{{archivebutton}}</a>
     </div>
   </div>
 </template>
@@ -45,6 +45,9 @@
     export default {
         data () {
             return {
+                title:'',
+                peptidomebutton:'',
+                archivebutton:'',
                 condition:'',
                 keyword:'',
                 selected:'peptidome',
@@ -190,8 +193,10 @@
                 this.$http
                   .get("/api/editpage/get")
                   .then(function(res){
-                    this.searchExample = res.body.data.searchexample;
-                   
+                    this.title = res.body.data.resource.title;
+                    this.searchExample = res.body.data.resource.searchexample;
+                    this.peptidomebutton = res.body.data.resource.peptidomebutton;
+                    this.archivebutton = res.body.data.resource.archivebutton;
                   },function(err){
                    
                   }); 

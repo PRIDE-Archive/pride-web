@@ -11,7 +11,7 @@
               </div>
               <!-- /local-title -->
               <div class="columns medium-10">
-                <span id="quickgo-header-subtext"><h1 ng-hide="location.path()!=='/'" class="landingpage-title">PRIDE Cluster and PRIDE Archive</h1></span>
+                <span id="quickgo-header-subtext"><h1 ng-hide="location.path()!=='/'" class="landingpage-title">{{title}}</h1></span>
               </div>
               <!-- local-search -->
               <!--
@@ -42,9 +42,7 @@
               <!-- local-nav -->
               <nav >
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
-                  <li><a href="../../">Home</a></li>
-                  <li><a href="../../">Contact</a></li>
-                  <li><a href="../../">About</a></li>
+                  <li v-for="item in subnav"><a href="../../">{{item}}</a></li>
                 </ul>
               </nav>
               <!-- /local-nav -->
@@ -59,9 +57,21 @@
             return {
                 keyword:'',
                 selected: 'archive',
+                title:'',
+                subnav:[],
             }
         },
         methods:{
+            documentQuery(){
+              this.$http
+                  .get("/api/editpage/get")
+                  .then(function(res){
+                    this.title = res.body.data.nav.title;
+                    this.subnav = res.body.data.nav.subnav;
+                  },function(err){
+                   
+                  }); 
+            },
             submit(){
                 this.$Message.error({content:this.selected+' search coming soon', duration:3});
                 this.$http
@@ -79,6 +89,9 @@
                 this.$Message.error({content:'error search', duration:3});
             }
         },
+        mounted:function(){
+            this.documentQuery();
+        }
     }
 </script>
 <style scoped>

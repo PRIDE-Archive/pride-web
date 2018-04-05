@@ -1,17 +1,40 @@
 {
-	"navtitle": "",
-	"searchexample":["aaa","bbb","ccc"],
-	"citation":{
-		"lineone": "Citing PRIDE generally:",
-		"linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
-		"linethree": "2016 update of the PRIDE database and related tools.",
-		"linefour": "Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722."
+	"nav":{
+		"title":"PRIDE Cluster and PRIDE Archive",
+		"subnav":["Home", "Contact", "About"]
 	},
-	"submitdata":{
-		"one": "steponeAAAAAAAAAAAAAAAAAAAAAAAAA",
-		"two": "steptwoBBBBBBBBBBBBBBBBB",
-		"three": "stepthreeCCCCCCCCCCCCCCCCCCC",
-		"four": "stepfourDDDDDDDDDDDDDDDDDDDD",
-		"five": "stepfiveEEEEEEEEEEEEEEEEEEEE"
+	"resource":{
+		"title":"Find your resources today.",
+		"searchexample":["aaa","bbb","ccc"],
+		"peptidomebutton":"PRIDE PEPTIDOME",
+		"archivebutton":"PRIDE ARCHIVE"
+	},
+	"statistics":{},
+	"tools":{
+		"title":"How to submit data",
+		"step":{
+			"one": "Register",
+			"two": "Choose submission type",
+			"three": "Submit the dataset",
+			"four": "Accessing private data",
+			"five": "Post-submission steps"
+		},
+		"stephovercontent":{
+			"one": "steponeAAAAAAAAAAAAAAAAAAAAAAAAA",
+			"two": "steptwoBBBBBBBBBBBBBBBBB",
+			"three": "stepthreeCCCCCCCCCCCCCCCCCCC",
+			"four": "stepfourDDDDDDDDDDDDDDDDDDDD",
+			"five": "stepfiveEEEEEEEEEEEEEEEEEEEE"
+		},
+		"submitdatabutton":"SUBMIT DATA"
+	},
+	"news":{
+		"documentation":"test test",
+		"citation":{
+			"lineone": "Citing PRIDE generally:",
+			"linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
+			"linethree": "2016 update of the PRIDE database and related tools.",
+			"linefour": "Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722."
+		}
 	}
 }

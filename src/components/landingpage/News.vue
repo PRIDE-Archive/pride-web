@@ -9,7 +9,7 @@
                       <div>Documentation</div>
                     </div>
                     <div class="item-content">
-            
+                        {{documentation}}
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
@@ -70,6 +70,7 @@
                     tweet: 0,
                     citation: 0,
                 },
+                documentation:'',
                 citation:{
                     lineone:'',
                     linetwo:'',
@@ -83,10 +84,11 @@
                 this.$http
                   .get("/api/editpage/get")
                   .then(function(res){
-                    this.citation.lineone = res.body.data.citation.lineone;
-                    this.citation.linetwo = res.body.data.citation.linetwo;
-                    this.citation.linethree = res.body.data.citation.linethree;
-                    this.citation.linefour = res.body.data.citation.linefour;
+                    this.documentation = res.body.data.news.documentation;
+                    this.citation.lineone = res.body.data.news.citation.lineone;
+                    this.citation.linetwo = res.body.data.news.citation.linetwo;
+                    this.citation.linethree = res.body.data.news.citation.linethree;
+                    this.citation.linefour = res.body.data.news.citation.linefour;
                   },function(err){
                    
                   }); 
