@@ -15,9 +15,8 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/polar'
-
-
-
+import VueMarkdown from 'vue-markdown';
+Vue.component('vue-markdown', VueMarkdown);
 
 Vue.config.productionTip = false
 Vue.use(iView, { locale });

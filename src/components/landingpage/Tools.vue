@@ -101,18 +101,7 @@
         },
         methods:{
             submitData(){
-                window.location.href = 'https://www.ebi.ac.uk/pride/help/archive/submission';
-                //this.$router.push({name:'submitdata'});
-                /*
-                this.$Message.error({content:'submit data coming soon', duration:3});
-                this.$http
-                  .post("/submitdata")
-                  .then(function(res){
-                    this.successSubmit();
-                  },function(err){
-                    this.failSubmit();
-                  });
-                */
+                this.$router.push({name:'submitdata'});
             },
             successSubmit(){
                 this.$Message.success({content:'success submit', duration:3});

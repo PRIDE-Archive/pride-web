@@ -1,48 +1,51 @@
 <template>
     <div class="submit-data-container">
-        
+        <div class="panel nav"><Nav/></div>
+        <div class="markdown-wrapper">
+            <vue-markdown class="markdown-body" :source="source"></vue-markdown>
+        </div>
     </div>
 </template>
 <script>
+    import Nav from '@/components/landingpage/Nav'
     export default {
         data () {
             return {
-                keyword:'',
-                selected: 'archive',
-                value12: '',
-                value13: '',
-                select1: 'http',
-                select2: 'com',
-                select3: 'day'
+                source: '',
             }
         },
+        components: {
+            Nav,
+        },
         methods:{
-            submitData(){
-                this.$Message.error({content:'submit data coming soon', duration:3});
+            markdownQuery(){
                 this.$http
-                  .post("/submitdata")
+                  .get("/static/markdown/test.md")
                   .then(function(res){
-                    this.successSubmit();
+                    console.log(res);
+                    this.source = res.body;
                   },function(err){
-                    this.failSubmit();
-                  });   
-            },
-            successSubmit(){
-                this.$Message.success({content:'success submit', duration:3});
-            },
-            failSubmit(){
-                this.$Message.error({content:'error submit', duration:3});
+                   
+                  }); 
             }
+        },
+        mounted:function(){
+            this.markdownQuery();
         }
     }
 </script>
+<style>
+ 
+</style>
 <style scoped>
     .submit-data-container{
         width:100%;
         height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
         background: #F0F0F3;
+    }
+    .markdown-wrapper{
+        width: 80%;
+        margin: 0 auto;
+        padding: 90px 0;
     }
 </style>

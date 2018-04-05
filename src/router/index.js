@@ -25,6 +25,6 @@ export default new Router({
       path: '/archive',
       name: 'archive',
       component: Archive
-    }
+    },
   ]
 })
