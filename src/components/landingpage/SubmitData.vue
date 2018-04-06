@@ -12,6 +12,7 @@
         data () {
             return {
                 source: '',
+                markdownURL:'/static/markdown/submitDataPage/content.md'
             }
         },
         components: {
@@ -20,7 +21,7 @@
         methods:{
             markdownQuery(){
                 this.$http
-                  .get("/static/markdown/test.md")
+                  .get(this.markdownURL)
                   .then(function(res){
                     console.log(res);
                     this.source = res.body;

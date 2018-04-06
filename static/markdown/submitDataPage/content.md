@@ -10,12 +10,12 @@ The current way of submitting data to PRIDE is following the [ProteomeXchange (P
 The main tool to submit data is the PX Submission Tool than can be downloaded by clicking on the button below.
 
 
-![Minion](//www.ebi.ac.uk/sites/ebi.ac.uk/files/groups/pride/download.png)
+![Minion](/static/markdown/submitDataPage/image/download.png)
 
 
 The PX/ PRIDE submission process involves the following elements seen on the figure below.
 
-![Minion](//www.ebi.ac.uk/sites/ebi.ac.uk/files/groups/pride/Slide1.jpg)
+![Minion](/static/markdown/submitDataPage/image/Slide1.jpg)
 
 Follow these steps to submit your data:
 

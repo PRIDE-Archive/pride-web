@@ -111,8 +111,8 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        background-image: url('../../assets/image/menu-bg.png');
-        background-color: rgba(255,255,255,0);
+        /*background-image: url('../../assets/image/menu-bg.png');*/
+        background-color: #5bc0be;
         border-bottom: 1px solid #ddd;
     }
     .ebi-masthead nav ul.menu li{
