@@ -140,7 +140,7 @@
     .tools-container{
         width:100%;
         height: 100%;
-        padding:90px 0;
+        padding: 50px 0;
     }
     .search-input{
         width:500px;
@@ -167,9 +167,9 @@
     }
     .step{
         display: inline-block;
-        width: 80px;
-        height: 80px;
-        line-height: 80px;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
         text-align: center;
         border-radius: 50%;
         font-size: 24px;

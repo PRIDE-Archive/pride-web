@@ -47,7 +47,7 @@
                         </span>
                         
                     </div>
-                    <Button class="news-button">MORE</Button>
+                    <Button class="news-button" @click="citationMoreButtonAction">MORE</Button>
                 </div>
             </Col>
      </Row>
@@ -120,6 +120,10 @@
                   });   
                 */
             },
+            citationMoreButtonAction(){
+                this.$router.push({name:'citation'});
+            }
+            
         },
         mounted:function(){
             this.documentQuery();
@@ -133,7 +137,7 @@
         width:80%;
         height: 100%;
         position: relative;
-        padding: 90px 0;
+        padding: 50px 0;
         margin:0 auto;
     }
     .row{

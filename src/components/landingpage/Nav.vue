@@ -67,7 +67,6 @@
               this.$http
                   .get(this.landingPageJsonURL)
                   .then(function(res){
-                    console.log('res',res);
                     this.title = res.body.nav.title;
                     this.subnav = res.body.nav.subnav;
                   },function(err){
@@ -118,13 +117,13 @@
         border-bottom: 1px solid #ddd;
     }
     .ebi-masthead nav ul.menu li{
-            border-right: 1px solid #7777776b;
+            border-right: 1px solid rgb(248,248,248,0.7);
     }
     .ebi-masthead nav ul.menu li:last-child{
       border: 0;
     }
     .ebi-masthead h1, .ebi-masthead a{
-      color:#656665;
+      color:#f8f8f8;
     }
     .landingpage-title{
       font-size: 3rem;
