@@ -159,6 +159,7 @@
                     }
                 ],
                 searchExample:[],
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
@@ -191,12 +192,12 @@
             },
             documentQuery(){
                 this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.title = res.body.data.resource.title;
-                    this.searchExample = res.body.data.resource.searchexample;
-                    this.peptidomebutton = res.body.data.resource.peptidomebutton;
-                    this.archivebutton = res.body.data.resource.archivebutton;
+                    this.title = res.body.resource.title;
+                    this.searchExample = res.body.resource.searchexample;
+                    this.peptidomebutton = res.body.resource.peptidomebutton;
+                    this.archivebutton = res.body.resource.archivebutton;
                   },function(err){
                    
                   }); 

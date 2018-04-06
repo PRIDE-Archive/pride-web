@@ -59,15 +59,17 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
             documentQuery(){
               this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.title = res.body.data.nav.title;
-                    this.subnav = res.body.data.nav.subnav;
+                    console.log('res',res);
+                    this.title = res.body.nav.title;
+                    this.subnav = res.body.nav.subnav;
                   },function(err){
                    
                   }); 

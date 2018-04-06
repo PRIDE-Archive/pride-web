@@ -96,7 +96,8 @@
                     three: '',
                     four: '',
                     five: ''
-                }
+                },
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
@@ -111,20 +112,20 @@
             },
             documentQuery(){
                 this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.title = res.body.data.tools.title;
-                    this.step.one = res.body.data.tools.step.one;
-                    this.step.two = res.body.data.tools.step.two;
-                    this.step.three = res.body.data.tools.step.three;
-                    this.step.four = res.body.data.tools.step.four;
-                    this.step.five = res.body.data.tools.step.five;
-                    this.stepHoverContent.one = res.body.data.tools.stephovercontent.one;
-                    this.stepHoverContent.two = res.body.data.tools.stephovercontent.two;
-                    this.stepHoverContent.three = res.body.data.tools.stephovercontent.three;
-                    this.stepHoverContent.four = res.body.data.tools.stephovercontent.four;
-                    this.stepHoverContent.five = res.body.data.tools.stephovercontent.five;
-                    this.submitdatabutton = res.body.data.tools.submitdatabutton;
+                    this.title = res.body.tools.title;
+                    this.step.one = res.body.tools.step.one;
+                    this.step.two = res.body.tools.step.two;
+                    this.step.three = res.body.tools.step.three;
+                    this.step.four = res.body.tools.step.four;
+                    this.step.five = res.body.tools.step.five;
+                    this.stepHoverContent.one = res.body.tools.stephovercontent.one;
+                    this.stepHoverContent.two = res.body.tools.stephovercontent.two;
+                    this.stepHoverContent.three = res.body.tools.stephovercontent.three;
+                    this.stepHoverContent.four = res.body.tools.stephovercontent.four;
+                    this.stepHoverContent.five = res.body.tools.stephovercontent.five;
+                    this.submitdatabutton = res.body.tools.submitdatabutton;
                   },function(err){
                    
                   }); 

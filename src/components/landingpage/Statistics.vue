@@ -40,7 +40,8 @@
                 value1: 0,
                 setting: {
                     dots: 'none',
-                }
+                },
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         components: {

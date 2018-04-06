@@ -76,19 +76,20 @@
                     linetwo:'',
                     linethree:'',
                     linefour:'',
-                }
+                },
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
             documentQuery(){
                 this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.documentation = res.body.data.news.documentation;
-                    this.citation.lineone = res.body.data.news.citation.lineone;
-                    this.citation.linetwo = res.body.data.news.citation.linetwo;
-                    this.citation.linethree = res.body.data.news.citation.linethree;
-                    this.citation.linefour = res.body.data.news.citation.linefour;
+                    this.documentation = res.body.news.documentation;
+                    this.citation.lineone = res.body.news.citation.lineone;
+                    this.citation.linetwo = res.body.news.citation.linetwo;
+                    this.citation.linethree = res.body.news.citation.linethree;
+                    this.citation.linefour = res.body.news.citation.linefour;
                   },function(err){
                    
                   }); 
