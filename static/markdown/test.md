@@ -1,6 +1,7 @@
- 
+
 ## How to submit data to PRIDE as a ProteomeXchange Submission
 ## Submitting your data to PRIDE:
+
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectral evidence to be published in peer-reviewed publications. The main focus of PRIDE is to support the deposition of shotgun MS/MS proteomics datasets.
 
@@ -30,7 +31,7 @@ You can choose between 2 main submission types depending on the availability of 
 
 ## 2A. Complete Submission: mzIdentML- or PRIDE XML-based
 
-The 2 subtypes of Complete Submissions are either mzIdentML- or PRIDE XML-based. Complete Submissions mixing the 2 types of ‘RESULT’ files are not allowed. 
+The 2 subtypes of Complete Submissions are either mzIdentML- or PRIDE XML-based. Complete Submissions mixing the 2 types of ‘RESULT’ files are not allowed.
 
 - Marker character change forces new list start:
 - Result files: mzIdentML 1.1 files with identifications provided. In the submission tool they should be tagged as “RESULT”. It is also recommended to check your mzIdentML files before submission using the PRIDE Inspector tool (the mzIdentML supporting version will be out in early January, 2014). mzIdentML version 1.0 files are not supported.
