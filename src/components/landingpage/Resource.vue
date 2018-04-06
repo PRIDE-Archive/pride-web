@@ -159,6 +159,7 @@
                     }
                 ],
                 searchExample:[],
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
@@ -191,12 +192,12 @@
             },
             documentQuery(){
                 this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.title = res.body.data.resource.title;
-                    this.searchExample = res.body.data.resource.searchexample;
-                    this.peptidomebutton = res.body.data.resource.peptidomebutton;
-                    this.archivebutton = res.body.data.resource.archivebutton;
+                    this.title = res.body.resource.title;
+                    this.searchExample = res.body.resource.searchexample;
+                    this.peptidomebutton = res.body.resource.peptidomebutton;
+                    this.archivebutton = res.body.resource.archivebutton;
                   },function(err){
                    
                   }); 
@@ -214,7 +215,7 @@
         height: 100%;
         position: relative;
         text-align: center;
-        padding: 90px 0;
+        padding: 50px 0;
         margin:0 auto;
         /*background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
         background-position: center center; 
@@ -263,11 +264,11 @@
         text-align: center;
     }
     .search-container{
-        margin: 0 auto 50px auto;
+        margin: 0 auto 10px auto;
         width:100%;
         text-align: center;
         border-radius:6px;
-        padding:35px;
+        padding:50px;
         background:#fff; 
     }
     .resource-button{
@@ -362,7 +363,7 @@
     }
     #search-bar-pride .ivu-input-group-append{
         background-color: #5bc0be !important;
-        color: white !important;
+        color: #f8f8f8 !important;
         width:100px;
     }
     #search-bar-pride .ivu-input-group-append span{
@@ -370,7 +371,7 @@
         /*font-size: .85714286em;*/
     }
     #search-bar-pride .ivu-select-arrow{
-        color: white !important;
+        color: #f8f8f8 !important;
     }
     #advance-search-table table{
         margin-bottom: 0;

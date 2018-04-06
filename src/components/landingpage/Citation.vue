@@ -12,7 +12,7 @@
         data () {
             return {
                 source: '',
-                markdownURL:'/static/markdown/submitDataPage/content.md',
+                markdownURL:'/static/markdown/citationPage/content.md',
             }
         },
         components: {

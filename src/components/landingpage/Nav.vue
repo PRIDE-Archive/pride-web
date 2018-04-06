@@ -59,15 +59,16 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         methods:{
             documentQuery(){
               this.$http
-                  .get("/api/editpage/get")
+                  .get(this.landingPageJsonURL)
                   .then(function(res){
-                    this.title = res.body.data.nav.title;
-                    this.subnav = res.body.data.nav.subnav;
+                    this.title = res.body.nav.title;
+                    this.subnav = res.body.nav.subnav;
                   },function(err){
                    
                   }); 
@@ -116,13 +117,13 @@
         border-bottom: 1px solid #ddd;
     }
     .ebi-masthead nav ul.menu li{
-            border-right: 1px solid #7777776b;
+            border-right: 1px solid rgb(248,248,248,0.7);
     }
     .ebi-masthead nav ul.menu li:last-child{
       border: 0;
     }
     .ebi-masthead h1, .ebi-masthead a{
-      color:#656665;
+      color:#f8f8f8;
     }
     .landingpage-title{
       font-size: 3rem;

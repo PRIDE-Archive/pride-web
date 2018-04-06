@@ -40,7 +40,8 @@
                 value1: 0,
                 setting: {
                     dots: 'none',
-                }
+                },
+                landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
         },
         components: {
@@ -53,7 +54,7 @@
         width:80%;
         height: 100%;
         position: relative;
-        padding: 90px 0;
+        padding: 50px 0;
         margin:0 auto;
     }
     .carousel-container{
