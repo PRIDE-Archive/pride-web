@@ -8,39 +8,48 @@
               
                 <div class="search-container">
                     <div class="search-input">
-                       <Input class="archive-search-input" v-model="keyword" icon="ios-search" placeholder="Enter something..." style="width: 100%" size="large"></Input>
+                       <Input class="archive-search-input" v-model="keyword" placeholder="Enter something..." style="width: 100%" size="large">
+                         <Button slot="append" @click="submitSearchCondition">Search</Button>
+                       </Input>
                     </div>
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
-                                <Select class="filter-selector" v-model="fieldValue" style="width:150px" size="small">
-                                    <div class="search-item-input-wrapper">
-                                        <Input class="search-item-input" size="small" v-model="value" placeholder="Enter something..." style="width: 90%"></Input>
-                                    </div>
-                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" size="small">
+                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">
+                                        <Checkbox v-model="item.check" size="smail" :disabled="item.disabled">
+                                            <span>{{ item.label }}</span>
+                                            <span style="float:right;color:#ccc">{{item.number}}</span>
+                                        </Checkbox>
+                                    </Option>
                                 </Select>
                             </div>
                             <div class="filter-condition">
-                                <Select class="filter-selector" v-model="containValue" style="width:150px" size="small">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="width:200px" size="small">
                                     <div class="search-item-input-wrapper">
                                         <Input class="search-item-input" size="small" v-model="value" placeholder="Enter something..." style="width: 90%"></Input>
                                     </div>
-                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
+                                        <Checkbox v-model="item.check" size="smail" :disabled="item.disabled">
+                                            <span>{{ item.label }}</span>
+                                            <span style="float:right;color:#ccc">{{item.number}}</span>
+                                        </Checkbox>
+                                        
+                                    </Option>
                                 </Select>
                             </div>
                         </div>
-                        <div class="search-button-wrapper">
-                            <a class="button search-button">Search</a>
+                        <div class="advance-button">
+                            <a class="button advance-button">Advance</a>
                         </div>
                     </div>
            
                     <div class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable>
-                            <span class="search-condition">And</span>
                             <Dropdown trigger="click">
                                 <a href="javascript:void(0)">
-                                    abcasdsa
+                                    And
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
@@ -49,14 +58,16 @@
                                     <DropdownItem>Or</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
+                            <span class="search-condition">{{keyword}}</span>
                           </Tag>
                       </div>
+                    </div>
+                    <div class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable>
-                            <span class="search-condition">And</span>
                             <Dropdown trigger="click">
                                 <a href="javascript:void(0)">
-                                    abcasdsa
+                                    And
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
@@ -65,6 +76,7 @@
                                     <DropdownItem>Or</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
+                            <span class="search-condition">{{keyword}}</span>
                           </Tag>
                       </div>
                     </div>
@@ -124,65 +136,89 @@
           fieldSelectors:[
               {
                   value: 'Fields',
-                  label: 'Fields'
+                  label: 'Fields',
+                  disabled: true,
+                  number:'Clear All'
               },
               {
                   value: 'Species',
-                  label: 'Species'
+                  label: 'Species',
+                  check: false,
               },
               {
                   value: 'Tissue',
-                  label: 'Tissue'
+                  label: 'Tissue',
+                  check: false,
               },
               {
                   value: 'Disease',
-                  label: 'Disease'
+                  label: 'Disease',
+                  check: false,
               },  
               {
                   value: 'Modification',
-                  label: 'Modification'
+                  label: 'Modification',
+                  check: false,
               },
               {
                   value: 'Instrument',
-                  label: 'Instrument'
+                  label: 'Instrument',
+                  check: false,
               },
               {
                   value: 'Experiment type',
-                  label: 'Experiment type'
+                  label: 'Experiment type',
+                  check: false,
               },
               {
                   value: 'Project lags',
-                  label: 'Project lags'
+                  label: 'Project lags',
+                  check: false,
               },
               {
                   value: 'Submission type',
-                  label: 'Submission type'
+                  label: 'Submission type',
+                  check: false,
               }
           ],
           containSelectors:[
               {
                   value: 'Contains',
-                  label: 'Contains'
+                  label: 'Contains',
+                  check: false,
+                  disabled: true,
+                  number:'Clear All'
+
               },
               {
                   value: 'London',
-                  label: 'London'
+                  label: 'London',
+                  check: false,
+                  number:'100'
               },
               {
                   value: 'Sydney',
-                  label: 'Sydney'
+                  label: 'Sydney',
+                  check: false,
+                   number:'157'
               },  
               {
                   value: 'Ottawa',
-                  label: 'Ottawa'
+                  label: 'Ottawa',
+                  check: false,
+                  number:'345'
               },
               {
                   value: 'Paris',
-                  label: 'Paris'
+                  label: 'Paris',
+                  check: false,
+                  number:'3421'
               },
               {
                   value: 'Canberra',
-                  label: 'Canberra'
+                  label: 'Canberra',
+                  check: false,
+                  number:'32'
               }
           ],
           publicaitionList:[
@@ -213,7 +249,7 @@
               date:'2018-04-04',
               dataset:['ProteomeTools','Biological Dataset']
             }
-          ]
+          ],
       }
     },
     components: {
@@ -251,7 +287,9 @@
     margin-bottom: 20px;
   }
   .search-condition{
-    display: none;
+    display: inline-block;
+    padding-left: 8px;
+    border-left: 1px solid #e9eaec;
   }
   .search-input{
     text-align: center;
@@ -269,10 +307,15 @@
     margin-right: 10px;
     display: inline-block;
   }
+  .search-condition-container{
+    display: inline-block;
+  }
   .search-condition-container .ivu-tag{
     overflow: visible !important;
     z-index: 2 !important;
     opacity: 1 !important;
+    height: 30px;
+    line-height: 30px;
   }
   .search-condition-container a{
     border:none;
@@ -287,7 +330,7 @@
     color: #495060;
     border:none;
   }
-  .search-button{
+  .advance-button a{
         padding: 5px 10px;
         font-size: 12px;
         width: 100%;
@@ -330,7 +373,9 @@
       padding-bottom: 5px;
       border-bottom: 1px solid rgb(200,200,200,0.5);
     }
-  
+    .archive-search-input{
+      margin-bottom: 10px;
+    }
 </style>
 
 <style>
@@ -343,7 +388,15 @@
     .search-item-input input{
       margin-bottom: 0 !important;
     }
-    .filter-selector ul{
+    .filter-selector.input-search-needed ul{
       padding-top: 35px;
+    }
+    .filter-selector .ivu-select-item-selected{
+      color: inherit !important;
+      background: inherit !important;
+    }
+    .filter-selector .ivu-checkbox-wrapper{
+      width: 100% !important;
+      margin: 0 auto !important;
     }
 </style>
