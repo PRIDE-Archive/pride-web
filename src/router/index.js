@@ -5,6 +5,7 @@ import Router from 'vue-router'
 const LandingPage = resolve => require(['@/components/landingpage/LandingPage'], resolve);
 const SubmitData = resolve => require(['@/components/landingpage/SubmitData'], resolve);
 const Archive = resolve => require(['@/components/archive/Archive'], resolve);
+const Citation = resolve => require(['@/components/landingpage/Citation'], resolve);
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/archive',
       name: 'archive',
       component: Archive
+    },
+    {
+      path: '/citation',
+      name: 'citation',
+      component: Citation
     },
   ]
 })
