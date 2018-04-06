@@ -1,6 +1,6 @@
 <template>
   <div class="archive-container">
-      <!--<div class="panel nav"><Nav/></div>-->
+      <div class="panel nav"><Nav/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
@@ -13,12 +13,18 @@
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
-                                <Select v-model="fieldValue" style="width:150px" size="small">
+                                <Select class="filter-selector" v-model="fieldValue" style="width:150px" size="small">
+                                    <div class="search-item-input-wrapper">
+                                        <Input class="search-item-input" size="small" v-model="value" placeholder="Enter something..." style="width: 90%"></Input>
+                                    </div>
                                     <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
                             </div>
                             <div class="filter-condition">
-                                <Select v-model="containValue" style="width:150px" size="small">
+                                <Select class="filter-selector" v-model="containValue" style="width:150px" size="small">
+                                    <div class="search-item-input-wrapper">
+                                        <Input class="search-item-input" size="small" v-model="value" placeholder="Enter something..." style="width: 90%"></Input>
+                                    </div>
                                     <Option v-for="item in containSelectors" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
                             </div>
@@ -107,7 +113,7 @@
 </template>
 
 <script>
- 
+  import Nav from '@/components/landingpage/Nav'
   export default {
     name: 'archive',
     data(){
@@ -210,6 +216,9 @@
           ]
       }
     },
+    components: {
+      Nav
+    },
     methods:{
       getDetailedResource(id){
 
@@ -225,16 +234,12 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
   .archive-container{
-    width: 80%;
-    margin:0 auto;
-    /*position: absolute;
-    top: 37px;
-    left: 0;
-    right: 0;
-    z-index: 1000;
-    */
+    width: 100%;
+   
   }
   .browse-data-container{
+    width: 80%;
+    margin:0 auto;
     padding: 90px 0;
   }
   .search-filter{
@@ -317,6 +322,15 @@
     .dataset-wrapper{
       margin-right: 5px;
     }
+    .search-item-input-wrapper{
+      position: absolute;
+      top:5px;
+      width: 100%;
+      text-align: center;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgb(200,200,200,0.5);
+    }
+  
 </style>
 
 <style>
@@ -325,5 +339,11 @@
     }
     .archive-search-input input{
       border-radius: 3px;
+    }
+    .search-item-input input{
+      margin-bottom: 0 !important;
+    }
+    .filter-selector ul{
+      padding-top: 35px;
     }
 </style>
