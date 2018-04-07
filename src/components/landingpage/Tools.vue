@@ -241,6 +241,12 @@
         border: 1px solid #5bc0be !important;
         */
     }
+    .hover-content{
+        text-align: justify;
+    }
+    .api{
+        text-align: right;
+    }
     /*
     .sub-title{
         text-align: center;

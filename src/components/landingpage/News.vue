@@ -23,11 +23,11 @@
                     <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
-                  <div>
-                    <a class="twitter-follow-button"
+                    <div class="tweet-follow-button">
+                        <a class="twitter-follow-button"
                        href="https://twitter.com/pride_ebi"
                        data-size="large" data-show-count="false">Follow @PRIDE</a>
-                  </div>
+                    </div>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
@@ -186,21 +186,26 @@
         margin-bottom: 12px;
     }
     .news-button{
-        background: none;
-        border: 1px solid #d3d3d3 !important;
-        padding: 10px 40px;
-        color: #656665;
-        font-weight: 700;
+        background-color: #1b95e0;
+        border: none;
+        color: #fff;
+        font-weight: 900;
         font-size: 12px;
-        margin-top: 20px;
+        height: 28px;
+        width: 150px;
+        border-radius: 4px;
+        padding: 1px 10px 1px 9px;
     }
     .news-button:hover{
-            opacity: .8;
+           background-color: #0c7abf;
         /*
         background-color:#5bc0be;
         color:#f8f8f8;
         border: 1px solid #5bc0be !important;
         */
+    }
+    .tweet-follow-button{
+        margin-top: 20px;
     }
     h1{
         color: #656665;
@@ -215,6 +220,9 @@
     }
     ::-webkit-scrollbar {
         width: 1px;
+    }
+    .twitter-follow-button{
+
     }
     @media (min-width: 768px) {
         .news-container{
