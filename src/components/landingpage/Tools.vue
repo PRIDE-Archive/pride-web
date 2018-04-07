@@ -8,7 +8,10 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
-                            {{stepHoverContent.one}}
+                            <div class="hover-content">
+                                {{stepHoverContent.one}}
+                            </div>
+                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
                         </div>
                         <div class="step">1</div>
                     </Poptip>
@@ -20,8 +23,11 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
+                            <div class="hover-content">
                                 {{stepHoverContent.two}}
                             </div>
+                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                        </div>
                         <div class="step">2</div>
                     </Poptip>
                     <div class="horizontal"></div>
@@ -32,8 +38,11 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
+                            <div class="hover-content">
                                 {{stepHoverContent.three}}
                             </div>
+                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                        </div>
                         <div class="step">3</div>
                     </Poptip>
                     <div class="horizontal"></div>
@@ -44,8 +53,11 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
+                            <div class="hover-content">
                                 {{stepHoverContent.four}}
                             </div>
+                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                        </div>
                         <div class="step">4</div>
                     </Poptip>
                     <div class="horizontal"></div>
@@ -56,8 +68,11 @@
                 <div class="step-wrapper">
                     <Poptip trigger="hover" placement="bottom-start">
                         <div class="api" slot="content">
+                            <div class="hover-content">
                                 {{stepHoverContent.five}}
                             </div>
+                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                        </div>
                         <div class="step">5</div>
                     </Poptip>
                 </div>
@@ -204,6 +219,27 @@
         width: calc(100% - 82px);
         color: #0bb1b1b5;
         /*width: 50px;*/
+    }
+    {
+
+    }
+    .detailed-step-more-button{
+        background: none;
+        border: 1px solid #d3d3d3 !important;
+        padding: 2px 6px;
+        color: #656665;
+        /* font-weight: 700; */
+        font-size: 10px;
+        /* margin-top: 20px; */
+        border-radius: 3px;
+    }
+    .detailed-step-more-button:hover{
+            opacity: .8;
+        /*
+        background-color:#5bc0be;
+        color:#f8f8f8;
+        border: 1px solid #5bc0be !important;
+        */
     }
     /*
     .sub-title{
