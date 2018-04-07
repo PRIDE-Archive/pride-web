@@ -23,7 +23,11 @@
                     <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
-                    <Button class="news-button">SUBSCRIBE</Button>
+                  <div>
+                    <a class="twitter-follow-button"
+                       href="https://twitter.com/pride_ebi"
+                       data-size="large" data-show-count="false">Follow @PRIDE</a>
+                  </div>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
@@ -37,7 +41,7 @@
                             {{citation.lineone}}
                         </span>
                         <span>
-                            {{citation.linetwo}} 
+                            {{citation.linetwo}}
                         </span>
                         <span>
                             <a>{{citation.linethree}}</a>
@@ -45,7 +49,7 @@
                         <span>
                              {{citation.linefour}}
                         </span>
-                        
+
                     </div>
                     <Button class="news-button" @click="citationMoreButtonAction">MORE</Button>
                 </div>
@@ -91,8 +95,8 @@
                     this.citation.linethree = res.body.news.citation.linethree;
                     this.citation.linefour = res.body.news.citation.linefour;
                   },function(err){
-                   
-                  }); 
+
+                  });
             },
             tweetQuery(){
                 this.$Message.success({content:'documents update', duration:1});
@@ -103,9 +107,9 @@
                   .then(function(res){
                     this.info.tweet = res.body.data.tweetNum;
                   },function(err){
-                    
-                  }); 
-                */  
+
+                  });
+                */
             },
             citationQuery(){
                 this.$Message.success({content:'documents update', duration:1});
@@ -116,14 +120,14 @@
                   .then(function(res){
                     this.info.citation = res.body.data.citationNum;
                   },function(err){
-                    
-                  });   
+
+                  });
                 */
             },
             citationMoreButtonAction(){
                 this.$router.push({name:'citation'});
             }
-            
+
         },
         mounted:function(){
             this.documentQuery();
@@ -212,17 +216,17 @@
     ::-webkit-scrollbar {
         width: 1px;
     }
-    @media (min-width: 768px) { 
+    @media (min-width: 768px) {
         .news-container{
             width: 750px;
         }
-        
+
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .news-container{
             width: 970px;
         }
-        
+
     }
     @media (min-width: 1200px) {
         .news-container{
@@ -232,7 +236,7 @@
             /*margin: 15px 50px;*/
         }
     }
-    
+
     @media (min-width: 1600px) {
         .news-container{
             width: 1300px;

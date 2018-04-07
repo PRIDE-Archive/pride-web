@@ -5,7 +5,7 @@
 	},
 	"resource":{
 		"title":"Find your resources today.",
-		"searchexample":["aaa","bbb","ccc"],
+		"searchexample":["cancer", "human", "P02768", "MDPNTIIEALR*"],
 		"peptidomebutton":"PRIDE PEPTIDOME",
 		"archivebutton":"PRIDE ARCHIVE"
 	},
@@ -15,16 +15,16 @@
 		"step":{
 			"one": "Register",
 			"two": "Choose submission type",
-			"three": "Submit the dataset",
+			"three": "Submit the Dataset",
 			"four": "Accessing private data",
 			"five": "Post-submission steps"
 		},
 		"stephovercontent":{
-			"one": "steponeAAAAAAAAAAAAAAAAAAAAAAAAA",
-			"two": "steptwoBBBBBBBBBBBBBBBBB",
-			"three": "stepthreeCCCCCCCCCCCCCCCCCCC",
-			"four": "stepfourDDDDDDDDDDDDDDDDDDDD",
-			"five": "stepfiveEEEEEEEEEEEEEEEEEEEE"
+			"one":   "If you do not already have a PRIDE account, create one here.",
+			"two":   "We have different type of submissions in PRIDE.",
+			"three": "The PX Submission tool allow users to perform the final submission.",
+			"four":  "Submitted datasets are 'private' by default. Will be available to you and the reviewers if you are logge-in into PRIDE",
+			"five":  "After the submission, the dataset metadata is validated and different post-processing are applied. "
 		},
 		"submitdatabutton":"SUBMIT DATA"
 	},
