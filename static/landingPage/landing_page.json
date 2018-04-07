@@ -13,11 +13,11 @@
 	"tools":{
 		"title":"How to submit data",
 		"step":{
-			"one": "Register",
-			"two": "Choose submission type",
-			"three": "Submit the Dataset",
-			"four": "Accessing private data",
-			"five": "Post-submission steps"
+			"one":   "Register",
+			"two":   "Choose Submission",
+			"three": "Submit Dataset",
+			"four":  "Accessing Private data",
+			"five":  "Post-submission"
 		},
 		"stephovercontent":{
 			"one":   "If you do not already have a PRIDE account, create one here.",
