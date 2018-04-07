@@ -17,10 +17,8 @@
                             <div class="filter-condition">
                                 <Select class="filter-selector" v-model="fieldValue" style="width:200px" size="small">
                                     <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">
-                                        <Checkbox v-model="item.check" size="smail" :disabled="item.disabled">
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
-                                        </Checkbox>
                                     </Option>
                                 </Select>
                             </div>
@@ -43,31 +41,19 @@
                             <a class="button advance-button">Advance</a>
                         </div>
                     </div>
-           
-                    <div class="search-condition-container">
+                    <div v-if="keyword" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable>
-                            <Dropdown trigger="click">
-                                <a href="javascript:void(0)">
-                                    And
-                                    <Icon type="arrow-down-b"></Icon>
-                                </a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem>And</DropdownItem>
-                                    <DropdownItem>Not</DropdownItem>
-                                    <DropdownItem>Or</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <span class="search-condition">{{keyword}}</span>
+                            <span class="search-condition first">{{keyword}}</span>
                           </Tag>
                       </div>
                     </div>
-                    <div class="search-condition-container">
+                    <div v-for="item in filterCombination" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable>
                             <Dropdown trigger="click">
                                 <a href="javascript:void(0)">
-                                    And
+                                    {{item.condition}}
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
@@ -76,7 +62,7 @@
                                     <DropdownItem>Or</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <span class="search-condition">{{keyword}}</span>
+                            <span class="search-condition">{{item.field}} > {{item.contains}} </span>
                           </Tag>
                       </div>
                     </div>
@@ -250,6 +236,13 @@
               dataset:['ProteomeTools','Biological Dataset']
             }
           ],
+          filterCombination:[
+            {
+              condition:'And',
+              field:'Tissue',
+              contains:'Homo'
+            },
+          ]
       }
     },
     components: {
@@ -286,7 +279,7 @@
   .search-row{
     margin-bottom: 20px;
   }
-  .search-condition{
+  .search-condition:not(.first){
     display: inline-block;
     padding-left: 8px;
     border-left: 1px solid #e9eaec;
