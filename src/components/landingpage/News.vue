@@ -23,11 +23,7 @@
                     <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
-                    <div class="tweet-follow-button">
-                        <a class="twitter-follow-button"
-                       href="https://twitter.com/pride_ebi"
-                       data-size="large" data-show-count="false">Follow @PRIDE</a>
-                    </div>
+                    <Button class="news-button" @click="twitterMoreButtonAction"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
@@ -126,7 +122,10 @@
             },
             citationMoreButtonAction(){
                 this.$router.push({name:'citation'});
-            }
+            },
+            twitterMoreButtonAction(){
+                location.href="https://twitter.com/pride_ebi"
+            }   
 
         },
         mounted:function(){
@@ -194,6 +193,7 @@
         height: 28px;
         width: 150px;
         border-radius: 4px;
+        margin-top: 20px;
         padding: 1px 10px 1px 9px;
     }
     .news-button:hover{
@@ -204,8 +204,8 @@
         border: 1px solid #5bc0be !important;
         */
     }
-    .tweet-follow-button{
-        margin-top: 20px;
+    .twitter-icon{
+        margin-right: 10px;
     }
     h1{
         color: #656665;
