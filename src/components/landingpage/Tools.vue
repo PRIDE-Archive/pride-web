@@ -11,7 +11,7 @@
                             <div class="hover-content">
                                 <p>{{stepHoverContent.one}}</p>
                             </div>
-                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="step1ButtonAction">MORE</Button>
                         </div>
                         <div class="step">1</div>
                     </Poptip>
@@ -26,7 +26,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.two}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="step2ButtonAction">MORE</Button>
                         </div>
                         <div class="step">2</div>
                     </Poptip>
@@ -41,7 +41,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.three}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="step3ButtonAction">MORE</Button>
                         </div>
                         <div class="step">3</div>
                     </Poptip>
@@ -56,7 +56,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.four}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="step4ButtonAction">MORE</Button>
                         </div>
                         <div class="step">4</div>
                     </Poptip>
@@ -71,7 +71,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.five}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="step5ButtonAction">MORE</Button>
                         </div>
                         <div class="step">5</div>
                     </Poptip>
@@ -116,6 +116,21 @@
             }
         },
         methods:{
+            step1ButtonAction(){
+                this.$router.push({name:'submitstep1'});
+            },
+            step2ButtonAction(){
+                this.$router.push({name:'submitstep2'});
+            },
+            step3ButtonAction(){
+                this.$router.push({name:'submitstep3'});
+            },
+            step4ButtonAction(){
+                this.$router.push({name:'submitstep4'});
+            },
+            step5ButtonAction(){
+                this.$router.push({name:'submitstep5'});
+            },
             submitData(){
                 this.$router.push({name:'submitdata'});
             },
