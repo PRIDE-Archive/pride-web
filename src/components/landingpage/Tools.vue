@@ -6,10 +6,10 @@
         <div class="content">
             <div class="item">
                 <div class="step-wrapper">
-                    <Poptip trigger="hover" placement="bottom-start">
+                    <Poptip trigger="hover" placement="bottom" width="200">
                         <div class="api" slot="content">
                             <div class="hover-content">
-                                {{stepHoverContent.one}}
+                                <p>{{stepHoverContent.one}}</p>
                             </div>
                             <Button class="detailed-step-more-button" @click="citationMoreButtonAction">MORE</Button>
                         </div>
@@ -21,7 +21,7 @@
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <Poptip trigger="hover" placement="bottom-start">
+                    <Poptip trigger="hover" placement="bottom" width="200">
                         <div class="api" slot="content">
                             <div class="hover-content">
                                 {{stepHoverContent.two}}
@@ -36,7 +36,7 @@
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <Poptip trigger="hover" placement="bottom-start">
+                    <Poptip trigger="hover" placement="bottom" width="200">
                         <div class="api" slot="content">
                             <div class="hover-content">
                                 {{stepHoverContent.three}}
@@ -51,7 +51,7 @@
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <Poptip trigger="hover" placement="bottom-start">
+                    <Poptip trigger="hover" placement="bottom" width="200">
                         <div class="api" slot="content">
                             <div class="hover-content">
                                 {{stepHoverContent.four}}
@@ -66,7 +66,7 @@
             </div>
             <div class="item">
                 <div class="step-wrapper">
-                    <Poptip trigger="hover" placement="bottom-start">
+                    <Poptip trigger="hover" placement="bottom" width="200">
                         <div class="api" slot="content">
                             <div class="hover-content">
                                 {{stepHoverContent.five}}
@@ -230,7 +230,7 @@
         color: #656665;
         /* font-weight: 700; */
         font-size: 10px;
-        /* margin-top: 20px; */
+         margin-top: 10px; 
         border-radius: 3px;
     }
     .detailed-step-more-button:hover{
@@ -249,4 +249,12 @@
         font-weight: normal;
         color: #04bfbf;
     }*/
+</style>
+<style>
+.step-wrapper .ivu-poptip-popper{
+    top: 150px !important;
+}
+.step-wrapper .ivu-poptip-inner{
+    white-space: normal;
+}
 </style>
