@@ -15,8 +15,8 @@
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
-                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" size="small">
-                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value">
+                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" size="small" @on-change="fieldChange">
+                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value" >
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
                                     </Option>
@@ -25,10 +25,10 @@
                             <div class="filter-condition">
                                 <Select class="filter-selector input-search-needed" v-model="containValue" style="width:200px" size="small">
                                     <div class="search-item-input-wrapper">
-                                        <Input class="search-item-input" size="small" v-model="value" placeholder="Enter something..." style="width: 90%"></Input>
+                                        <Input class="search-item-input" size="small" v-model="containItemSearch" placeholder="Enter something..." style="width: 90%"></Input>
                                     </div>
                                     <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
-                                        <Checkbox v-model="item.check" size="smail" :disabled="item.disabled">
+                                        <Checkbox v-model="item.check" size="small" :disabled="item.disabled" @on-change="containSelect(item.check,item.value)">
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
                                         </Checkbox>
@@ -48,18 +48,18 @@
                           </Tag>
                       </div>
                     </div>
-                    <div v-for="item in filterCombination" class="search-condition-container">
+                    <div v-for="(item, index) in filterCombination" class="search-condition-container">
                       <div class="tag-container">
-                          <Tag type="border" closable>
-                            <Dropdown trigger="click">
-                                <a href="javascript:void(0)">
+                          <Tag type="border" closable @on-close="conditionDelete(index,item)">
+                            <Dropdown>
+                                <a class="dropdown-action" href="javascript:void(0)">
                                     {{item.condition}}
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
-                                    <DropdownItem>And</DropdownItem>
-                                    <DropdownItem>Not</DropdownItem>
-                                    <DropdownItem>Or</DropdownItem>
+                                    <DropdownItem @click.native="conditionChange(index,'And')">And</DropdownItem>
+                                    <DropdownItem @click.native="conditionChange(index,'Not')">Not</DropdownItem>
+                                    <DropdownItem @click.native="conditionChange(index,'Or')">Or</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
                             <span class="search-condition">{{item.field}} > {{item.contains}} </span>
@@ -118,33 +118,136 @@
       return {
           keyword:'',
           fieldValue:'Species',
-          containValue:'Contains',
+          containValue:'Any',
+          containItemSearch:'',
           fieldSelectors:[
-              {
-                  value: 'Fields',
-                  label: 'Fields',
-                  disabled: true,
-                  number:'Clear All'
-              },
               {
                   value: 'Species',
                   label: 'Species',
                   check: false,
+                  containItems:[
+                      {
+                          value: 'Any',
+                          label: 'Any',
+                          check: true,
+                          number:''
+
+                      },
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: true,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: true,
+                           number:'157'
+                      },  
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: true,
+                          number:'345'
+                      },
+                      {
+                          value: 'Paris',
+                          label: 'Paris',
+                          check: true,
+                          number:'3421'
+                      },
+                      {
+                          value: 'Canberra',
+                          label: 'Canberra',
+                          check: true,
+                          number:'32'
+                      }
+                  ],
               },
               {
                   value: 'Tissue',
                   label: 'Tissue',
                   check: false,
+                  containItems:[
+                      {
+                          value: 'Any',
+                          label: 'Any',
+                          check: true,
+                          number:''
+
+                      },
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: false,
+                          number:'345'
+                      },
+                  ],
               },
               {
                   value: 'Disease',
                   label: 'Disease',
                   check: false,
+                  containItems:[
+                      {
+                          value: 'Any',
+                          label: 'Any',
+                          check: true,
+                          number:''
+
+                      },
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: false,
+                          number:'345'
+                      },
+                  ],
               },  
               {
                   value: 'Modification',
                   label: 'Modification',
                   check: false,
+                  containItems:[
+                      {
+                          value: 'Any',
+                          label: 'Any',
+                          check: true,
+                          number:''
+
+                      },
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
               },
               {
                   value: 'Instrument',
@@ -169,41 +272,40 @@
           ],
           containSelectors:[
               {
-                  value: 'Contains',
-                  label: 'Contains',
-                  check: false,
-                  disabled: true,
-                  number:'Clear All'
+                  value: 'Any',
+                  label: 'Any',
+                  check: true,
+                  number:''
 
               },
               {
                   value: 'London',
                   label: 'London',
-                  check: false,
+                  check: true,
                   number:'100'
               },
               {
                   value: 'Sydney',
                   label: 'Sydney',
-                  check: false,
+                  check: true,
                    number:'157'
               },  
               {
                   value: 'Ottawa',
                   label: 'Ottawa',
-                  check: false,
+                  check: true,
                   number:'345'
               },
               {
                   value: 'Paris',
                   label: 'Paris',
-                  check: false,
+                  check: true,
                   number:'3421'
               },
               {
                   value: 'Canberra',
                   label: 'Canberra',
-                  check: false,
+                  check: true,
                   number:'32'
               }
           ],
@@ -237,11 +339,6 @@
             }
           ],
           filterCombination:[
-            {
-              condition:'And',
-              field:'Tissue',
-              contains:'Homo'
-            },
           ]
       }
     },
@@ -251,7 +348,72 @@
     methods:{
       getDetailedResource(id){
 
+      },
+      conditionChange(index,condition){
+        console.log(condition);
+        this.filterCombination[index].condition = condition;
+      },
+      fieldChange(e){
+        console.log(e);
+        for(let i in this.fieldSelectors){
+          if(this.fieldSelectors[i].value == this.fieldValue){
+              this.containSelectors = this.fieldSelectors[i].containItems;
+              this.containValue = 'Any';
+              break;
+          }
+        }
+      },
+      containSelect(check,selectedValue){
+        //update contains data in fieldSlecetors
+        for(let i in this.fieldSelectors){
+            if(this.fieldSelectors[i].value == this.fieldValue){
+                if(selectedValue != 'Any'){
+                    for(let j in this.fieldSelectors[i].containItems){
+                      if(this.fieldSelectors[i].containItems[j].value == selectedValue){
+                        this.fieldSelectors[i].containItems[j].check = check;
+                        break;
+                      }
+                    }
+                }
+                else{
+                    for(let j in this.fieldSelectors[i].containItems)
+                        this.fieldSelectors[i].containItems[j].check = check;
+                }
+                break;
+            }
+        }
+
+        if(check){
+            let item={
+                condition:'And',
+                field:this.fieldValue,
+                contains:selectedValue
+            };
+            this.filterCombination.push(item);
+            
+            
+        }
+        else{
+          for(let i=0; i<this.filterCombination.length; i++){
+            if(this.filterCombination[i].field == this.fieldValue && this.filterCombination[i].contains == selectedValue){
+              this.filterCombination.splice(i,1);
+              break;
+            }
+          }
+        }
+      },
+      submitSearchCondition(){
+
+      },
+      conditionDelete(index,item){
+        this.filterCombination.splice(index,1);
+        console.log(item);
+      },
+      doThis(){
+        console.log('do this');
       }
+      
+      
     },
    
     mounted: function(){
@@ -368,6 +530,9 @@
     }
     .archive-search-input{
       margin-bottom: 10px;
+    }
+    .dropdown-action{
+      width: 50px;
     }
 </style>
 
