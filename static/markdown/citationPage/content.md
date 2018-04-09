@@ -1,40 +1,38 @@
- 
-## How to submit data to PRIDE as a ProteomeXchange Submission
-## Submitting your data to PRIDE:
 
-PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectral evidence to be published in peer-reviewed publications. The main focus of PRIDE is to support the deposition of shotgun MS/MS proteomics datasets.
+## How to cite PRIDE Resources
 
-The current way of submitting data to PRIDE is following the [ProteomeXchange (PX) consortium](http://www.proteomexchange.org/) guidelines. The current page contains summarized introduction to the 2 main PX Submission modes. If you need more information a detailed tutorial is [available](http://www.proteomexchange.org/sites/proteomexchange.org/files/documents/px_submission_tutorial2.pdf) at the ProteomeXchange web site. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+All PRIDE Archive and PX identifiers for a dataset.
 
-The main tool to submit data is the PX Submission Tool than can be downloaded by clicking on the button below.
+Citing PRIDE Resources:
 
+- **Citing the PRIDE Generally**: Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.
+  [2016 update of the PRIDE database and related tools](http://nar.oxfordjournals.org/content/44/D1/D447.long). Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722.
 
-![Minion](/static/markdown/submitDataPage/image/download.png)
+- **Citing ProteomeXchange**: Deutsch EW. , Csordas A, Sun Z, Jarnuczak A, Perez-Riverol Y, Ternent T, Campbell D, Bernal-Llinares M, Okuda S, Kawano S, Moritz RL,1 Carver JJ., Wang M, Ishihama Y, Bandeira N, Hermjakob H and Vizcaíno JA.
+  [The ProteomeXchange consortium in 2017: supporting the cultural change in proteomics public data deposition](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210636/).  Nucleic Acids Res. 2017 Jan 4; 45(Database issue): D1100–D1106.
 
+- **When a dataset has been deposited in PRIDE and ProteomeXchange the citation of the PX should be done in this form**:
 
-The PX/ PRIDE submission process involves the following elements seen on the figure below.
+  **PX Partial**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org)
+  via the PRIDE partner repository [1] with the dataset identifier PXD000000.
 
-![Minion](/static/markdown/submitDataPage/image/Slide1.jpg)
+  **PX Complete**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org)
+  via the PRIDE partner repository [1] with the dataset identifier PXD000000 and DOI 10.6019/PXD000000.
 
-Follow these steps to submit your data:
+  [1] Vizcaino JA, et al. 2016 update of the PRIDE database and related tools. Nucleic Acids Res. 2016 Jan 1;44(D1):D447-D456.
 
-1. Lorem ipsum dolor sit amet
-2. Consectetur adipiscing elit
-3. Integer molestie lorem at massa
+Citing Peptidome and PRIDE Cluster resources:
 
-1. Register
-If you do not already have a PRIDE account, create one here. Currently we don't send out automatic emails upon succesful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
+- **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA.
+  [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
 
-2. Choose submission type
-You can choose between 2 main submission types depending on the availability of mzIdentML or PRIDE XML files as "Result" files for Complete Submissions. The recommended submission subtype is a Complete Submission, but alternatively Partial Submissions are accepted as well.
+Citing PRIDE Tools:
 
-## 2A. Complete Submission: mzIdentML- or PRIDE XML-based
+- **PRIDE Inspector Toolsuite**: Perez-Riverol Y, Xu QW, Wang R, Uszkoreit J, Griss J, Sanchez A, Reisinger F, Csordas A, Ternent T, del Toro N, Dianes JA, Eisenacher M, Hermjakob H, Vizcaíno JA.
+ [PRIDE Inspector Toolsuite: moving towards a universal visualization tool for proteomics data standard formats and quality assessment of ProteomeXchange datasets.](http://www.mcponline.org/content/15/1/305.long). Mol Cell Proteomics 2016 Jan; 15(1):305-17. PubMed PMID: 26545397.
 
-The 2 subtypes of Complete Submissions are either mzIdentML- or PRIDE XML-based. Complete Submissions mixing the 2 types of ‘RESULT’ files are not allowed. 
-
-- Marker character change forces new list start:
-- Result files: mzIdentML 1.1 files with identifications provided. In the submission tool they should be tagged as “RESULT”. It is also recommended to check your mzIdentML files before submission using the PRIDE Inspector tool (the mzIdentML supporting version will be out in early January, 2014). mzIdentML version 1.0 files are not supported.
-- Peak list files: Since the mzIdentML files themselves do not contain the spectra information it is mandatory to provide the peak list files (eg. mgf files) that were used for the original search and are referenced in the mzIdentML file. These are different from the provided mandatory raw files. In the submission tool they should be tagged as “PEAK” and the submission tool will try to automatically map the peak files to the mzIdentML file where they are listed.
-- Raw files: the MS instrument output files, for instance Thermo RAW files. As an alternative, lightly processed  mzML, mzXML, mzData files are acceptable if MS1 level spectra information is available and the different peak processing steps are known. In the submission tool they should be tagged as “RAW”.
+- **PRIDE Cluster** or **Spectra Cluster** Toolsuite: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA.
+ [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
 
 
+Previous manuscripts of PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
