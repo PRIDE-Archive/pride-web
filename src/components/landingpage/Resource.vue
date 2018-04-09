@@ -1,9 +1,9 @@
 <template>
   <div class="resource-container">
-    <div class="resouce-title">
-        <h1>{{title}}</h1>
-        <!--<p>Search through thousands of resources from Pride that are looking.</p>-->
-    </div>
+    <!--<div class="resouce-title">-->
+        <!--<h1>{{title}}</h1>-->
+        <!--&lt;!&ndash;<p>Search through thousands of resources from Pride that are looking.</p>&ndash;&gt;-->
+    <!--</div>-->
     <div class="search-container">
         <div class="normal-search-wrapper" v-if="!advanceSearchDisplay">
             <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
@@ -72,7 +72,7 @@
                             return h('Select', {
                                     props: {
                                         value:this.searchItems[params.index].condition,
-                                        size:"small", 
+                                        size:"small",
                                         style:"width:100px"
                                     },
                                     on: {
@@ -100,7 +100,7 @@
                             return h('Select', {
                                     props: {
                                         value:this.searchItems[params.index].type,
-                                        size:"small", 
+                                        size:"small",
                                     },
                                     on: {
                                         'on-change': (val) => {
@@ -126,7 +126,7 @@
                             return h('Input', {
                                     props: {
                                         value:this.searchItems[params.index].term,
-                                        size:"small", 
+                                        size:"small",
                                     },
                                     on: {
                                         'on-blur': (e) => {
@@ -199,8 +199,8 @@
                     this.peptidomebutton = res.body.resource.peptidomebutton;
                     this.archivebutton = res.body.resource.archivebutton;
                   },function(err){
-                   
-                  }); 
+
+                  });
             },
         },
         mounted(){
@@ -218,7 +218,7 @@
         padding: 50px 0;
         margin:0 auto;
         /*background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
-        background-position: center center; 
+        background-position: center center;
         background-size: cover;*/
     }
     .bg{
@@ -226,22 +226,22 @@
     }
     .bgone{
         background-image: url("~/src/assets/landing_page_bg/test1.jpg");
-        background-position: center center; 
+        background-position: center center;
         background-size: cover;
     }
     .bgtwo{
         background-image: url("~/src/assets/landing_page_bg/test2.jpg");
-        background-position: center center; 
+        background-position: center center;
         background-size: cover;
     }
     .bgthree{
         background-image: url("~/src/assets/landing_page_bg/test3.jpg");
-        background-position: center center; 
+        background-position: center center;
         background-size: cover;
     }
     .bgfour{
         background-image: url("~/src/assets/landing_page_bg/test4.jpg");
-        background-position: center center; 
+        background-position: center center;
         background-size: cover;
     }
     .resouce-title{
@@ -259,7 +259,7 @@
         color: gray;
         font-size: 20px;
     }
-    
+
     .button-container{
         text-align: center;
     }
@@ -269,7 +269,7 @@
         text-align: center;
         border-radius:6px;
         padding:50px;
-        background:#fff; 
+        background:#fff;
     }
     .resource-button{
         padding: 50px 105px 50px 105px;
@@ -297,7 +297,7 @@
     .advance-search-button-wrapper .advance-search-action{
         color: white !important;
         width: 70px;
-     
+
     }
     .advance-search-button-wrapper .advance-search-action:hover{
         opacity:.8 !important;
@@ -318,8 +318,8 @@
         width: 50px !important;
         padding: 2px 0 !important;
     }
-       
-    @media (min-width: 768px) { 
+
+    @media (min-width: 768px) {
         .resource-container{
             width: 750px;
         }
@@ -328,7 +328,7 @@
             margin: 40px 30px 0 30px;
         }
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .resource-container{
             width: 970px;
         }
@@ -341,7 +341,7 @@
             /*margin: 15px 50px;*/
         }
     }
-    
+
     @media (min-width: 1600px) {
         .resource-container{
             width: 1300px;
@@ -388,5 +388,5 @@
     .ivu-poptip-body{
         padding: 15px 16px;
     }
-    
+
 </style>
