@@ -21,6 +21,8 @@ Citing PRIDE Resources:
 
   [1] Vizcaino JA, et al. 2016 update of the PRIDE database and related tools. Nucleic Acids Res. 2016 Jan 1;44(D1):D447-D456.
 
+  See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission]()
+
 Citing Peptidome and PRIDE Cluster resources:
 
 - **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA.
