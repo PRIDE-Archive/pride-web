@@ -9,36 +9,32 @@
                 <div class="search-container">
                     <div class="search-input">
                        <Input class="archive-search-input" v-model="keyword" placeholder="Enter something..." style="width: 100%" size="large">
-                         <Button slot="append" @click="submitSearchCondition">Search</Button>
+                         <!--<Button slot="append" @click="submitSearchCondition">Search</Button>-->
                        </Input>
                     </div>
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
-                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" size="small" @on-change="fieldChange">
+                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
                                     <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value" >
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
                                     </Option>
                                 </Select>
                             </div>
+                            <span class="separator">></span>
                             <div class="filter-condition">
-                                <Select class="filter-selector input-search-needed" v-model="containValue" style="width:200px" size="small">
-                                    <div class="search-item-input-wrapper">
-                                        <Input class="search-item-input" size="small" v-model="containItemSearch" placeholder="Enter something..." style="width: 90%"></Input>
-                                    </div>
-                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
-                                        <Checkbox v-model="item.check" size="small" :disabled="item.disabled" @on-change="containSelect(item.check,item.value)">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="width:200px" size="small" filterable multiple >
+                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value" @click.native="containChange">
                                             <span>{{ item.label }}</span>
-                                            <span style="float:right;color:#ccc">{{item.number}}</span>
-                                        </Checkbox>
-                                        
+                                            <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
                                     </Option>
                                 </Select>
                             </div>
                         </div>
-                        <div class="advance-button">
-                            <a class="button advance-button">Advance</a>
+
+                        <div class="search-button">
+                            <a class="button search-button">Search</a>
                         </div>
                     </div>
                     <div v-if="keyword" class="search-condition-container">
@@ -118,7 +114,7 @@
       return {
           keyword:'',
           fieldValue:'Species',
-          containValue:'Any',
+          containValue:['Any','London'],
           containItemSearch:'',
           fieldSelectors:[
               {
@@ -339,6 +335,21 @@
             }
           ],
           filterCombination:[
+              {
+                condition:'And',
+                field:'Species',
+                contains:'xxxxx'
+              },
+              {
+                condition:'And',
+                field:'Species',
+                contains:'bbbbb'
+              },
+              {
+                condition:'And',
+                field:'Species',
+                contains:'ccccc'
+              },
           ]
       }
     },
@@ -358,12 +369,29 @@
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
               this.containSelectors = this.fieldSelectors[i].containItems;
-              this.containValue = 'Any';
+              this.containValue = ['Any'];
               break;
           }
         }
       },
-      containSelect(check,selectedValue){
+      containChange(selectedValue){
+          let value = selectedValue.target.outerText.split(" ")[0];
+          console.log(selectedValue.target);
+          if(value == "Any"){
+
+            for(let i in this.fieldSelectors){
+                if(this.fieldSelectors[i].value == this.fieldValue){
+                    this.containValue =[];
+                    this.containValue = this.fieldSelectors[i].containItems;
+                }
+                break;
+            }
+          }
+        
+       
+          
+        
+        /*
         //update contains data in fieldSlecetors
         for(let i in this.fieldSelectors){
             if(this.fieldSelectors[i].value == this.fieldValue){
@@ -400,7 +428,7 @@
               break;
             }
           }
-        }
+        }*/
       },
       submitSearchCondition(){
 
@@ -409,10 +437,7 @@
         this.filterCombination.splice(index,1);
         console.log(item);
       },
-      doThis(){
-        console.log('do this');
-      }
-      
+
       
     },
    
@@ -459,7 +484,6 @@
     text-align: center;
   }
   .filter-condition{
-    margin-right: 10px;
     display: inline-block;
   }
   .search-condition-container{
@@ -485,8 +509,8 @@
     color: #495060;
     border:none;
   }
-  .advance-button a{
-        padding: 5px 10px;
+  .search-button a{
+        padding: 8px 10px;
         font-size: 12px;
         width: 100%;
         margin-bottom: 0;
@@ -534,6 +558,9 @@
     .dropdown-action{
       width: 50px;
     }
+    .separator{
+      margin: 0 5px;
+    }
 </style>
 
 <style>
@@ -547,7 +574,7 @@
       margin-bottom: 0 !important;
     }
     .filter-selector.input-search-needed ul{
-      padding-top: 35px;
+      /*padding-top: 35px;*/
     }
     .filter-selector .ivu-select-item-selected{
       color: inherit !important;
@@ -556,5 +583,32 @@
     .filter-selector .ivu-checkbox-wrapper{
       width: 100% !important;
       margin: 0 auto !important;
+    }
+    .filter-selector .ivu-select-input{
+      margin-bottom: 0;
+      box-shadow: none;
+    }
+     .filter-selector .ivu-select-input:focus{
+          border: none;
+    }
+    .filter-selector .ivu-tag{
+      background: none ;
+    }
+    .filter-selector .ivu-select-multiple .ivu-select-item-selected:after{
+      line-height: 0.8 !important;
+      font-size: 22px;
+      margin-right: 5px;
+      float:left;
+    }
+    .filter-selector .ivu-select-input{
+      height: 30px;
+      line-height: 30px;
+    }
+    .filter-selector .ivu-tag{
+      display: none;
+      margin:2px 4px 2px 0;
+    }
+    .filter-selector .ivu-select-selection{
+      border-radius: 3px;
     }
 </style>
