@@ -1,8 +1,4 @@
 {
-	"nav":{
-		"title":"PRIDE Cluster and PRIDE Archive",
-		"subnav":["Home", "Contact", "About"]
-	},
 	"resource":{
 		"title":"Find your resources today.",
 		"searchexample":["cancer", "human", "P02768", "MDPNTIIEALR*"],

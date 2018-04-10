@@ -40,9 +40,75 @@
               -->
               <!-- /local-search -->
               <!-- local-nav -->
-              <nav >
+              <nav class="sub-nav-ebi">
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
-                  <li v-for="item in subnav"><a href="../../">{{item}}</a></li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-home"></i>
+                            <span class='sub-nav-title'>Home</span> 
+                          </a>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-search"></i>
+                            <span class='sub-nav-title'>Resources</span> 
+                            <Icon type="chevron-down"></Icon>
+                          </a>
+                          <DropdownMenu slot="list">
+                              <DropdownItem>PRIDE Archive</DropdownItem>
+                              <DropdownItem>PRIDE Peptidome</DropdownItem>
+                              <DropdownItem>PRIDE Spectral Libraries</DropdownItem>
+                          </DropdownMenu>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-cogs"></i>
+                            <span class='sub-nav-title'>Tools</span> 
+                            <Icon type="chevron-down"></Icon>
+                          </a>
+                          <DropdownMenu slot="list">
+                              <DropdownItem>Spectra Clustering Toolsuite</DropdownItem>
+                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
+                              <DropdownItem>PRIDE Restful Web-services</DropdownItem>
+                              <DropdownItem>PRIDE Utilities Libraries</DropdownItem>
+                          </DropdownMenu>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-graduation-cap"></i>
+                            <span class='sub-nav-title'>Docs</span> 
+                            <Icon type="chevron-down"></Icon>
+                          </a>
+                          <DropdownMenu slot="list">
+                              <Dropdown placement="right-start">
+                                  <DropdownItem>
+                                      User Guide
+                                      <Icon type="ios-arrow-right"></Icon>
+                                  </DropdownItem>
+                                  <DropdownMenu slot="list">
+                                      <DropdownItem>PRIDE Archive</DropdownItem>
+                                      <DropdownItem>PRIDE Peptidome</DropdownItem>
+                                  </DropdownMenu>
+                              </Dropdown>
+                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
+                          </DropdownMenu>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-info-circle"></i>
+                            <span class='sub-nav-title'>About</span> 
+                          </a>
+                      </Dropdown>
+                  </li>
                 </ul>
               </nav>
               <!-- /local-nav -->
@@ -63,16 +129,6 @@
             }
         },
         methods:{
-            documentQuery(){
-              this.$http
-                  .get(this.landingPageJsonURL)
-                  .then(function(res){
-                    this.title = res.body.nav.title;
-                    this.subnav = res.body.nav.subnav;
-                  },function(err){
-                   
-                  }); 
-            },
             submit(){
                 this.$Message.error({content:this.selected+' search coming soon', duration:3});
                 this.$http
@@ -90,9 +146,7 @@
                 this.$Message.error({content:'error search', duration:3});
             }
         },
-        mounted:function(){
-            this.documentQuery();
-        }
+        
     }
 </script>
 <style scoped>
@@ -117,10 +171,24 @@
         border-bottom: 1px solid #ddd;
     }
     .ebi-masthead nav ul.menu li{
-            border-right: 1px solid rgb(248,248,248,0.7);
+        border-right: 1px solid rgb(248,248,248,0.7);
+    }
+    .sub-nav-list{
+      padding: 0 5px;
+    }
+    .sub-nav-list li{
+        border-right:0px !important;
+        border-bottom: 1px solid #e7e7e7 !important;
+    }
+    .sub-nav-list li:last-child{
+        border-bottom: none !important;
     }
     .ebi-masthead nav ul.menu li:last-child{
       border: 0;
+    }
+    .sub-nav-ebi a:hover{
+        background: transparent;
+         color: #f8f8f8; 
     }
     .ebi-masthead h1, .ebi-masthead a{
       color:#f8f8f8;
@@ -132,5 +200,26 @@
     }
     .pride-logo{
       margin-bottom: 20px;
+    }
+    .sub-nav-ebi .ivu-dropdown-menu{
+      margin-left:0 !important;
+    }
+    .sub-nav-title{
+      margin: 0 3px;
+    }
+
+</style>
+<style>
+   .sub-nav-ebi .sub-nav-list .ivu-select-dropdown{
+      padding: 0 !important;
+      border-radius: 0px !important;
+    }
+    .sub-nav-ebi .ivu-dropdown-item{
+      float: none !important;
+      font-size: 14px !important;
+      padding: 12px 16px !important;
+    }
+    .sub-nav-ebi .ivu-dropdown-menu .ivu-dropdown{
+      border-bottom: 1px solid #e7e7e7 !important;
     }
 </style>
