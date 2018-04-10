@@ -2,19 +2,83 @@
   <div class="news-container">
      <!--<h1>News</h1>-->
      <Row class="row" type="flex">
-            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+                <div class="item-container">
+                    <div class="item-icon"><Icon type="document-text" size="80" color="#5bc0be"></Icon></div>
+                    <div class="item-title">
+                      <div>Tools</div>
+                    </div>
+                    <div class="item-content">
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Tools1
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Tools2
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Tools3
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
+                    </div>
+                    <Button class="news-button">MORE</Button>
+                </div>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
                     <div class="item-icon"><Icon type="document-text" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Documentation</div>
                     </div>
                     <div class="item-content">
-                        {{documentation}}
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Docu1
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Docu2
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
+                        <div class="content-wrapper">
+                            <div class="content-title">
+                                Docu3
+                            </div>
+                            <div class="content-text">
+                                aaaaaaaaaaaaaaa
+                            </div>
+                            <a class="content-button">More</a>
+                        </div>
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
             </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
                     <div class="item-icon"><Icon type="social-twitter" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
@@ -26,26 +90,29 @@
                     <Button class="news-button" @click="twitterMoreButtonAction"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
                 </div>
             </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 8}" :lg="{ span: 8}">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
                     <div class="item-icon"><Icon type="social-twitch" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Citation</div>
                     </div>
                     <div class="item-content citation">
-                        <span class="citing-general">
-                            {{citation.lineone}}
-                        </span>
-                        <span>
-                            {{citation.linetwo}}
-                        </span>
-                        <span>
-                            <a>{{citation.linethree}}</a>
-                        </span>
-                        <span>
-                             {{citation.linefour}}
-                        </span>
-
+                        <div class="item-content">
+                            <div class="content-title">
+                                {{citation.lineone}}
+                            </div>
+                            <div class="content-text">
+                                <div>
+                                    {{citation.linetwo}}
+                                </div>
+                                <div>
+                                    <a>{{citation.linethree}}</a>
+                                </div>
+                                <div>
+                                     {{citation.linefour}}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <Button class="news-button" @click="citationMoreButtonAction">MORE</Button>
                 </div>
@@ -147,6 +214,7 @@
         margin:0 auto;
         display: flex;
         align-items: center;
+        max-width: 100rem !important; 
     }
     .item-container{
         text-align: center;
@@ -157,32 +225,49 @@
         padding: 2.78571429em;
     }
     .item-content{
+
         display: flex;
         flex-direction:column;
         color: #666;
         height:300px;
         background-color: white;
-        margin-bottom: 20px;
+        overflow: scroll;
     }
     .item-content.citation{
         font-size: 16px;
         text-align: justify;
         /*padding: 10px 0;*/
     }
+    .item-content.citation span:last-child{
+        margin-bottom: 0;
+    }
     .item-content span{
         margin-bottom: 5px;
     }
-    .item-content .citing-general{
-        margin-bottom: 10px;
-        font-size:18px;
-        font-weight: bold;
+    .item-container .item-content .content-title{
+        text-align: justify;
+        font-family: Helvetica, Roboto, "Segoe UI", Calibri, sans-serif;
+        font-size: 21px;
+        font-weight: 400;
+        line-height: 24px;
+        color: rgb(41, 47, 51);
+        padding-top: 10px;
     }
+    .item-container .item-content .content-text{
+        margin: 10px 0;
+        padding: 10px 0;
+        border-top: 1px solid rgb(0, 0, 0);
+    }
+       
     .item-title{
         font-size:18px;
         margin-bottom: 30px;
     }
     .item-icon{
         margin-bottom: 12px;
+    }
+    .content-button{
+        float: right;
     }
     .news-button{
         background-color: #1b95e0;
@@ -216,7 +301,7 @@
         text-align: center;
     }
     .tweet-class{
-        overflow-y: scroll;
+        /*overflow-y: scroll;*/
     }
     ::-webkit-scrollbar {
         width: 1px;
@@ -248,6 +333,21 @@
     @media (min-width: 1600px) {
         .news-container{
             width: 1300px;
+        }
+    }
+    @media (min-width: 1800px) {
+        .news-container{
+            width: 1500px;
+        }
+    }
+    @media (min-width: 2000px) {
+        .news-container{
+            width: 1700px;
+        }
+    }
+    @media (min-width: 2300px) {
+        .news-container{
+            width: 2000px;
         }
     }
 </style>
