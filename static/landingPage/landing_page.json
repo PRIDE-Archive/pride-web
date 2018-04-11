@@ -1,4 +1,8 @@
 {
+	"nav":{
+		"title":"PRIDE - Proteomics Identification Database",
+		"subnav":["Home", "Contact", "About"]
+	},
 	"resource":{
 		"title":"Find your resources today.",
 		"searchexample":["cancer", "human", "P02768", "MDPNTIIEALR*"],
@@ -25,7 +29,7 @@
 		"submitdatabutton":"SUBMIT DATA"
 	},
 	"news":{
-		"documentation":"test test",
+		"documentation":"",
 		"citation":{
 			"lineone": "Citing PRIDE generally:",
 			"linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
