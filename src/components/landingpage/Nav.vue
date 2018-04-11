@@ -44,7 +44,7 @@
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)">
+                          <a href="javascript:void(0)" @click="gotoLandingpage">
                             <i class="fas fa-home"></i>
                             <span class='sub-nav-title'>Home</span> 
                           </a>
@@ -144,6 +144,9 @@
             },
             failSearch(){
                 this.$Message.error({content:'error search', duration:3});
+            },
+            gotoLandingpage(){
+              this.$router.push({name:'landingpage'});
             }
         },
         
