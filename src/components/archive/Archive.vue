@@ -8,9 +8,17 @@
               
                 <div class="search-container">
                     <div class="search-input">
-                       <Input class="archive-search-input" v-model="keyword" placeholder="Enter something..." style="width: 100%" size="large">
-                         <!--<Button slot="append" @click="submitSearchCondition">Search</Button>-->
-                       </Input>
+                        <AutoComplete
+                            class="archive-search-input"
+                            v-model="keyword"
+                            :data="autoCompleteWords"
+                            @on-search="kewordSearch"
+                            icon="ios-search"
+                            :filter-method="autoCompleteFilter"
+                            placeholder="input here"
+                            style="width: 100%" 
+                            size="large">
+                        </AutoComplete>
                     </div>
                     <div class="search-filter">
                         <div class="filter-wrapper">
@@ -23,23 +31,25 @@
                                 </Select>
                             </div>
                             <span class="separator">></span>
-                            <div class="filter-condition">
-                                <Select class="filter-selector input-search-needed" v-model="containValue" style="width:200px" size="small" filterable multiple >
-                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value" @click.native="containChange">
+                            <div class="filter-condition ">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple  @on-change="containChange">
+                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
+                                      <span>
                                             <span>{{ item.label }}</span>
                                             <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
+                                      </span>
                                     </Option>
                                 </Select>
                             </div>
                         </div>
 
                         <div class="search-button">
-                            <a class="button search-button">Search</a>
+                            <a class="button search-button" @click="submitSearch">Search</a>
                         </div>
                     </div>
                     <div v-if="keyword" class="search-condition-container">
                       <div class="tag-container">
-                          <Tag type="border" closable>
+                          <Tag type="border" closable @on-close="keywordDelete">
                             <span class="search-condition first">{{keyword}}</span>
                           </Tag>
                       </div>
@@ -113,198 +123,13 @@
     data(){
       return {
           keyword:'',
-          fieldValue:'Species',
-          containValue:['Any','London'],
+          fieldValue:'',
+          containValue:[],
+          autoCompleteWords:['aaa','bbb','ccc','ddd'],
           containItemSearch:'',
-          fieldSelectors:[
-              {
-                  value: 'Species',
-                  label: 'Species',
-                  check: false,
-                  containItems:[
-                      {
-                          value: 'Any',
-                          label: 'Any',
-                          check: true,
-                          number:''
-
-                      },
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: true,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: true,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: true,
-                          number:'345'
-                      },
-                      {
-                          value: 'Paris',
-                          label: 'Paris',
-                          check: true,
-                          number:'3421'
-                      },
-                      {
-                          value: 'Canberra',
-                          label: 'Canberra',
-                          check: true,
-                          number:'32'
-                      }
-                  ],
-              },
-              {
-                  value: 'Tissue',
-                  label: 'Tissue',
-                  check: false,
-                  containItems:[
-                      {
-                          value: 'Any',
-                          label: 'Any',
-                          check: true,
-                          number:''
-
-                      },
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },
-              {
-                  value: 'Disease',
-                  label: 'Disease',
-                  check: false,
-                  containItems:[
-                      {
-                          value: 'Any',
-                          label: 'Any',
-                          check: true,
-                          number:''
-
-                      },
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },  
-              {
-                  value: 'Modification',
-                  label: 'Modification',
-                  check: false,
-                  containItems:[
-                      {
-                          value: 'Any',
-                          label: 'Any',
-                          check: true,
-                          number:''
-
-                      },
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-              },
-              {
-                  value: 'Instrument',
-                  label: 'Instrument',
-                  check: false,
-              },
-              {
-                  value: 'Experiment type',
-                  label: 'Experiment type',
-                  check: false,
-              },
-              {
-                  value: 'Project lags',
-                  label: 'Project lags',
-                  check: false,
-              },
-              {
-                  value: 'Submission type',
-                  label: 'Submission type',
-                  check: false,
-              }
-          ],
-          containSelectors:[
-              {
-                  value: 'Any',
-                  label: 'Any',
-                  check: true,
-                  number:''
-
-              },
-              {
-                  value: 'London',
-                  label: 'London',
-                  check: true,
-                  number:'100'
-              },
-              {
-                  value: 'Sydney',
-                  label: 'Sydney',
-                  check: true,
-                   number:'157'
-              },  
-              {
-                  value: 'Ottawa',
-                  label: 'Ottawa',
-                  check: true,
-                  number:'345'
-              },
-              {
-                  value: 'Paris',
-                  label: 'Paris',
-                  check: true,
-                  number:'3421'
-              },
-              {
-                  value: 'Canberra',
-                  label: 'Canberra',
-                  check: true,
-                  number:'32'
-              }
-          ],
+          fieldSelectors:[],
+          containSelectors:[],
+          filterCombination:[],
           publicaitionList:[
             {
               id:'PXD008343',
@@ -334,115 +159,326 @@
               dataset:['ProteomeTools','Biological Dataset']
             }
           ],
-          filterCombination:[
-              {
-                condition:'And',
-                field:'Species',
-                contains:'xxxxx'
-              },
-              {
-                condition:'And',
-                field:'Species',
-                contains:'bbbbb'
-              },
-              {
-                condition:'And',
-                field:'Species',
-                contains:'ccccc'
-              },
-          ]
       }
     },
     components: {
       Nav
     },
     methods:{
-      getDetailedResource(id){
-
+      initFilter(){
+          let tempArray = [
+              {
+                  value: 'Species',
+                  label: 'Species',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: false,
+                          number:'345'
+                      },
+                      {
+                          value: 'Paris',
+                          label: 'Paris',
+                          check: false,
+                          number:'3421'
+                      },
+                      {
+                          value: 'Canberra',
+                          label: 'Canberra',
+                          check: false,
+                          number:'32'
+                      }
+                  ],
+              },
+              {
+                  value: 'Tissue',
+                  label: 'Tissue',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: false,
+                          number:'345'
+                      },
+                  ],
+              },
+              {
+                  value: 'Disease',
+                  label: 'Disease',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                      {
+                          value: 'Ottawa',
+                          label: 'Ottawa',
+                          check: false,
+                          number:'345'
+                      },
+                  ],
+              },  
+              {
+                  value: 'Modification',
+                  label: 'Modification',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
+              },
+              {
+                  value: 'Instrument',
+                  label: 'Instrument',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
+                 
+              },
+              {
+                  value: 'Experiment type',
+                  label: 'Experiment type',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
+                 
+              },
+              {
+                  value: 'Project lags',
+                  label: 'Project lags',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
+                  
+              },
+              {
+                  value: 'Submission type',
+                  label: 'Submission type',
+                  containItems:[
+                      {
+                          value: 'London',
+                          label: 'London',
+                          check: false,
+                          number:'100'
+                      },
+                      {
+                          value: 'Sydney',
+                          label: 'Sydney',
+                          check: false,
+                           number:'157'
+                      },  
+                  ],
+                  
+              }
+          ];
+          this.fieldSelectors = tempArray;
+          this.fieldValue = this.fieldSelectors[0].value;
+          this.containSelectors = this.fieldSelectors[0].containItems;
+      },
+      autoCompleteFilter (value, option) {
+          return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
       },
       conditionChange(index,condition){
-        console.log(condition);
         this.filterCombination[index].condition = condition;
       },
-      fieldChange(e){
-        console.log(e);
+      fieldChange(){
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
               this.containSelectors = this.fieldSelectors[i].containItems;
-              this.containValue = ['Any'];
+              this.containValue=[];
+              for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                if(this.fieldSelectors[i].containItems[j].check)
+                  this.containValue.push(this.fieldSelectors[i].containItems[j].value); 
+              }
               break;
           }
         }
       },
-      containChange(selectedValue){
-          let value = selectedValue.target.outerText.split(" ")[0];
-          console.log(selectedValue.target);
-          if(value == "Any"){
-
-            for(let i in this.fieldSelectors){
-                if(this.fieldSelectors[i].value == this.fieldValue){
-                    this.containValue =[];
-                    this.containValue = this.fieldSelectors[i].containItems;
-                }
-                break;
-            }
-          }
-        
-       
-          
-        
-        /*
-        //update contains data in fieldSlecetors
-        for(let i in this.fieldSelectors){
+      containChange(){
+        for(let i=0; i< this.fieldSelectors.length; i++){
             if(this.fieldSelectors[i].value == this.fieldValue){
-                if(selectedValue != 'Any'){
-                    for(let j in this.fieldSelectors[i].containItems){
-                      if(this.fieldSelectors[i].containItems[j].value == selectedValue){
-                        this.fieldSelectors[i].containItems[j].check = check;
-                        break;
-                      }
+                for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                    let found = false;
+                    for(let k=0; k<this.containValue.length; k++){
+                       if(this.fieldSelectors[i].containItems[j].value == this.containValue[k]){
+                            this.fieldSelectors[i].containItems[j].check = true;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found)
+                      this.fieldSelectors[i].containItems[j].check = false;
+                    
+
+                    let filterCombinationFound = false;
+                    for(let m=0; m<this.filterCombination.length; m++){
+                        if(this.filterCombination[m].field == this.fieldValue && this.filterCombination[m].contains == this.fieldSelectors[i].containItems[j].value){
+                          filterCombinationFound = true;
+                          if(!this.fieldSelectors[i].containItems[j].check)
+                            this.filterCombination.splice(m,1);
+
+                          break;
+                        }
+                    }
+                    if(!filterCombinationFound){
+                        if(this.fieldSelectors[i].containItems[j].check){
+                            let item={
+                                condition:'And',
+                                field:this.fieldValue,
+                                contains:this.fieldSelectors[i].containItems[j].value
+                            };
+                            this.filterCombination.push(item);
+                        }
                     }
                 }
-                else{
-                    for(let j in this.fieldSelectors[i].containItems)
-                        this.fieldSelectors[i].containItems[j].check = check;
-                }
                 break;
             }
         }
+        /*
+        for(let i=0; i<this.fieldSelectors.length; i++){
+            if(this.fieldSelectors[i].value == this.fieldValue){
+                for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                  //console.log(this.containValue);
+                  console.log(this.fieldSelectors[i].containItems[j].value + ':' +this.fieldSelectors[i].containItems[j].check);
 
-        if(check){
-            let item={
-                condition:'And',
-                field:this.fieldValue,
-                contains:selectedValue
-            };
-            this.filterCombination.push(item);
-            
-            
-        }
-        else{
-          for(let i=0; i<this.filterCombination.length; i++){
-            if(this.filterCombination[i].field == this.fieldValue && this.filterCombination[i].contains == selectedValue){
-              this.filterCombination.splice(i,1);
-              break;
+                }
+                console.log('******************************************');
             }
-          }
-        }*/
+        }
+        */
+        /*
+         let filterCombinationFound = false;
+            for(let m=0; m<this.filterCombination.length; m++){
+                if(this.filterCombination[m].field == this.fieldValue && this.filterCombination[m].contains == this.fieldSelectors[i].containItems[j].value){
+                  filterCombinationFound = true;
+                  console.log(this.fieldSelectors[i].containItems[j].check);
+                  if(!this.fieldSelectors[i].containItems[j].check)
+                    this.filterCombination.splice(m,1);
+
+                  break;
+                }
+            }
+            if(!filterCombinationFound){
+                if(this.fieldSelectors[i].containItems[j].check){
+                    let item={
+                        condition:'And',
+                        field:this.fieldValue,
+                        contains:this.fieldSelectors[i].containItems[j].value
+                    };
+                    this.filterCombination.push(item);
+                }
+            }
+            */
       },
       submitSearchCondition(){
-
+      },
+      keywordDelete(){
+          this.keyword = '';
       },
       conditionDelete(index,item){
         this.filterCombination.splice(index,1);
-        console.log(item);
+        if(item.field == this.fieldValue)
+           this.containValue.splice(this.containValue.indexOf(item.contains),1) 
+        else{
+          for(let i=0; i<this.fieldSelectors.length; i++){
+              if(this.fieldSelectors[i].value == item.field){
+                  for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                    if(this.fieldSelectors[i].containItems[j].value == item.contains){
+                        this.fieldSelectors[i].containItems[j].check =false;
+                        break;
+                    }
+                  }
+                  break;
+              }
+          }
+        }
       },
+      kewordSearch(){
 
-      
+      },
+      submitSearch(){
+        this.$Message.success({content:'new result', duration:1});
+      }
+    },
+
+    watch: {
+      filterCombination: function (val) {
+          //combine keyword (this.keyword) and filters together (val)
+          this.submitSearch();
+      },
     },
    
     mounted: function(){
-      
+        this.initFilter();
     }
   }
 </script>
@@ -485,6 +521,7 @@
   }
   .filter-condition{
     display: inline-block;
+    margin-top: 5px; 
   }
   .search-condition-container{
     display: inline-block;
@@ -514,6 +551,7 @@
         font-size: 12px;
         width: 100%;
         margin-bottom: 0;
+        margin-top: 5px;
         /*padding: 20px 85px;
         font-size: 24px;*/
         font-weight: 700;
@@ -568,13 +606,14 @@
       margin-left: 0 !important;
     }
     .archive-search-input input{
-      border-radius: 3px;
+      border-radius: 3px !important;
+      margin-bottom: 0 !important;
+    }
+    .archive-search-input .ivu-select-dropdown{
+      text-align: left;
     }
     .search-item-input input{
       margin-bottom: 0 !important;
-    }
-    .filter-selector.input-search-needed ul{
-      /*padding-top: 35px;*/
     }
     .filter-selector .ivu-select-item-selected{
       color: inherit !important;
@@ -605,10 +644,17 @@
       line-height: 30px;
     }
     .filter-selector .ivu-tag{
-      display: none;
+      /*display: none;*/
       margin:2px 4px 2px 0;
     }
     .filter-selector .ivu-select-selection{
       border-radius: 3px;
+    }
+    .filter-selector.input-search-needed .ivu-select-dropdown{
+      width: 200px !important;
+      left:243px !important;
+    }
+    .filter-selector .ivu-icon-ios-close-empty{
+      display: none;
     }
 </style>
