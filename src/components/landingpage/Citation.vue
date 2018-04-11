@@ -3,6 +3,7 @@
         <div class="panel nav"><Nav/></div>
         <div class="markdown-wrapper">
             <vue-markdown class="markdown-body" :source="source"></vue-markdown>
+            <vue-markdown :anchor-attributes="anchorAttrs">[A link to a website](https://google.com)</vue-markdown>
         </div>
     </div>
 </template>
@@ -13,6 +14,10 @@
             return {
                 source: '',
                 markdownURL:'/static/markdown/citationPage/content.md',
+                anchorAttrs: {
+                    target: '_blank',
+                    rel: 'noopener noreferrer nofollow'
+                  }
             }
         },
         components: {
