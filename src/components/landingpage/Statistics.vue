@@ -76,6 +76,7 @@
 
        
     }
+
     @media (min-width: 768px) { 
         .statistics-container{
             width: 750px;

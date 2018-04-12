@@ -11,7 +11,7 @@
                             <div class="hover-content">
                                 <p>{{stepHoverContent.one}}</p>
                             </div>
-                            <Button class="detailed-step-more-button" @click="step1ButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails('one')">MORE</Button>
                         </div>
                         <div class="step">1</div>
                     </Poptip>
@@ -26,7 +26,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.two}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="step2ButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails('two')">MORE</Button>
                         </div>
                         <div class="step">2</div>
                     </Poptip>
@@ -41,7 +41,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.three}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="step3ButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails('three')">MORE</Button>
                         </div>
                         <div class="step">3</div>
                     </Poptip>
@@ -56,7 +56,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.four}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="step4ButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails('four')">MORE</Button>
                         </div>
                         <div class="step">4</div>
                     </Poptip>
@@ -71,7 +71,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.five}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="step5ButtonAction">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails('five')">MORE</Button>
                         </div>
                         <div class="step">5</div>
                     </Poptip>
@@ -116,23 +116,8 @@
             }
         },
         methods:{
-            step1ButtonAction(){
-                this.$router.push({name:'submitstep1'});
-            },
-            step2ButtonAction(){
-                this.$router.push({name:'submitstep2'});
-            },
-            step3ButtonAction(){
-                this.$router.push({name:'submitstep3'});
-            },
-            step4ButtonAction(){
-                this.$router.push({name:'submitstep4'});
-            },
-            step5ButtonAction(){
-                this.$router.push({name:'submitstep5'});
-            },
-            submitData(){
-                this.$router.push({name:'submitdata'});
+            submitDataDetails(name){
+                this.$router.push({name:'submitdatapage',query: { step: name }});
             },
             successSubmit(){
                 this.$Message.success({content:'success submit', duration:3});
@@ -245,11 +230,11 @@
         color: #656665;
         /* font-weight: 700; */
         font-size: 10px;
-         margin-top: 10px; 
+        margin-top: 10px; 
         border-radius: 3px;
     }
     .detailed-step-more-button:hover{
-            opacity: .8;
+        opacity: .8;
         /*
         background-color:#5bc0be;
         color:#f8f8f8;

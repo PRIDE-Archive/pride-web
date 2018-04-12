@@ -3,7 +3,7 @@ import Router from 'vue-router'
 //import Index from '@/components/landingpage/Index'
 
 const LandingPage = resolve => require(['@/components/landingpage/LandingPage'], resolve);
-const SubmitData = resolve => require(['@/components/landingpage/SubmitData'], resolve);
+const SubmitdataPage = resolve => require(['@/components/landingpage/SubmitdataPage'], resolve);
 const SubmitStep1 = resolve => require(['@/components/landingpage/SubmitStep1'], resolve);
 const SubmitStep2 = resolve => require(['@/components/landingpage/SubmitStep2'], resolve);
 const SubmitStep3 = resolve => require(['@/components/landingpage/SubmitStep3'], resolve);
@@ -23,9 +23,9 @@ export default new Router({
       component: LandingPage
     },
     {
-      path: '/submitdata',
-      name: 'submitdata',
-      component: SubmitData
+      path: '/submitdatapage',
+      name: 'submitdatapage',
+      component: SubmitdataPage
     },
     {
       path: '/submitstep1',
@@ -62,5 +62,5 @@ export default new Router({
       name: 'citation',
       component: Citation
     },
-  ]
+  ],
 })
