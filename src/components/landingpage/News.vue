@@ -9,33 +9,16 @@
                       <div>Tools</div>
                     </div>
                     <div class="item-content">
-                        <div class="content-wrapper">
+                        <div v-for="item in tools" class="content-wrapper">
                             <div class="content-title">
-                                Tools1
+                                {{item.title}}
                             </div>
                             <div class="content-text">
-                                aaaaaaaaaaaaaaa
+                                {{item.content}}
                             </div>
                             <a class="content-button">More</a>
                         </div>
-                        <div class="content-wrapper">
-                            <div class="content-title">
-                                Tools2
-                            </div>
-                            <div class="content-text">
-                                aaaaaaaaaaaaaaa
-                            </div>
-                            <a class="content-button">More</a>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="content-title">
-                                Tools3
-                            </div>
-                            <div class="content-text">
-                                aaaaaaaaaaaaaaa
-                            </div>
-                            <a class="content-button">More</a>
-                        </div>
+                       
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
@@ -47,30 +30,12 @@
                       <div>Documentation</div>
                     </div>
                     <div class="item-content">
-                        <div class="content-wrapper">
+                        <div v-for="item in documentation" class="content-wrapper">
                             <div class="content-title">
-                                Docu1
+                                {{item.title}}
                             </div>
                             <div class="content-text">
-                                aaaaaaaaaaaaaaa
-                            </div>
-                            <a class="content-button">More</a>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="content-title">
-                                Docu2
-                            </div>
-                            <div class="content-text">
-                                aaaaaaaaaaaaaaa
-                            </div>
-                            <a class="content-button">More</a>
-                        </div>
-                        <div class="content-wrapper">
-                            <div class="content-title">
-                                Docu3
-                            </div>
-                            <div class="content-text">
-                                aaaaaaaaaaaaaaa
+                                {{item.content}}
                             </div>
                             <a class="content-button">More</a>
                         </div>
@@ -137,7 +102,8 @@
                     tweet: 0,
                     citation: 0,
                 },
-                documentation:'',
+                tools:[],
+                documentation:[],
                 citation:{
                     lineone:'',
                     linetwo:'',
@@ -152,11 +118,14 @@
                 this.$http
                   .get(this.landingPageJsonURL)
                   .then(function(res){
+                    console.log(res);
                     this.documentation = res.body.news.documentation;
                     this.citation.lineone = res.body.news.citation.lineone;
                     this.citation.linetwo = res.body.news.citation.linetwo;
                     this.citation.linethree = res.body.news.citation.linethree;
                     this.citation.linefour = res.body.news.citation.linefour;
+                    this.tools = res.body.news.tools;
+                    this.documentation = res.body.news.documentation;
                   },function(err){
 
                   });
