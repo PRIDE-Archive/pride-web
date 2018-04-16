@@ -2,32 +2,39 @@
     <div class="submit-data-container">
         <div class="panel nav"><Nav/></div>
         <div class="content-container">
-            <Row :gutter="64">
-                <Col :xs="{ span: 24 }" :sm="{span: 8}" :md="{ span: 6}" :lg="{ span: 4}">
-                    <div class="menu-wrapper">
-                         <Menu mode="vertical" :theme="theme1" active-name="1">
-                            <MenuItem name="1">
-                                <Icon type="ios-paper"></Icon>
-                                Step One
-                            </MenuItem>
-                            <MenuItem name="2">
-                                <Icon type="ios-people"></Icon>
-                                Step Two
-                            </MenuItem>
-                            <MenuItem name="4">
-                                <Icon type="settings"></Icon>
-                                Step Three
-                            </MenuItem>
-                        </Menu>
-                    </div>
-                </Col>
-                <Col :xs="{ span: 24 }" :sm="{span: 16}" :md="{ span: 18}" :lg="{ span: 20}">
-                    <div class="markdown-wrapper">
-                        <vue-markdown class="markdown-body" :source="source"></vue-markdown>
-                        <!--<vue-markdown :anchor-attributes="anchorAttrs">[A link to a website](https://google.com)</vue-markdown>-->
-                    </div>
-                </Col>
-            </Row>
+            <Affix :offset-top="20">
+                <div class="menu-wrapper">
+                    <Menu mode="vertical" active-name="one" @on-select="menuSlect">
+                        <MenuItem name="one">
+                            <Icon type="ios-paper"></Icon>
+                            Step One
+                        </MenuItem>
+                        <MenuItem name="two">
+                            <Icon type="ios-paper"></Icon>
+                            Step Two
+                        </MenuItem>
+                        <MenuItem name="three">
+                            <Icon type="ios-paper"></Icon>
+                            Step Three
+                        </MenuItem>
+                        <MenuItem name="four">
+                            <Icon type="ios-paper"></Icon>
+                            Step Four
+                        </MenuItem>
+                        <MenuItem name="five">
+                            <Icon type="ios-paper"></Icon>
+                            Step Five
+                        </MenuItem>
+                    </Menu>
+                </div>
+            </Affix>
+           
+               
+            <div class="markdown-wrapper">
+                <vue-markdown class="markdown-body" :source="source"></vue-markdown>
+                <!--<vue-markdown :anchor-attributes="anchorAttrs">[A link to a website](https://google.com)</vue-markdown>-->
+            </div>
+                
         </div>
     </div>
 </template>
@@ -46,6 +53,13 @@
                 }*/
             }
         },
+        beforeRouteUpdate:function (to, from, next) {
+            this.$nextTick(function(){
+               let step = this.$route.query.step;
+               this.goAnchor(step);
+            });
+            next();
+        },
         components: {
             Nav,
         },
@@ -55,10 +69,8 @@
                   .get(this.markdownURL)
                   .then(function(res){
                     this.source = res.body;
-
-                    console.log(this.$route.query.step);
                     this.$nextTick(function(){
-                       this.goAnchor();
+                       this.goAnchor(this.$route.query.step);
                     });
                    
                   },function(err){
@@ -66,13 +78,20 @@
                   }); 
             },
             goAnchor(selector) {
-                let anchor = this.$el.querySelector('h2');
-                document.documentElement.scrollTop = anchor.offsetTop;
-            }
+                if(selector){
+                    let anchor = this.$el.querySelector('#'+selector);
+                    document.documentElement.scrollTop = anchor.offsetTop;
+                }
+                else
+                    document.documentElement.scrollTop = 0;
+            },
+            menuSlect(name){
+                this.$router.replace({name:'submitdatapage',query: { step: name }});
+            },
         },
         mounted:function(){
             this.markdownQuery();
-        }
+        },
     }
 </script>
 <style>
@@ -84,22 +103,27 @@
         height: 100%;
         background: white;
     }
-    .markdown-wrapper{
-        margin: 90px 0;
-    }
-    .menu-wrapper{
-        margin: 90px 0;
-    }
     .menu-wrapper .ivu-menu-vertical{
-        width: 100% !important;
+        position: absolute;
         min-width: 100px;
     }
+    .markdown-wrapper{
+        margin-left: 240px;
+    }
     .content-container{
+        padding: 90px 0;
         margin: 0 auto;
+    }
+
+    .markdown-body{
+        display: inline-block;
     }
     @media (min-width: 768px) { 
         .content-container{
             width: 750px;
+        }
+        .menu-wrapper .ivu-menu-vertical{
+            width: 200px !important;
         }
     }
     @media (min-width: 992px) { 
