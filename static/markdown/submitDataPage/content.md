@@ -1,5 +1,13 @@
 
-## How to submit data to PRIDE as a ProteomeXchange Submission
+<h2 id="one">Step one: How to submit data to PRIDE as a ProteomeXchange Submission</h2>
+
+<h2 id="two">Step two: How to submit data to PRIDE as a ProteomeXchange Submission</h2>
+
+<h2 id="three">Step three: How to submit data to PRIDE as a ProteomeXchange Submission</h2>
+
+<h2 id="four">Step four: How to submit data to PRIDE as a ProteomeXchange Submission</h2>
+
+<h2 id="five">Step five:  How to submit data to PRIDE as a ProteomeXchange Submission</h2>
 ## Submitting your data to PRIDE:
 
 
