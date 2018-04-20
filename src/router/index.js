@@ -6,6 +6,8 @@ const LandingPage = resolve => require(['@/components/landingpage/LandingPage'],
 const SubmitdataPage = resolve => require(['@/components/landingpage/SubmitdataPage'], resolve);
 const Archive = resolve => require(['@/components/archive/Archive'], resolve);
 const Citation = resolve => require(['@/components/landingpage/Citation'], resolve);
+const PrideTools = resolve => require(['@/components/landingpage/PrideTools'], resolve);
+const PrideDocs = resolve => require(['@/components/landingpage/PrideDocs'], resolve);
 
 Vue.use(Router)
 
@@ -36,6 +38,16 @@ export default new Router({
       path: '/test',
       name: 'test',
       component: Test
+    },
+    {
+      path: '/pridetools',
+      name: 'pridetools',
+      component: PrideTools
+    },
+    {
+      path: '/pridedocs',
+      name: 'pridedocs',
+      component: PrideDocs
     },
   ],
 })
