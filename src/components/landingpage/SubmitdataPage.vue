@@ -4,7 +4,7 @@
         <div class="content-container">
             <Affix :offset-top="20">
                 <div class="menu-wrapper">
-                    <Menu mode="vertical" active-name="one" @on-select="menuSlect">
+                    <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
                         <MenuItem name="one">
                             <Icon type="ios-paper"></Icon>
                             Step One
@@ -45,6 +45,9 @@
             return {
                 source: '',
                 markdownURL:'/static/markdown/submitDataPage/content.md',
+                activeName:'one',
+                landingPageJsonURL:'/static/landingPage/landing_page.json',
+                tableList:[],
                 /*
                 anchorAttrs: {
                     target: '_blank',
@@ -70,7 +73,8 @@
                   .then(function(res){
                     this.source = res.body;
                     this.$nextTick(function(){
-                       this.goAnchor(this.$route.query.step);
+                        this.activeName = this.$route.query.step;
+                        this.goAnchor(this.$route.query.step);
                     });
                    
                   },function(err){
@@ -80,17 +84,35 @@
             goAnchor(selector) {
                 if(selector){
                     let anchor = this.$el.querySelector('#'+selector);
-                    document.documentElement.scrollTop = anchor.offsetTop;
+                    if(anchor)
+                        document.documentElement.scrollTop = anchor.offsetTop;
                 }
                 else
                     document.documentElement.scrollTop = 0;
             },
             menuSlect(name){
+                if(this.$route.query.step == name){
+                    let anchor = this.$el.querySelector('#'+name);
+                    document.documentElement.scrollTop = anchor.offsetTop;
+                    return;
+                }
+                this.activeName = name;
                 this.$router.replace({name:'submitdatapage',query: { step: name }});
             },
+            documentQuery(){
+                this.$http
+                  .get(this.landingPageJsonURL)
+                  .then(function(res){
+                    //this.tableList = 
+                    //TODO This page does not need to make left table dynamically.
+                  },function(err){
+                   
+                  }); 
+            }
         },
         mounted:function(){
             this.markdownQuery();
+            this.documentQuery();
         },
     }
 </script>
