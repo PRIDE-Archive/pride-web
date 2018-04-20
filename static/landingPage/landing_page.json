@@ -32,15 +32,18 @@
 		"documentation":[
 			{
 				"title":"Docu1",
-				"content":"aaaaaaaaaa"
+				"content":"aaaaaaaaaa",
+				"moreID":"one"
 			},
 			{
 				"title":"Docu2",
-				"content":"bbbbbbbbbb"
+				"content":"bbbbbbbbbb",
+				"moreID":"two"
 			},
 			{
 				"title":"Docu3",
-				"content":"ccccccc"
+				"content":"ccccccc",
+				"moreID":"three"
 			}
 		],
 		"citation":{
@@ -52,15 +55,18 @@
 		"tools":[
 			{
 				"title":"tools1",
-				"content":"aaaaaaaaaa"
+				"content":"aaaaaaaaaa",
+				"moreID":"one"
 			},
 			{
 				"title":"tools2",
-				"content":"bbbbbbbbbb"
+				"content":"bbbbbbbbbb",
+				"moreID":"two"
 			},
 			{
 				"title":"tools3",
-				"content":"ccccccc"
+				"content":"ccccccc",
+				"moreID":"three"
 			}
 		]
 	}
