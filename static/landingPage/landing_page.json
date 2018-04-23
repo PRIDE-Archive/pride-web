@@ -31,18 +31,18 @@
 	"news":{
 		"documentation":[
 			{
-				"title":"Docu1",
-				"content":"aaaaaaaaaa",
+				"title":"How to Submit data",
+				"content":"How to submit identification and quantification results from proteomics experiments into PRIDE Archive",
 				"moreID":"one"
 			},
 			{
-				"title":"Docu2",
-				"content":"bbbbbbbbbb",
+				"title":"How to review data",
+				"content":"How to review private and public experiments in PRIDE Archive",
 				"moreID":"two"
 			},
 			{
-				"title":"Docu3",
-				"content":"ccccccc",
+				"title":"Searching public datasets",
+				"content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
 				"moreID":"three"
 			}
 		],
@@ -54,33 +54,20 @@
 		},
 		"tools":[
 			{
-<<<<<<< HEAD
 				"title":"Submission Tool",
-				"content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive."
+				"content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive.",
+        "moreID":"one"
 			},
 			{
 				"title":"PRIDE Inspector",
-				"content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data."
+				"content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data.",
+        "moreID":"two"
 			},
 			{
 				"title":"PRIDE Utilities",
-				"content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics."
-=======
-				"title":"tools1",
-				"content":"aaaaaaaaaa",
-				"moreID":"one"
-			},
-			{
-				"title":"tools2",
-				"content":"bbbbbbbbbb",
-				"moreID":"two"
-			},
-			{
-				"title":"tools3",
-				"content":"ccccccc",
-				"moreID":"three"
->>>>>>> a8c648a84f5f7ff201a4a5d392e9de06ff69ca0d
-			}
+				"content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics.",
+        "moreID":"three"
+      }
 		]
 	}
 }

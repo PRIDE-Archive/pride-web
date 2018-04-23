@@ -29,7 +29,7 @@
                     <div class="item-title">
                       <div>Documentation</div>
                     </div>
-                    <div class="item-content">
+                    <div class="item-content docs">
                         <div v-for="item in documentation" class="content-wrapper">
                             <div class="content-title">
                                 {{item.title}}
@@ -161,9 +161,6 @@
             },
             twitterMoreButtonAction(){
                 location.href="https://twitter.com/pride_ebi"
-<<<<<<< HEAD
-            }
-=======
             },
             subToolMoreAction(id){
                 this.$router.push({name:'pridetools',query: { num: id }});
@@ -176,9 +173,7 @@
             },
             docMoreAction(){
                 this.$router.push({name:'pridedocs'});
-            },   
->>>>>>> a8c648a84f5f7ff201a4a5d392e9de06ff69ca0d
-
+            },
         },
         mounted:function(){
             this.documentQuery();
@@ -224,6 +219,9 @@
         /*padding: 10px 0;*/
     }
     .item-content.tools{
+      text-align: justify;
+    }
+    .item-content.docs{
       text-align: justify;
     }
 
