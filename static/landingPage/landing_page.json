@@ -44,23 +44,23 @@
 			}
 		],
 		"citation":{
-			"lineone": "Citing PRIDE generally:",
+			"lineone": "Citing PRIDE",
 			"linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
 			"linethree": "2016 update of the PRIDE database and related tools.",
 			"linefour": "Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722."
 		},
 		"tools":[
 			{
-				"title":"tools1",
-				"content":"aaaaaaaaaa"
+				"title":"Submission Tool",
+				"content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive."
 			},
 			{
-				"title":"tools2",
-				"content":"bbbbbbbbbb"
+				"title":"PRIDE Inspector",
+				"content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data."
 			},
 			{
-				"title":"tools3",
-				"content":"ccccccc"
+				"title":"PRIDE Utilities",
+				"content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics."
 			}
 		]
 	}

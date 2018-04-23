@@ -82,7 +82,7 @@
         <div class="tools-button-wrapper">
             <a class="button tools-button" href="https://www.ebi.ac.uk/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip">{{submitdatabutton}}</a>
         </div>
-        
+
     </div>
 </template>
 <script>
@@ -142,8 +142,8 @@
                     this.stepHoverContent.five = res.body.tools.stephovercontent.five;
                     this.submitdatabutton = res.body.tools.submitdatabutton;
                   },function(err){
-                   
-                  }); 
+
+                  });
             },
         },
         mounted:function(){
@@ -201,13 +201,18 @@
         margin-top: 90px;
     }
     .content{
-        text-align: center;
+        text-align: justify;
     }
     .item{
         display: inline-flex;
         flex-direction: column;
         margin:10px;
         width: 15%;
+    }
+    .item-content.citation{
+      font-size: 16px;
+      text-align: justify;
+      /*padding: 10px 0;*/
     }
     .horizontal{
         border-right: 0;
@@ -230,7 +235,7 @@
         color: #656665;
         /* font-weight: 700; */
         font-size: 10px;
-        margin-top: 10px; 
+        margin-top: 10px;
         border-radius: 3px;
     }
     .detailed-step-more-button:hover{

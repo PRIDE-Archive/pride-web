@@ -1,9 +1,9 @@
 
-## How to cite PRIDE Resources
+<h1 id="one"> How to cite PRIDE Resources </h1>
 
 All PRIDE Archive and PX identifiers for a dataset.
 
-Citing PRIDE Resources:
+<h2 id="1"> Citing PRIDE Resources: </h2>
 
 - **Citing the PRIDE Generally**: Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.
   [2016 update of the PRIDE database and related tools](http://nar.oxfordjournals.org/content/44/D1/D447.long). Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722.
@@ -38,3 +38,4 @@ Citing PRIDE Tools:
 
 
 Previous manuscripts of PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
+

@@ -8,7 +8,7 @@
                     <div class="item-title">
                       <div>Tools</div>
                     </div>
-                    <div class="item-content">
+                    <div class="item-content tools">
                         <div v-for="item in tools" class="content-wrapper">
                             <div class="content-title">
                                 {{item.title}}
@@ -18,7 +18,7 @@
                             </div>
                             <a class="content-button">More</a>
                         </div>
-                       
+
                     </div>
                     <Button class="news-button">MORE</Button>
                 </div>
@@ -161,7 +161,7 @@
             },
             twitterMoreButtonAction(){
                 location.href="https://twitter.com/pride_ebi"
-            }   
+            }
 
         },
         mounted:function(){
@@ -183,7 +183,7 @@
         margin:0 auto;
         display: flex;
         align-items: center;
-        max-width: 100rem !important; 
+        max-width: 100rem !important;
     }
     .item-container{
         text-align: center;
@@ -207,6 +207,10 @@
         text-align: justify;
         /*padding: 10px 0;*/
     }
+    .item-content.tools{
+      text-align: justify;
+    }
+
     .item-content.citation span:last-child{
         margin-bottom: 0;
     }
@@ -227,7 +231,7 @@
         padding: 10px 0;
         border-top: 1px solid rgb(0, 0, 0);
     }
-       
+
     .item-title{
         font-size:18px;
         margin-bottom: 30px;
