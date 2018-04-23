@@ -44,7 +44,11 @@
 				"title":"Searching public datasets",
 				"content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
 				"moreID":"three"
-			}
+			},{
+        "title":"Retrieving PRIDE data programmatically",
+        "content":"Retrieving PRIDE Archive data can be done programatically using the PRIDE Archive Web service Restful API",
+        "moreID":"four"
+      }
 		],
 		"citation":{
 			"lineone": "Citing PRIDE",
@@ -63,10 +67,16 @@
 				"content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data.",
         "moreID":"two"
 			},
+      {
+        "title":"PRIDE Archive API",
+        "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
+        "moreID":"three"
+      },
+
 			{
 				"title":"PRIDE Utilities",
 				"content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics.",
-        "moreID":"three"
+        "moreID":"four"
       }
 		]
 	}
