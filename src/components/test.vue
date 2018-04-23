@@ -1,36 +1,28 @@
 <template>
-    <div class="test-container">
-       
-    </div>
+    <AutoComplete
+        ref="auto"
+        v-model="value1"
+        :data="data1"
+        @on-search="handleSearch1"
+        placeholder="input here"
+        style="width:200px"></AutoComplete>
 </template>
 <script>
-    
     export default {
         data () {
-        
-        },
-       
-        methods:{
-            markdownQuery(){
-                this.$http
-                  .get(this.markdownURL)
-                  .then(function(res){
-                    console.log(res);
-                    this.source = res.body;
-                  },function(err){
-                   
-                  }); 
+            return {
+                value1: '',
+                data1: []
             }
         },
-       
+        methods: {
+            handleSearch1 (value) {
+                this.data1 = !value ? [] : [
+                    value,
+                    value + value,
+                    value + value + value
+                ];
+            }
+        }
     }
 </script>
-<style>
- 
-</style>
-<style scoped>
-    .test-container{
-        width:100%;
-        height: 100%;
-    }
-</style>

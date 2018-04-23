@@ -16,11 +16,11 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button">More</a>
+                            <a class="content-button" @click="subToolMoreAction(item.moreID)">More</a>
                         </div>
 
                     </div>
-                    <Button class="news-button">MORE</Button>
+                    <Button class="news-button" @click="toolMoreAction">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -37,10 +37,10 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button">More</a>
+                            <a class="content-button"@click="subDocMoreAction(item.moreID)">More</a>
                         </div>
                     </div>
-                    <Button class="news-button">MORE</Button>
+                    <Button class="news-button" @click="docMoreAction">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -161,7 +161,23 @@
             },
             twitterMoreButtonAction(){
                 location.href="https://twitter.com/pride_ebi"
+<<<<<<< HEAD
             }
+=======
+            },
+            subToolMoreAction(id){
+                this.$router.push({name:'pridetools',query: { num: id }});
+            },
+            toolMoreAction(){
+                this.$router.push({name:'pridetools'});
+            },
+            subDocMoreAction(id){
+                this.$router.push({name:'pridedocs',query: { num: id }});
+            },
+            docMoreAction(){
+                this.$router.push({name:'pridedocs'});
+            },   
+>>>>>>> a8c648a84f5f7ff201a4a5d392e9de06ff69ca0d
 
         },
         mounted:function(){

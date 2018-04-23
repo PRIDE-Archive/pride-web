@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="tools-button-wrapper">
-            <a class="button tools-button" href="https://www.ebi.ac.uk/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip">{{submitdatabutton}}</a>
+            <a class="button tools-button" @click="download">{{submitdatabutton}}</a>
         </div>
 
     </div>
@@ -145,6 +145,20 @@
 
                   });
             },
+            download(){
+                this.$Modal.confirm({
+                    title: 'Submission Tool',
+                    content: '<p>Do you want to download the PRIDE Submission Tool?</p>',
+                    onOk: () => {
+                        window.location.href="https://www.ebi.ac.uk/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip"
+                       
+                    },
+                    onCancel: () => {
+                        
+                    }
+                });
+            }
+            
         },
         mounted:function(){
             this.documentQuery();

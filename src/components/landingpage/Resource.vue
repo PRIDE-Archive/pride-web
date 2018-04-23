@@ -8,8 +8,8 @@
         <div class="normal-search-wrapper" v-if="!advanceSearchDisplay">
             <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
                 <Select v-model="selected" slot="prepend" style="width: 100px">
-                    <Option value="peptidome">Peptidome</Option>
                     <Option value="archive">Archive</Option>
+                    <Option value="peptidome">Peptidome</Option>
                 </Select>
                 <Button slot="append" @click="submitSearchCondition">Search</Button>
             </Input>
@@ -36,8 +36,8 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="showCluster">{{peptidomebutton}}</a>
         <a class="button resource-button" @click="showArchive">{{archivebutton}}</a>
+        <a class="button resource-button" @click="showCluster">{{peptidomebutton}}</a>
     </div>
   </div>
 </template>
@@ -50,7 +50,7 @@
                 archivebutton:'',
                 condition:'',
                 keyword:'',
-                selected:'peptidome',
+                selected:'archive',
                 value:'',
                 test:'AND',
                 conditionList: ['AND','NOT','OR'],

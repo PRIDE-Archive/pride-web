@@ -32,15 +32,18 @@
 		"documentation":[
 			{
 				"title":"Docu1",
-				"content":"aaaaaaaaaa"
+				"content":"aaaaaaaaaa",
+				"moreID":"one"
 			},
 			{
 				"title":"Docu2",
-				"content":"bbbbbbbbbb"
+				"content":"bbbbbbbbbb",
+				"moreID":"two"
 			},
 			{
 				"title":"Docu3",
-				"content":"ccccccc"
+				"content":"ccccccc",
+				"moreID":"three"
 			}
 		],
 		"citation":{
@@ -51,6 +54,7 @@
 		},
 		"tools":[
 			{
+<<<<<<< HEAD
 				"title":"Submission Tool",
 				"content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive."
 			},
@@ -61,6 +65,21 @@
 			{
 				"title":"PRIDE Utilities",
 				"content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics."
+=======
+				"title":"tools1",
+				"content":"aaaaaaaaaa",
+				"moreID":"one"
+			},
+			{
+				"title":"tools2",
+				"content":"bbbbbbbbbb",
+				"moreID":"two"
+			},
+			{
+				"title":"tools3",
+				"content":"ccccccc",
+				"moreID":"three"
+>>>>>>> a8c648a84f5f7ff201a4a5d392e9de06ff69ca0d
 			}
 		]
 	}
