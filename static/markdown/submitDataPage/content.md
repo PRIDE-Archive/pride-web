@@ -13,36 +13,12 @@ Before submitting to PRIDE database the user need to be sure that it has an acco
 
 Each submitted dataset to PRIDE Archive **MUST** contain the following information:
 
-- Mass spectrometer output files (called ‘RAW’): The RAW files are the native machine raw files. The following specified some of the recognized RAW files in PRIDE Archive:
-
-<div class="content">
+- Mass spectrometer output files (called ‘RAW’): The RAW files are the native machine data files. [check addition info here](/pridefileformats)
 
 
-| Instrument Provider | Extension	| File type                   |
-|---------------------|-----------|-----------------------------|
-| Agilent	            |.D         |	instrument data format      |
-| Bruker	            |.BAF	      | instrument data format      |
-| Bruker	            |.FID	      | instrument data format      |
-| Bruker	            |.YEP	      | instrument data format      |
-| ABI/Sciex	          |.WIFF	    | QSTAR and QTRAP file format |
-| ABI/Sciex	          |.t2d	      | 4700 and 4800 file format   |
-| Thermo Xcalibur, Micromass (Waters), PerkinElmer, Waters     | .RAW       | Thermo Xcalibur, Micromass (Waters) MassLynx, PerkinElmer TurboMass |
-| Shimadzu	          | .QGD	    | GCMSSolution format         |
-| Chromtech, Finnigan, VG	| .DAT	| Finnigan ITDS file format, MassLab data format |
-| Finnigan (Thermo)	  | .MS	      | ITS40 instrument data format |
-| Shimadzu	          | .qgd	    | instrument data format       |
-| Shimadzu	          | .spc	    | library data format          |
-| Bruker/Varian       |	.SMS	    | instrument data format       |
-| Bruker/Varian	      | .XMS	    | instrument data format       |
-| ION-TOF	            | .itm	    | raw measurement data         |
-| ION-TOF	            | .ita	    | analysis data                |
-| Physical Electronics/ULVAC-PHI |	.raw |	raw measurement data |
-| Physical Electronics/ULVAC-PHI |	.tdc | 	spectrum data        |
 
+- Peptide/protein identification files (called ‘RESULT’): These are the Result files from the software used to perform the data analysis. Some of the more well-known file formats from analysis softwares:
 
-</div>
-
-- Peptide/protein identification files (called ‘RESULT’): These are the Result files from the
 
 • Optionally other files can be included like peak list files (called ‘PEAK’,
 mandatory for ‘Complete’ submissions including mzIdentML files, see
