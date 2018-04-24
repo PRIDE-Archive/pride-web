@@ -104,3 +104,9 @@ PARAMETER files are the configuration files used during the data analysis proces
 |-------------|----------------------------------|
 |  .json      | PeptideShaker Configuration file |
 |  .txt       | MaxQuant param file              |
+
+<h2 id="seven"> GEL and OTHERS</h2>
+
+Additional files that are not main part of the proteomics analysis can be added as GEL or OTHER files. The Submission Tool recognize every image extension provided during the submission as a GEL image.
+
+Other file types such as .doc, .pdf, .xls can be added as **OTHER** files and will be provided to the users of PRIDE in the main interface but they will not be read or their information will not be indexed for searching purpose.
