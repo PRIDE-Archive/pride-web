@@ -91,3 +91,16 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 <h2 id="five">FASTA and SPECTRUM_LIBRARY</h2>
 
 Protein and Peptide identification of mass spectra data is mainly performed using Protein sequence in Fasta file format or Spectral library search using Spectral libraries.
+
+- FASTA files are recognised in the following formats: .fasta and .faa
+
+- SPECTRUM library format is recognized with the extension: msp
+
+<h2 id="six"> PARAMETER FILES </h2>
+
+PARAMETER files are the configuration files used during the data analysis process. These files are optional files that can be provided during the submission step. Some of the files PRIDE Archive recognized:
+
+|  Extension	| File type                        |
+|-------------|----------------------------------|
+|  .json      | PeptideShaker Configuration file |
+|  .txt       | MaxQuant param file              |
