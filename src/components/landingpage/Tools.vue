@@ -215,7 +215,7 @@
         margin-top: 90px;
     }
     .content{
-        text-align: justify;
+        text-align: center;
     }
     .item{
         display: inline-flex;
