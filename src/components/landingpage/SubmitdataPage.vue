@@ -6,35 +6,30 @@
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
                         <MenuItem name="one">
-                            <Icon type="ios-paper"></Icon>
-                            Step One
+                            <Icon type="ios-paper"></Icon>Register into PRIDE
                         </MenuItem>
                         <MenuItem name="two">
-                            <Icon type="ios-paper"></Icon>
-                            Step Two
+                            <Icon type="ios-paper"></Icon>Choose submission type
                         </MenuItem>
                         <MenuItem name="three">
-                            <Icon type="ios-paper"></Icon>
-                            Step Three
+                            <Icon type="ios-paper"></Icon>Submit dataset
                         </MenuItem>
                         <MenuItem name="four">
-                            <Icon type="ios-paper"></Icon>
-                            Step Four
+                            <Icon type="ios-paper"></Icon>Accessing private data
                         </MenuItem>
                         <MenuItem name="five">
-                            <Icon type="ios-paper"></Icon>
-                            Step Five
+                            <Icon type="ios-paper"></Icon>Post-submission
                         </MenuItem>
                     </Menu>
                 </div>
             </Affix>
-           
-               
+
+
             <div class="markdown-wrapper">
                 <vue-markdown class="markdown-body" :source="source"></vue-markdown>
                 <!--<vue-markdown :anchor-attributes="anchorAttrs">[A link to a website](https://google.com)</vue-markdown>-->
             </div>
-                
+
         </div>
     </div>
 </template>
@@ -76,10 +71,10 @@
                         this.activeName = this.$route.query.step;
                         this.goAnchor(this.$route.query.step);
                     });
-                   
+
                   },function(err){
-                   
-                  }); 
+
+                  });
             },
             goAnchor(selector) {
                 if(selector){
@@ -103,11 +98,11 @@
                 this.$http
                   .get(this.landingPageJsonURL)
                   .then(function(res){
-                    //this.tableList = 
+                    //this.tableList =
                     //TODO This page does not need to make left table dynamically.
                   },function(err){
-                   
-                  }); 
+
+                  });
             }
         },
         mounted:function(){
@@ -117,7 +112,7 @@
     }
 </script>
 <style>
- 
+
 </style>
 <style scoped>
     .submit-data-container{
@@ -140,7 +135,7 @@
     .markdown-body{
         display: inline-block;
     }
-    @media (min-width: 768px) { 
+    @media (min-width: 768px) {
         .content-container{
             width: 750px;
         }
@@ -148,7 +143,7 @@
             width: 200px !important;
         }
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .content-container{
             width: 970px;
         }
