@@ -87,3 +87,7 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 
 
 > It is important to highlight that mzIdentML/mzTab does not contain the mass spectra, which must be provided in external files referenced from the mzIdentML and the mzTab (like mzML, mzXML or mzData, or peak lists like mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab referencing spectra in the RAW files are not allowed for PRIDE Submissions, only to Peak List files**.
+
+<h2 id="five">FASTA and SPECTRUM_LIBRARY</h2>
+
+Protein and Peptide identification of mass spectra data is mainly performed using Protein sequence in Fasta file format or Spectral library search using Spectral libraries.
