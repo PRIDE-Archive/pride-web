@@ -5,14 +5,13 @@
           <Row class="search-row">
               <Card>
                 <p slot="title">Search</p>
-              
                 <div class="search-container">
                     <div class="search-input">
                         <AutoComplete
                             class="archive-search-input"
                             v-model="keyword"
                             :data="autoCompleteWords"
-                            @on-search="kewordSearch"
+                            @on-search="keywordSearch"
                             icon="ios-search"
                             :filter-method="autoCompleteFilter"
                             placeholder="input here"
@@ -403,41 +402,6 @@
                 break;
             }
         }
-        /*
-        for(let i=0; i<this.fieldSelectors.length; i++){
-            if(this.fieldSelectors[i].value == this.fieldValue){
-                for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
-                  //console.log(this.containValue);
-                  console.log(this.fieldSelectors[i].containItems[j].value + ':' +this.fieldSelectors[i].containItems[j].check);
-
-                }
-                console.log('******************************************');
-            }
-        }
-        */
-        /*
-         let filterCombinationFound = false;
-            for(let m=0; m<this.filterCombination.length; m++){
-                if(this.filterCombination[m].field == this.fieldValue && this.filterCombination[m].contains == this.fieldSelectors[i].containItems[j].value){
-                  filterCombinationFound = true;
-                  console.log(this.fieldSelectors[i].containItems[j].check);
-                  if(!this.fieldSelectors[i].containItems[j].check)
-                    this.filterCombination.splice(m,1);
-
-                  break;
-                }
-            }
-            if(!filterCombinationFound){
-                if(this.fieldSelectors[i].containItems[j].check){
-                    let item={
-                        condition:'And',
-                        field:this.fieldValue,
-                        contains:this.fieldSelectors[i].containItems[j].value
-                    };
-                    this.filterCombination.push(item);
-                }
-            }
-            */
       },
       submitSearchCondition(){
       },
@@ -462,8 +426,9 @@
           }
         }
       },
-      kewordSearch(){
-
+      keywordSearch(value){
+        console.log('this.keyword',this.keyword);
+        this.keyword = value;
       },
       submitSearch(){
         this.$Message.success({content:'new result', duration:1});
@@ -479,6 +444,26 @@
    
     mounted: function(){
         this.initFilter();
+         let li = this.$el.querySelectorAll('.ivu-auto-complete .ivu-select-dropdown-list li');
+         li.forEach(function(item){
+            console.log('123',item);
+            item.addEventListener('click', function(event) {
+                console.log(123);
+                console.log(event);
+            });
+         });
+        let dropdown = this.$el.querySelectorAll('.ivu-auto-complete .ivu-select-dropdown-list');
+         dropdown.forEach(function(item){
+            console.log('dropdown',item);
+            item.addEventListener('click', function(event) {
+                console.log(123);
+                console.log(event);
+            });
+         });
+          
+    },
+    destroyed: function () {
+        window.removeEventListener('scroll', this.handleScroll);
     }
   }
 </script>
