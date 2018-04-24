@@ -96,7 +96,7 @@ Protein and Peptide identification of mass spectra data is mainly performed usin
 
 - SPECTRUM library format is recognized with the extension: msp
 
-<h2 id="six"> PARAMETER FILES </h2>
+<h2 id="six">PARAMETER FILES</h2>
 
 PARAMETER files are the configuration files used during the data analysis process. These files are optional files that can be provided during the submission step. Some of the files PRIDE Archive recognized:
 
@@ -105,7 +105,7 @@ PARAMETER files are the configuration files used during the data analysis proces
 |  .json      | PeptideShaker Configuration file |
 |  .txt       | MaxQuant param file              |
 
-<h2 id="seven"> GEL and OTHERS</h2>
+<h2 id="seven">GEL and OTHERS</h2>
 
 Additional files that are not main part of the proteomics analysis can be added as GEL or OTHER files. The Submission Tool recognize every image extension provided during the submission as a GEL image.
 

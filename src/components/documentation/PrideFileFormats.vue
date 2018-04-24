@@ -14,6 +14,18 @@
                         <MenuItem name="three">
                             <Icon type="ios-paper"></Icon>PEAK Files
                         </MenuItem>
+                       <MenuItem name="four">
+                        <Icon type="ios-paper"></Icon>RESULT files
+                      </MenuItem>
+                      <MenuItem name="five">
+                        <Icon type="ios-paper"></Icon>FASTA and SPECTRUM Library
+                      </MenuItem>
+                      <MenuItem name="six">
+                        <Icon type="ios-paper"></Icon>PARAMETER FILES
+                      </MenuItem>
+                      <MenuItem name="sever">
+                        <Icon type="ios-paper"></Icon>GEL and OTHERS
+                      </MenuItem>
                     </Menu>
                 </div>
             </Affix>

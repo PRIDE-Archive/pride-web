@@ -3,10 +3,10 @@ import Router from 'vue-router'
 //import Index from '@/components/landingpage/Index'
 const Test = resolve => require(['@/components/Test'], resolve);
 const LandingPage = resolve => require(['@/components/landingpage/LandingPage'], resolve);
-const SubmitdataPage = resolve => require(['@/components/landingpage/SubmitdataPage'], resolve);
+const SubmitdataPage = resolve => require(['@/components/documentation/SubmitdataPage'], resolve);
 const Archive = resolve => require(['@/components/archive/Archive'], resolve);
 const Citation = resolve => require(['@/components/landingpage/Citation'], resolve);
-const PrideTools = resolve => require(['@/components/landingpage/PrideTools'], resolve);
+const PrideTools = resolve => require(['@/components/documentation/PrideTools'], resolve);
 const PrideDocs = resolve => require(['@/components/landingpage/PrideDocs'], resolve);
 const PrideFileFormats = resolve => require(['@/components/documentation/PrideFileFormats'], resolve);
 
