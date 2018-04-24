@@ -13,12 +13,10 @@ Before submitting to PRIDE database the user need to be sure that it has an acco
 
 Each submitted dataset to PRIDE Archive **MUST** contain the following information:
 
-- Mass spectrometer output files (called ‘RAW’): The RAW files are the native machine data files. [check addition info here](/pridefileformats)
+- Mass spectrometer output files (called ‘RAW’): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](/pridefileformats?step=two)
 
 
-
-- Peptide/protein identification files (called ‘RESULT’): These are the Result files from the software used to perform the data analysis. Some of the more well-known file formats from analysis softwares:
-
+- Peptide/protein identification files (called ‘RESULT’): These are the the files from the software used to perform the data analysis - - [check the full list here](/pridefileformats?step=three)
 
 • Optionally other files can be included like peak list files (called ‘PEAK’,
 mandatory for ‘Complete’ submissions including mzIdentML files, see

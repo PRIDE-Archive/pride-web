@@ -6,16 +6,13 @@
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
                         <MenuItem name="one">
-                            <Icon type="ios-paper"></Icon>
-                            Docs One
+                            <Icon type="ios-paper"></Icon>RAW File Formats
                         </MenuItem>
                         <MenuItem name="two">
-                            <Icon type="ios-paper"></Icon>
-                            Docs Two
+                            <Icon type="ios-paper"></Icon>SEARCH Files
                         </MenuItem>
                         <MenuItem name="three">
-                            <Icon type="ios-paper"></Icon>
-                            Docs Three
+                            <Icon type="ios-paper"></Icon>PEAK Files
                         </MenuItem>
                     </Menu>
                 </div>
@@ -84,7 +81,7 @@
                     return;
                 }
                 this.activeName = name;
-                this.$router.replace({name:'pridedocs',query: { num: name }});
+                this.$router.replace({name:'pridefileformats',query: { num: name }});
             },
         },
         mounted:function(){
