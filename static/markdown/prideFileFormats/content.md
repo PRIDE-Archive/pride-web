@@ -79,5 +79,6 @@ Peak files correspond to MS/MS files that can be use to verified the correspondi
 
 <h2 id="four"> RESULT files </h2>
 
-Result files re standard file formats developed by HUPO-PSI Consortium
+Result files are standard file formats developed by HUPO-PSI Consortium to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provides these files are called **COMPLETE** submissions. These files are really important in PRIDE because they are the only result files that PRIDE ecosystem (resources, tools) are able to read/write/transform. For example, for these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](/static/documentation/searchinginpridearchive).
+
 
