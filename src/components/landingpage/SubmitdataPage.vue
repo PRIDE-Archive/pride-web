@@ -9,7 +9,7 @@
                             <Icon type="ios-paper"></Icon>Register into PRIDE
                         </MenuItem>
                         <MenuItem name="two">
-                            <Icon type="ios-paper"></Icon>Choose submission type
+                            <Icon type="ios-paper"></Icon>Prepare submission
                         </MenuItem>
                         <MenuItem name="three">
                             <Icon type="ios-paper"></Icon>Submit dataset
