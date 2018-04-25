@@ -1,5 +1,5 @@
 
-<h1 id="one"> How to cite PRIDE Resources </h1>
+<h2 id="one"> How to cite PRIDE Resources </h1>
 
 All PRIDE Archive and PX identifiers for a dataset.
 

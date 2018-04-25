@@ -31,7 +31,7 @@ Optionally other files can be included in your submission to facilitate the repr
 
 <h2 id="three">Submit dataset</h2>
 
-When have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](/submissionTool). The Submission Tool guide the users throught the submission process generating the [submission.px file] (/static/markdown/submitData/PAge/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
+When have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](/submissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file] (/static/markdown/submitData/PAge/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
 
 **Metadata**: experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
 **Mapping between the uploaded files**: for instance between the raw files and the corresponding result or search engine output files.
@@ -42,6 +42,45 @@ Finally the user can submit the dataset using the Aspera or FTP protocols.
 
 
 <h2 id="four">Accessing private data</h2>
+
+Submitted datasets are 'private' by default, which means you need to be [logged-in](https://www.ebi.ac.uk/pride/archive/login) to view your data. During the submission process we create a PX reviewer account for your submission which you can include in your letter to the editor or manuscript to be used during the review process. The PX reviewer account will give you access to all of the files belonging to your submission. You can access the private dataset files in two ways:
+
+- PRIDE Archive web page
+
+PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Registered submitters can use their personal accounts or the reviewer accounts to access and download the individual PX datasets. For every submission there is a separate reviewer account generated. Once logged in with your registered User (the e-mail account you used to register in PRIDE) or an issued Reviewer Account you are going to see the private dataset/s listed.
+
+![Private Submission List](/static/markdown/submitDataPage/files/private-submission.png)
+
+
+- PRIDE Inspector
+
+[PRIDE Inspector](/prideinspector) is a Java Standalone Desktop tool that can be used in to query and retrieve the information from PRIDE Archive data:
+
+The following applies for both Complete and Partial Submissions:
+
+Open PRIDE Inspector by clicking on the pride-inspector-<version-number>.jar file in the tool's working directory -> Private Download -> ProteomeXchange -> PX reviewer account details. You can open the PRIDE XML and mzIdentML result files with PRIDE Inspector or just download all the files that you wish to investigate.
+
+![Private access in PRIDE inspector](/static/markdown/submitDataPage/files/pride-inspector.png)
+
+In case of Complete Submissions you can alternatively launch PRIDE Inspector with a WebStart URL provided in the automatic "Submission Complete" e-mail. This option is for downloading the PRIDE XML and mzIdentML files only into a target folder. In order to use the PRIDE Inspector Java Web Start option to display your data there is a waiting period of up to one day upon getting the automatic "Submission Complete" e-mail.
+
+
 <h2 id="five">Post-submission</h2>
 
+
+The particular post-submission steps include the following: modifying the original dataset, referencing the dataset in your manuscript, and making the dataset public (/pridepostprocessing).
+
+- Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spreadhseets, scripts) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional raw files and accompanying result or search files, you need to resubmit the whole dataset again. Please follow the procedure here. In case of an Aspera bulk submission you have to upload the modified and missing files into a new subdirectory within your target directory and regenerate the submission summary file including all the old and modified and new files again.
+
+- Referencing the dataset in the [paper](/citation):
+
+- Releasing the dataset: By default, your data will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. You can notify us two ways:
+
+- Via the PRIDE  Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can click the green “Publish” buttons located next to your unpublished datasets. Here you can provide details for your dataset and submit a web form, please see Figure 5.
+
+**Public Release**
+
+-  Contacting pride-support@ebi.ac.uk.
+
+Upon making the project public, a project page will be released over at ProteomeCentral (http://proteomecentral.proteomexchange.org) and from a particular dataset page an FTP location will be available.
 
