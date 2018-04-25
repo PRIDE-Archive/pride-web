@@ -20,20 +20,26 @@ The first step to prepare your submission for PRIDE Archive is to know which fil
 
 - mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](/pridefileformats?step=four)
 
-- PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to ba able to check the MS/MS evidences that support the peptide/protein idetifications.
+- PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to ba able to check the MS/MS evidences that support the peptide/protein identifications.
 
-Optionally other files can be included like peak list files (called ‘PEAK’,
-mandatory for ‘Complete’ submissions including mzIdentML files, see
-below), , gel
-images (‘GEL’), sequence database files (FASTA), spectral libraries
+> The submissions that provides the 'RESULT' and corresponding 'PEAK' files are classify in PRIDE Archive as **Complete Submissions** following the ProteomeXchange guidelines. Those submimssions are
+
+Optionally other files can be included in your submission to facilitate the reproduce of the original results and better understanding of the dataset:
+
+- Images of gels generated in the experiment (‘GEL’), sequence database files (FASTA), spectral libraries
 (SPECTRUM_LIBRARY) and any other, relevant file types (‘OTHER’).
-In addition, a more specific procedure is now available for MS imaging
-datasets. For instance, some extra requirements are needed and additional
-file tags have been created (see Appendix VI for details). The details are also
-explained in this open access publication (Roempp et al., Anal Bioanal Chem,
-2015) (4), freely accessible here.
 
 <h2 id="three">Submit dataset</h2>
+
+When have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](/submissionTool). The Submission Tool guide the users throught the submission process generating the [submission.px file] (/static/markdown/submitData/PAge/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
+
+**Metadata**: experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
+**Mapping between the uploaded files**: for instance between the raw files and the corresponding result or search engine output files.
+
+>If you are using the PX submission tool, the file will be created automatically for you. If you are using the Aspera command line submission mode, you will need to create one. You can do it using with the PX submission tool (without actually uploading the data and saving the submission.px independently) or with scripting.
+
+Finally the user can submit the dataset using the Aspera or FTP protocols.
+
 
 <h2 id="four">Accessing private data</h2>
 <h2 id="five">Post-submission</h2>

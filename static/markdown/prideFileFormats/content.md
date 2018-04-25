@@ -4,8 +4,8 @@ Each file included in dataset submission to PRIDE Archive is associated with a c
 
  - "RAW" (**Mandatory**): Original proprietary files provided by the instruments used in the study (e.g. Thermo RAW).
  - "SEARCH" (**Mandatory**): Files from the software analysis tool (e.g. .dat from Mascot).
- - "PEAK" (**Optional**): The peak list files contains the set of MS/MS peaks used for peptide/protein identification (e.g. .mgf Mascot generic file)
- - "RESULT" (**Optional**): Standard file formats from HUPO-PSI to report peptide/protein identification and quantification results (e.g. mzIdentML)
+ - "RESULT" (**Recommended**): Standard file formats from HUPO-PSI to report peptide/protein identification and quantification results (e.g. mzIdentML)
+ - "PEAK" (**Recommended**): The peak list files contains the set of MS/MS peaks used for peptide/protein identification (e.g. .mgf Mascot generic file).
  - "FASTA" (**Optional**): The protein database used to perform the analysis (e.g. Uniprot Human FASTA file)
  - "SPECTRUM_LIBRARY" (**Optional**): Spectrum libraries used to perform spectrum search.
  - "GEL" (**Optional**): Image files with the gels of the experiment.
@@ -87,11 +87,27 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 
 | Software | Standard File format supported|
 |----------|-------------------------------|
-| Mascot   | mztab v1.0, mzIdentML v1.1, v1.2 |
-| OpenMS   | mztab v1.0, mzIdentML v1.1, v1.2 |
-| Peaks    | mzIdetML v1.1                    |
-
-
+| Mascot   | mztab v1.0, mzIdentML v1.1 v1.2 |
+| OpenMS   | mztab v1.0, mzIdentML v1.1 v1.2 |
+| PEAKS    | mzIdetML v1.1                    |
+| MSGF+    | mzIdentML v1.1                   |
+| Byonic (Protein Metrics Inc.)	| mzIdentML v1.1        |
+| Crux	   | mzIdentML v1.1                   |
+| IDPicker | mzIdentML v1.1                   |
+| IP2	     | mzIdentML v1.1                   |
+| Iquant	 | mzIdentML v1.1	                  |
+| MyriMatch| mzIdentML v1.1	                  |
+| PeptideShaker | mzIdentML v1.1 v1.2         |
+| PGA	     | mzIdentML v1.1                   |
+| PIA	     | mzIdentML v1.1.	                |
+| ProteinLynx   | mzIdentML v1.1  |
+| Progenesis QI | mzIdentML v1.1  |
+| ProteinPilot	| mzIdentML  v1.1 |
+| ProteinScape  | mzIdentML v1.1 |
+| ProteoWizard	| mzIdentML v1.1 |
+| Scaffold	 | mzIdentML v1.1 |
+| PatternLab | mzIdentML v1.1 |
+| DTASelect2MzId	| mzIdentML v1.1 |
 
 > It is important to highlight that mzIdentML/mzTab does not contain the mass spectra, which must be provided in external files referenced from the mzIdentML and the mzTab (like mzML, mzXML or mzData, or peak lists like mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab referencing spectra in the RAW files are not allowed for PRIDE Submissions, only to Peak List files**.
 

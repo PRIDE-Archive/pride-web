@@ -138,6 +138,9 @@
             width: 970px;
         }
     }
+    .markdown-body blockquote{
+      border-left: .25em solid #f10b6b
+    }
     @media (min-width: 1200px) {
         .content-container{
             width: 1170px;
