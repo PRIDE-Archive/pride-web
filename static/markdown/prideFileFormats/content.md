@@ -85,6 +85,13 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 
 - mzTabb (version 1.0 http://www.psidev.info/mztab): mzTab is one of the standards developed by members of the Proteomics Informatics working group of the PSI to represent Quantification data. For PRIDE Archive the mzTab file MUST contains the Protein and PSM tables and is optional the Peptide section. **We recommended this file format to report the Quantification Results**
 
+| Software | Standard File format supported|
+|----------|-------------------------------|
+| Mascot   | mztab v1.0, mzIdentML v1.1, v1.2 |
+| OpenMS   | mztab v1.0, mzIdentML v1.1, v1.2 |
+| Peaks    | mzIdetML v1.1                    |
+
+
 
 > It is important to highlight that mzIdentML/mzTab does not contain the mass spectra, which must be provided in external files referenced from the mzIdentML and the mzTab (like mzML, mzXML or mzData, or peak lists like mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab referencing spectra in the RAW files are not allowed for PRIDE Submissions, only to Peak List files**.
 

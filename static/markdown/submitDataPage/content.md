@@ -11,17 +11,20 @@ Before submitting to PRIDE database the user need to be sure that it has an acco
 
 <h2 id="two">Prepare submission</h2>
 
-Each submitted dataset to PRIDE Archive **MUST** contain the following information:
+The first step to prepare your submission for PRIDE Archive is to know which files are **Mandatory**, which are **Optionals**; and the benefit of providing each file type. Each submitted dataset to PRIDE Archive **MUST** contain the following information (following ProteomeXchange guidelines):
 
 - Mass spectrometer output files (called ‘RAW’): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](/pridefileformats?step=two)
 
 
-- Peptide/protein identification files (called ‘RESULT’): These are the the files from the software used to perform the data analysis - - [check the full list here](/pridefileformats?step=three)
+- Peptide/protein identification files (called ‘SEARCH’): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](/pridefileformats?step=three)
 
-• Optionally other files can be included like peak list files (called ‘PEAK’,
+- mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](/pridefileformats?step=four)
+
+- PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to ba able to check the MS/MS evidences that support the peptide/protein idetifications.
+
+Optionally other files can be included like peak list files (called ‘PEAK’,
 mandatory for ‘Complete’ submissions including mzIdentML files, see
-below), search engine output files (called ‘SEARCH’, mandatory for
-“Partial submissions”, see below), quantification results (‘QUANT’), gel
+below), , gel
 images (‘GEL’), sequence database files (FASTA), spectral libraries
 (SPECTRUM_LIBRARY) and any other, relevant file types (‘OTHER’).
 In addition, a more specific procedure is now available for MS imaging
