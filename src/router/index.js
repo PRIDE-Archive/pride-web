@@ -10,6 +10,7 @@ const PrideTools = resolve => require(['@/components/documentation/PrideTools'],
 const PrideDocs = resolve => require(['@/components/landingpage/PrideDocs'], resolve);
 const PrideFileFormats = resolve => require(['@/components/documentation/PrideFileFormats'], resolve);
 const Dataset = resolve => require(['@/components/archive/Dataset'], resolve);
+const NotFound = resolve => require(['@/components/NotFound'], resolve);
 
 Vue.use(Router)
 
@@ -61,5 +62,15 @@ export default new Router({
       name: 'dataset',
       component: Dataset
     },
+    {
+      path:'*',
+      name: 'notfound',
+      component: NotFound
+    },
+    {
+      path:'/notfound',
+      name: 'notfound',
+      component: NotFound
+    }
   ],
 })
