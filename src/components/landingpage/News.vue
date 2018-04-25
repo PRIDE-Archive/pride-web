@@ -16,11 +16,11 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button" @click="subToolMoreAction(item.moreID)">More</a>
+                            <a class="content-button" @click="subMoreButtonAction(item.url)">More</a>
                         </div>
 
                     </div>
-                    <Button class="news-button" @click="toolMoreAction">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction('pridetools')">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -37,10 +37,10 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button"@click="subDocMoreAction(item.moreID)">More</a>
+                            <a class="content-button"@click="subMoreButtonAction(item.url)">More</a>
                         </div>
                     </div>
-                    <Button class="news-button" @click="docMoreAction">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction('pridedocs')">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -52,7 +52,7 @@
                     <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
-                    <Button class="news-button" @click="twitterMoreButtonAction"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                    <Button class="news-button" @click="moreButtonAction('twitter')"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <Button class="news-button" @click="citationMoreButtonAction">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction">MORE</Button>
                 </div>
             </Col>
      </Row>
@@ -156,24 +156,14 @@
                   });
                 */
             },
-            citationMoreButtonAction(){
-                this.$router.push({name:'citation'});
+            moreButtonAction(name){
+                if(name == 'twitter')
+                    location.href="https://twitter.com/pride_ebi"
+                else
+                    this.$router.push({name:name});
             },
-            twitterMoreButtonAction(){
-                location.href="https://twitter.com/pride_ebi"
-            },
-            subToolMoreAction(url){
+            subMoreButtonAction(url){
                 location.href = url;
-                //this.$router.push({name:'pridetools',query: { num: id }});
-            },
-            toolMoreAction(){
-                this.$router.push({name:'pridetools'});
-            },
-            subDocMoreAction(id){
-                this.$router.push({name:'pridedocs',query: { num: id }});
-            },
-            docMoreAction(){
-                this.$router.push({name:'pridedocs'});
             },
         },
         mounted:function(){
