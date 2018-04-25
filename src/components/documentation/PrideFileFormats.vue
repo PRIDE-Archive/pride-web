@@ -6,35 +6,34 @@
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
                         <MenuItem name="one">
-                            <Icon type="ios-paper"></Icon>
-                            Step One
+                            <Icon type="ios-paper"></Icon>RAW File Formats
                         </MenuItem>
                         <MenuItem name="two">
-                            <Icon type="ios-paper"></Icon>
-                            Step Two
+                            <Icon type="ios-paper"></Icon>SEARCH Files
                         </MenuItem>
                         <MenuItem name="three">
-                            <Icon type="ios-paper"></Icon>
-                            Step Three
+                            <Icon type="ios-paper"></Icon>PEAK Files
                         </MenuItem>
-                        <MenuItem name="four">
-                            <Icon type="ios-paper"></Icon>
-                            Step Four
-                        </MenuItem>
-                        <MenuItem name="five">
-                            <Icon type="ios-paper"></Icon>
-                            Step Five
-                        </MenuItem>
+                       <MenuItem name="four">
+                        <Icon type="ios-paper"></Icon>RESULT files
+                      </MenuItem>
+                      <MenuItem name="five">
+                        <Icon type="ios-paper"></Icon>FASTA and SPECTRUM Library
+                      </MenuItem>
+                      <MenuItem name="six">
+                        <Icon type="ios-paper"></Icon>PARAMETER FILES
+                      </MenuItem>
+                      <MenuItem name="sever">
+                        <Icon type="ios-paper"></Icon>GEL and OTHERS
+                      </MenuItem>
                     </Menu>
                 </div>
             </Affix>
-           
-               
             <div class="markdown-wrapper">
                 <vue-markdown class="markdown-body" :source="source"></vue-markdown>
                 <!--<vue-markdown :anchor-attributes="anchorAttrs">[A link to a website](https://google.com)</vue-markdown>-->
             </div>
-                
+
         </div>
     </div>
 </template>
@@ -44,10 +43,8 @@
         data () {
             return {
                 source: '',
-                markdownURL:'/static/markdown/submitDataPage/content.md',
-                activeName:'one',
-                landingPageJsonURL:'/static/landingPage/landing_page.json',
-                tableList:[],
+                markdownURL:'/static/markdown/prideFileFormats/content.md',
+                activeName:'one'
                 /*
                 anchorAttrs: {
                     target: '_blank',
@@ -58,8 +55,8 @@
         },
         beforeRouteUpdate:function (to, from, next) {
             this.$nextTick(function(){
-               let step = this.$route.query.step;
-               this.goAnchor(step);
+               let num = this.$route.query.num;
+               this.goAnchor(num);
             });
             next();
         },
@@ -73,51 +70,39 @@
                   .then(function(res){
                     this.source = res.body;
                     this.$nextTick(function(){
-                        this.activeName = this.$route.query.step;
-                        this.goAnchor(this.$route.query.step);
+                        this.activeName = this.$route.query.num;
+                        this.goAnchor(this.$route.query.num);
                     });
-                   
+
                   },function(err){
-                   
-                  }); 
+
+                  });
             },
             goAnchor(selector) {
                 if(selector){
                     let anchor = this.$el.querySelector('#'+selector);
-                    if(anchor)
-                        document.documentElement.scrollTop = anchor.offsetTop;
+                    document.documentElement.scrollTop = anchor.offsetTop;
                 }
                 else
                     document.documentElement.scrollTop = 0;
             },
             menuSlect(name){
-                if(this.$route.query.step == name){
+                if(this.$route.query.num == name){
                     let anchor = this.$el.querySelector('#'+name);
                     document.documentElement.scrollTop = anchor.offsetTop;
                     return;
                 }
                 this.activeName = name;
-                this.$router.replace({name:'submitdatapage',query: { step: name }});
+                this.$router.replace({name:'pridefileformats',query: { num: name }});
             },
-            documentQuery(){
-                this.$http
-                  .get(this.landingPageJsonURL)
-                  .then(function(res){
-                    //this.tableList = 
-                    //TODO This page does not need to make left table dynamically.
-                  },function(err){
-                   
-                  }); 
-            }
         },
         mounted:function(){
             this.markdownQuery();
-            this.documentQuery();
         },
     }
 </script>
 <style>
- 
+
 </style>
 <style scoped>
     .submit-data-container{
@@ -140,7 +125,7 @@
     .markdown-body{
         display: inline-block;
     }
-    @media (min-width: 768px) { 
+    @media (min-width: 768px) {
         .content-container{
             width: 750px;
         }
@@ -148,10 +133,13 @@
             width: 200px !important;
         }
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .content-container{
             width: 970px;
         }
+    }
+    .markdown-body blockquote{
+      border-left: .25em solid #f10b6b
     }
     @media (min-width: 1200px) {
         .content-container{
