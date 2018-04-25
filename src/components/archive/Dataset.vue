@@ -124,6 +124,9 @@
     .markdown-body{
         display: inline-block;
     }
+    .menu-wrapper .ivu-menu-vertical{
+        width: 200px !important;
+    }
     @media (min-width: 768px) { 
         .content-container{
             width: 750px;

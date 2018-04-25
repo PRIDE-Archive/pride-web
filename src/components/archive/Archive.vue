@@ -89,7 +89,9 @@
                     </span>
                   </p>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.id">
-                      <a class="resource-id">{{publicationItem.id}}</a>
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.id}}">{{publicationItem.id}}</router-link>
+                     
+                      <a class="resource-id"></a>
                       <p class="resource-title">{{publicationItem.name}}</p>
                       <p>Species: {{publicationItem.species}}</p>
                       <span>Project description: {{publicationItem.description}}</span><a @click="getDetailedResource(publicationItem.id)" class="detailed-resouce">(More)</a>

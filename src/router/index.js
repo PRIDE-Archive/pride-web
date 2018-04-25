@@ -9,6 +9,7 @@ const Citation = resolve => require(['@/components/landingpage/Citation'], resol
 const PrideTools = resolve => require(['@/components/documentation/PrideTools'], resolve);
 const PrideDocs = resolve => require(['@/components/landingpage/PrideDocs'], resolve);
 const PrideFileFormats = resolve => require(['@/components/documentation/PrideFileFormats'], resolve);
+const Dataset = resolve => require(['@/components/archive/Dataset'], resolve);
 
 Vue.use(Router)
 
@@ -54,6 +55,11 @@ export default new Router({
       path: '/pridefileformats',
       name: 'pridefileformats',
       component: PrideFileFormats
+    },
+    {
+      path:'/dataset/:id',
+      name: 'dataset',
+      component: Dataset
     },
   ],
 })
