@@ -135,12 +135,15 @@
     .markdown-body{
         display: inline-block;
     }
+    .menu-wrapper .ivu-menu-vertical{
+        width: 200px !important;
+    }
+    .ivu-menu{
+        z-index: 100;
+    }
     @media (min-width: 768px) {
         .content-container{
             width: 750px;
-        }
-        .menu-wrapper .ivu-menu-vertical{
-            width: 200px !important;
         }
     }
     @media (min-width: 992px) {

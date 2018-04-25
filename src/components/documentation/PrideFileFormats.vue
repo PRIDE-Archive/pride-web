@@ -125,21 +125,24 @@
     .markdown-body{
         display: inline-block;
     }
+    .markdown-body blockquote{
+      border-left: .25em solid #f10b6b
+    }
+    .menu-wrapper .ivu-menu-vertical{
+        width: 200px !important;
+    }
+    .ivu-menu{
+        z-index: 100;
+    }
     @media (min-width: 768px) {
         .content-container{
             width: 750px;
-        }
-        .menu-wrapper .ivu-menu-vertical{
-            width: 200px !important;
         }
     }
     @media (min-width: 992px) {
         .content-container{
             width: 970px;
         }
-    }
-    .markdown-body blockquote{
-      border-left: .25em solid #f10b6b
     }
     @media (min-width: 1200px) {
         .content-container{
