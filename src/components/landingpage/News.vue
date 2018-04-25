@@ -162,8 +162,9 @@
             twitterMoreButtonAction(){
                 location.href="https://twitter.com/pride_ebi"
             },
-            subToolMoreAction(id){
-                this.$router.push({name:'pridetools',query: { num: id }});
+            subToolMoreAction(url){
+                location.href = url;
+                //this.$router.push({name:'pridetools',query: { num: id }});
             },
             toolMoreAction(){
                 this.$router.push({name:'pridetools'});
