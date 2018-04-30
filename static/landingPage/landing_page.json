@@ -33,7 +33,7 @@
 			{
 				"title":"How to Submit data",
 				"content":"How to submit identification and quantification results from proteomics experiments into PRIDE Archive",
-				"moreID":"/submitdatapage"
+				"moreID":"/submitdatapage?step=one"
 			},
 			{
 				"title":"How to review data",
