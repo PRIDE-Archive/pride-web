@@ -5,7 +5,7 @@
   },
   "resource":{
     "title":"Find your resources today.",
-    "searchexample":["cancer", "human", "P02768", "MDPNTIIEALR*"],
+    "searchexample":["PXD005011", "cancer", "human", "P02768", "MDPNTIIEALR*"],
     "peptidomebutton":"PRIDE PEPTIDOME",
     "archivebutton":"PRIDE ARCHIVE"
   },
