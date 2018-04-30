@@ -1,9 +1,9 @@
 
-<h2 id="one">Tools one</h2>
+## Tools one
 
-<h2 id="two">Tools two</h2>
+## Tools two
 
-<h2 id="three">Tools three</h2>
+## Tools three
 
 ## Submitting your data to PRIDE:
 

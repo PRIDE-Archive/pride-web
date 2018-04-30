@@ -5,20 +5,8 @@
             <Affix :offset-top="20">
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
-                        <MenuItem name="one">
-                            <Icon type="ios-paper"></Icon>Register into PRIDE
-                        </MenuItem>
-                        <MenuItem name="two">
-                            <Icon type="ios-paper"></Icon>Prepare submission
-                        </MenuItem>
-                        <MenuItem name="three">
-                            <Icon type="ios-paper"></Icon>Submit dataset
-                        </MenuItem>
-                        <MenuItem name="four">
-                            <Icon type="ios-paper"></Icon>Accessing private data
-                        </MenuItem>
-                        <MenuItem name="five">
-                            <Icon type="ios-paper"></Icon>Post-submission
+                        <MenuItem v-for="item in tableList" :name="item.name">
+                            <Icon type="ios-paper"></Icon>{{item.content}}
                         </MenuItem>
                     </Menu>
                 </div>
@@ -39,8 +27,7 @@
         data () {
             return {
                 source: '',
-                markdownURL:'/static/markdown/submitDataPage/content.md',
-                activeName:'one',
+                activeName:'',
                 landingPageJsonURL:'/static/landingPage/landing_page.json',
                 tableList:[],
                 /*
@@ -51,10 +38,17 @@
                 }*/
             }
         },
+        /*
+        beforeRouteEnter:function (to, from, next) {
+            console.log('params',to.params);
+            next();
+        },*/
         beforeRouteUpdate:function (to, from, next) {
             this.$nextTick(function(){
-               let step = this.$route.query.step;
-               this.goAnchor(step);
+                this.goAnchor(location.hash.replace(/\#/,''));
+                this.$nextTick(function(){
+                    this.activeName = location.hash.replace(/\#/,'');
+                });
             });
             next();
         },
@@ -63,22 +57,28 @@
         },
         methods:{
             markdownQuery(){
+                this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md'
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){
                     this.source = res.body;
                     this.$nextTick(function(){
-                        this.activeName = this.$route.query.step;
-                        this.goAnchor(this.$route.query.step);
+                        this.addID();
+                        this.goAnchor(location.hash.replace(/\#/,''));
+                        //this.changeDefaultAction();
+                        this.$nextTick(function(){
+                            this.activeName = location.hash.replace(/\#/,'');
+                        });
                     });
 
                   },function(err){
-
+                    this.$router.push({name:'notfound'});
                   });
             },
             goAnchor(selector) {
+                //console.log('selector',selector);
                 if(selector){
-                    let anchor = this.$el.querySelector('#'+selector);
+                    let anchor = document.getElementById(selector);
                     if(anchor)
                         document.documentElement.scrollTop = anchor.offsetTop;
                 }
@@ -86,14 +86,51 @@
                     document.documentElement.scrollTop = 0;
             },
             menuSlect(name){
-                if(this.$route.query.step == name){
-                    let anchor = this.$el.querySelector('#'+name);
+                if(location.hash.replace(/\#/,'') == name){
+                    let anchor = document.getElementById(name);
+                    console.log(anchor);
                     document.documentElement.scrollTop = anchor.offsetTop;
                     return;
                 }
                 this.activeName = name;
-                this.$router.replace({name:'submitdatapage',query: { step: name }});
+                location.hash = name;
             },
+            addID(){
+
+                let list = this.$el.querySelector('.markdown-body').querySelectorAll('h2');
+
+                for(let i=0; i<list.length; i++){
+                    var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
+                    var id = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
+                    var item = {
+                        name: id,
+                        content: title
+                    }
+                    list[i].setAttribute('id',id);
+                    if(i!=0)
+                        this.tableList.push(item);
+                    
+                }
+            },
+            /*
+            changeDefaultAction(){
+                var aList = this.$el.querySelectorAll('a');
+                for(let i=0; i<aList.length; i++){
+                    let path = aList[i].getAttribute('href');
+                    if(path.match(/\/markdownpage/)){
+                        aList[i].addEventListener('click',function(e){
+                            e.preventDefault();
+                            e.stopPropagation();
+                            let path = this.getAttribute('href');
+                            let subpage = actionPath.split('/')[0].split('#')[0];
+                            let id = actionPath.split('/')[0].split('#')[1];
+                            this.$router.push({path:'/markdownpage/'+subpage+'#'+id});
+                            //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
+                        }.bind(this), false);
+                    }
+                }
+            },
+            */
             documentQuery(){
                 this.$http
                   .get(this.landingPageJsonURL)
