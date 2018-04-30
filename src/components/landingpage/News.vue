@@ -9,18 +9,18 @@
                       <div>Tools</div>
                     </div>
                     <div class="item-content tools">
-                        <div v-for="item in tools" class="content-wrapper">
+                        <div v-for="item in toolsSection" class="content-wrapper">
                             <div class="content-title">
                                 {{item.title}}
                             </div>
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button" @click="subMoreButtonAction(item.url)">More</a>
+                            <a class="content-button" @click="moreButtonAction(item.markdownFolder,item.moreID)">More</a>
                         </div>
 
                     </div>
-                    <Button class="news-button" @click="moreButtonAction('pridetools')">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction(toolsButton.markdownFolder,toolsButton.moreID)">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -30,17 +30,17 @@
                       <div>Documentation</div>
                     </div>
                     <div class="item-content docs">
-                        <div v-for="item in documentation" class="content-wrapper">
+                        <div v-for="item in documentationSection" class="content-wrapper">
                             <div class="content-title">
                                 {{item.title}}
                             </div>
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button"@click="subMoreButtonAction(item.url)">More</a>
+                            <a class="content-button"@click="moreButtonAction(item.markdownFolder,item.moreID)">More</a>
                         </div>
                     </div>
-                    <Button class="news-button" @click="moreButtonAction('pridedocs')">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction(documentationButton.markdownFolder,documentationButton.moreID)">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -52,7 +52,7 @@
                     <div class="item-content tweet">
                         <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
                     </div>
-                    <Button class="news-button" @click="moreButtonAction('twitter')"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                    <Button class="news-button" @click="twitterMoreButtonAction()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -102,8 +102,10 @@
                     tweet: 0,
                     citation: 0,
                 },
-                tools:[],
-                documentation:[],
+                toolsSection:[],
+                toolsButton:{},
+                documentationSection:[],
+                documentationButton:{},
                 citation:{
                     lineone:'',
                     linetwo:'',
@@ -118,14 +120,15 @@
                 this.$http
                   .get(this.landingPageJsonURL)
                   .then(function(res){
-                    console.log(res);
                     this.documentation = res.body.news.documentation;
                     this.citation.lineone = res.body.news.citation.lineone;
                     this.citation.linetwo = res.body.news.citation.linetwo;
                     this.citation.linethree = res.body.news.citation.linethree;
                     this.citation.linefour = res.body.news.citation.linefour;
-                    this.tools = res.body.news.tools;
-                    this.documentation = res.body.news.documentation;
+                    this.toolsSection = res.body.news.tools.section;
+                    this.toolsButton = res.body.news.tools.button;
+                    this.documentationSection = res.body.news.documentation.section;
+                    this.documentationButton = res.body.news.documentation.button;
                   },function(err){
 
                   });
@@ -156,15 +159,18 @@
                   });
                 */
             },
-            moreButtonAction(name){
-                if(name == 'twitter')
-                    location.href="https://twitter.com/pride_ebi"
+            moreButtonAction(subpage, id){
+                if(id){
+                    id = id.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
+                    this.$router.push({path:'/markdownpage/'+subpage+'#'+id});
+                }
                 else
-                    this.$router.push({name:name});
+                    this.$router.push({path:'/markdownpage/'+subpage});
+                //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
             },
-            subMoreButtonAction(url){
-                location.href = url;
-            },
+            twitterMoreButtonAction(){
+                location.href="https://twitter.com/pride_ebi"
+            }
         },
         mounted:function(){
             this.documentQuery();

@@ -1,9 +1,9 @@
 
-<h2 id="one">Docs one</h2>
+## Docs one
 
-<h2 id="two">Docs two</h2>
+## Docs two
 
-<h2 id="three">Docs three</h2>
+## Docs three
 
 ## Submitting your data to PRIDE:
 

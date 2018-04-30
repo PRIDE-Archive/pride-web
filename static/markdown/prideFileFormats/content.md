@@ -1,4 +1,4 @@
-<h2> File formats in PRIDE Archive</h2>
+## File formats in PRIDE Archive
 
 Each file included in dataset submission to PRIDE Archive is associated with a category depending of the extension of the file and the content. These categories are used in PRIDE Archive purpose; for example; every submission in PRIDE MUST contains the RAW files from the instruments. At the moment, PRIDE Archive classified the provided files in four different categories:
 
@@ -14,7 +14,7 @@ Each file included in dataset submission to PRIDE Archive is associated with a c
 
  The following sections explain each Category and the file formats that classified into each category. Please if you have suggestions you can contact pride-support@ebi.ac.uk
 
-<h2 id="one"> RAW File Formats </h2>
+## RAW File Formats 
 
 The following table specified some of the recognized RAW files in PRIDE Archive by Instrument Provider:
 
@@ -44,7 +44,7 @@ The following table specified some of the recognized RAW files in PRIDE Archive 
 
 </div>
 
-<h2 id="two"> SEARCH Files </h2>
+## SEARCH Files
 
 | Software Provider | Extension	| File type                   |
 |---------------------|-----------|-----------------------------|
@@ -63,7 +63,7 @@ The following table specified some of the recognized RAW files in PRIDE Archive 
 
 Peak files correspond to MS/MS files that can be use to verified the corresponding Peptide Identification. Here the list of PEAK List file formats supported by all PRIDE tools:
 
-<h2 id="two"> PEAK Files </h2>
+## PEAK Files
 
 |  Extension	| File type                   | Documentation URL |
 |-------------|-----------------------------|-------------------|
@@ -77,7 +77,7 @@ Peak files correspond to MS/MS files that can be use to verified the correspondi
 
 > PEAK files are used internally by PRIDE Archive to confirm the Peptide/Protein identifications of RESULT files.
 
-<h2 id="four"> RESULT files </h2>
+## RESULT files
 
 Result files are standard file formats developed by HUPO-PSI Consortium to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provides these files are called **COMPLETE** submissions. These files are really important in PRIDE because they are the only result files that PRIDE ecosystem (resources, tools) are able to read/write/transform. For example, for these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](/static/documentation/searchinginpridearchive).
 
@@ -111,7 +111,7 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 
 > It is important to highlight that mzIdentML/mzTab does not contain the mass spectra, which must be provided in external files referenced from the mzIdentML and the mzTab (like mzML, mzXML or mzData, or peak lists like mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab referencing spectra in the RAW files are not allowed for PRIDE Submissions, only to Peak List files**.
 
-<h2 id="five">FASTA and SPECTRUM_LIBRARY</h2>
+## FASTA and SPECTRUM_LIBRARY
 
 Protein and Peptide identification of mass spectra data is mainly performed using Protein sequence in Fasta file format or Spectral library search using Spectral libraries.
 
@@ -119,7 +119,7 @@ Protein and Peptide identification of mass spectra data is mainly performed usin
 
 - SPECTRUM library format is recognized with the extension: msp
 
-<h2 id="six">PARAMETER FILES</h2>
+## PARAMETER FILES
 
 PARAMETER files are the configuration files used during the data analysis process. These files are optional files that can be provided during the submission step. Some of the files PRIDE Archive recognized:
 
@@ -128,7 +128,7 @@ PARAMETER files are the configuration files used during the data analysis proces
 |  .json      | PeptideShaker Configuration file |
 |  .txt       | MaxQuant param file              |
 
-<h2 id="seven">GEL and OTHERS</h2>
+## GEL and OTHERS
 
 Additional files that are not main part of the proteomics analysis can be added as GEL or OTHER files. The Submission Tool recognize every image extension provided during the submission as a GEL image.
 

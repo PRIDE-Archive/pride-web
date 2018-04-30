@@ -11,7 +11,7 @@
                             <div class="hover-content">
                                 <p>{{stepHoverContent.one}}</p>
                             </div>
-                            <Button class="detailed-step-more-button" @click="submitDataDetails('one')">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails(moreID.one)">MORE</Button>
                         </div>
                         <div class="step">1</div>
                     </Poptip>
@@ -26,7 +26,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.two}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="submitDataDetails('two')">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails(moreID.two)">MORE</Button>
                         </div>
                         <div class="step">2</div>
                     </Poptip>
@@ -41,7 +41,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.three}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="submitDataDetails('three')">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails(moreID.three)">MORE</Button>
                         </div>
                         <div class="step">3</div>
                     </Poptip>
@@ -56,7 +56,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.four}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="submitDataDetails('four')">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails(moreID.four)">MORE</Button>
                         </div>
                         <div class="step">4</div>
                     </Poptip>
@@ -71,7 +71,7 @@
                             <div class="hover-content">
                                 {{stepHoverContent.five}}
                             </div>
-                            <Button class="detailed-step-more-button" @click="submitDataDetails('five')">MORE</Button>
+                            <Button class="detailed-step-more-button" @click="submitDataDetails(moreID.five)">MORE</Button>
                         </div>
                         <div class="step">5</div>
                     </Poptip>
@@ -112,12 +112,22 @@
                     four: '',
                     five: ''
                 },
-                landingPageJsonURL:'/static/landingPage/landing_page.json'
+                moreID:{
+                    one: '',
+                    two: '',
+                    three: '',
+                    four: '',
+                    five: ''
+                },
+                landingPageJsonURL:'/static/landingPage/landing_page.json',
+                markdownFolder:''
             }
         },
         methods:{
             submitDataDetails(name){
-                this.$router.push({name:'submitdatapage',query: { step: name }});
+                let subpage = this.markdownFolder;
+                let id = name;
+                this.$router.push({path:'/markdownpage/'+subpage+'#'+id});
             },
             successSubmit(){
                 this.$Message.success({content:'success submit', duration:3});
@@ -141,6 +151,12 @@
                     this.stepHoverContent.four = res.body.tools.stephovercontent.four;
                     this.stepHoverContent.five = res.body.tools.stephovercontent.five;
                     this.submitdatabutton = res.body.tools.submitdatabutton;
+                    this.moreID.one = res.body.tools.moreID.one;
+                    this.moreID.two = res.body.tools.moreID.two;
+                    this.moreID.three = res.body.tools.moreID.three;
+                    this.moreID.four = res.body.tools.moreID.four;
+                    this.moreID.five = res.body.tools.moreID.five;
+                    this.markdownFolder = res.body.tools.markdownFolder;
                   },function(err){
 
                   });
