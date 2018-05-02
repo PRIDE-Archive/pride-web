@@ -4,13 +4,13 @@
       <div class="content">
           <Row>
             <Col span="24">
-              <!--
+              
                 <Breadcrumb separator=">">
                     <BreadcrumbItem to="/">Home</BreadcrumbItem>
                     <BreadcrumbItem to="/components/breadcrumb">Pride</BreadcrumbItem>
                     <BreadcrumbItem>PXD006887</BreadcrumbItem>
                 </Breadcrumb>
-              -->
+            
                <h2 class="project-title">Project PXD006887</h2>
                 <div class="tags">
                     <span class="type-tag-wrapper">
@@ -91,17 +91,17 @@
                   <Card class="card">
                        <p slot="title">Description</p>
                        <div class="summary-content-header">Species</div>
-                       <p>Homo sapiens (Human)</p>
+                       <a>Homo sapiens (Human)</a>
                        <div class="summary-content-header">Tissue</div>
                        <p>kidney</p>
                        <div class="summary-content-header">Instrument</div>
-                       <p>Q Exactive</p>
+                       <a>Q Exactive</a>
                        <div class="summary-content-header">Software</div>
-                       <p>kidney </p>
+                       <a>kidney</a>
                        <div class="summary-content-header">Tissue</div>
                        <p>Not available</p>
                        <div class="summary-content-header">Modification</div>
-                       <p>No PTMs are included in the dataset</p>
+                       <a>No PTMs are included in the dataset</a>
                        <div class="summary-content-header">Quantification</div>
                        <p>Not available</p>
                        <div class="summary-content-header">Experiment Type</div>
@@ -186,5 +186,11 @@
   }
   .card .summary-content-header:first-child{
     margin-top: 0px;
+  }
+  .card a{
+      color: #495060;
+  }
+  .card a:hover{
+        color: #5bc0be;
   }
 </style>
