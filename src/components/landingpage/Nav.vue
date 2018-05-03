@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-2" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_2.png" alt="logo" width="128" height="128"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_1.png" alt="logo" width="600" height="600"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -46,7 +46,7 @@
                       <Dropdown>
                           <a href="javascript:void(0)" @click="gotoLandingpage">
                             <i class="fas fa-home"></i>
-                            <span class='sub-nav-title'>Home</span> 
+                            <span class='sub-nav-title'>Home</span>
                           </a>
                       </Dropdown>
                   </li>
@@ -54,7 +54,7 @@
                       <Dropdown>
                           <a href="javascript:void(0)">
                             <i class="fas fa-search"></i>
-                            <span class='sub-nav-title'>Resources</span> 
+                            <span class='sub-nav-title'>Resources</span>
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
@@ -68,7 +68,7 @@
                       <Dropdown>
                           <a href="javascript:void(0)">
                             <i class="fas fa-cogs"></i>
-                            <span class='sub-nav-title'>Tools</span> 
+                            <span class='sub-nav-title'>Tools</span>
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
@@ -83,7 +83,7 @@
                       <Dropdown>
                           <a href="javascript:void(0)">
                             <i class="fas fa-graduation-cap"></i>
-                            <span class='sub-nav-title'>Docs</span> 
+                            <span class='sub-nav-title'>Docs</span>
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
@@ -105,7 +105,7 @@
                       <Dropdown>
                           <a href="javascript:void(0)">
                             <i class="fas fa-info-circle"></i>
-                            <span class='sub-nav-title'>About</span> 
+                            <span class='sub-nav-title'>About</span>
                           </a>
                       </Dropdown>
                   </li>
@@ -137,7 +137,7 @@
                     this.successSearch();
                   },function(err){
                     this.failSearch();
-                  });   
+                  });
             },
             successSearch(){
                 this.$Message.success({content:'success search', duration:3});
@@ -149,7 +149,7 @@
               this.$router.push({name:'landingpage'});
             }
         },
-        
+
     }
 </script>
 <style scoped>
@@ -191,7 +191,7 @@
     }
     .sub-nav-ebi a:hover{
         background: transparent;
-         color: #f8f8f8; 
+         color: #f8f8f8;
     }
     .ebi-masthead h1, .ebi-masthead a{
       color:#f8f8f8;
