@@ -50,6 +50,7 @@
     },
 
     beforeRouteEnter: function(to, from, next){
+        //console.log(from);
        //console.log(document.getElementById('elixir-banner'));
        //document.getElementById('elixir-banner').setAttribute('display','none');
         next();

@@ -72,7 +72,7 @@
                     });
 
                   },function(err){
-                    this.$router.push({name:'notfound'});
+                    this.$router.replace({name:'404'});
                   });
             },
             goAnchor(selector) {
@@ -98,7 +98,6 @@
             addID(){
 
                 let list = this.$el.querySelector('.markdown-body').querySelectorAll('h2');
-
                 for(let i=0; i<list.length; i++){
                     var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
                     var id = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
@@ -109,8 +108,25 @@
                     list[i].setAttribute('id',id);
                     if(i!=0)
                         this.tableList.push(item);
-                    
                 }
+
+                document.addEventListener('scroll', ()=> {
+                    if(document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
+                        this.activeName =list[list.length-1].getAttribute('id');
+                        return;
+                    }
+                    if(document.documentElement.scrollTop == 0){
+                        this.activeName = '';
+                        return;
+                    }
+                    for(let i=list.length-1; i>0; i--){
+                        if(list[i].offsetTop - document.documentElement.scrollTop <= 0){
+                            console.log(list[i].getAttribute('id'));
+                            this.activeName =list[i].getAttribute('id');
+                            break;
+                        }
+                    }
+                });
             },
             /*
             changeDefaultAction(){
@@ -140,7 +156,7 @@
                   },function(err){
 
                   });
-            }
+            },
         },
         mounted:function(){
             this.markdownQuery();
@@ -165,7 +181,7 @@
         margin-left: 240px;
     }
     .content-container{
-        padding: 90px 0;
+        padding: 90px 0 200px 0px;
         margin: 0 auto;
     }
 

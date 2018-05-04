@@ -59,9 +59,28 @@ export default new Router({
       component: Dataset
     },
     {
+      path:'/404',
+      name: '404',
+      component: NotFound,
+      /*
+      beforeEnter: (to, from, next) => {
+        to.replace();
+        console.log(to);
+         
+        
+      }*/
+    },
+    {
       path:'*',
       name: 'notfound',
-      component: NotFound
+      component: NotFound,
+      /*
+      beforeEnter: (to, from, next) => {
+        to.replace();
+        console.log(to);
+         
+        
+      }*/
     },
   ],
 })
