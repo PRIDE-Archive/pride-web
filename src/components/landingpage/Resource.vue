@@ -37,7 +37,7 @@
     </div>
     <div class="button-container">
         <a class="button resource-button" @click="showArchive">{{archivebutton}}</a>
-        <a class="button resource-button" @click="showCluster">{{peptidomebutton}}</a>
+        <a class="button resource-button" @click="showPeptidome">{{peptidomebutton}}</a>
     </div>
   </div>
 </template>
@@ -180,8 +180,8 @@
             advanceSearchConditoinAdd(){
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
-            showCluster(){
-                this.$Message.success({content:'Cluster Coming Soon', duration:1});
+            showPeptidome(){
+                this.$router.push({name:'peptidome'});
             },
             showArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});

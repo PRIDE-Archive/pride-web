@@ -8,6 +8,7 @@ const Citation = resolve => require(['@/components/landingpage/Citation'], resol
 const Dataset = resolve => require(['@/components/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/components/NotFound'], resolve);
 const MarkdownPage = resolve => require(['@/components/documentation/MarkdownPage'], resolve);
+const Peptidome = resolve => require(['@/components/peptidome/Peptidome'], resolve);
 
 Vue.use(Router)
 
@@ -57,6 +58,11 @@ export default new Router({
       path:'/dataset/:id',
       name: 'dataset',
       component: Dataset
+    },
+    {
+      path: '/peptidome',
+      name: 'peptidome',
+      component: Peptidome
     },
     {
       path:'/404',
