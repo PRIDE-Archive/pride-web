@@ -109,7 +109,7 @@
                   </Card>
                   
                   <div class="page-container">
-                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page"></Page>
+                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                   </div>
               </Card>
           </Row>
@@ -436,6 +436,12 @@
       submitSearch(){
         this.$Message.success({content:'new result', duration:1});
       },
+      pageChange(){
+          this.$Message.success({content:'pageChange', duration:1});
+      },
+      pageSizeChange(){
+          this.$Message.success({content:'pageSizeChange', duration:1});
+      }
     },
 
     watch: {

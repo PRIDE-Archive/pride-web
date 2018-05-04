@@ -28,7 +28,7 @@
         </div>
         <div class="search-settings" v-if="!advanceSearchDisplay">
             <div class="example-wrapper">
-                <a class="example-item" v-for="item in searchExample" v-bind:key = "item">{{item}}</a>
+                <a class="example-item" v-for="item in searchExample" v-bind:key = "item" @click="setSearchKeyword(item)">{{item}}></a>
             </div>
             <div class="advance-search">
                 <a @click="advanceSearchToggle">Advance</a>
@@ -166,8 +166,13 @@
             init(){
                 this.initAdvanceSearch();
             },
+            setSearchKeyword(item){
+                console.log(item);
+                this.keyword = item;
+                this.submitSearchCondition();
+            },
             submitSearchCondition(){
-
+                this.$router.push({name:'archive',query:{ q: this.keyword }});
             },
             advanceSearchConditoinRemove (index) {
                 this.searchItems.splice(index, 1);

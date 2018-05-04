@@ -260,7 +260,7 @@
     width: 80%;
     margin:0 auto;
     padding: 40px 0;
-    min-height: calc(100vh - 505px);
+    min-height: calc(100vh - 200px);
   }
   .tab-container{
     /*min-height: calc(100vh - 685px);*/
@@ -341,6 +341,33 @@
   .download-list-wrapper{
     margin-top: 10px;
   }
+  /*
+  @media (min-width: 768px) {
+      .content{
+         min-height: calc(100vh - 505px);
+      }
+
+  }
+  @media (min-width: 992px) {
+      
+
+  }
+  @media (min-width: 1200px) {
+      
+  }
+
+  @media (min-width: 1600px) {
+      
+  }
+  @media (min-width: 1800px) {
+      
+  }
+  @media (min-width: 2000px) {
+      
+  }
+  @media (min-width: 2300px) {
+      
+  }*/
 </style>
 <style>
   .card .ivu-card-body table{
@@ -352,7 +379,7 @@
   .card .ivu-card-body .ivu-table-cell{
     padding: 0 5px;
   }
-  table tbody td{
+  .download-list table tbody td{
     padding: 0px;
   }
   table thead th{
