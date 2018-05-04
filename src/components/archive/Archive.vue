@@ -79,13 +79,13 @@
                   <p slot="title" class="resource-list-title-container">
                     <span>Resources List</span>
                     <span>
-                        <span>Sort by</span>
-                        <!--
-                        <a class="sort-action">Accession</a>
-                        <a class="sort-action">Title</a>
-                        <a class="sort-action">Relevance</a>
-                        <a class="sort-action">Publication Date<Icon type="ios-arrow-up"></Icon></a>
-                      -->
+                        <span>Sort by: </span>
+                        <div class="sortOption">
+                            <Select v-model="model2" size="small" style="width:95px" @on-change="sortChange">
+                                <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                        </div>
+                
                     </span>
                   </p>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.id">
@@ -160,6 +160,20 @@
               dataset:['ProteomeTools','Biological Dataset']
             }
           ],
+          sortList:[
+            {
+                value: 'Accession',
+                label: 'Accession'
+            },
+            {
+                value: 'Title',
+                label: 'Title'
+            },
+            {
+                value: 'Relevance',
+                label: 'Relevance'
+            }
+          ]
       }
     },
     components: {
@@ -441,6 +455,9 @@
       },
       pageSizeChange(){
           this.$Message.success({content:'pageSizeChange', duration:1});
+      },
+      sortChange(){
+        this.$Message.success({content:'sortChange', duration:1});
       }
     },
 
@@ -449,6 +466,7 @@
           //combine keyword (this.keyword) and filters together (val)
           this.submitSearch();
       },
+
     },
    
     mounted: function(){
@@ -580,6 +598,11 @@
     .separator{
       margin: 0 5px;
     }
+    .sortOption{
+      display: inline-block;
+      margin-left: 5px;
+    }
+    
 </style>
 
 <style>
@@ -637,5 +660,25 @@
     }
     .filter-selector .ivu-icon-ios-close-empty{
       display: none;
+    }
+    .sortOption .ivu-select-selection{
+      height: 18px !important;
+      line-height: 18px !important;
+    }
+    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+      height: 17px !important;
+      line-height: 17px !important;
+    }
+    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+      height: 18px !important;
+      line-height: 18px !important;
+    }
+    .sortOption .ivu-select-selection .ivu-select-selected-value{
+      font-weight: normal !important;
+
+    }
+    .sortOption .ivu-select-dropdown .ivu-select-item{
+      font-weight: normal !important;
+
     }
 </style>
