@@ -210,7 +210,14 @@
     .sub-nav-title{
       margin: 0 3px;
     }
-
+    .row{
+      margin:0 auto;
+     
+      max-width: 150rem !important;
+   }
+   #local-nav{
+    margin-left: 10px;
+   }
 </style>
 <style>
    .sub-nav-ebi .sub-nav-list .ivu-select-dropdown{

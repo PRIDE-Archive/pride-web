@@ -5,15 +5,15 @@
     <Carousel v-model="value1" loop>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-1.png"></div>
+            <div class="demo-carousel"><img src="/static/peptidome/tutorial-1.png" height="443" width="1235"></div>
         </CarouselItem>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-2.png"></div>
+            <div class="demo-carousel"><img src="/static/peptidome/tutorial-2.png" height="443" width="1235"></div>
         </CarouselItem>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-3.png"></div>
+            <div class="demo-carousel"><img src="/static/peptidome/tutorial-3.png" height="443" width="1235"></div>
         </CarouselItem>
     </Carousel>
     <div class = "content">
