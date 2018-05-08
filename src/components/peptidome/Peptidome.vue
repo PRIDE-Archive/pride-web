@@ -143,7 +143,7 @@
   </div>
 </template>
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import Nav from '@/components/peptidome/Nav'
   export default {
     name: 'notfound',
     components: {

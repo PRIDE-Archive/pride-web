@@ -9,6 +9,8 @@ const Dataset = resolve => require(['@/components/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/components/NotFound'], resolve);
 const MarkdownPage = resolve => require(['@/components/documentation/MarkdownPage'], resolve);
 const Peptidome = resolve => require(['@/components/peptidome/Peptidome'], resolve);
+const PeptideSearch = resolve => require(['@/components/peptidome/PeptideSearch'], resolve);
+const PeptideDownload = resolve => require(['@/components/peptidome/PeptideDownload'], resolve);
 
 Vue.use(Router)
 
@@ -63,6 +65,16 @@ export default new Router({
       path: '/peptidome',
       name: 'peptidome',
       component: Peptidome
+    },
+    {
+      path: '/peptidesearch',
+      name: 'peptidesearch',
+      component: PeptideSearch
+    },
+    {
+      path: '/peptidedownload',
+      name: 'peptidedownload',
+      component: PeptideDownload
     },
     {
       path:'/404',
