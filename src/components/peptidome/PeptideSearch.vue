@@ -78,7 +78,7 @@
             <Card>
                 <p slot="title">Results</p>
                 <div class="search-container">
-                <Table class="peptide-table" :loading="loading" border :columns="columns5" :data="data5" size="small"></Table>
+                <Table class="peptide-table" :loading="loading" border :columns="columns5" :data="data5" size="small" @on-row-click="rowClick"></Table>
                 </div>
                 <div class="page-container">
                   <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
@@ -107,42 +107,206 @@
           loading: false,
           columns5: [
               {
+                  type: 'index',
+                  width: 80,
+                  align: 'center',
+                  ellipsis:true
+              },
+              {
                   title: 'Peptide',
                   key: 'peptide',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: 'Pre Charge',
                   key: 'precharge',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: 'Pre m/z',
                   key: 'premz',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: '#Spectra',
                   key: 'spectra',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: 'Projects',
                   key: 'projects',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: '#Species',
                   key: 'species',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               },
               {
                   title: 'Ratio',
                   key: 'ratio',
-                  sortable: true
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
               }
           ],
           data5: [
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
+              {
+                  peptide: 'VATVSLPR',
+                  precharge: 2,
+                  premz: 421.76,
+                  spectra: 39791,
+                  projects: 94,
+                  species: 50 ,
+                  ratio:'80.8%'
+              },
               {
                   peptide: 'VATVSLPR',
                   precharge: 2,
@@ -464,6 +628,11 @@
       },
       sortChange(){
         this.$Message.success({content:'sortChange', duration:1});
+      },
+      rowClick(row,index){
+        console.log('row',row);
+        console.log('index',index);
+        this.$Message.success({content:'rowClick', duration:1});
       }
     },
 
@@ -608,9 +777,7 @@
       display: inline-block;
       margin-left: 5px;
     }
-    .peptide-table table{
-      margin-bottom: 0;
-    }
+
     .page-container{
       margin-top: 20px;
     }
@@ -691,5 +858,8 @@
     .sortOption .ivu-select-dropdown .ivu-select-item{
       font-weight: normal !important;
 
+    }
+    .peptide-table table{
+      margin-bottom: 0 !important;
     }
 </style>

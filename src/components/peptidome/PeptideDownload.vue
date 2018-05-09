@@ -9,17 +9,16 @@
         </div>
         <div class="album">
             <div class= "container">
-                <div class="head">Latest Release (Release: 2015-04-30, Version: 2015-04)</div>
+                <Spin size="large" fix v-if="spinShow"></Spin>
+                <div class="head">Latest Release (Release: {{releaseDate}}, Version: {{version}})</div>
                 <transition-group tag="ul" name="slideIn" v-on:before-enter="beforeEnter" v-on:after-enter="afterEnter">
-                   <Card v-for="item in downloadList" class="item" v-bind:key = "item.id">
-                        <p slot="title">{{item.title}}</p>
+                   <Card v-for="(item,index) in resultFiles" class="item" v-bind:key = "index">
+                        <p slot="title">{{item.name}}</p>
                         <div class="card-content">
-                            <p v-for="content in item.content">{{content}}</p>
-                           
+                            <p>{{item.description}}</p>
                         </div>
                        <div class="button-wrapper">
-                            <a>MGF Download</a>
-                            <a>mzML Download</a>
+                            <a v-for="downloadMethod in item.downloadURLs" :href="downloadMethod.url">{{downloadMethod.type}} Download</a>
                         </div>
                         
                    </Card>
@@ -33,60 +32,12 @@
     export default {
         data () {
             return {
+                clusterLatestApi:"https://www.ebi.ac.uk:443/pride/ws/cluster/result/latest",
+                spinShow:true,
                 value1: '',
-                downloadList: [
-                    {
-                        id:'1',
-                        title:'Unidentified Human Clusters',
-                        content: ['Unidentified human clusters with at least 100 spectra']
-                    },
-                    {
-                        id:'2',
-                        title:'Unidentified Clusters',
-                        content: ['Unidentified Clusters with at least 100 spectra']
-                    },
-                    {
-                        id:'3',
-                        title:'Human Phospho clusters',
-                        content: ['Human Phospho clusters with at least 3 identified spectra and a minimum ratio of 70%']
-                    },
-                    {
-                        id:'4',
-                        title:'Phospho clusters',
-                        content: ['Phospho clusters with at least 3 identified spectra and a minimum ratio of 70%']
-                    }
-                    ,
-                    {
-                        id:'5',
-                        title:'Incorrect Clusters',
-                        content: ['Clusters with at at least 10 spectra and a ratio < 50%']
-                    },
-                    {
-                        id:'5',
-                        title:'Unidentified Mouse Clusters',
-                        content: ['Unidentified mouse clusters with at least 10 spectra']
-                    },
-                    {
-                        id:'5',
-                        title:'Unidentified Rat Clusters',
-                        content: ['Unidentified rat clusters with at least 10 spectra']
-                    },
-                    {
-                        id:'5',
-                        title:'Unidentified Saccharomyces Cerevisiae Clusters',
-                        content: ['Unidentified saccharomyces cerevisiae clusters with at least 10 spectra']
-                    },
-                    {
-                        id:'5',
-                        title:'Unidentified Drosophila Melanogaster Clusters',
-                        content: ['Unidentified drosophila melanogaster clusters with at least 10 spectra']
-                    },
-                    {
-                        id:'5',
-                        title:'Unidentified Caenorhabditis Elegans Clusters',
-                        content: ['Unidentified caenorhabditis elegans clusters with at least 10 spectra']
-                    }
-                ]
+                releaseDate:'',
+                version:'',
+                resultFiles: []
             }
         },
         components: {
@@ -98,8 +49,24 @@
             },
             afterEnter:function(el){
               el.removeAttribute('style');
+            },
+            queryClusterLatest(){
+                this.$http
+                  .get(this.clusterLatestApi)
+                  .then(function(res){
+                    console.log(res);
+                    this.spinShow = false;
+                    this.releaseDate = res.body.releaseDate;
+                    this.version = res.body.version;
+                    this.resultFiles = res.body.resultFiles;
+                  },function(err){
+
+                  });
             }
-        }
+        },
+        mounted: function(){
+            this.queryClusterLatest();
+        },
     }
 </script>
 <style scoped>
@@ -137,6 +104,7 @@
     .album .container{
         width: 90%;
         margin:0 auto;
+        position: relative;
     }
     .album .container .head{
         font-size: 20px;
@@ -184,6 +152,13 @@
       .item{ 
         width: calc((100% - 90px) / 3 - 1px);
       }
+      .button-wrapper a{
+
+            padding: 6px 6px;
+            font-size: 12px;
+            width:110px;
+
+        }
     }
     @media (max-width: 1910px) and (min-width: 1511px){ 
       .item{ 

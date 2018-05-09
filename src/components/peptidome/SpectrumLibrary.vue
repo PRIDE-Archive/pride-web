@@ -10,19 +10,21 @@
         </div>
         <div class="album">
             <div class= "container">
-                <div class="head">Latest Release (Release: 2015-04-01, Version: 2015-04)</div>
+                <Spin size="large" fix v-if="spinShow"></Spin>
+                <div class="head">Latest Release (Release: {{releaseDate}}, Version: {{version}})</div>
                 <transition-group tag="ul" name="slideIn" v-on:before-enter="beforeEnter" v-on:after-enter="afterEnter">
-                   <Card v-for="item in downloadList" class="item" v-bind:key = "item.id">
-                        <p slot="title">{{item.title}}</p>
+                   <Card v-for="item in spectrumLibraries" class="item" v-bind:key = "item.taxonomyId">
+                        <p slot="title">{{item.speciesScientificName}}</p>
                         <div class="card-content">
-                            <p v-for="content in item.content">{{content}}</p>
-                           
+                            <p>Common name: {{item.speciesName}}</p>
+                            <p>Taxonomy: <a v-if="item.taxonomyId !='0'">{{item.taxonomyId}}</a><span v-else>Unknown</span></p>
+                            <p>Number of spectra: {{item.numberOfSpectra}}</p>
+                            <p>Number of peptides: {{item.numberOfPeptides}}</p>
+                            <p>File Size: {{Math.round(item.fileSize/1024/1024)}}M</p>
                         </div>
-                       <div class="button-wrapper">
-                            <a>FTP Download</a>
-                            <a>ASPERA Download</a>
+                        <div class="button-wrapper">
+                            <a v-for="downloadMethod in item.downloadURLs" :href="downloadMethod.url">{{downloadMethod.protocol}} Download</a>
                         </div>
-                        
                    </Card>
                 </transition-group>
             </div>
@@ -34,120 +36,12 @@
     export default {
         data () {
             return {
+                spectrumLibraryApi: "https://www.ebi.ac.uk:443/pride/ws/cluster/spectrumLibrary/latest",
+                spinShow:true,
                 value1: '',
-                downloadList: [
-                    {
-                        id:'1',
-                        title:'Homo sapiens',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'2',
-                        title:'Mus musculus',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'3',
-                        title:'Arabidopsis thaliana',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'4',
-                        title:'Escherichia coli',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    }
-                    ,
-                    {
-                        id:'5',
-                        title:'Rattus norvegicus',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'5',
-                        title:'Saccharomyces cerevisiae',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'5',
-                        title:'Bacillus subtilis',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'5',
-                        title:'Contaminants',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'5',
-                        title:'Drosophila melanogaster',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    },
-                    {
-                        id:'5',
-                        title:'Salmonella typhimurium',
-                        content: [
-                            'Common name: Human',
-                            'Taxonomy: 9606',
-                            'Number of spectra: 789745',
-                            'Number of peptides: 189400',
-                            'File Size: 299 MB'
-                        ]
-                    }
-                ]
+                releaseDate:'',
+                version:'',
+                spectrumLibraries: []
             }
         },
         components: {
@@ -159,8 +53,23 @@
             },
             afterEnter:function(el){
               el.removeAttribute('style');
+            },
+            querySpectrumLibrary(){
+                this.$http
+                  .get(this.spectrumLibraryApi)
+                  .then(function(res){
+                    this.spinShow = false;
+                    this.releaseDate = res.body.releaseDate;
+                    this.version = res.body.version;
+                    this.spectrumLibraries = res.body.spectrumLibraries;
+                  },function(err){
+
+                  });
             }
-        }
+        },
+        mounted: function(){
+            this.querySpectrumLibrary();
+        },
     }
 </script>
 <style scoped>
@@ -198,6 +107,7 @@
     .album .container{
         width: 90%;
         margin:0 auto;
+         position: relative;
     }
     .album .container .head{
         font-size: 20px;
@@ -220,7 +130,7 @@
 
         padding: 6px 8px;
         font-size: 12px;
-        width:130px;
+        width:150px;
         /*padding: 20px 85px;
         font-size: 24px;*/
         font-weight: 700;
@@ -240,20 +150,42 @@
       .item{ 
         width: calc((100% - 60px) / 2 - 1px);
       }
+      .button-wrapper a{
+            padding: 6px 1px;
+            width:120px;
+      }
     }
     @media (max-width: 1510px) and (min-width: 1016px){ 
       .item{ 
         width: calc((100% - 90px) / 3 - 1px);
       }
+      .button-wrapper a{
+            padding: 6px 0px;
+            width:115px;
+        }
     }
     @media (max-width: 1910px) and (min-width: 1511px){ 
       .item{ 
         width: calc((100% - 120px) / 4 - 1px);
       }
+      .button-wrapper a{
+
+        padding: 6px;
+       
+        width:130px;
+      
+        }
     }
     @media (min-width: 1911px){ 
       .item{ 
         width: calc((100% - 150px) / 5 - 1px);
       }
+      .button-wrapper a{
+
+        padding: 6px 8px;
+       
+        width:130px;
+      
+        }
     }
 </style>
