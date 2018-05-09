@@ -176,7 +176,7 @@
                 this.$router.push({name:'peptidesearch'});
             },
             gotoSpectrumLibrary(){
-                this.$router.push({name:'peptidedownload'});
+                this.$router.push({name:'spectrumlibrary'});
             },
             gotoPeptideDownload(){
                 this.$router.push({name:'peptidedownload'});
