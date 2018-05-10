@@ -1,6 +1,5 @@
 <template>
     <AutoComplete
-        ref="auto"
         v-model="value1"
         :data="data1"
         @on-search="handleSearch1"

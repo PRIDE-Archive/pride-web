@@ -4,9 +4,9 @@
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
             <div class="masthead-inner row">
               <!-- local-title -->
-              <div class="columns medium-2" id="local-title">
+              <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_1.png" alt="logo" width="600" height="600"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_1.png" alt="logo" width="300" height="300"></a>
                 </div>
               </div>
               <!-- /local-title -->

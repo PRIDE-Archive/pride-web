@@ -429,12 +429,13 @@
         }
       },
       keywordSearch(value){
+
         console.log('this.keyword',this.keyword);
-        this.keyword = value;
+        //this.keyword = value;
       },
       submitSearch(){
         this.$Message.success({content:'new result', duration:1});
-      }
+      },
     },
 
     watch: {
@@ -446,27 +447,14 @@
    
     mounted: function(){
         this.initFilter();
-         let li = this.$el.querySelectorAll('.ivu-auto-complete .ivu-select-dropdown-list li');
-         li.forEach(function(item){
-            console.log('123',item);
-            item.addEventListener('click', function(event) {
-                console.log(123);
-                console.log(event);
-            });
-         });
-        let dropdown = this.$el.querySelectorAll('.ivu-auto-complete .ivu-select-dropdown-list');
-         dropdown.forEach(function(item){
-            console.log('dropdown',item);
-            item.addEventListener('click', function(event) {
-                console.log(123);
-                console.log(event);
-            });
-         });
+        
+    },
+    created(){
+       
+    },
+    beforeDestroy(){
           
     },
-    destroyed: function () {
-        window.removeEventListener('scroll', this.handleScroll);
-    }
   }
 </script>
 
