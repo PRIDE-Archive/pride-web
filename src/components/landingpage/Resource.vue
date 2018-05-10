@@ -28,7 +28,7 @@
         </div>
         <div class="search-settings" v-if="!advanceSearchDisplay">
             <div class="example-wrapper">
-                <a class="example-item" v-for="item in searchExample" v-bind:key = "item">{{item}}</a>
+                <a class="example-item" v-for="item in searchExample" v-bind:key = "item" @click="setSearchKeyword(item)">{{item}}></a>
             </div>
             <div class="advance-search">
                 <a @click="advanceSearchToggle">Advance</a>
@@ -37,7 +37,7 @@
     </div>
     <div class="button-container">
         <a class="button resource-button" @click="showArchive">{{archivebutton}}</a>
-        <a class="button resource-button" @click="showCluster">{{peptidomebutton}}</a>
+        <a class="button resource-button" @click="showPeptidome">{{peptidomebutton}}</a>
     </div>
   </div>
 </template>
@@ -166,8 +166,13 @@
             init(){
                 this.initAdvanceSearch();
             },
+            setSearchKeyword(item){
+                console.log(item);
+                this.keyword = item;
+                this.submitSearchCondition();
+            },
             submitSearchCondition(){
-
+                this.$router.push({name:'archive',query:{ q: this.keyword }});
             },
             advanceSearchConditoinRemove (index) {
                 this.searchItems.splice(index, 1);
@@ -175,8 +180,8 @@
             advanceSearchConditoinAdd(){
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
-            showCluster(){
-                this.$Message.success({content:'Cluster Coming Soon', duration:1});
+            showPeptidome(){
+                this.$router.push({name:'peptidome'});
             },
             showArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});

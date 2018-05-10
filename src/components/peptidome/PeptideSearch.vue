@@ -75,54 +75,39 @@
               </Card>
           </Row>
           <Row>
-              <Card>
-                  <p slot="title" class="resource-list-title-container">
-                    <span>Resources List</span>
-                    <span>
-                        <span>Sort by: </span>
-                        <div class="sortOption">
-                            <Select v-model="model2" size="small" style="width:95px" @on-change="sortChange">
-                                <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                            </Select>
-                        </div>
-                
-                    </span>
-                  </p>
-                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.id">
-                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.id}}">{{publicationItem.id}}</router-link>
-                     
-                      <a class="resource-id"></a>
-                      <p class="resource-title">{{publicationItem.name}}</p>
-                      <p>Species: {{publicationItem.species}}</p>
-                      <span>Project description: {{publicationItem.description}}</span><a @click="getDetailedResource(publicationItem.id)" class="detailed-resouce">(More)</a>
-                      <p>Made public: {{publicationItem.date}}</p>
-                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.dataset">
-                          <a class="button dataset-button" href="javascript:void(0)">
-                             <Icon type="ios-pricetag"></Icon>
-                              {{datesetItem}} 
-                          </a>
-                          <DropdownMenu slot="list">
-                              <DropdownItem>{{datesetItem}}</DropdownItem>
-                          </DropdownMenu>
-                      </Dropdown>
-      
-                  </Card>
-                  
-                  <div class="page-container">
-                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                  </div>
-              </Card>
+            <Card>
+                <p slot="title">Results</p>
+                <div class="search-container">
+                <Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>
+                </div>
+                <div class="page-container">
+                  <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                </div>
+            </Card>
+
           </Row>
       </div>
   </div>
 </template>
 
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import Nav from '@/components/peptidome/Nav'
   export default {
     name: 'archive',
     data(){
       return {
+          queryClusterListApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
+          q:'',
+          peptide:'',
+          modFilters:'',
+          speciesFilters:'',
+          sort:'',
+          order:'desc',
+          facets:false,
+          highligts:false,
+          page:0,
+          size:20,
+          total:0,
           keyword:'',
           fieldValue:'',
           containValue:[],
@@ -131,49 +116,65 @@
           fieldSelectors:[],
           containSelectors:[],
           filterCombination:[],
-          publicaitionList:[
-            {
-              id:'PXD008343',
-              completeState:false,
-              name: 'CRISPR/Cas9-mediated knockout and endogenous complex analysis of Cluap1/ IFT38',
-              species: 'Homo sapiens (Human)',
-              description:'CRISPR/Cas9-mediated gene-editing allows manipulation of a gene',
-              date:'2018-04-04',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008267',
-              completeState:true,
-              name: 'Proteomic profiling of human iPSC-derived pancreatic endocrine cells for the identification of clinical biomarkers ',
-              species: 'Homo sapiens (Human)',
-              description:'Great progresses have been made for generating in vitro pluripot',
-              date:'2005-08-16',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008970',
-              completeState:false,
-              name: 'Protein citrullination in human tissues',
-              species: 'Homo sapiens (Human)',
-              description:'Citrullination is a post-translational modification of arginine',
-              date:'2018-04-04',
-              dataset:['ProteomeTools','Biological Dataset']
-            }
+          loading: true,
+          columns5: [
+              {
+                  type: 'index',
+                  width: 80,
+                  align: 'center',
+                  ellipsis:true
+              },
+              {
+                  title: 'Peptide',
+                  key: 'peptide',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Pre Charge',
+                  key: 'precharge',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Pre m/z',
+                  key: 'premz',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: '#Spectra',
+                  key: 'spectra',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Projects',
+                  key: 'projects',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: '#Species',
+                  key: 'species',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Ratio',
+                  key: 'ratio',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              }
           ],
-          sortList:[
-            {
-                value: 'Accession',
-                label: 'Accession'
-            },
-            {
-                value: 'Title',
-                label: 'Title'
-            },
-            {
-                value: 'Relevance',
-                label: 'Relevance'
-            }
-          ]
+          results: []
       }
     },
     components: {
@@ -450,14 +451,44 @@
       submitSearch(){
         this.$Message.success({content:'new result', duration:1});
       },
-      pageChange(){
-          this.$Message.success({content:'pageChange', duration:1});
+      pageChange(page){
+          this.page = page-1;
+          this.queryClusterList();
       },
-      pageSizeChange(){
-          this.$Message.success({content:'pageSizeChange', duration:1});
+      pageSizeChange(size){
+          this.size = size;
+          this.queryClusterList();
       },
       sortChange(){
         this.$Message.success({content:'sortChange', duration:1});
+      },
+      rowClick(row,index){
+        console.log('row',row);
+        console.log('index',index);
+        this.$Message.success({content:'rowClick', duration:1});
+      },
+      queryClusterList(){
+        this.results=[];
+        this.$http
+            .get(this.queryClusterListApi+this.query)
+            .then(function(res){
+                this.loading=false;
+                this.total = res.body.totalResults;
+                for(let i=0; i < res.body.results.length; i++){
+                  var item = {
+                      peptide: res.body.results[i].sequence,
+                      precharge: res.body.results[i].averagePrecursorCharge,
+                      premz: res.body.results[i].averagePrecursorMz.toFixed(2),
+                      spectra: res.body.results[i].totalNumberOfSpectra,
+                      projects: res.body.results[i].totalNumberOfProjects,
+                      species: res.body.results[i].totalNumberOfSpecies,
+                      ratio: (res.body.results[i].maxRatio*100).toFixed(1) + '%'
+                  }
+                  this.results.push(item);
+                }
+            },function(err){
+
+            });
       }
     },
 
@@ -468,10 +499,24 @@
       },
 
     },
-   
+    computed:{
+      query:function(){
+          let q=this.q?'q='+this.q+'&' : '';
+          let peptide=this.peptide?'peptide='+this.peptide+'&' : '';
+          let modFilters=this.modFilters?'modFilters='+this.modFilters+'&' : '';
+          let speciesFilters=this.speciesFilters?'speciesFilters='+this.speciesFilters+'&' : '';
+          let sort=this.sort?'sort='+this.sort+'&' : '';
+          let order= this.order?'order='+this.order+'&' : '';
+          let facets='facets='+this.facets+'&';
+          let highligts='highligts='+this.highligts+'&';
+          let page='page='+this.page+'&';
+          let size='size='+this.size;
+          return '?/'+q+peptide+modFilters+speciesFilters+sort+order+facets+highligts+page+size;
+      }
+    },
     mounted: function(){
         this.initFilter();
-        
+        this.queryClusterList();
     },
     created(){
        
@@ -602,7 +647,10 @@
       display: inline-block;
       margin-left: 5px;
     }
-    
+
+    .page-container{
+      margin-top: 20px;
+    }
 </style>
 
 <style>
@@ -680,5 +728,8 @@
     .sortOption .ivu-select-dropdown .ivu-select-item{
       font-weight: normal !important;
 
+    }
+    .peptide-table table{
+      margin-bottom: 0 !important;
     }
 </style>

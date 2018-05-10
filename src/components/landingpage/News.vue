@@ -293,7 +293,7 @@
     .twitter-follow-button{
 
     }
-    @media (min-width: 768px) {
+    /*@media (min-width: 768px) {
         .news-container{
             width: 750px;
         }
@@ -308,9 +308,6 @@
     @media (min-width: 1200px) {
         .news-container{
             width: 1170px;
-        }
-        .item-container{
-            /*margin: 15px 50px;*/
         }
     }
 
@@ -333,5 +330,5 @@
         .news-container{
             width: 2000px;
         }
-    }
+    }*/
 </style>

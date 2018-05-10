@@ -28,3 +28,11 @@
         </header> 
     </div>
 </template>
+<style scoped>
+ .row{
+    margin:0 auto;
+    display: flex;
+    align-items: center;
+    max-width: 150rem !important;
+ }
+</style>

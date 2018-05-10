@@ -8,6 +8,10 @@ const Citation = resolve => require(['@/components/landingpage/Citation'], resol
 const Dataset = resolve => require(['@/components/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/components/NotFound'], resolve);
 const MarkdownPage = resolve => require(['@/components/documentation/MarkdownPage'], resolve);
+const Peptidome = resolve => require(['@/components/peptidome/Peptidome'], resolve);
+const PeptideSearch = resolve => require(['@/components/peptidome/PeptideSearch'], resolve);
+const PeptideDownload = resolve => require(['@/components/peptidome/PeptideDownload'], resolve);
+const SpectrumLibrary = resolve => require(['@/components/peptidome/SpectrumLibrary'], resolve);
 
 Vue.use(Router)
 
@@ -59,9 +63,48 @@ export default new Router({
       component: Dataset
     },
     {
+      path: '/peptidome',
+      name: 'peptidome',
+      component: Peptidome
+    },
+    {
+      path: '/peptidesearch',
+      name: 'peptidesearch',
+      component: PeptideSearch
+    },
+    {
+      path: '/peptidedownload',
+      name: 'peptidedownload',
+      component: PeptideDownload
+    },
+    {
+      path: '/spectrumlibrary',
+      name: 'spectrumlibrary',
+      component: SpectrumLibrary
+    },
+    {
+      path:'/404',
+      name: '404',
+      component: NotFound,
+      /*
+      beforeEnter: (to, from, next) => {
+        to.replace();
+        console.log(to);
+         
+        
+      }*/
+    },
+    {
       path:'*',
       name: 'notfound',
-      component: NotFound
+      component: NotFound,
+      /*
+      beforeEnter: (to, from, next) => {
+        to.replace();
+        console.log(to);
+         
+        
+      }*/
     },
   ],
 })
