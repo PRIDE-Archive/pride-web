@@ -463,8 +463,6 @@
         this.$Message.success({content:'sortChange', duration:1});
       },
       rowClick(row,index){
-        console.log('row',row);
-        console.log('index',index);
         this.$Message.success({content:'rowClick', duration:1});
       },
       queryClusterList(){
@@ -472,6 +470,7 @@
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
+              console.log(res);
                 this.loading=false;
                 this.total = res.body.totalResults;
                 for(let i=0; i < res.body.results.length; i++){

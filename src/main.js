@@ -15,6 +15,9 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/polar'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/component/legend'
+
 import VueMarkdown from 'vue-markdown';
 Vue.component('vue-markdown', VueMarkdown);
 

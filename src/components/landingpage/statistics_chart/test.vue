@@ -1,5 +1,5 @@
 <template>
-    <chart :options="polar" :auto-resize="true"></chart>
+    <chart class="test" :options="polar" :auto-resize="true"></chart>
 </template>
 <script>
 export default {
@@ -53,7 +53,7 @@ export default {
 </script>
 
 <style>
-.echarts {
+.echarts.test  {
   height: 300px !important;
   width: auto !important;
 }
