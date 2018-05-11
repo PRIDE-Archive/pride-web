@@ -21,6 +21,16 @@
 <div id="lorikeet"></div>
 
 <script type="text/javascript">
+window.addEventListener("message", receiveMessage, false);
+
+function receiveMessage(event)
+{
+  //if (event.origin !== "http://example.org:8080")
+    //return;
+    console.log(event.data);
+  // ...
+}
+
 
 $(document).ready(function () {
 
@@ -35,7 +45,7 @@ $(document).ready(function () {
                         "precursorMz":833.912965466879996,
                         "fileName":"TCGA_E2-A10A_BH-A18Q_C8-A130_117C_W_BI_20130222_H-PM_f24.14161.14161.2",
                         "width":650,
-                        "height":450,
+                        "height":500,
                         "ntermMod":144.102063,
        				    "ctermMod":0,
                         "variableMods":[],

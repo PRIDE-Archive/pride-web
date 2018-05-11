@@ -64,7 +64,7 @@
                                  <Table class="peptide-detail-table" border :columns="columns5" :data="data5" size="small"></Table>
                              </div>
                              <div class="button-wrapper">
-                                 <a><i class="fas fa-angle-double-left left"></i>Previous</a>
+                                 <a @click="sendData()"><i class="fas fa-angle-double-left left"></i>Previous</a>
                                  <a>Next<i class="fas fa-angle-double-right right"></i></a>
                              </div>
                         </Card>
@@ -92,7 +92,7 @@
                         <Card>
                              <p slot="title">Consensus Spectrum</p>
                              <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
-                             <iframe ref="lorikeet-iframe" class="lorikeet-iframe" src="/static/lorikeet/html/pride.html"></iframe>
+                             <iframe ref="lorikeetIframe" class="lorikeet-iframe" src="/static/lorikeet/html/pride.html"></iframe>
                              <!--<Lorikeet></Lorikeet>-->
                         </Card>
                     </div>
@@ -159,7 +159,8 @@
                         address: 'Sydney No. 1 Lake Park',
                         date: '2016-10-02'
                     },
-                ]
+                ],
+                data:[]
             }
         },
         components: {
@@ -168,7 +169,10 @@
             Modifications
         },
         methods: {
-           
+           sendData(){
+            console.log(123);
+                this.$refs.lorikeetIframe.contentWindow.postMessage({width: 100, data: this.data}, location.origin);
+           }
         },
         mounted: function(){
             

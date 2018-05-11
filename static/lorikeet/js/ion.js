@@ -16,6 +16,7 @@ function Ion (t, color, charge, terminus) {
 // Source: http://en.wikipedia.org/wiki/Web_colors
 
 // charge +1
+/*
 Ion.A_1 = new Ion("a", "#008000", 1, "n"); // green
 Ion.B_1 = new Ion("b", "#0000ff", 1, "n"); // blue
 Ion.C_1 = new Ion("c", "#008B8B", 1, "n"); // dark cyan
@@ -37,7 +38,31 @@ Ion.B_3 = new Ion("b", "#00BFFF", 3, "n"); // deep sky blue
 Ion.C_3 = new Ion("c", "#66CDAA", 3, "n"); // medium aquamarine
 Ion.X_3 = new Ion("x", "#9932CC", 3, "c"); // dark orchid
 Ion.Y_3 = new Ion("y", "#FFA07A", 3, "c"); // light salmon
-Ion.Z_3 = new Ion("z", "#FFD700", 3, "c"); // gold
+Ion.Z_3 = new Ion("z", "#FFD700", 3, "c"); // gold*/
+
+//sefl modified color
+Ion.A_1 = new Ion("a", "#00800082", 1, "n"); // green
+Ion.B_1 = new Ion("b", "#0000ffa6", 1, "n"); // blue
+Ion.C_1 = new Ion("c", "#008b8bbf", 1, "n"); // dark cyan
+Ion.X_1 = new Ion("x", "#4b0082ad", 1, "c"); // indigo
+Ion.Y_1 = new Ion("y", "#ff0000a6", 1, "c"); // red
+Ion.Z_1 = new Ion("z", "#ff8c00ba", 1, "c"); // dark orange
+
+// charge +2
+Ion.A_2 = new Ion("a", "#3bb571db", 2, "n"); // sea green
+Ion.B_2 = new Ion("b", "#1d45bdbf", 2, "n"); // royal blue
+Ion.C_2 = new Ion("c", "#00928fbf", 2, "n"); // light sea green
+Ion.X_2 = new Ion("x", "#800080ab", 2, "c"); // purple
+Ion.Y_2 = new Ion("y", "#e26f62d1", 2, "c"); // salmon 
+Ion.Z_2 = new Ion("z", "#ffa500ab", 2, "c"); // orange 
+
+// charge +3
+Ion.A_3 = new Ion("a", "#9acd32b0", 3, "n"); // yellow green
+Ion.B_3 = new Ion("b", "#00bfff8c", 3, "n"); // deep sky blue
+Ion.C_3 = new Ion("c", "#66cdaae8", 3, "n"); // medium aquamarine
+Ion.X_3 = new Ion("x", "#9932ccc4", 3, "c"); // dark orchid
+Ion.Y_3 = new Ion("y", "#ec5f26b8", 3, "c"); // light salmon
+Ion.Z_3 = new Ion("z", "#d4b3039e", 3, "c"); // gold
 
 var _ions = [];
 _ions["a"] = [];

@@ -2221,7 +2221,7 @@
 		
 		// reset zoom option
 		myContent += '<nobr> ';
-		myContent += '<span style="width:100%; font-size:8pt; margin-top:5px; color:sienna;">Click and drag in the plot to zoom</span> ';
+		myContent += '<span style="width:100%; font-size:10pt; margin-top:5px; color:#5bc0be;">Click and drag in the plot to zoom</span> ';
 		myContent += 'X:<input id="'+getElementId(container, elementIds.zoom_x)+'" type="checkbox" value="X" checked="checked"/> ';
 		myContent += '&nbsp;Y:<input id="'+getElementId(container, elementIds.zoom_y)+'" type="checkbox" value="Y" /> ';
 		myContent += '&nbsp;<input id="'+getElementId(container, elementIds.resetZoom)+'" type="button" value="Zoom Out" /> ';
