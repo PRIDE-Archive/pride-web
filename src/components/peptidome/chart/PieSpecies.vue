@@ -5,6 +5,7 @@
 export default {
   data: function () {
     return {
+        visulizationNum:4,
         option:{
             tooltip: {
                 trigger: 'item',
@@ -13,12 +14,7 @@ export default {
             legend: {
                 orient: 'vertical',
                 x: 'left',
-                data:[
-                  'Aeromonas salmonicida salmonicida',
-                  'Homo sapiens (Human)',
-                  'Borrelia burgdoferi 297',
-                  'Mus musculus (Mouse)',
-                  'Others']
+                data:[]
             },
             series: [
                 {
@@ -44,13 +40,7 @@ export default {
                             show: false
                         }
                     },
-                    data:[
-                        {value:4449, name:'Aeromonas salmonicida salmonicida'},
-                        {value:4192, name:'Homo sapiens (Human)'},
-                        {value:2070, name:'Borrelia burgdoferi 297'},
-                        {value:1898, name:'Mus musculus (Mouse)'},
-                        {value:6140, name:'Others'}
-                    ]
+                    data:[]
                 }
             ]
         }
@@ -58,11 +48,32 @@ export default {
   },
   methods:{
     setOptions(data){
-        console.log('setOptions');
+        //console.log(data);
+        this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
         data.sort(function(a,b){
             return a.count < b.count ? 1 : -1;
         });
-        console.log('sort array',data);
+        var othersCount = 0;
+        for(let i=0; i<data.length; i++){
+            if(i<this.visulizationNum){
+                this.option.legend.data.push(data[i].speciesName);
+                var item = {
+                    value:data[i].count,
+                    name:data[i].speciesName
+                }
+                this.option.series[0].data.push(item);
+            }
+            else{
+                othersCount += data[i].count;
+            }
+        }
+        var lastItem = {
+            value:othersCount,
+            name:'Others'
+        }
+        this.option.legend.data.push('Others');
+        this.option.series[0].data.push(lastItem);
+        //console.log('othersCount',othersCount);
     }
   },
   created(){

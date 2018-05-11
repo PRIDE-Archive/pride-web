@@ -5,24 +5,20 @@
 export default {
   data: function () {
     return {
+        visulizationNum:4,
         option:{
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                formatter: "{c} ({d}%) {a} {b} "
             },
             legend: {
                 orient: 'vertical',
                 x: 'left',
-                data:[
-                  'No Modifications',
-                  'Carbamidomethyl',
-                  'Oxidation',
-                  'Propionamide',
-                  'Others' ]
+                data:[]
             },
             series: [
                 {
-                    name:'PSM for',
+                    name:'PSM include',
                     type:'pie',
                     radius: ['50%', '70%'],
                     avoidLabelOverlap: false,
@@ -44,20 +40,47 @@ export default {
                             show: false
                         }
                     },
-                    data:[
-                        {value:4449, name:'No Modifications'},
-                        {value:4192, name:'Carbamidomethyl'},
-                        {value:2070, name:'Oxidation'},
-                        {value:1898, name:'Propionamide'},
-                        {value:6140, name:'Phospho'},
-                        {value:540, name:'iTRAQ4plex114'},
-                        {value:640, name:'iTRAQ4plex-114 reporter+balance reagent acylated N-terminal'},
-                        {value:1140, name:'Others'},
-                    ]
+                    data:[]
                 }
             ]
         }
     }
+  },
+  methods:{
+    setOptions(data){
+        //console.log('modifications',data);
+        this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
+        data.sort(function(a,b){
+            return a.count < b.count ? 1 : -1;
+        });
+        var othersCount = 0;
+        for(let i=0; i<data.length; i++){
+            if(i<this.visulizationNum){
+                this.option.legend.data.push(data[i].modificationName);
+                var item = {
+                    value:data[i].count,
+                    name:data[i].modificationName
+                }
+                this.option.series[0].data.push(item);
+            }
+            else{
+                othersCount += data[i].count;
+            }
+        }
+        var lastItem = {
+            value:othersCount,
+            name:'Others'
+        }
+        this.option.legend.data.push('Others');
+        this.option.series[0].data.push(lastItem);
+        //console.log('othersCount',othersCount);
+    }
+  },
+  created(){
+    this.$bus.$on('show-modifications', this.setOptions);
+  },
+  beforeCreate:function(){
+    this.$bus.$off('show-modifications');
   }
 }
 </script>

@@ -7,32 +7,35 @@
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
                             <h2 class="project-title">Consensus Peptide</h2>
-                            <h4>{{sequence}} (Charge: {{averagePrecursorCharge}}+ @ {{averagePrecursorMz}} m/z units)</h4>
-                            <div class="peptide-property-wrapper">
-                                <span class="property-item">#Spectra 
-                                    <Tooltip>
-                                        {{numberOfSpectra}}/{{totalNumberOfSpectra}} ({{(numberOfSpectra/totalNumberOfSpectra).toFixed(3)*100}}%)
-                                        <div class="tooltip-content" slot="content">
-                                            {{spectraTooltip}}
-                                        </div>
-                                    </Tooltip>
-                                </span>
-                                <span class="property-item">#Projects
-                                    <Tooltip content="Here is the prompt text">
-                                        {{numberOfProjects}}/{{totalNumberOfProjects}} ({{(numberOfProjects/totalNumberOfProjects).toFixed(3)*100}}%)
-                                        <div class="tooltip-content" slot="content">
-                                            {{projectsTooltip}}
-                                        </div>
-                                    </Tooltip>
-                                </span>
-                                <span class="property-item">#Species 
-                                    <Tooltip content="Here is the prompt text">
-                                        {{numberOfSpecies}}/{{totalNumberOfSpecies}} ({{(numberOfSpecies/totalNumberOfSpecies).toFixed(3)*100}}%)
-                                        <div class="tooltip-content" slot="content">
-                                            {{speciesTooltip}}
-                                        </div>
-                                    </Tooltip>
-                                </span>
+                            <div class="peptide-details-wrapper">
+                                <Spin fix v-if="detailsSpinShow"></Spin>
+                                <h4>{{sequence}} (Charge: {{averagePrecursorCharge}}+ @ {{averagePrecursorMz}} m/z units)</h4>
+                                <div class="peptide-property-wrapper">
+                                    <span class="property-item">#Spectra 
+                                        <Tooltip>
+                                            {{numberOfSpectra}}/{{totalNumberOfSpectra}} ({{(numberOfSpectra/totalNumberOfSpectra).toFixed(3)*100}}%)
+                                            <div class="tooltip-content" slot="content">
+                                                {{spectraTooltip}}
+                                            </div>
+                                        </Tooltip>
+                                    </span>
+                                    <span class="property-item">#Projects
+                                        <Tooltip content="Here is the prompt text">
+                                            {{numberOfProjects}}/{{totalNumberOfProjects}} ({{(numberOfProjects/totalNumberOfProjects).toFixed(3)*100}}%)
+                                            <div class="tooltip-content" slot="content">
+                                                {{projectsTooltip}}
+                                            </div>
+                                        </Tooltip>
+                                    </span>
+                                    <span class="property-item">#Species 
+                                        <Tooltip content="Here is the prompt text">
+                                            {{numberOfSpecies}}/{{totalNumberOfSpecies}} ({{(numberOfSpecies/totalNumberOfSpecies).toFixed(3)*100}}%)
+                                            <div class="tooltip-content" slot="content">
+                                                {{speciesTooltip}}
+                                            </div>
+                                        </Tooltip>
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -53,7 +56,8 @@
                                 
                              </p>
                              <div class="card-content-pie">
-                                 <PiesSecies :data="data"></PiesSecies>
+                                 <Spin fix v-if="speciesSpinShow"></Spin>
+                                 <PiesSecies></PiesSecies>
                              </div>
                              
                         </Card>
@@ -72,6 +76,7 @@
                                 </Tooltip>
                              </p>
                              <div class="card-content-pie">
+                                <Spin fix v-if="modificationSpinShow"></Spin>
                                  <Modifications></Modifications>
                              </div>
                         </Card>
@@ -82,7 +87,7 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Peptides</p>
+                             <p slot="title">Peptides ({{peptidesNum}})</p>
                              <p slot="extra">
                                 <Tooltip>
                                     <i class="fas fa-info-circle"></i>
@@ -92,19 +97,22 @@
                                 </Tooltip>
                              </p>
                              <div class="card-content-table">
-                                 <Table class="peptide-detail-table" border :columns="columns5" :data="data5" size="small"></Table>
+                                 <Spin fix v-if="peptidesSpinShow"></Spin>
+                                 <Table height="295" class="peptide-detail-table" border :columns="peptidesCol" :data="peptidesData" size="small"></Table>
                              </div>
+                             <!--
                              <div class="button-wrapper">
                                  <a @click="sendData()"><i class="fas fa-angle-double-left left"></i>Previous</a>
                                  <a>Next<i class="fas fa-angle-double-right right"></i></a>
                              </div>
+                             -->
                         </Card>
                     </div>
                 </Col>
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Original Experiments</p>
+                             <p slot="title">Original Experiments ({{originalExperimentsNum}})</p>
                              <p slot="extra">
                                 <Tooltip>
                                     <i class="fas fa-info-circle"></i>
@@ -114,12 +122,15 @@
                                 </Tooltip>
                              </p>
                              <div class="card-content-table">
-                                 <Table class="peptide-detail-table" border :columns="columns5" :data="data5" size="small"></Table>
+                                 <Spin fix v-if="originalExperimentsSpinShow"></Spin>
+                                 <Table height="295" class="peptide-detail-table" border :columns="originalExperimentsCol" :data="originalExperimentsData" size="small"></Table>
                              </div>
+                             <!--
                              <div class="button-wrapper">
                                  <a><i class="fas fa-angle-double-left left"></i>Previous</a>
                                  <a>Next<i class="fas fa-angle-double-right right"></i></a>
                              </div>
+                             -->
                         </Card>
                     </div>
                 </Col>
@@ -149,59 +160,196 @@
                 clusterIDApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/' + this.$route.params.id,
                 clusterSpeciesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
                 clusterModificationApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
-                columns5: [
+                clusterPeptidesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
+                clusterOriginalExperimentsApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
+                blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
+                speciesSpinShow:true,
+                modificationSpinShow:true,
+                detailsSpinShow:true,
+                peptidesSpinShow:true,
+                originalExperimentsSpinShow:true,
+                totalPeptides:0,
+                totalProjects:0,
+                peptidesCol: [
                     {
-                        title: 'Date',
-                        key: 'date',
-                        sortable: true
+                        title: 'Peptide',
+                        key: 'peptide',
+                        align:'center',
+                        render: (h, params) => {
+                            if(params.row.peptide!=this.sequence){
+                                return h('div', [
+                                    h('span', {
+                                        on: {
+                                            click: () => {
+                                                
+                                            }
+                                        }
+                                    }, params.row.peptide),
+                                ]);
+                            }
+                            else{
+                                return h('div', [
+                                    h('span', {
+                                        on: {
+                                            click: () => {
+                                                
+                                            }
+                                        }
+                                    }, params.row.peptide),
+                                    h('Icon', {
+                                        props: {
+                                            type: 'checkmark-round',
+                                        },
+                                        style: {
+                                            marginLeft: '5px'
+                                        },
+                                    }),
+                                ]);
+                            }
+                        }
                     },
                     {
-                        title: 'Name',
-                        key: 'name'
+                        title: '#PSM',
+                        key: 'psm',
+                        sortable: true,
+                        align:'center',
+                        width:120,
+                        sortType:'desc',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    on: {
+                                        click: () => {
+                                            console.log(params);
+                                        }
+                                    }
+                                }, params.row.psm),
+                                h('span', {
+                                    on: {
+                                        click: () => {
+                                            
+                                        }
+                                    }
+                                }, ' ('+((params.row.psm/this.totalPeptides)*100).toFixed(1) + '%)'),
+                            ]);
+                        }
                     },
                     {
-                        title: 'Age',
-                        key: 'age',
-                        sortable: true
+                        title: '#Species',
+                        key: 'species',
+                        sortable: true,
+                        align:'center',
+                        width:110
                     },
                     {
-                        title: 'Address',
-                        key: 'address'
+                        title: '#Projects',
+                        key: 'projects',
+                        sortable: true,
+                        align:'center',
+                        width:110,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    on: {
+                                        click: () => {
+                                            console.log(params);
+                                        }
+                                    }
+                                }, params.row.projects),
+                            ]);
+                        }
                     },
+                    {
+                        title: 'BLAST',
+                        key: 'blast',
+                        align:'center',
+                        width:80,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.gotoBlast(params);
+                                        }
+                                    }
+                                }, 'Blast'),
+                            ]);
+                        }
+                    }
                 ],
-                data5: [
+                peptidesData:[],
+                originalExperimentsCol:[
                     {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
+                        title: 'Project',
+                        key: 'project',
+                        align:'center',
+                        width:102,
+                        render: (h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    on: {
+                                        click: () => {
+                                            console.log(params);
+                                        }
+                                    }
+                                }, params.row.project),
+                            ]);
+                        }
                     },
                     {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
+                        title: '#PSM',
+                        key: 'psm',
+                        sortable: true,
+                        align:'center',
+                        width:120,
+                        sortType:'desc',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    on: {
+                                        click: () => {
+                                            console.log(params);
+                                        }
+                                    }
+                                }, params.row.psm),
+                                h('span', {
+                                    on: {
+                                        click: () => {
+                                            
+                                        }
+                                    }
+                                }, ' ('+((params.row.psm/this.totalProjects)*100).toFixed(1) + '%)'),
+                            ]);
+                        }
                     },
                     {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
+                        title: 'Species',
+                        key: 'species',
+                        sortable: true,
+                        align:'center',
+                        width:110
                     },
                     {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
+                        title: 'Tissues',
+                        key: 'tissues',
+                        sortable: true,
+                        align:'center',
+                        width:100
                     },
                     {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
+                        title: 'Instruments',
+                        key: 'instruments',
+                        align:'center'
+                    }
                 ],
-                data:[],
+                originalExperimentsData:[],
                 sequence:'',
                 averagePrecursorCharge:'',
                 averagePrecursorMz:'',
@@ -212,7 +360,9 @@
                 numberOfSpecies:'',
                 totalNumberOfSpecies:'',
                 speciesNum:'',
-                modificationsNum:''
+                modificationsNum:'',
+                peptidesNum:'',
+                originalExperimentsNum:''
             }
         },
         components: {
@@ -229,6 +379,7 @@
                 this.$http
                   .get(this.clusterIDApi)
                   .then(function(res){
+                    this.detailsSpinShow=false;
                     this.sequence=res.body.sequence;
                     this.averagePrecursorCharge=res.body.averagePrecursorCharge;
                     this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
@@ -246,6 +397,7 @@
                 this.$http
                   .get(this.clusterSpeciesApi)
                   .then(function(res){
+                    this.speciesSpinShow=false;
                     this.speciesNum = res.body.speciesCounts.length;
                     this.$bus.$emit('show-species', res.body.speciesCounts);
                   },function(err){
@@ -256,12 +408,63 @@
                 this.$http
                   .get(this.clusterModificationApi)
                   .then(function(res){
-                    console.log(res);
+                    this.modificationSpinShow=false;
                     this.modificationsNum = res.body.modificationCounts.length;
+                    this.$bus.$emit('show-modifications', res.body.modificationCounts);
+                  },function(err){
+
+                  });
+           },
+           queryClusterPeptides(){
+                this.$http
+                  .get(this.clusterPeptidesApi)
+                  .then(function(res){
+                    //console.log(res);
+                    this.peptidesSpinShow=false;
+                    this.peptidesNum = res.body.clusteredPeptides.length;
+                    for(let i=0;i<res.body.clusteredPeptides.length; i++){
+                        this.totalPeptides += res.body.clusteredPeptides[i].numberOfPSMs;
+                        var item = {
+                            peptide: res.body.clusteredPeptides[i].sequence,
+                            psm: res.body.clusteredPeptides[i].numberOfPSMs,
+                            species: res.body.clusteredPeptides[i].species.length,
+                            projects: res.body.clusteredPeptides[i].projectAccessions.length,
+                            blast: this.blastUrl+res.body.clusteredPeptides[i].sequence
+                        } 
+                        this.peptidesData.push(item);
+                    }
+                    console.log('totalPeptides',this.totalPeptides);
                     
                   },function(err){
 
                   });
+           },
+           queryClusterOriginalExperiments(){
+                 this.$http
+                  .get(this.clusterOriginalExperimentsApi)
+                  .then(function(res){
+                    //console.log(res);
+                    this.originalExperimentsSpinShow=false;
+                    this.originalExperimentsNum = res.body.clusteredProjects.length
+                    for(let i=0;i<res.body.clusteredProjects.length; i++){
+                        this.totalProjects += res.body.clusteredProjects[i].numberOfPSMs;
+                        var item = {
+                            project: res.body.clusteredProjects[i].accession,
+                            psm: res.body.clusteredProjects[i].numberOfPSMs,
+                            species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
+                            tissues: res.body.clusteredProjects[i].tissues.length>0 ? res.body.clusteredProjects[i].tissues[0] : '',
+                            instruments: res.body.clusteredProjects[i].instruments.length>0 ? res.body.clusteredProjects[i].instruments[0] : '',
+                        }
+                        this.originalExperimentsData.push(item);
+                    }
+                    
+                    
+                  },function(err){
+
+                  });
+           },
+           gotoBlast(data){
+                location.href=this.blastUrl+data.row.peptide;
            }
         },
         computed:{
@@ -280,6 +483,8 @@
             this.queryPeptideDetail();
             this.queryPeptideSpecies();
             this.queryPeptideModification();
+            this.queryClusterPeptides();
+            this.queryClusterOriginalExperiments();
         },
     }
 </script>
@@ -300,7 +505,7 @@
         margin: 10px 0 5px 0;
     }
     .card-content-table{
-        padding: 20px;
+        padding: 20px 0px;
     }
     .project-title{
       margin-bottom: 40px;
@@ -343,6 +548,7 @@
     .tooltip-content{
         white-space: normal
     }
+    
     @media (max-width: 700px) { 
       .item{ 
         width: calc((100% - 0px) / 1 - 1px);
@@ -381,5 +587,21 @@
 <style>
     .peptide-detail-table table{
         margin-bottom: 0 !important;
+    }
+    .peptide-detail-table table thead th{
+        padding: 0 !important;
+    }
+    .peptide-detail-table table tbody td{
+        padding: 0 !important;
+    }
+    .peptide-detail-table .ivu-table-body{
+        height: 263px !important;
+    }
+    .peptide-detail-table a{
+        color:#495060;
+    }
+    .peptide-detail-table a:hover{
+        color:#5bc0be;
+        border-bottom-style:dotted;
     }
 </style>
