@@ -7,21 +7,30 @@
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
                             <h2 class="project-title">Consensus Peptide</h2>
-                            <h4>VATVSLPR (Charge: 2+ @ 421.761 m/z units)</h4>
+                            <h4>{{sequence}} (Charge: {{averagePrecursorCharge}}+ @ {{averagePrecursorMz}} m/z units)</h4>
                             <div class="peptide-property-wrapper">
                                 <span class="property-item">#Spectra 
-                                    <Tooltip content="Here is the prompt text">
-                                        14552/39791 (36.6%)
+                                    <Tooltip>
+                                        {{numberOfSpectra}}/{{totalNumberOfSpectra}} ({{(numberOfSpectra/totalNumberOfSpectra).toFixed(3)*100}}%)
+                                        <div class="tooltip-content" slot="content">
+                                            {{spectraTooltip}}
+                                        </div>
                                     </Tooltip>
                                 </span>
                                 <span class="property-item">#Projects
                                     <Tooltip content="Here is the prompt text">
-                                        58/94 (61.7%)
+                                        {{numberOfProjects}}/{{totalNumberOfProjects}} ({{(numberOfProjects/totalNumberOfProjects).toFixed(3)*100}}%)
+                                        <div class="tooltip-content" slot="content">
+                                            {{projectsTooltip}}
+                                        </div>
                                     </Tooltip>
                                 </span>
                                 <span class="property-item">#Species 
                                     <Tooltip content="Here is the prompt text">
-                                        45/50 (90.0%)
+                                        {{numberOfSpecies}}/{{totalNumberOfSpecies}} ({{(numberOfSpecies/totalNumberOfSpecies).toFixed(3)*100}}%)
+                                        <div class="tooltip-content" slot="content">
+                                            {{speciesTooltip}}
+                                        </div>
                                     </Tooltip>
                                 </span>
                             </div>
@@ -33,10 +42,18 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Species</p>
-                             <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
+                             <p slot="title">Species ({{speciesNum}})</p>
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Species distribution for all the PSMs within the cluster.
+                                    </div>
+                                </Tooltip>
+                                
+                             </p>
                              <div class="card-content-pie">
-                                 <PiesSecies></PiesSecies>
+                                 <PiesSecies :data="data"></PiesSecies>
                              </div>
                              
                         </Card>
@@ -45,8 +62,15 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Modifications</p>
-                             <!--<p slot="extra">Modification distribution for all the PSMs within the cluster.</p>-->
+                             <p slot="title">Modifications ({{modificationsNum}})</p>
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Modification distribution for all the PSMs within the cluster.
+                                    </div>
+                                </Tooltip>
+                             </p>
                              <div class="card-content-pie">
                                  <Modifications></Modifications>
                              </div>
@@ -59,7 +83,14 @@
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Peptides</p>
-                             <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Unique peptide sequence and modification combinations within the cluster.
+                                    </div>
+                                </Tooltip>
+                             </p>
                              <div class="card-content-table">
                                  <Table class="peptide-detail-table" border :columns="columns5" :data="data5" size="small"></Table>
                              </div>
@@ -74,7 +105,14 @@
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Original Experiments</p>
-                             <!--<p slot="extra">Modification distribution for all the PSMs within the cluster.</p>-->
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Original experiements where the spectra and the PSMs from.
+                                    </div>
+                                </Tooltip>
+                             </p>
                              <div class="card-content-table">
                                  <Table class="peptide-detail-table" border :columns="columns5" :data="data5" size="small"></Table>
                              </div>
@@ -108,6 +146,9 @@
     export default {
         data () {
             return {
+                clusterIDApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/' + this.$route.params.id,
+                clusterSpeciesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
+                clusterModificationApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 columns5: [
                     {
                         title: 'Date',
@@ -160,7 +201,18 @@
                         date: '2016-10-02'
                     },
                 ],
-                data:[]
+                data:[],
+                sequence:'',
+                averagePrecursorCharge:'',
+                averagePrecursorMz:'',
+                numberOfSpectra:'',
+                totalNumberOfSpectra:'',
+                numberOfProjects:'',
+                totalNumberOfProjects:'',
+                numberOfSpecies:'',
+                totalNumberOfSpecies:'',
+                speciesNum:'',
+                modificationsNum:''
             }
         },
         components: {
@@ -172,10 +224,62 @@
            sendData(){
             console.log(123);
                 this.$refs.lorikeetIframe.contentWindow.postMessage({width: 100, data: this.data}, location.origin);
+           },
+           queryPeptideDetail(){
+                this.$http
+                  .get(this.clusterIDApi)
+                  .then(function(res){
+                    this.sequence=res.body.sequence;
+                    this.averagePrecursorCharge=res.body.averagePrecursorCharge;
+                    this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
+                    this.numberOfSpectra=res.body.numberOfSpectra;
+                    this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
+                    this.numberOfProjects=res.body.numberOfProjects;
+                    this.totalNumberOfProjects=res.body.totalNumberOfProjects;
+                    this.numberOfSpecies=res.body.numberOfSpecies;
+                    this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+                  },function(err){
+
+                  });
+           },
+           queryPeptideSpecies(){
+                this.$http
+                  .get(this.clusterSpeciesApi)
+                  .then(function(res){
+                    this.speciesNum = res.body.speciesCounts.length;
+                    this.$bus.$emit('show-species', res.body.speciesCounts);
+                  },function(err){
+
+                  });
+           },
+           queryPeptideModification(){
+                this.$http
+                  .get(this.clusterModificationApi)
+                  .then(function(res){
+                    console.log(res);
+                    this.modificationsNum = res.body.modificationCounts.length;
+                    
+                  },function(err){
+
+                  });
            }
         },
+        computed:{
+            spectraTooltip(){
+                return 'Number of spectra identifying the consensus peptide ('+this.numberOfSpectra+') / Total number of spectra in the cluster ('+this.totalNumberOfSpectra+')';
+            },
+            projectsTooltip(){
+                return 'Number of projects identifying the consensus peptide ('+this.numberOfProjects+') / Total number of projects in the cluster ('+this.totalNumberOfProjects+')';
+            },
+            speciesTooltip(){
+                return 'Number of species assigned to the consensus peptide ('+this.numberOfSpecies+') / Total number of species in the cluster ('+this.totalNumberOfSpecies+')';
+            }
+       
+        },
         mounted: function(){
-            
+            this.queryPeptideDetail();
+            this.queryPeptideSpecies();
+            this.queryPeptideModification();
         },
     }
 </script>
@@ -235,6 +339,9 @@
         width: 100%;
         height: 720px;
         border-width:0;
+    }
+    .tooltip-content{
+        white-space: normal
     }
     @media (max-width: 700px) { 
       .item{ 

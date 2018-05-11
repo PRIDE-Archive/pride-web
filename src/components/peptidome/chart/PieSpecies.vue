@@ -11,8 +11,8 @@ export default {
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
             legend: {
-                orient: 'horizontal',
-                align:'auto',
+                orient: 'vertical',
+                x: 'left',
                 data:[
                   'Aeromonas salmonicida salmonicida',
                   'Homo sapiens (Human)',
@@ -55,6 +55,21 @@ export default {
             ]
         }
     }
+  },
+  methods:{
+    setOptions(data){
+        console.log('setOptions');
+        data.sort(function(a,b){
+            return a.count < b.count ? 1 : -1;
+        });
+        console.log('sort array',data);
+    }
+  },
+  created(){
+    this.$bus.$on('show-species', this.setOptions);
+  },
+  beforeCreate:function(){
+    this.$bus.$off('show-species');
   }
 }
 </script>

@@ -26,10 +26,13 @@ Vue.use(iView, { locale });
 Vue.use(VueResource);
 Vue.component('chart', ECharts)
 
+const bus = new Vue();
+Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  data:{bus},
   components: { App }
 })

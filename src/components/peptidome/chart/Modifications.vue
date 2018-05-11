@@ -11,16 +11,13 @@ export default {
                 formatter: "{a} <br/>{b}: {c} ({d}%)"
             },
             legend: {
-                orient: 'horizontal',
-                align:'right',
+                orient: 'vertical',
+                x: 'left',
                 data:[
                   'No Modifications',
                   'Carbamidomethyl',
                   'Oxidation',
                   'Propionamide',
-                  'Phospho',
-                  'iTRAQ4plex114',
-                  'iTRAQ4plex-114 reporter+balance reagent acylated N-terminal',
                   'Others' ]
             },
             series: [
