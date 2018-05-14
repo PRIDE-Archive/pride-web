@@ -102,7 +102,7 @@
                              </div>
                              <!--
                              <div class="button-wrapper">
-                                 <a @click="sendData()"><i class="fas fa-angle-double-left left"></i>Previous</a>
+                                 <a><i class="fas fa-angle-double-left left"></i>Previous</a>
                                  <a>Next<i class="fas fa-angle-double-right right"></i></a>
                              </div>
                              -->
@@ -140,6 +140,7 @@
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Consensus Spectrum</p>
+                             <Spin fix v-if="consensusSpectrumSpinShow"></Spin>
                              <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
                              <iframe ref="lorikeetIframe" class="lorikeet-iframe" src="/static/lorikeet/html/pride.html"></iframe>
                              <!--<Lorikeet></Lorikeet>-->
@@ -162,12 +163,14 @@
                 clusterModificationApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 clusterPeptidesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
                 clusterOriginalExperimentsApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
+                clusterConsensusSpectrum:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
                 speciesSpinShow:true,
                 modificationSpinShow:true,
                 detailsSpinShow:true,
                 peptidesSpinShow:true,
                 originalExperimentsSpinShow:true,
+                consensusSpectrumSpinShow:true,
                 totalPeptides:0,
                 totalProjects:0,
                 peptidesCol: [
@@ -371,10 +374,6 @@
             Modifications
         },
         methods: {
-           sendData(){
-            console.log(123);
-                this.$refs.lorikeetIframe.contentWindow.postMessage({width: 100, data: this.data}, location.origin);
-           },
            queryPeptideDetail(){
                 this.$http
                   .get(this.clusterIDApi)
@@ -433,8 +432,6 @@
                         } 
                         this.peptidesData.push(item);
                     }
-                    console.log('totalPeptides',this.totalPeptides);
-                    
                   },function(err){
 
                   });
@@ -463,6 +460,47 @@
 
                   });
            },
+           queryClusterConsensusSpectrum(){
+                let peaks;
+                let sequence;
+                this.$http
+                  .get(this.clusterConsensusSpectrum)
+                  .then(function(res){
+                        //console.log(res);
+                        peaks = res.body.peaks;
+                        if(this.sequence){
+                            this.consensusSpectrumSpinShow=false;
+                            sequence = this.sequence;
+                            this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, location.origin);
+                        }
+                        else{
+                            this.$http
+                              .get(this.clusterIDApi)
+                              .then(function(res){
+                                //request this api again
+                                this.detailsSpinShow=false;
+                                this.sequence=res.body.sequence;
+                                this.averagePrecursorCharge=res.body.averagePrecursorCharge;
+                                this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
+                                this.numberOfSpectra=res.body.numberOfSpectra;
+                                this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
+                                this.numberOfProjects=res.body.numberOfProjects;
+                                this.totalNumberOfProjects=res.body.totalNumberOfProjects;
+                                this.numberOfSpecies=res.body.numberOfSpecies;
+                                this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+
+                                //for iframe
+                                this.consensusSpectrumSpinShow=false;
+                                sequence = this.sequence;
+                                this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, location.origin);
+                              },function(err){
+
+                              });
+                        }
+                  },function(err){
+
+                  });
+           },
            gotoBlast(data){
                 location.href=this.blastUrl+data.row.peptide;
            }
@@ -485,6 +523,7 @@
             this.queryPeptideModification();
             this.queryClusterPeptides();
             this.queryClusterOriginalExperiments();
+            this.queryClusterConsensusSpectrum();
         },
     }
 </script>

@@ -23,37 +23,47 @@
 <script type="text/javascript">
 window.addEventListener("message", receiveMessage, false);
 
+
+var sequence = '';
+var peaksTemp = [];
+var peaks = [];
+
 function receiveMessage(event)
 {
-  //if (event.origin !== "http://example.org:8080")
+    //if (event.origin !== "http://example.org:8080")
     //return;
-    console.log(event.data);
-  // ...
+    peaksTemp = event.data.peaks;
+    sequence = event.data.sequence;
+    for(let i=0; i<peaksTemp.length; i++){
+      var tempArray = [];
+      tempArray.push(peaksTemp[i].mz);
+      tempArray.push(peaksTemp[i].intensity);
+      peaks.push(tempArray);
+    }
+    //console.log('event.data',event.data);
+    showData();
 }
 
+function showData(){
+    $("#lorikeet").specview({"sequence":sequence,
+                            "scanNum":14161,
+                            "charge":2,
+                            "massError":0.5,
+                            "peakDetect":true,
+                            "showMassErrorPlot":true,
+                            "massErrorPlotDefaultUnit":"ppm",
+                            "precursorMz":833.912965466879996,
+                            "fileName":"TCGA_E2-A10A_BH-A18Q_C8-A130_117C_W_BI_20130222_H-PM_f24.14161.14161.2",
+                            "width":650,
+                            "height":500,
+                            "ntermMod":144.102063,
+                            "ctermMod":0,
+                            "variableMods":[],
+                            "peaks":peaks,
+                            "labelReporters": true});
+}
 
-$(document).ready(function () {
-
-   /* render the spectrum with the given options */
-   $("#lorikeet").specview({"sequence":"MTQSPSSLSASVGDR",
-                        "scanNum":14161,
-                        "charge":2,
-                        "massError":0.5,
-                        "peakDetect":true,
-                        "showMassErrorPlot":true,
-       				    "massErrorPlotDefaultUnit":"ppm",
-                        "precursorMz":833.912965466879996,
-                        "fileName":"TCGA_E2-A10A_BH-A18Q_C8-A130_117C_W_BI_20130222_H-PM_f24.14161.14161.2",
-                        "width":650,
-                        "height":500,
-                        "ntermMod":144.102063,
-       				    "ctermMod":0,
-                        "variableMods":[],
-                        "peaks":ms2peaks,
-                        "labelReporters": true});
-
-});
-
+/*
 var ms2peaks = [
 [112.0865,5010.2876],
 [114.1103,69774.8438],
@@ -213,7 +223,7 @@ var ms2peaks = [
 [1523.7052,118231.8438],
 [1524.6992,33716.8242],
 [1715.0938,8072.2856],
-];
+];*/
 </script>
 <!-- page footer -->
 <div class='lorikeet'></div>
