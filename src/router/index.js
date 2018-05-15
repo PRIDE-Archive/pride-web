@@ -12,6 +12,8 @@ const Peptidome = resolve => require(['@/components/peptidome/Peptidome'], resol
 const PeptideSearch = resolve => require(['@/components/peptidome/PeptideSearch'], resolve);
 const PeptideDownload = resolve => require(['@/components/peptidome/PeptideDownload'], resolve);
 const SpectrumLibrary = resolve => require(['@/components/peptidome/SpectrumLibrary'], resolve);
+const PeptideDetails = resolve => require(['@/components/peptidome/PeptideDetails'], resolve);
+
 
 Vue.use(Router)
 
@@ -81,6 +83,11 @@ export default new Router({
       path: '/spectrumlibrary',
       name: 'spectrumlibrary',
       component: SpectrumLibrary
+    },
+    {
+      path:'/peptidedetails/:id',
+      name: 'peptidedetails',
+      component: PeptideDetails
     },
     {
       path:'/404',

@@ -15,6 +15,9 @@ import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/line'
 import 'echarts/lib/component/polar'
+import 'echarts/lib/chart/pie'
+import 'echarts/lib/component/legend'
+
 import VueMarkdown from 'vue-markdown';
 Vue.component('vue-markdown', VueMarkdown);
 
@@ -23,10 +26,13 @@ Vue.use(iView, { locale });
 Vue.use(VueResource);
 Vue.component('chart', ECharts)
 
+const bus = new Vue();
+Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  data:{bus},
   components: { App }
 })
