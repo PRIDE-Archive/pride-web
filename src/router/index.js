@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 //import Index from '@/components/landingpage/Index'
-const Test = resolve => require(['@/components/Test1'], resolve);
+const Test = resolve => require(['@/components/Test'], resolve);
 const LandingPage = resolve => require(['@/components/landingpage/LandingPage'], resolve);
 const Archive = resolve => require(['@/components/archive/Archive'], resolve);
 const Citation = resolve => require(['@/components/landingpage/Citation'], resolve);
