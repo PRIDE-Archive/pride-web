@@ -9,18 +9,30 @@ export default {
         option:{
             tooltip: {
                 trigger: 'item',
-                formatter: "{a} <br/>{b}: {c} ({d}%)"
+                formatter: "{a} <br/>{b}: {c} ({d}% in selected)"
             },
             legend: {
+                type: 'scroll',
                 orient: 'vertical',
-                x: 'left',
-                data:[]
+                left: 5,
+                top: 10,
+                bottom: 10,
+                //itemWidth: 10,
+                data:[],
+                formatter: function (name) {
+                   // console.log( name);
+                    return name;
+                    
+                },
+                selected:{},
+                zlevel:-1,
             },
             series: [
                 {
                     name:'PSM for',
                     type:'pie',
                     radius: ['50%', '70%'],
+                    center: ['80%', '50%'],
                     avoidLabelOverlap: false,
                     label: {
                         normal: {
@@ -48,32 +60,26 @@ export default {
   },
   methods:{
     setOptions(data){
-        //console.log(data);
         this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
         data.sort(function(a,b){
             return a.count < b.count ? 1 : -1;
         });
-        var othersCount = 0;
+        var totalCount = 0;
         for(let i=0; i<data.length; i++){
-            if(i<this.visulizationNum){
-                this.option.legend.data.push(data[i].speciesName);
-                var item = {
-                    value:data[i].count,
-                    name:data[i].speciesName
-                }
-                this.option.series[0].data.push(item);
-            }
-            else{
-                othersCount += data[i].count;
-            }
+            totalCount += data[i].count;
         }
-        var lastItem = {
-            value:othersCount,
-            name:'Others'
+        var legendName = [];
+        for(let i=0; i<data.length; i++){
+            legendName[i] = data[i].speciesName + ' [' + (data[i].count/totalCount*100).toFixed(1) +'%]';
+            //console.log('legendName',legendName[i]);
+            this.option.legend.data.push(legendName[i]);
+            this.option.legend.selected[legendName[i]] = i < this.visulizationNum;
+            var item = {
+                value:data[i].count,
+                name:legendName[i]
+            }
+            this.option.series[0].data.push(item);
         }
-        this.option.legend.data.push('Others');
-        this.option.series[0].data.push(lastItem);
-        //console.log('othersCount',othersCount);
     }
   },
   created(){
