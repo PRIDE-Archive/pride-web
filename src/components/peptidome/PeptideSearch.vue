@@ -171,8 +171,8 @@
               {
                   title: 'ID',
                   key: 'ID',
-                  width: 0,
-                  maxWidth:0,
+                  width:1,
+                  //maxWidth:0,
                   className:'peptideID'
               }
           ],
@@ -465,8 +465,8 @@
         this.$Message.success({content:'sortChange', duration:1});
       },
       rowClick(row,index){
-        console.log(row);
-        console.log(index);
+        this.$router.push({name:'peptidedetails',params:{id:row.ID}});
+       
         this.$Message.success({content:'rowClick', duration:1});
       },
       queryClusterList(){
@@ -474,7 +474,6 @@
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
-              console.log(res);
                 this.loading=false;
                 this.total = res.body.totalResults;
                 //console.log(res.body.results);
