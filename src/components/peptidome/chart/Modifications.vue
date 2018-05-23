@@ -9,7 +9,7 @@ export default {
         option:{
             tooltip: {
                 trigger: 'item',
-                formatter: "{c} ({d}%) {a} {b} "
+                formatter: "{c} ({d}% in selected) {a} {b} "
             },
             legend: {
                 type: 'scroll',
