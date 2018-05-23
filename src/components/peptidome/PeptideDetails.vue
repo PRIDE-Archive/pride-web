@@ -220,13 +220,23 @@
                         sortType:'desc',
                         render: (h, params) => {
                             return h('div', [
-                                h('a', {
-                                    on: {
-                                        click: () => {
-                                            console.log(params);
-                                        }
-                                    }
-                                }, params.row.psm),
+                                h('Tooltip',//first item
+                                    {
+                                        props: {
+                                            content: 'Show PSMs that have this sequence and modification',
+                                        },
+                                    },//second item
+                                    [
+                                        h('a', {
+                                            on: {
+                                                click: () => {
+                                                    console.log(params);
+                                                }
+                                            }
+                                        }, params.row.psm),
+                                    
+                                    ]//third item
+                                ),
                                 h('span', {
                                     on: {
                                         click: () => {
@@ -642,5 +652,8 @@
     .peptide-detail-table a:hover{
         color:#5bc0be;
         border-bottom-style:dotted;
+    }
+    .peptide-detail-table .ivu-tooltip-inner{
+        white-space:normal;
     }
 </style>
