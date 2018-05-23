@@ -84,7 +84,6 @@
                   <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                 </div>
             </Card>
-
           </Row>
       </div>
   </div>
