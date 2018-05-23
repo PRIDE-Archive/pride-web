@@ -199,14 +199,25 @@
                                             }
                                         }
                                     }, params.row.peptide),
-                                    h('Icon', {
-                                        props: {
-                                            type: 'checkmark-round',
-                                        },
-                                        style: {
-                                            marginLeft: '5px'
-                                        },
-                                    }),
+                                    h('Tooltip',//first item
+                                        {
+                                            props: {
+                                                content: 'Consensus peptide',
+                                            },
+                                        },//second item
+                                        [
+                                           h('Icon', {
+                                                props: {
+                                                    type: 'checkmark-round',
+                                                },
+                                                style: {
+                                                    marginLeft: '5px'
+                                                },
+                                            }),
+                                        
+                                        ]//third item
+                                    ),
+                                    
                                 ]);
                             }
                         }
@@ -262,13 +273,23 @@
                         width:110,
                         render: (h, params) => {
                             return h('div', [
-                                h('a', {
-                                    on: {
-                                        click: () => {
-                                            console.log(params);
-                                        }
-                                    }
-                                }, params.row.projects),
+                                 h('Tooltip',//first item
+                                    {
+                                        props: {
+                                            content: 'Show projects that contain this peptide',
+                                        },
+                                    },//second item
+                                    [
+                                       h('a', {
+                                            on: {
+                                                click: () => {
+                                                    console.log(params);
+                                                }
+                                            }
+                                        }, params.row.projects),
+                                    
+                                    ]//third item
+                                ),
                             ]);
                         }
                     },
@@ -325,13 +346,23 @@
                         sortType:'desc',
                         render: (h, params) => {
                             return h('div', [
-                                h('a', {
-                                    on: {
-                                        click: () => {
-                                            console.log(params);
-                                        }
-                                    }
-                                }, params.row.psm),
+                                h('Tooltip',//first item
+                                    {
+                                        props: {
+                                            content: 'Show PSMs belong to this project',
+                                        },
+                                    },//second item
+                                    [
+                                        h('a', {
+                                            on: {
+                                                click: () => {
+                                                    console.log(params);
+                                                }
+                                            }
+                                        }, params.row.psm),
+                                    
+                                    ]//third item
+                                ),
                                 h('span', {
                                     on: {
                                         click: () => {
