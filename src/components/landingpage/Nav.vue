@@ -51,16 +51,16 @@
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
+                      <Dropdown @on-click="resourcesClick">
                           <a href="javascript:void(0)">
                             <i class="fas fa-search"></i>
                             <span class='sub-nav-title'>Resources</span> 
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem>PRIDE Archive</DropdownItem>
-                              <DropdownItem>PRIDE Peptidome</DropdownItem>
-                              <DropdownItem>PRIDE Spectral Libraries</DropdownItem>
+                              <DropdownItem name="goToArchive">PRIDE Archive</DropdownItem>
+                              <DropdownItem name="goToPeptidome">PRIDE Peptidome</DropdownItem>
+                              <DropdownItem name="gotoSpectrumLibrary">PRIDE Spectral Libraries</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
                   </li>
@@ -147,6 +147,18 @@
             },
             gotoLandingpage(){
               this.$router.push({name:'landingpage'});
+            },
+            resourcesClick(name){
+                if(name=='goToArchive'){
+                    this.$router.push({name:'archive'});
+                }
+                else if(name=='goToPeptidome'){
+                    this.$router.push({name:'peptidome'});
+                }
+                else if(name=='gotoSpectrumLibrary'){
+                    this.$router.push({name:'spectrumlibrary'});
+                }
+             
             }
         },
         

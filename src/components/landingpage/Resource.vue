@@ -36,8 +36,8 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="showArchive">{{archivebutton}}</a>
-        <a class="button resource-button" @click="showPeptidome">{{peptidomebutton}}</a>
+        <a class="button resource-button" @click="goToArchive">{{archivebutton}}</a>
+        <a class="button resource-button" @click="goToPeptidome">{{peptidomebutton}}</a>
     </div>
   </div>
 </template>
@@ -180,10 +180,10 @@
             advanceSearchConditoinAdd(){
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
-            showPeptidome(){
+            goToPeptidome(){
                 this.$router.push({name:'peptidome'});
             },
-            showArchive(){
+            goToArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});
                 this.$router.push({name:'archive'});
             },
