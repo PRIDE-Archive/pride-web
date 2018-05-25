@@ -63,10 +63,11 @@
                   .then(function(res){
                     this.source = res.body;
                     this.$nextTick(function(){
-                        this.addID();
-                        this.goAnchor(location.hash.replace(/\#/,''));
+                        
                         //this.changeDefaultAction();
                         this.$nextTick(function(){
+                            this.addID();
+                            this.goAnchor(location.hash.replace(/\#/,''));
                             this.activeName = location.hash.replace(/\#/,'');
                         });
                     });
