@@ -63,11 +63,10 @@
                   .then(function(res){
                     this.source = res.body;
                     this.$nextTick(function(){
-                        
+                        this.addID();
+                        this.goAnchor(location.hash.replace(/\#/,''));
                         //this.changeDefaultAction();
                         this.$nextTick(function(){
-                            this.addID();
-                            this.goAnchor(location.hash.replace(/\#/,''));
                             this.activeName = location.hash.replace(/\#/,'');
                         });
                     });
@@ -98,7 +97,7 @@
             },
             addID(){
 
-                let list = this.$el.querySelector('.markdown-body').querySelectorAll('h2');
+                let list = document.querySelector('.markdown-body').querySelectorAll('h2');
                 for(let i=0; i<list.length; i++){
                     var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
                     var id = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
