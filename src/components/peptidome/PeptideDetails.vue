@@ -300,14 +300,8 @@
                         width:80,
                         render: (h, params) => {
                             return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
+                                h('img', {
+                                   
                                     on: {
                                         click: () => {
                                             this.gotoBlast(params);
