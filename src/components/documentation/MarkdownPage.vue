@@ -148,20 +148,11 @@
                 }
             },
             */
-            documentQuery(){
-                this.$http
-                  .get(this.landingPageJsonURL)
-                  .then(function(res){
-                    //this.tableList =
-                    //TODO This page does not need to make left table dynamically.
-                  },function(err){
-
-                  });
-            },
+           
         },
         mounted:function(){
             this.markdownQuery();
-            this.documentQuery();
+        
         },
     }
 </script>
