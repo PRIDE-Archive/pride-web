@@ -58,7 +58,6 @@
         methods:{
             markdownQuery(){
                 this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md';
-                console.log('this.markdownURL: ',this.markdownURL);
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){
@@ -89,7 +88,7 @@
             menuSlect(name){
                 if(location.hash.replace(/\#/,'') == name){
                     let anchor = document.getElementById(name);
-                    console.log(anchor);
+                    //console.log(anchor);
                     document.documentElement.scrollTop = anchor.offsetTop;
                     return;
                 }
@@ -122,7 +121,7 @@
                     }
                     for(let i=list.length-1; i>0; i--){
                         if(list[i].offsetTop - document.documentElement.scrollTop <= 0){
-                            console.log(list[i].getAttribute('id'));
+                            //console.log(list[i].getAttribute('id'));
                             this.activeName =list[i].getAttribute('id');
                             break;
                         }
