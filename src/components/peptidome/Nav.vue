@@ -182,7 +182,7 @@
                 this.$router.push({name:'peptidedownload'});
             },
             gotoPeptideAPI(){
-              this.$router.push({name:'peptidedownload'});
+               this.$router.push({path:'/markdownpage/peptideAPI'});
             }
         },
         

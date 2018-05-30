@@ -81,7 +81,7 @@
                     <span>
                         <span>Sort by: </span>
                         <div class="sortOption">
-                            <Select v-model="model2" size="small" style="width:95px" @on-change="sortChange">
+                            <Select v-model="sortType" size="small" style="width:95px" @on-change="sortChange">
                                 <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </div>
@@ -131,6 +131,7 @@
           fieldSelectors:[],
           containSelectors:[],
           filterCombination:[],
+          sortType:'Accession',
           publicaitionList:[
             {
               id:'PXD008343',

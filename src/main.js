@@ -17,6 +17,9 @@ import 'echarts/lib/chart/line'
 import 'echarts/lib/component/polar'
 import 'echarts/lib/chart/pie'
 import 'echarts/lib/component/legend'
+import 'echarts/lib/component/legend/ScrollableLegendModel.js'
+import 'echarts/lib/component/legend/ScrollableLegendView.js'
+import 'echarts/lib/component/legend/scrollableLegendAction.js'
 
 import VueMarkdown from 'vue-markdown';
 Vue.component('vue-markdown', VueMarkdown);

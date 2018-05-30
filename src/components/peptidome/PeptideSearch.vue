@@ -84,7 +84,6 @@
                   <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                 </div>
             </Card>
-
           </Row>
       </div>
   </div>
@@ -118,12 +117,7 @@
           filterCombination:[],
           loading: true,
           columns5: [
-              {
-                  type: 'index',
-                  width: 80,
-                  align: 'center',
-                  ellipsis:true
-              },
+
               {
                   title: 'Peptide',
                   key: 'peptide',
@@ -172,9 +166,16 @@
                   sortable: true,
                   minWidth: 150,
                   ellipsis:true
+              },
+              {
+                  title: 'ID',
+                  key: 'ID',
+                  width:1,
+                  //maxWidth:0,
+                  className:'peptideID'
               }
           ],
-          results: []
+          results: [],
       }
     },
     components: {
@@ -463,6 +464,8 @@
         this.$Message.success({content:'sortChange', duration:1});
       },
       rowClick(row,index){
+        this.$router.push({name:'peptidedetails',params:{id:row.ID}});
+       
         this.$Message.success({content:'rowClick', duration:1});
       },
       queryClusterList(){
@@ -470,11 +473,12 @@
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
-              console.log(res);
                 this.loading=false;
                 this.total = res.body.totalResults;
+                //console.log(res.body.results);
                 for(let i=0; i < res.body.results.length; i++){
                   var item = {
+                      ID:res.body.results[i].id,
                       peptide: res.body.results[i].sequence,
                       precharge: res.body.results[i].averagePrecursorCharge,
                       premz: res.body.results[i].averagePrecursorMz.toFixed(2),
@@ -650,6 +654,7 @@
     .page-container{
       margin-top: 20px;
     }
+
 </style>
 
 <style>
@@ -730,5 +735,8 @@
     }
     .peptide-table table{
       margin-bottom: 0 !important;
+    }
+            .peptide-table .peptideID{
+      display: none;
     }
 </style>

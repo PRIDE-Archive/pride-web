@@ -57,7 +57,7 @@
         },
         methods:{
             markdownQuery(){
-                this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md'
+                this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md';
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){
@@ -88,7 +88,7 @@
             menuSlect(name){
                 if(location.hash.replace(/\#/,'') == name){
                     let anchor = document.getElementById(name);
-                    console.log(anchor);
+                    //console.log(anchor);
                     document.documentElement.scrollTop = anchor.offsetTop;
                     return;
                 }
@@ -97,7 +97,7 @@
             },
             addID(){
 
-                let list = this.$el.querySelector('.markdown-body').querySelectorAll('h2');
+                let list = document.querySelector('.markdown-body').querySelectorAll('h2');
                 for(let i=0; i<list.length; i++){
                     var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
                     var id = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
@@ -121,7 +121,7 @@
                     }
                     for(let i=list.length-1; i>0; i--){
                         if(list[i].offsetTop - document.documentElement.scrollTop <= 0){
-                            console.log(list[i].getAttribute('id'));
+                            //console.log(list[i].getAttribute('id'));
                             this.activeName =list[i].getAttribute('id');
                             break;
                         }
@@ -147,20 +147,11 @@
                 }
             },
             */
-            documentQuery(){
-                this.$http
-                  .get(this.landingPageJsonURL)
-                  .then(function(res){
-                    //this.tableList =
-                    //TODO This page does not need to make left table dynamically.
-                  },function(err){
-
-                  });
-            },
+           
         },
         mounted:function(){
             this.markdownQuery();
-            this.documentQuery();
+        
         },
     }
 </script>
