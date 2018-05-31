@@ -46,21 +46,13 @@
                         align:'center',
                         render: (h, params) => {
                             return h('div', [
-                              h('span', {
+                              h('a', {
                                 on: {
                                     click: () => {
                                         
                                     }
                                 }
                               }, params.row.peptide),
-                              h('Icon', {
-                                  props: {
-                                      type: 'checkmark-round',
-                                  },
-                                  style: {
-                                      marginLeft: '5px'
-                                  },
-                              }),
                             ]);
                         }
                     },
@@ -69,18 +61,54 @@
                         key: 'project',
                         sortable: false,
                         align:'center',
-                        /*
                         render: (h, params) => {
                             return h('div', [
-                              
+                                 h('Tooltip',//first item
+                                    {
+                                        props: {
+                                            content: 'Show projects details',
+                                        },
+                                    },//second item
+                                    [
+                                       h('a', {
+                                            on: {
+                                                click: () => {
+                                                    console.log(params);
+                                                }
+                                            }
+                                        }, params.row.project),
+                                    
+                                    ]//third item
+                                ),
                             ]);
-                        }*/
+                        }
                     },
                     {
                         title: 'Assay',
                         key: 'assay',
                         sortable: false,
                         align:'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                 h('Tooltip',//first item
+                                    {
+                                        props: {
+                                            content: 'Show assay details',
+                                        },
+                                    },//second item
+                                    [
+                                       h('a', {
+                                            on: {
+                                                click: () => {
+                                                    console.log(params);
+                                                }
+                                            }
+                                        }, params.row.project),
+                                    
+                                    ]//third item
+                                ),
+                            ]);
+                        }
                         
                     },
                     {
@@ -165,6 +193,11 @@
                 this.loading=false;
                 this.total = res.body.totalResults;
                 for(let i=0; i < res.body.psms.length; i++){
+                  let tempdeltaMZ;
+                  if((res.body.psms[i].deltaMZ).toFixed(2) == 0)
+                    tempdeltaMZ = '0.00'
+                  else
+                    tempdeltaMZ = (res.body.psms[i].deltaMZ).toFixed(2)
                   var item = {
                       peptide:res.body.psms[i].sequence,
                       project: res.body.psms[i].projectAccession,
@@ -175,7 +208,7 @@
                       searchengine: res.body.psms[i].searchEngine,
                       searchenginescore: res.body.psms[i].searchEngineScores,
                       searchdatabase: res.body.psms[i].searchDatabase,
-                      deltaMZ: Math.round((res.body.psms[i].deltaMZ)).toFixed(2)
+                      deltaMZ: tempdeltaMZ
 
                       //(res.body.results[i].maxRatio*100).toFixed(1) + '%'
                   }
@@ -340,85 +373,18 @@
 </style>
 
 <style>
-    .page .ivu-select-dropdown-list{
-      margin-left: 0 !important;
-    }
-    .archive-search-input input{
-      border-radius: 3px !important;
-      margin-bottom: 0 !important;
-    }
-    .archive-search-input .ivu-select-dropdown{
-      text-align: left;
-    }
-    .search-item-input input{
-      margin-bottom: 0 !important;
-    }
-    .filter-selector .ivu-select-item-selected{
-      color: inherit !important;
-      background: inherit !important;
-    }
-    .filter-selector .ivu-checkbox-wrapper{
-      width: 100% !important;
-      margin: 0 auto !important;
-    }
-    .filter-selector .ivu-select-input{
-      margin-bottom: 0;
-      box-shadow: none;
-    }
-     .filter-selector .ivu-select-input:focus{
-          border: none;
-    }
-    .filter-selector .ivu-tag{
-      background: none ;
-    }
-    .filter-selector .ivu-select-multiple .ivu-select-item-selected:after{
-      line-height: 0.8 !important;
-      font-size: 22px;
-      margin-right: 5px;
-      float:left;
-    }
-    .filter-selector .ivu-select-input{
-      height: 30px;
-      line-height: 30px;
-    }
-    .filter-selector .ivu-tag{
-      /*display: none;*/
-      margin:2px 4px 2px 0;
-    }
-    .filter-selector .ivu-select-selection{
-      border-radius: 3px;
-    }
-    .filter-selector.input-search-needed .ivu-select-dropdown{
-      width: 200px !important;
-      left:243px !important;
-    }
-    .filter-selector .ivu-icon-ios-close-empty{
-      display: none;
-    }
-    .sortOption .ivu-select-selection{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
-      height: 17px !important;
-      line-height: 17px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-selection .ivu-select-selected-value{
-      font-weight: normal !important;
-
-    }
-    .sortOption .ivu-select-dropdown .ivu-select-item{
-      font-weight: normal !important;
-
-    }
     .psm-detail-table table{
       margin-bottom: 0 !important;
     }
-            .peptide-table .peptideID{
-      display: none;
+
+    .psm-detail-table a{
+        color:#495060;
+    }
+    .psm-detail-table a:hover{
+        color:#5bc0be;
+        border-bottom-style:dotted;
+    }
+    .psm-detail-table .ivu-tooltip-inner{
+        white-space:normal;
     }
 </style>
