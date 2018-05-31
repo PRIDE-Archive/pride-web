@@ -103,7 +103,7 @@
                                                     console.log(params);
                                                 }
                                             }
-                                        }, params.row.project),
+                                        }, params.row.assay),
                                     
                                     ]//third item
                                 ),
