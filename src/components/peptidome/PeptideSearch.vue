@@ -465,17 +465,16 @@
       },
       rowClick(row,index){
         this.$router.push({name:'peptidedetails',params:{id:row.ID}});
-       
-        this.$Message.success({content:'rowClick', duration:1});
       },
       queryClusterList(){
         this.results=[];
+        this.loading=true;
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
                 this.loading=false;
                 this.total = res.body.totalResults;
-                //console.log(res.body.results);
+                console.log(res.body.results);
                 for(let i=0; i < res.body.results.length; i++){
                   var item = {
                       ID:res.body.results[i].id,

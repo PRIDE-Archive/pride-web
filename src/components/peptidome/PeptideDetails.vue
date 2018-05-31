@@ -241,7 +241,8 @@
                                         h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    //console.log(params.row);
+                                                    this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{sequence:params.row.peptide}});
                                                 }
                                             }
                                         }, params.row.psm),
@@ -300,13 +301,24 @@
                         width:80,
                         render: (h, params) => {
                             return h('div', [
-                                h('img', {
+                                /*
+                                h('Button', {
                                    
                                     on: {
                                         click: () => {
                                             this.gotoBlast(params);
                                         }
                                     }
+                                }, 'Blast'),
+                                */
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
                                 }, 'Blast'),
                             ]);
                         }
