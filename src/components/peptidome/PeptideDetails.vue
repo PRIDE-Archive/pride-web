@@ -227,7 +227,6 @@
                         key: 'psm',
                         sortable: true,
                         align:'center',
-                        width:120,
                         sortType:'desc',
                         render: (h, params) => {
                             return h('div', [
@@ -241,7 +240,8 @@
                                         h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    //console.log(params.row);
+                                                    this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{sequence:params.row.peptide}});
                                                 }
                                             }
                                         }, params.row.psm),
@@ -263,14 +263,14 @@
                         key: 'species',
                         sortable: true,
                         align:'center',
-                        width:110
+                      
                     },
                     {
                         title: '#Projects',
                         key: 'projects',
                         sortable: true,
                         align:'center',
-                        width:110,
+                       
                         render: (h, params) => {
                             return h('div', [
                                  h('Tooltip',//first item
@@ -283,7 +283,7 @@
                                        h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    this.$router.push({name:'clusterprojects',params:{id:this.$route.params.id},query:{sequence:params.row.peptide}});
                                                 }
                                             }
                                         }, params.row.projects),
@@ -297,16 +297,27 @@
                         title: 'BLAST',
                         key: 'blast',
                         align:'center',
-                        width:80,
+                        width:100,
                         render: (h, params) => {
                             return h('div', [
-                                h('img', {
+                                /*
+                                h('Button', {
                                    
                                     on: {
                                         click: () => {
                                             this.gotoBlast(params);
                                         }
                                     }
+                                }, 'Blast'),
+                                */
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
                                 }, 'Blast'),
                             ]);
                         }
@@ -318,13 +329,12 @@
                         title: 'Project',
                         key: 'project',
                         align:'center',
-                        width:102,
                         render: (h, params) => {
                             return h('div', [
                                 h('a', {
                                     on: {
                                         click: () => {
-                                            console.log(params);
+                                            this.$router.push({name:'dataset',params:{ id: params.row.project}});
                                         }
                                     }
                                 }, params.row.project),
@@ -336,7 +346,6 @@
                         key: 'psm',
                         sortable: true,
                         align:'center',
-                        width:120,
                         sortType:'desc',
                         render: (h, params) => {
                             return h('div', [
@@ -372,14 +381,12 @@
                         key: 'species',
                         sortable: true,
                         align:'center',
-                        width:110
                     },
                     {
                         title: 'Tissues',
                         key: 'tissues',
                         sortable: true,
                         align:'center',
-                        width:100
                     },
                     {
                         title: 'Instruments',

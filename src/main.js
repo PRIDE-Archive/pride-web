@@ -22,11 +22,15 @@ import 'echarts/lib/component/legend/ScrollableLegendView.js'
 import 'echarts/lib/component/legend/scrollableLegendAction.js'
 
 import VueMarkdown from 'vue-markdown';
+import ReadMore from 'vue-read-more';
+ 
+
 Vue.component('vue-markdown', VueMarkdown);
 
 Vue.config.productionTip = false
 Vue.use(iView, { locale });
 Vue.use(VueResource);
+Vue.use(ReadMore);
 Vue.component('chart', ECharts)
 
 const bus = new Vue();

@@ -6,11 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-<<<<<<< HEAD
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_1.png" alt="logo" width="300" height="300"></a>
-=======
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_final1.png" alt="logo" width="300" height="300"></a>
->>>>>>> 7d480e9c117b0cb26cdb591185751feec4e1c3f1
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_final2.png" alt="logo" width="300" height="300"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -162,7 +158,7 @@
                 else if(name=='gotoSpectrumLibrary'){
                     this.$router.push({name:'spectrumlibrary'});
                 }
-             
+
             }
         },
 
@@ -228,7 +224,7 @@
     }
     .row{
       margin:0 auto;
-     
+
       max-width: 150rem !important;
    }
    #local-nav{

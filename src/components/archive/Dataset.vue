@@ -4,14 +4,14 @@
       <div class="content">
           <Row>
             <Col span="24">
-              
+                <!--
                 <Breadcrumb separator=">">
                     <BreadcrumbItem to="/">Home</BreadcrumbItem>
                     <BreadcrumbItem to="/components/breadcrumb">Pride</BreadcrumbItem>
                     <BreadcrumbItem>PXD006887</BreadcrumbItem>
                 </Breadcrumb>
-            
-               <h2 class="project-title">Project PXD006887</h2>
+                -->
+               <h2 class="project-title">Project {{accession}}</h2>
                 <div class="tags">
                   <!--
                     <span class="type-tag-wrapper">
@@ -30,21 +30,58 @@
                   <div>
                     <Card class="card">
                           <p slot="title">Summary</p>
-                          <div class="summary-content-header">Title</div>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <div class="summary-content-header">Description</div>
-                          <p>We subjected podocytes (either differentiated or undifferentiated) to a pulse with stable isotope labeled amino acids for 24, 48, 72 and 96h.</p>
-                          <div class="summary-content-header">Sample Processing Protocol</div>
-                          <p>Proteins were dissolved in urea buffer containing 8M urea and 50mM ammonium bicarbonate supplemented with 1X PIM (Roche complete protease inhibitor tabl. EDTA-free). After sonification for 30 s on 10% power, the protein lysates were centrifuged with 14,000 rpm for 30 min at 4°C followed by transfer of the supernatant to a new tube and measurement of protein concentrations with the help of a commercial BCA kit (Thermo Fisher Scientific). For the reduction of disulfide bonds the samples were exposed to Dithiothreitol (DTT, 10mM) for 1 hour at room temperature (RT). Alkylation was performed with Iodacetamide (IAA, 40mM) in the dark Proteins were digested overnight at RT using a 1:100 ratio of trypsin (1μg trypsin per 100 μg protein from each sample). Adding of 0.5 % formic acid the next morning stopped this process.</p>
-                          <div class="summary-content-header">Data Processing Protocol</div>
-                          <p>Samples were analyzed using MaxQuant as indicated in the method section of the paper.</p>
-                          <div class="summary-content-header">Contact</div>
-                          <p>Markus Rinschen, Kidney research center cologne </p>
-                          <p>Markus Rinschen, University Hospital Cologne ( lab head )</p>
-                          <div class="summary-content-header">Submission Date</div>
-                          <p>07/07/2017</p>
-                          <div class="summary-content-header">Publication Date</div>
-                          <p>01/05/2018</p>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Title</div>
+                              <p>{{title}}</p>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Description</div>
+                              <read-more class="readMore" more-str="Read more" :text="projectDescription" link="#" less-str="Read less" :max-chars="400"></read-more>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Sample Processing Protocol</div>
+                              <div v-if="sampleProcessingProtocol != 'Not available'">
+                                <read-more class="readMore" more-str="Read more" :text="sampleProcessingProtocol" link="#" less-str="Read less" :max-chars="400"></read-more>
+                              </div>
+                              <div v-else>
+                                  <div v-if="publications.length == 0">
+                                    <p>Not available</p>
+                                  </div>
+                                  <div v-else>
+                                    <div v-for="item in publications">
+                                      <p>See details in reference(s): <a @click="europePMC(item.pmid)">{{item.pmid}}</a></p>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Data Processing Protocol1</div>
+                              <div v-if="dataProcessingProtocol != 'Not available'">
+                                <read-more class="readMore" more-str="Read more" :text="dataProcessingProtocol" link="#" less-str="Read less" :max-chars="400"></read-more>
+                              </div>
+                              <div v-else>
+                                  <div v-if="publications.length == 0">
+                                    <p>Not available</p>
+                                  </div>
+                                  <div v-else>
+                                    <div v-for="item in publications">
+                                      <p>See details in reference(s): <a @click="europePMC(item.pmid)">{{item.pmid}}</a></p>
+                                    </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Contact</div>
+                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Submission Date</div>
+                              <p>{{submissionDate}}</p>
+                          </div>
+                          <div class="card-item-wrapper">
+                              <div class="summary-content-header">Publication Date</div>
+                              <p>{{publicationDate}}</p>
+                          </div>
                     </Card>
                     <Card class="card">
                        <p slot="title">Property</p>
@@ -52,44 +89,67 @@
                           <div class="property-col">
                             <div class="property-row">
                                 <div class="summary-content-header">Species</div>
-                                <a>Homo sapiens (Human)</a>
+                                <div>
+                                  <a v-for="item in species">{{item}}</a>
+                                </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Tissue</div>
-                                <p>kidney</p>
+                                <div class="property-wrapper">
+                                  <a v-for="item in tissues">{{item}}</a>
+                                </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Instrument</div>
-                                <a>Q Exactive</a>
+                                <div class="property-wrapper">
+                                  <a v-for="item in instrumentNames">{{item}}</a>
+                                </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Software</div>
-                                <a>kidney</a>
+                                <p>{{software}}</p>
                             </div>
                           </div>
                           <div class="property-col">
-                            <div class="property-row">
-                                <div class="summary-content-header">Tissue</div>
-                                <p>Not available</p>
-                            </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Modification</div>
                                 <a>No PTMs are included in the dataset</a>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Quantification</div>
-                                <p>Not available</p>
+                                <div class="property-wrapper">
+                                  <div v-if="quantificationMethods.length>0">
+                                      <a v-for="item in quantificationMethods">{{item}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Not available</p>
+                                  </div>
+                                </div>
+                                
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Experiment Type</div>
-                                <p>Shotgun proteomics</p>
+                                <div class="property-wrapper">
+                                  <a v-for="item in experimentTypes">{{item}}</a>
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div class="summary-content-header">Assay count</div>
+                                <p>{{assayAccount}}</p>
                             </div>
                           </div>
                        </div>
                     </Card>
                     <Card class="card">
                         <p slot="title">Publication</p>
-                        <p>Schroeter CB, Koehler S, Kann M, Schermer B, Benzing T, Brinkkoetter PT, Rinschen MM. Protein half-life determines expression of proteostatic networks in podocyte differentiation. FASEB J. 2018:fj201701307R PubMed: 29694247</p>
+                        <div v-if="publications.length>0">
+                          <div v-for="item in publications">
+                            <p>{{item.desc}}<span>, PubMed: </span><a @click="europePMC(item.pmid)">{{item.pmid}}</a></p>
+                          </div>
+                        </div>
+                        <div v-else>
+                          <p>Publication pending</p>
+                        </div>
                     </Card>
                   </div>
                  <!--
@@ -173,6 +233,25 @@
     name: 'archive',
     data(){
       return {
+         accession:'',
+         title:'',
+         projectDescription:'',
+         publicationDate:'',
+         submissionDate:'',
+         sampleProcessingProtocol:'',
+         dataProcessingProtocol:'',
+         publications:[],
+         species:[],
+         tissues:[],
+         instrumentNames:[],
+         quantificationMethods:[],
+         experimentTypes:[],
+         assayAccount:0,
+         software:'',
+         queryArchiveProjectApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/'+this.$route.params.id,
+         queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
+         europepmcApi:'http://europepmc.org/abstract/MED/',
+         contactors:[],
          columns4: [
               {
                   type: 'selection',
@@ -245,9 +324,75 @@
       Nav
     },
     methods:{
-    
-    },
+      queryProjectDetails(){
+           this.$http
+            .get(this.queryArchiveProjectApi)
+            .then(function(res){
+                this.loading=false;
+                //console.log(res.body);
+                this.accession = res.body.accession;
+                this.title = res.body.title;
+                this.projectDescription = res.body.projectDescription;
+                this.publicationDate = res.body.publicationDate.split('-')[2] +'/'+ res.body.publicationDate.split('-')[1] +'/'+ res.body.publicationDate.split('-')[0];
+                this.submissionDate = res.body.submissionDate.split('-')[2] +'/'+ res.body.submissionDate.split('-')[1] +'/'+ res.body.submissionDate.split('-')[0];
+                this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
+                this.dataProcessingProtocol = res.body.dataProcessingProtocol;
+                this.species = res.body.species;
+                this.tissues = res.body.tissues;
+                this.instrumentNames = res.body.instrumentNames;
+                this.software = res.body.software || 'Unknown';
+                this.quantificationMethods = res.body.quantificationMethods; 
+                this.experimentTypes = res.body.experimentTypes; 
+                //for contactors
+                let submitter = res.body.submitter;
+                let item = {
+                  name: submitter.firstName + ' ' + submitter.lastName,
+                  affiliation: submitter.affiliation,
+                  email:submitter.email
+                }
+                this.contactors.push(item);
+                for(let i=0; i<res.body.labHeads.length; i++){
+                  let item = {
+                    name: res.body.labHeads[i].firstName + ' ' + res.body.labHeads[i].lastName,
+                    affiliation: res.body.labHeads[i].affiliation + ' ' +'(lab head)',
+                    email:res.body.labHeads[i].email
+                  }
+                  this.contactors.push(item);
+                }
+                //for publications
+                for(let i=0; i<res.body.references.length; i++){
+                  let item = {
+                    desc:res.body.references[i].desc,
+                    pmid:res.body.references[i].ids[1].split(':')[1],
+                  }
+                  this.publications.push(item);
+                }
+                
+            },function(err){
 
+            });
+      },
+      queryAssay(){
+          this.$http
+            .get(this.queryAssayApi)
+            .then(function(res){
+                this.loading=false;
+                console.log(res.body);
+                this.assayAccount = res.body.list.length;
+                
+            },function(err){
+
+            });
+      },
+      europePMC(id){
+          window.open(this.europepmcApi + id);
+          //location.href = this.europepmcApi + id;
+      }
+    },
+    mounted: function(){
+        this.queryProjectDetails();
+        this.queryAssay();
+    },
   }
 </script>
 
@@ -299,7 +444,7 @@
   }
   .card a{
       color: #495060;
-      border-bottom-style: none;
+      border-bottom-style: dotted;
   }
   .card a:hover{
         color: #5bc0be;
@@ -341,6 +486,17 @@
   .download-list-wrapper{
     margin-top: 10px;
   }
+  .card-item-wrapper{
+    margin-bottom: 10px;
+  }
+  .property-wrapper{
+    display: flex;
+    flex-direction: column;
+  }
+  .summary-content-header{
+    display: flex;
+    align-items: center;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -368,6 +524,7 @@
   @media (min-width: 2300px) {
       
   }*/
+  
 </style>
 <style>
   .card .ivu-card-body table{
@@ -384,5 +541,16 @@
   }
   table thead th{
     padding: 0px;
+  }
+  .readMore a{
+      color: #495060;
+      border-bottom-style: dotted;
+  }
+  .readMore a:hover{
+      color: #5bc0be;
+  }
+  .readMore span{
+      display: block;
+      margin-top: 15px;
   }
 </style>
