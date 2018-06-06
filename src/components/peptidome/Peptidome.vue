@@ -25,9 +25,9 @@
                       <div>Search Peptide</div>
                     </div>
                     <div class="item-content">
-                        <p><a>Explore</a> high quality peptide identifications verified by our spectrum clustering pipeline.</p>
+                        <p><a @click="gotoPeptideSearch">Explore</a> high quality peptide identifications verified by our spectrum clustering pipeline.</p>
 
-                        <p>Example peptides: <a>ELGITALHIK</a>, <a>LSVDYGK</a></p>
+                        <p>Example peptides: <a @click="gotoPeptideSearch('ELGITALHIK')">ELGITALHIK</a>, <a @click="gotoPeptideSearch('LSVDYGK')">LSVDYGK</a></p>
                     </div>
                    
                 </div>
@@ -39,9 +39,9 @@
                       <div>Libraries & Results</div>
                     </div>
                     <div class="item-content docs">
-                        <p><a>Download</a> our spectrum libraries to use with your spectrum library searching tool, such as <a>SpectraST</a>. Popular spectrum libraries: <a>Human</a>, <a>Contaminants</a></p>
+                        <p><a @click="gotoSpectrumLibrary">Download</a> our spectrum libraries to use with your spectrum library searching tool, such as <a>SpectraST</a>. Popular spectrum libraries: <a>Human</a>, <a>Contaminants</a></p>
 
-                        <p><a>Download</a> our cluster results files with <a>High-quality unidentified human clusters</a>, and <a>Clusters more that 10 spectra and a ratio < 50%</a>.</p>
+                        <p><a @click="gotoPeptideDownload">Download</a> our cluster results files with <a>High-quality unidentified human clusters</a>, and <a>Clusters more that 10 spectra and a ratio < 50%</a>.</p>
                     </div>
                     
                 </div>
@@ -55,7 +55,7 @@
                     <div class="item-content">
                         <p>Download original clustering result files from our <a>FTP</a> site.</p>
 
-                        <p><a>Web API</a> allows programatically access and search clustering results.</p>
+                        <p><a @click="gotoPeptideAPI">Web API</a> allows programatically access and search clustering results.</p>
                     </div>
                    
                 </div>
@@ -143,14 +143,29 @@
   </div>
 </template>
 <script>
-  import Nav from '@/components/peptidome/Nav'
+  import Nav from '@/components/landingpage/Nav'
   export default {
     name: 'notfound',
     components: {
       Nav,
     },
     methods:{
-      
+        gotoPeptideSearch(query){
+            if(typeof query == 'string'){
+                this.$router.push({name:'peptidesearch',query:{q:query}});
+            }
+            else
+                this.$router.push({name:'peptidesearch'});
+        },
+        gotoSpectrumLibrary(){
+            this.$router.push({name:'spectrumlibrary'});
+        },
+        gotoPeptideDownload(){
+            this.$router.push({name:'peptidedownload'});
+        },
+        gotoPeptideAPI(){
+           this.$router.push({path:'/markdownpage/peptideAPI'});
+        }
     },
     data(){
       return {

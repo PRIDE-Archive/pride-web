@@ -90,7 +90,7 @@
 </template>
 
 <script>
-  import Nav from '@/components/peptidome/Nav'
+  import Nav from '@/components/landingpage/Nav'
   export default {
     name: 'archive',
     data(){
@@ -469,12 +469,12 @@
       queryClusterList(){
         this.results=[];
         this.loading=true;
+        this.q = this.$route.query.q || '';
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
                 this.loading=false;
                 this.total = res.body.totalResults;
-                console.log(res.body.results);
                 for(let i=0; i < res.body.results.length; i++){
                   var item = {
                       ID:res.body.results[i].id,
@@ -513,7 +513,7 @@
           let highligts='highligts='+this.highligts+'&';
           let page='page='+this.page+'&';
           let size='size='+this.size;
-          return '?/'+q+peptide+modFilters+speciesFilters+sort+order+facets+highligts+page+size;
+          return '?'+q+peptide+modFilters+speciesFilters+sort+order+facets+highligts+page+size;
       }
     },
     mounted: function(){
