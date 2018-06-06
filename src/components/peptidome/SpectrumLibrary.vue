@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-    import Nav from '@/components/peptidome/Nav'
+    import Nav from '@/components/landingpage/Nav'
     export default {
         data () {
             return {

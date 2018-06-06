@@ -154,7 +154,7 @@
 <script>
     import PiesSecies from '@/components/peptidome/chart/PieSpecies.vue'
     import Modifications from '@/components/peptidome/chart/Modifications.vue'
-    import Nav from '@/components/peptidome/Nav'
+    import Nav from '@/components/landingpage/Nav'
     export default {
         data () {
             return {

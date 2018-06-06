@@ -74,7 +74,8 @@
                           <DropdownMenu slot="list">
                               <DropdownItem>Spectra Clustering Toolsuite</DropdownItem>
                               <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
-                              <DropdownItem>PRIDE Restful Web-services</DropdownItem>
+                              <DropdownItem>PRIDE Archive API</DropdownItem>
+                              <DropdownItem>PRIDE Peptidome API</DropdownItem>
                               <DropdownItem>PRIDE Utilities Libraries</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
