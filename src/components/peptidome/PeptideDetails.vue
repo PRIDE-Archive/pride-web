@@ -359,7 +359,7 @@
                                         h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{project:params.row.project}});
                                                 }
                                             }
                                         }, params.row.psm),
@@ -482,7 +482,7 @@
                  this.$http
                   .get(this.clusterOriginalExperimentsApi)
                   .then(function(res){
-                    //console.log(res);
+                    console.log(res.body.clusteredProjects);
                     this.originalExperimentsSpinShow=false;
                     this.originalExperimentsNum = res.body.clusteredProjects.length
                     for(let i=0;i<res.body.clusteredProjects.length; i++){
