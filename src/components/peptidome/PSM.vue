@@ -29,6 +29,7 @@
           peptide:'',
           modFilters:'',
           sequence:'',
+          project:'',
           speciesFilters:'',
           sort:'',
           order:'desc',
@@ -73,7 +74,7 @@
                                        h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                  this.$router.push({name:'dataset',  params: { id: params.row.project}});
                                                 }
                                             }
                                         }, params.row.project),
@@ -100,7 +101,7 @@
                                        h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    this.$router.push({name:'assay',params:{id:params.row.assay}});
                                                 }
                                             }
                                         }, params.row.assay),
@@ -219,17 +220,20 @@
             });
       },
       updateQuery(){
-        this.sequence = this.$route.query.sequence;
+        this.sequence = this.$route.query.sequence || '';
+        this.project = this.$route.query.project || '';
+        console.log(this.query);
       }
     },
     computed:{
       query:function(){
-          let sequence = 'sequence='+this.sequence + '&';
+          let sequence = this.sequence ? 'sequence='+this.sequence + '&' : '';
+          let project = this.project ? 'project='+this.project + '&' : '';
           //let mod = 'mod=NONE'
           let mod='mod=NONE&';
           let page='page='+this.page+'&';
           let size='size='+this.size;
-          return '?'+sequence+mod+page+size;
+          return '?'+sequence+project+mod+page+size;
       }
     },
     mounted: function(){
@@ -280,6 +284,7 @@
   }
   .page-container{
     text-align: center;
+    margin-top: 20px;
   }
   .filter-condition{
     display: inline-block;
@@ -365,11 +370,6 @@
       display: inline-block;
       margin-left: 5px;
     }
-
-    .page-container{
-      margin-top: 20px;
-    }
-
 </style>
 
 <style>
