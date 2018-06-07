@@ -88,28 +88,29 @@
                 
                     </span>
                   </p>
-                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.id">
-                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.id}}">{{publicationItem.id}}</router-link>
+                  <Spin size="large" fix v-if="loading"></Spin>
+                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}">{{publicationItem.accession}}</router-link>
                      
                       <a class="resource-id"></a>
-                      <p class="resource-title">{{publicationItem.name}}</p>
-                      <p>Species: {{publicationItem.species}}</p>
-                      <span>Project description: {{publicationItem.description}}</span><a @click="getDetailedResource(publicationItem.id)" class="detailed-resouce">(More)</a>
-                      <p>Made public: {{publicationItem.date}}</p>
-                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.dataset">
+                      <p class="resource-title">{{publicationItem.title}}</p>
+                      <p>Species: <span v-for="item in publicationItem.species">{{item}} </span></p>
+                      <span>Project description: {{publicationItem.projectDescription}}</span><a @click="getDetailedResource(publicationItem.accession)" class="detailed-resouce">(More)</a>
+                      <p>Made public: {{publicationItem.publicationDate}}</p>
+                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
                           <a class="button dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              {{datesetItem}} 
+                              {{datesetItem}} Dataset
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem>{{datesetItem}}</DropdownItem>
+                              <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
       
                   </Card>
                   
                   <div class="page-container">
-                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                    <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                   </div>
               </Card>
           </Row>
@@ -126,41 +127,16 @@
           keyword:'',
           fieldValue:'',
           containValue:[],
+          loading:true,
           autoCompleteWords:['aaa','bbb','ccc','ddd'],
+          queryArchiveProjectListApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/list?order=desc',
+          queryArchiveProjectAccountApi: 'https://www.ebi.ac.uk:443/pride/ws/archive/project/count',
           containItemSearch:'',
           fieldSelectors:[],
           containSelectors:[],
           filterCombination:[],
           sortType:'Accession',
-          publicaitionList:[
-            {
-              id:'PXD008343',
-              completeState:false,
-              name: 'CRISPR/Cas9-mediated knockout and endogenous complex analysis of Cluap1/ IFT38',
-              species: 'Homo sapiens (Human)',
-              description:'CRISPR/Cas9-mediated gene-editing allows manipulation of a gene',
-              date:'2018-04-04',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008267',
-              completeState:true,
-              name: 'Proteomic profiling of human iPSC-derived pancreatic endocrine cells for the identification of clinical biomarkers ',
-              species: 'Homo sapiens (Human)',
-              description:'Great progresses have been made for generating in vitro pluripot',
-              date:'2005-08-16',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008970',
-              completeState:false,
-              name: 'Protein citrullination in human tissues',
-              species: 'Homo sapiens (Human)',
-              description:'Citrullination is a post-translational modification of arginine',
-              date:'2018-04-04',
-              dataset:['ProteomeTools','Biological Dataset']
-            }
-          ],
+          publicaitionList:[],
           sortList:[
             {
                 value: 'Accession',
@@ -174,13 +150,47 @@
                 value: 'Relevance',
                 label: 'Relevance'
             }
-          ]
+          ],
+          page:0,
+          size:20,
+          total:0,
       }
     },
     components: {
       Nav
     },
     methods:{
+      queryArchiveProjectList(){
+           this.publicaitionList = [];
+           this.loading = true;
+           this.$http
+            .get(this.queryArchiveProjectAccountApi)
+            .then(function(res){
+                this.total = res.body;
+                this.$http
+                  .get(this.queryArchiveProjectListApi + this.query)
+                  .then(function(res){
+                    //console.log(res.body.list);
+                      this.loading = false;
+                      
+                      for(let i=0; i<res.body.list.length; i++){
+                          let item = {
+                              accession: res.body.list[i].accession,
+                              title: res.body.list[i].title,
+                              species: res.body.list[i].species,
+                              projectDescription: res.body.list[i].projectDescription,
+                              publicationDate: res.body.list[i].publicationDate,
+                              projectTags: res.body.list[i].projectTags
+                          }
+                          this.publicaitionList.push(item);
+                      }
+                  },function(err){
+
+                  });
+            },function(err){
+
+            });
+      },
       initFilter(){
           let tempArray = [
               {
@@ -451,14 +461,20 @@
       submitSearch(){
         this.$Message.success({content:'new result', duration:1});
       },
-      pageChange(){
-          this.$Message.success({content:'pageChange', duration:1});
+      pageChange(page){
+          this.page = page-1;
+          this.queryArchiveProjectList();
       },
-      pageSizeChange(){
-          this.$Message.success({content:'pageSizeChange', duration:1});
+      pageSizeChange(size){
+          this.size = size;
+          this.queryArchiveProjectList();
       },
       sortChange(){
         this.$Message.success({content:'sortChange', duration:1});
+      },
+      updateQuery(){
+        this.page = 0;
+        this.size = 20;
       }
     },
 
@@ -469,10 +485,17 @@
       },
 
     },
-   
+    computed:{
+      query:function(){
+          let page='page='+this.page+'&';
+          let size='show='+this.size;
+          return '&'+page+size;
+      }
+    },
     mounted: function(){
         this.initFilter();
-        
+        this.updateQuery();
+        this.queryArchiveProjectList();
     },
     created(){
        
