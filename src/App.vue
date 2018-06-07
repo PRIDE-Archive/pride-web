@@ -41,5 +41,8 @@ export default {
      list-style-position: outside;
 
   }
+  .page-container .ivu-select-dropdown-list{
+    margin-left: 0 !important;
+  }
 </style>
 
