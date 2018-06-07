@@ -60,7 +60,7 @@
                                        h('a', {
                                             on: {
                                                 click: () => {
-                                                    console.log(params);
+                                                    this.$router.push({name:'dataset',  params: { id: params.row.project}});
                                                 }
                                             }
                                         }, params.row.project),
