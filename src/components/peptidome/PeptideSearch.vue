@@ -81,7 +81,7 @@
                 <Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>
                 </div>
                 <div class="page-container">
-                  <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                  <Page :total="total" :page-size="size" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                 </div>
             </Card>
           </Row>
@@ -469,7 +469,6 @@
       queryClusterList(){
         this.results=[];
         this.loading=true;
-        this.q = this.$route.query.q || '';
         this.$http
             .get(this.queryClusterListApi+this.query)
             .then(function(res){
@@ -491,6 +490,9 @@
             },function(err){
 
             });
+      },
+      updateQuery(){
+          this.q = this.$route.query.q || '';
       }
     },
 
@@ -518,6 +520,7 @@
     },
     mounted: function(){
         this.initFilter();
+        this.updateQuery();
         this.queryClusterList();
     },
     created(){
@@ -564,6 +567,7 @@
   }
   .page-container{
     text-align: center;
+    margin-top: 20px;
   }
   .filter-condition{
     display: inline-block;
@@ -649,17 +653,9 @@
       display: inline-block;
       margin-left: 5px;
     }
-
-    .page-container{
-      margin-top: 20px;
-    }
-
 </style>
 
 <style>
-    .page .ivu-select-dropdown-list{
-      margin-left: 0 !important;
-    }
     .archive-search-input input{
       border-radius: 3px !important;
       margin-bottom: 0 !important;
