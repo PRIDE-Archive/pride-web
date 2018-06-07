@@ -135,7 +135,7 @@
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Assay count</div>
-                                <p>{{assayAccount}}</p>
+                                <p>{{total}}</p>
                             </div>
                           </div>
                        </div>
@@ -151,6 +151,17 @@
                           <p>Publication pending</p>
                         </div>
                     </Card>
+                    <Card v-if="total>0" class="card">
+                        <p slot="title">Assay</p>
+                        <div class="assay-search-container">
+                        <!--<Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>-->
+                        <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
+                        </div>
+                        <div class="page-container">
+                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                        </div>
+                    </Card>
+                   
                   </div>
                  <!--
                   <Tabs :animated="false">
@@ -233,26 +244,27 @@
     name: 'archive',
     data(){
       return {
-         accession:'',
-         title:'',
-         projectDescription:'',
-         publicationDate:'',
-         submissionDate:'',
-         sampleProcessingProtocol:'',
-         dataProcessingProtocol:'',
-         publications:[],
-         species:[],
-         tissues:[],
-         instrumentNames:[],
-         quantificationMethods:[],
-         experimentTypes:[],
-         assayAccount:0,
-         software:'',
-         queryArchiveProjectApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/'+this.$route.params.id,
-         queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
-         europepmcApi:'http://europepmc.org/abstract/MED/',
-         contactors:[],
-         columns4: [
+          accession:'',
+          title:'',
+          projectDescription:'',
+          publicationDate:'',
+          submissionDate:'',
+          sampleProcessingProtocol:'',
+          dataProcessingProtocol:'',
+          publications:[],
+          species:[],
+          tissues:[],
+          instrumentNames:[],
+          quantificationMethods:[],
+          experimentTypes:[],
+          software:'',
+          queryArchiveProjectApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/'+this.$route.params.id,
+          queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
+          europepmcApi:'http://europepmc.org/abstract/MED/',
+          reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
+          viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
+          contactors:[],
+          columns4: [
               {
                   type: 'selection',
                   width: 40,
@@ -270,54 +282,196 @@
                   sortable: true,
                     align:'center'
               },
-            
           ],
           data1: [
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-                 
-              },
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-              },
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-              },
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-              }
+            {
+                name: '41598_2018_23766_MOESM1_ESM.doc',
+                size: 1312.606,
+               
+            },
+            {
+                name: '41598_2018_23766_MOESM1_ESM.doc',
+                size: 1312.606,
+            },
+            {
+                name: '41598_2018_23766_MOESM1_ESM.doc',
+                size: 1312.606,
+            },
+            {
+                name: '41598_2018_23766_MOESM1_ESM.doc',
+                size: 1312.606,
+            }
           ],
           cityList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                    {
-                        value: 'London',
-                        label: 'London'
-                    },
-                    {
-                        value: 'Sydney',
-                        label: 'Sydney'
-                    },
-                    {
-                        value: 'Ottawa',
-                        label: 'Ottawa'
-                    },
-                    {
-                        value: 'Paris',
-                        label: 'Paris'
-                    },
-                    {
-                        value: 'Canberra',
-                        label: 'Canberra'
-                    }
-                ],
-                model1: ''
+                  {
+                      value: 'New York',
+                      label: 'New York'
+                  },
+                  {
+                      value: 'London',
+                      label: 'London'
+                  },
+                  {
+                      value: 'Sydney',
+                      label: 'Sydney'
+                  },
+                  {
+                      value: 'Ottawa',
+                      label: 'Ottawa'
+                  },
+                  {
+                      value: 'Paris',
+                      label: 'Paris'
+                  },
+                  {
+                      value: 'Canberra',
+                      label: 'Canberra'
+                  }
+          ],
+          model1: '',
+          viewInReactomeButtonArray:[],
+          assayLoading:true,
+          assayCol: [
+              {
+                  type: 'index',
+                  width: 60,
+                  align: 'center'
+              },
+              {
+                  title: 'Accession',
+                  key: 'accession',
+                  align:'center',
+                  width: 100,
+                  render: (h, params) => {
+                      return h('div', [
+                        h('Icon', {
+                            props: {
+                                type: 'eye',
+                            },
+                            style: {
+                                marginRight: '1px'
+                            },
+                        }),
+                        h('a', {
+                          on: {
+                              click: () => {
+                                  this.$router.push({name:'assay',params:{id:params.row.accession}})
+                              }
+                          }
+                        }, params.row.accession),
+                      ]);
+                  }
+              },
+              {
+                  title: 'Title',
+                  key: 'title',
+                  sortable: false,
+                  align:'center',
+              },
+              {
+                  title: 'Proteins',
+                  key: 'proteins',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Peptides',
+                  key: 'peptides',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Unique Peptides',
+                  key: 'uniquepeptides',
+                  sortable: false,
+                  align:'center',
+                  width: 110,
+              },
+              {
+                  title: 'Spectra',
+                  key: 'spectra',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Identified Spectra',
+                  key: 'identifiedspectra',
+                  sortable: false,
+                  align:'center',
+                  width: 120,
+              },
+              {
+                  title: 'View in Reactome',
+                  key: 'viewinreactome',
+                  align:'center',
+                  width: 120,
+                  render: (h, params) => {
+                      return h('div', [
+                          /*
+                          h('Button', {
+                             
+                              on: {
+                                  click: () => {
+                                      this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'Blast'),
+                          */
+                          h('Tooltip',//first item
+                              {
+                                  props: {
+                                      placement:"bottom",
+                                      content: 'Analysis the protein set in Reactome',
+                                      disabled: this.viewInReactomeButtonArray[params.row._index].disabled,
+                                  },
+                              },//second item
+                              [
+                                  h('Button', {
+                                      props: {
+                                          type: this.viewInReactomeButtonArray[params.row._index].type,
+                                          size: 'small',
+                                          loading: this.viewInReactomeButtonArray[params.row._index].loading,
+                                      },
+                                      style: {
+                                          marginRight: '5px'
+                                      },
+                                      on: {
+                                          click: () => {
+                                              if(this.viewInReactomeButtonArray[params.row._index].type != 'success'){
+                                                  this.viewInReactomeButtonArray[params.row._index].loading = true;
+                                                  this.$http
+                                                      .post(this.reactomeApi,this.viewInReactomeButtonArray[params.row._index].api, {headers: {'Content-Type': 'text/plain'}})
+                                                      .then(function(res){
+                                                          this.viewInReactomeButtonArray[params.row._index].loading = false;
+                                                          this.viewInReactomeButtonArray[params.row._index].disabled = true;
+                                                          this.viewInReactomeButtonArray[params.row._index].content = 'View ' + '(' + res.body.pathwaysFound + ')';
+                                                          this.viewInReactomeButtonArray[params.row._index].type = 'success';
+                                                          this.viewInReactomeButtonArray[params.row._index].token = JSON.parse(res.bodyText).summary.token;
+                                                        //this.$router.push({name:'me',  params: {username: res.body.data.user.username}});
+                                                      },function(err){
+                                                       
+                                                      });   
+                                              }
+                                              else{
+                                                  window.open('https://reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS='+this.viewInReactomeButtonArray[params.row._index].token+'&RESOURCE=UNIPROT');
+                                              }
+                                              
+                                          }
+                                      }
+                                  }, this.viewInReactomeButtonArray[params.row._index].content),
+                              ]//third item
+                          ),
+                      ]);
+                  }
+              },
+          ],
+          assayResults:[],
+          page:0, //TODO for queryAssayApi
+          size:20, //TODO for queryAssayApi
+          total:0, //TODO for queryAssayApi
       }
     },
     components: {
@@ -328,7 +482,6 @@
            this.$http
             .get(this.queryArchiveProjectApi)
             .then(function(res){
-                this.loading=false;
                 //console.log(res.body);
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -372,14 +525,46 @@
 
             });
       },
+      pageChange(page){
+          this.page = page-1;
+          this.queryAssay();
+      },
+      pageSizeChange(size){
+          this.size = size;
+          this.queryAssay();
+      },
       queryAssay(){
+          this.assayResults=[];
+          this.assayLoading=true;
           this.$http
             .get(this.queryAssayApi)
             .then(function(res){
-                this.loading=false;
-                console.log(res.body);
-                this.assayAccount = res.body.list.length;
-                
+                this.assayLoading=false;
+                //console.log(res.body);
+                this.total = res.body.list.length;
+                for(let i=0;i<res.body.list.length; i++){
+                    let item = {
+                        accession: res.body.list[i].assayAccession,
+                        title: res.body.list[i].title,
+                        proteins: res.body.list[i].proteinCount,
+                        peptides: res.body.list[i].peptideCount,
+                        uniquepeptides:  res.body.list[i].uniquePeptideCount,
+                        spectra: res.body.list[i].totalSpectrumCount,
+                        identifiedspectra: res.body.list[i].identifiedSpectrumCount,
+                        
+                    } 
+
+                    let button = {
+                        type:'primary',
+                        content:'Analyse',
+                        loading:false,
+                        disabled:false,
+                        token:'',
+                        api: this.viewInreactomeApi+res.body.list[i].assayAccession+'.acc'
+                    }
+                    this.viewInReactomeButtonArray.push(button);
+                    this.assayResults.push(item);
+                }
             },function(err){
 
             });
@@ -392,6 +577,13 @@
     mounted: function(){
         this.queryProjectDetails();
         this.queryAssay();
+    },
+    computed:{//TODO for queryAssayApi
+      query:function(){
+          let page='page='+this.page+'&';
+          let size='size='+this.size;
+          return '?'+sequence+project+mod+page+size;
+      }
     },
   }
 </script>
@@ -497,6 +689,10 @@
     display: flex;
     align-items: center;
   }
+  .page-container{
+    text-align: center;
+    margin-top: 20px;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -553,4 +749,19 @@
       display: block;
       margin-top: 15px;
   }
+  .assay-detail-table table{
+    margin-bottom: 0 !important;
+  }
+
+  .assay-detail-table a{
+      color:#495060;
+  }
+  .assay-detail-table a:hover{
+      color:#5bc0be;
+      border-bottom-style:dotted;
+  }
+  .assay-detail-table .ivu-tooltip-inner{
+      white-space:nowrap !important;
+  }
 </style>
+
