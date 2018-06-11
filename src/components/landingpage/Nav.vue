@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_final1.png" alt="logo" width="300" height="300"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_jw.png" alt="logo" width="500"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -182,9 +182,7 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        /*background-image: url('../../assets/image/menu-bg.png');*/
-        background-color: #5bc0be;
-        border-bottom: 1px solid #ddd;
+        background-image: url('/static/image/hero-beta-banner.png');
     }
     .ebi-masthead nav ul.menu li{
         border-right: 1px solid rgb(248,248,248,0.7);
@@ -207,7 +205,7 @@
          color: #f8f8f8; 
     }
     .ebi-masthead h1, .ebi-masthead a{
-      color:#f8f8f8;
+      color:#454548;
     }
     .landingpage-title{
       font-size: 3rem;

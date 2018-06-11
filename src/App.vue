@@ -44,5 +44,12 @@ export default {
   .page-container .ivu-select-dropdown-list{
     margin-left: 0 !important;
   }
+  a{
+        color:#495060;
+    }
+  a:hover{
+      color:#5bc0be;
+      border-bottom-style:dotted;
+  }
 </style>
 
