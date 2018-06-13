@@ -108,6 +108,10 @@
                              <Icon type="ios-pricetag"></Icon>
                               {{datesetItem}} Dataset
                           </a>
+                          <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
                           <a v-else class="button gray-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
                               {{datesetItem}} Dataset
@@ -647,6 +651,15 @@
         /*padding: 20px 85px;
         font-size: 24px;*/
         background-color: #e2c94c;
+        border-radius: 3px;
+    }
+    .technical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #6acaef;
         border-radius: 3px;
     }
     .gray-dataset-button{
