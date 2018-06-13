@@ -171,7 +171,8 @@
                 //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
             },
             twitterMoreButtonAction(){
-                location.href="https://twitter.com/pride_ebi"
+                window.open("https://twitter.com/pride_ebi");
+                //location.href="https://twitter.com/pride_ebi"
             }
         },
         mounted:function(){
