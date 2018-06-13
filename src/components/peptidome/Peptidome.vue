@@ -1,6 +1,6 @@
 <template>
   <div class="notFound-container">
-    <div class="panel nav"><Nav/></div>
+    <div class="panel nav"><NavBar/></div>
    
     <Carousel v-model="value1" loop>
         <CarouselItem>
@@ -143,11 +143,11 @@
   </div>
 </template>
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import NavBar from '@/components/peptidome/Nav'
   export default {
     name: 'notfound',
     components: {
-      Nav,
+      NavBar,
     },
     methods:{
         gotoPeptideSearch(query){

@@ -1,4 +1,4 @@
-<template>
+0ok<template>
     <div class="nav-container">
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_jw.png" alt="logo" width="500"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo.png" alt="logo" width="500"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -201,8 +201,7 @@
       border: 0;
     }
     .sub-nav-ebi a:hover{
-        background: transparent;
-         color: #f8f8f8; 
+        opacity: 0.7;
     }
     .ebi-masthead h1, .ebi-masthead a{
       color:#454548;

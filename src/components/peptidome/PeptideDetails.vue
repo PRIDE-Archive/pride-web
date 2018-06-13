@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-detail-container">
-        <Nav></Nav>
+        <NavBar></NavBar>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="20">
@@ -154,7 +154,7 @@
 <script>
     import PiesSecies from '@/components/peptidome/chart/PieSpecies.vue'
     import Modifications from '@/components/peptidome/chart/Modifications.vue'
-    import Nav from '@/components/landingpage/Nav'
+    import NavBar from '@/components/landingpage/Nav'
     export default {
         data () {
             return {
@@ -411,7 +411,7 @@
             }
         },
         components: {
-            Nav,
+            NavBar,
             PiesSecies,
             Modifications
         },
@@ -482,7 +482,7 @@
                  this.$http
                   .get(this.clusterOriginalExperimentsApi)
                   .then(function(res){
-                    console.log(res.body.clusteredProjects);
+                    //console.log(res.body.clusteredProjects);
                     this.originalExperimentsSpinShow=false;
                     this.originalExperimentsNum = res.body.clusteredProjects.length
                     for(let i=0;i<res.body.clusteredProjects.length; i++){

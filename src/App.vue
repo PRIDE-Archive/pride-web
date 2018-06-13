@@ -51,5 +51,8 @@ export default {
       color:#5bc0be;
       border-bottom-style:dotted;
   }
+  .masthead{
+    background-color:white !important;
+  }
 </style>
 

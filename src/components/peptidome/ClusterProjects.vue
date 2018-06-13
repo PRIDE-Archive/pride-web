@@ -1,6 +1,6 @@
 <template>
   <div class="projects-container">
-      <div class="panel nav"><Nav/></div>
+      <div class="panel nav"><NavBar/></div>
       <div class="browse-data-container">
           <Row>
             <Card>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import NavBar from '@/components/landingpage/Nav'
   export default {
     name: 'archive',
     data(){
@@ -119,7 +119,7 @@
       }
     },
     components: {
-      Nav
+      NavBar
     },
     methods:{
       pageChange(page){

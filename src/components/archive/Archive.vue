@@ -1,6 +1,6 @@
 <template>
   <div class="archive-container">
-      <div class="panel nav"><Nav/></div>
+      <div class="panel nav"><NavBar/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
@@ -98,7 +98,11 @@
                       <span>Project description: {{publicationItem.projectDescription}}</span><a @click="getDetailedResource(publicationItem.accession)" class="detailed-resouce">(More)</a>
                       <p>Made public: {{publicationItem.publicationDate}}</p>
                       <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
-                          <a class="button dataset-button" href="javascript:void(0)">
+                          <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else class="button biomedical-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
                               {{datesetItem}} Dataset
                           </a>
@@ -119,7 +123,7 @@
 </template>
 
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import NavBar from '@/components/archive/Nav'
   export default {
     name: 'archive',
     data(){
@@ -157,7 +161,7 @@
       }
     },
     components: {
-      Nav
+      NavBar
     },
     methods:{
       queryArchiveProjectList(){
@@ -593,13 +597,22 @@
     .detailed-resouce{
       margin-left: 5px;
     }
-    .dataset-button{
+    .biological-dataset-button{
         padding: 2px 3px;
         font-size: 12px;
         margin-bottom: 0;
         /*padding: 20px 85px;
         font-size: 24px;*/
         background-color: #5bc0be;
+        border-radius: 3px;
+    }
+    .biomedical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #bd7edc;
         border-radius: 3px;
     }
     .dataset-wrapper{
