@@ -90,10 +90,8 @@
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
-                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}">{{publicationItem.accession}}</router-link>
-                     
-                      <a class="resource-id"></a>
-                      <p class="resource-title">{{publicationItem.title}}</p>
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}">{{publicationItem.accession}}</router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
+                      <p class="resource-title">{{publicationItem.title}}</p> 
                       <p>Species: <span v-for="item in publicationItem.species">{{item}} </span></p>
                       <span>Project description: {{publicationItem.projectDescription}}</span><a @click="getDetailedResource(publicationItem.accession)" class="detailed-resouce">(More)</a>
                       <p>Made public: {{publicationItem.publicationDate}}</p>
@@ -102,7 +100,15 @@
                              <Icon type="ios-pricetag"></Icon>
                               {{datesetItem}} Dataset
                           </a>
-                          <a v-else class="button biomedical-dataset-button" href="javascript:void(0)">
+                          <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else class="button gray-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
                               {{datesetItem}} Dataset
                           </a>
@@ -139,7 +145,7 @@
           fieldSelectors:[],
           containSelectors:[],
           filterCombination:[],
-          sortType:'Accession',
+          sortType:'Date',
           publicaitionList:[],
           sortList:[
             {
@@ -153,10 +159,15 @@
             {
                 value: 'Relevance',
                 label: 'Relevance'
+            },
+            {
+                value: 'Date',
+                label: 'Date'
             }
           ],
           page:0,
           size:20,
+          sort:'publication_date',
           total:0,
       }
     },
@@ -184,7 +195,8 @@
                               species: res.body.list[i].species,
                               projectDescription: res.body.list[i].projectDescription,
                               publicationDate: res.body.list[i].publicationDate,
-                              projectTags: res.body.list[i].projectTags
+                              projectTags: res.body.list[i].projectTags,
+                              submissionType: res.body.list[i].submissionType
                           }
                           this.publicaitionList.push(item);
                       }
@@ -473,10 +485,21 @@
           this.size = size;
           this.queryArchiveProjectList();
       },
-      sortChange(){
-        this.$Message.success({content:'sortChange', duration:1});
+      sortChange(type){
+        console.log(type);
+        if(type == 'Title')
+          this.sort = 'project_title'
+        else if(type == 'Accession')
+          this.sort = 'id'
+        else if(type == 'Relevance')
+          this.sort = 'score'
+        else if(type == 'Date')
+          this.sort = 'publication_date';
+
+        this.queryArchiveProjectList();
       },
       updateQuery(){
+        this.sort = 'publication_date';
         this.page = 0;
         this.size = 20;
       }
@@ -493,7 +516,8 @@
       query:function(){
           let page='page='+this.page+'&';
           let size='show='+this.size;
-          return '&'+page+size;
+          let sort= this.sort ? '&sort=' + this.sort : ''
+          return '&'+page+size+sort;
       }
     },
     mounted: function(){
@@ -590,6 +614,7 @@
     }
     .resource-id{
       font-size: 14px;
+      margin-right: 2px;
     }
     .resource-title{
       font-weight: bold;
@@ -613,6 +638,24 @@
         /*padding: 20px 85px;
         font-size: 24px;*/
         background-color: #bd7edc;
+        border-radius: 3px;
+    }
+    .highlighted-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #e2c94c;
+        border-radius: 3px;
+    }
+    .gray-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #999c9c;
         border-radius: 3px;
     }
     .dataset-wrapper{
