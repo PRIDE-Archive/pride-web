@@ -17,7 +17,7 @@
                         <p slot="title">{{item.speciesScientificName}}</p>
                         <div class="card-content">
                             <p>Common name: {{item.speciesName}}</p>
-                            <p>Taxonomy: <a v-if="item.taxonomyId !='0'">{{item.taxonomyId}}</a><span v-else>Unknown</span></p>
+                            <p>Taxonomy: <a @click="goToUniprot(item.taxonomyId)" v-if="item.taxonomyId !='0'">{{item.taxonomyId}}</a><span v-else>Unknown</span></p>
                             <p>Number of spectra: {{item.numberOfSpectra}}</p>
                             <p>Number of peptides: {{item.numberOfPeptides}}</p>
                             <p>File Size: {{Math.round(item.fileSize/1024/1024)}}M</p>
@@ -65,6 +65,9 @@
                   },function(err){
 
                   });
+            },
+            goToUniprot(id){
+                window.open('http://www.uniprot.org/taxonomy/'+id);
             }
         },
         mounted: function(){
