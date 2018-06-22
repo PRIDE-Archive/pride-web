@@ -172,7 +172,10 @@
                 this.submitSearchCondition();
             },
             submitSearchCondition(){
-                this.$router.push({name:'archive',query:{ q: this.keyword }});
+                if(this.selected == 'archive')
+                    this.$router.push({name:'archive',query:{ q: this.keyword }});
+                else if(this.selected == 'peptidome')
+                    this.$router.push({name:'peptidesearch',query:{ q: this.keyword }});   
             },
             advanceSearchConditoinRemove (index) {
                 this.searchItems.splice(index, 1);
