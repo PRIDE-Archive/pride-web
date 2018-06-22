@@ -96,7 +96,6 @@
                 location.hash = name;
             },
             addID(){
-
                 let list = document.querySelector('.markdown-body').querySelectorAll('h2');
                 for(let i=0; i<list.length; i++){
                     var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
@@ -109,7 +108,6 @@
                     if(i!=0)
                         this.tableList.push(item);
                 }
-
                 document.addEventListener('scroll', ()=> {
                     if(document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
                         this.activeName =list[list.length-1].getAttribute('id');
@@ -175,7 +173,6 @@
         padding: 90px 0 200px 0px;
         margin: 0 auto;
     }
-
     .markdown-body{
         display: inline-block;
     }

@@ -31,7 +31,7 @@
                             </div>
                             <span class="separator">></span>
                             <div class="filter-condition ">
-                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple  @on-change="containChange">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple  @on-change="containChange" placeholder="">
                                     <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
                                       <span>
                                             <span>{{ item.label }}</span>
@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="search-button">
-                            <a class="button search-button" @click="submitSearch">Search</a>
+                            <a class="button search-button" @click="">Search</a>
                         </div>
                     </div>
                     <div v-if="keyword" class="search-condition-container">
@@ -96,13 +96,14 @@
     data(){
       return {
           queryClusterListApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
+          peptideSearchConfigURL:'/static/peptidomeSearch/config.json',
           q:'',
           peptide:'',
           modFilters:'',
           speciesFilters:'',
           sort:'',
           order:'desc',
-          facets:false,
+          facets:true,
           highligts:false,
           page:0,
           size:20,
@@ -176,190 +177,50 @@
               }
           ],
           results: [],
+          facetsMap:{},
       }
     },
     components: {
       NavBar
     },
     methods:{
-      initFilter(){
-          let tempArray = [
-              {
-                  value: 'Species',
-                  label: 'Species',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
+      setFilter(){
+          this.$http
+            .get(this.peptideSearchConfigURL)
+            .then(function(configRes){
+              this.fieldSelectors = [];
+              console.log(configRes.body.facetMap);
+              for(let i in this.facetsMap){
+                if(configRes.body.facetMap[i] && configRes.body.facetMap[i].name){
+                    console.log(i);
+                    let item = {
+                      value: configRes.body.facetMap[i].name,
+                      label: configRes.body.facetMap[i].name,
+                      containItems:[]
+                    }
+                    for(let j in this.facetsMap[i]){
+                      let containItem = {
+                          value: j,
+                          label: j,
                           check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                      {
-                          value: 'Paris',
-                          label: 'Paris',
-                          check: false,
-                          number:'3421'
-                      },
-                      {
-                          value: 'Canberra',
-                          label: 'Canberra',
-                          check: false,
-                          number:'32'
+                          number: this.facetsMap[i][j]
                       }
-                  ],
-              },
-              {
-                  value: 'Tissue',
-                  label: 'Tissue',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },
-              {
-                  value: 'Disease',
-                  label: 'Disease',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },  
-              {
-                  value: 'Modification',
-                  label: 'Modification',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-              },
-              {
-                  value: 'Instrument',
-                  label: 'Instrument',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                 
-              },
-              {
-                  value: 'Experiment type',
-                  label: 'Experiment type',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                 
-              },
-              {
-                  value: 'Project lags',
-                  label: 'Project lags',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                  
-              },
-              {
-                  value: 'Submission type',
-                  label: 'Submission type',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                  
+                      item.containItems.push(containItem);
+                    }
+                    this.fieldSelectors.push(item);
+                }
+                else{
+                    console.error("Please check config.json in peptidomeSearch Folder");
+                }
+               
               }
-          ];
-          this.fieldSelectors = tempArray;
-          this.fieldValue = this.fieldSelectors[0].value;
-          this.containSelectors = this.fieldSelectors[0].containItems;
+              this.fieldValue = this.fieldSelectors[0].value;
+              this.containSelectors = this.fieldSelectors[0].containItems;
+  
+            },function(err){
+
+            });
+
       },
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
@@ -421,7 +282,7 @@
             }
         }
       },
-      submitSearchCondition(){
+      queryClusterListCondition(){
       },
       keywordDelete(){
           this.keyword = '';
@@ -446,11 +307,8 @@
       },
       keywordSearch(value){
 
-        console.log('this.keyword',this.keyword);
+        //console.log('this.keyword',this.keyword);
         //this.keyword = value;
-      },
-      submitSearch(){
-        this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
@@ -471,19 +329,22 @@
         this.loading=true;
         this.$http
             .get(this.queryClusterListApi+this.query)
-            .then(function(res){
+            .then(function(clusterRes){
                 this.loading=false;
-                this.total = res.body.totalResults;
-                for(let i=0; i < res.body.results.length; i++){
+                this.total = clusterRes.body.totalResults;
+                this.facetsMap = clusterRes.body.facetsMap;
+                this.setFilter();
+                //console.log('this.facetsMap',this.facetsMap);
+                for(let i=0; i < clusterRes.body.results.length; i++){
                   var item = {
-                      ID:res.body.results[i].id,
-                      peptide: res.body.results[i].sequence,
-                      precharge: res.body.results[i].averagePrecursorCharge,
-                      premz: res.body.results[i].averagePrecursorMz.toFixed(2),
-                      spectra: res.body.results[i].totalNumberOfSpectra,
-                      projects: res.body.results[i].totalNumberOfProjects,
-                      species: res.body.results[i].totalNumberOfSpecies,
-                      ratio: (res.body.results[i].maxRatio*100).toFixed(1) + '%'
+                      ID:clusterRes.body.results[i].id,
+                      peptide: clusterRes.body.results[i].sequence,
+                      precharge: clusterRes.body.results[i].averagePrecursorCharge,
+                      premz: clusterRes.body.results[i].averagePrecursorMz.toFixed(2),
+                      spectra: clusterRes.body.results[i].totalNumberOfSpectra,
+                      projects: clusterRes.body.results[i].totalNumberOfProjects,
+                      species: clusterRes.body.results[i].totalNumberOfSpecies,
+                      ratio: (clusterRes.body.results[i].maxRatio*100).toFixed(1) + '%'
                   }
                   this.results.push(item);
                 }
@@ -493,13 +354,17 @@
       },
       updateQuery(){
           this.q = this.$route.query.q || '';
-      }
+
+      },
+      queryConfig(){
+          
+      },
     },
 
     watch: {
       filterCombination: function (val) {
           //combine keyword (this.keyword) and filters together (val)
-          this.submitSearch();
+          //this.queryClusterList();
       },
 
     },
@@ -519,9 +384,9 @@
       }
     },
     mounted: function(){
-        this.initFilter();
         this.updateQuery();
         this.queryClusterList();
+        this.queryConfig();
     },
     created(){
        
@@ -585,6 +450,9 @@
   }
   .search-condition-container a{
     border:none;
+  }
+  .search-condition-container .ivu-select-dropdown .ivu-dropdown-menu{
+    min-width: 50px;
   }
   .resource-list-title-container{
     display: flex;
@@ -666,8 +534,9 @@
     .search-item-input input{
       margin-bottom: 0 !important;
     }
-    .filter-selector .ivu-select-item-selected{
-      color: inherit !important;
+    .filter-condition .filter-selector .ivu-select-item-selected{
+      
+      color: rgba(91, 192, 190, 0.9) !important;
       background: inherit !important;
     }
     .filter-selector .ivu-checkbox-wrapper{
@@ -678,17 +547,22 @@
       margin-bottom: 0;
       box-shadow: none;
     }
-     .filter-selector .ivu-select-input:focus{
+    .filter-selector .ivu-select-input:focus{
           border: none;
     }
     .filter-selector .ivu-tag{
       background: none ;
+      display: none;
     }
-    .filter-selector .ivu-select-multiple .ivu-select-item-selected:after{
+    .filter-selector .ivu-select-item-selected::after{
       line-height: 0.8 !important;
       font-size: 22px;
       margin-right: 5px;
       float:left;
+      display: none !important; 
+    }
+    .tag-container .ivu-tag-border.ivu-tag-closable:after{
+      display: none !important;
     }
     .filter-selector .ivu-select-input{
       height: 30px;

@@ -591,6 +591,9 @@
   .search-condition-container a{
     border:none;
   }
+  .search-condition-container .ivu-select-dropdown .ivu-dropdown-menu{
+    min-width: 50px;
+  }
   .resource-list-title-container{
     display: flex;
     justify-content: space-between;
