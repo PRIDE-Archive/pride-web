@@ -44,20 +44,29 @@
             next();
         },*/
         beforeRouteUpdate:function (to, from, next) {
-            this.$nextTick(function(){
-                this.goAnchor(location.hash.replace(/\#/,''));
+            if(to.params.subpage != from.params.subpage){
+                this.markdownQuery(to.params.subpage);
+            }
+            else{
                 this.$nextTick(function(){
-                    this.activeName = location.hash.replace(/\#/,'');
+                    this.goAnchor(location.hash.replace(/\#/,''));
+                    this.$nextTick(function(){
+                        this.activeName = location.hash.replace(/\#/,'');
+                    });
                 });
-            });
+            }
+            
             next();
         },
         components: {
             NavBar,
         },
         methods:{
-            markdownQuery(){
-                this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md';
+            markdownQuery(subpage){
+                this.source = '';
+                this.activeName='';
+                this.tableList=[];
+                this.markdownURL = '/static/markdown/'+subpage+'/content.md';
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){
@@ -148,7 +157,7 @@
            
         },
         mounted:function(){
-            this.markdownQuery();
+            this.markdownQuery(this.$route.params.subpage);
         
         },
     }

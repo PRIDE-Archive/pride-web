@@ -2,7 +2,7 @@
 
 For each cluster, we offer a detailed summary page where you can view the key statistics and quliaty metrics of a cluster.
 
-## Key cluster statistics
+## prideinspector
 
 A spectrum cluster is a group of Mass Spec spectra that share the same characteristics, namely the shapes of their peaks. The spectra that are similar are grouped together in the PRIDE Cluster pipeline.
 
