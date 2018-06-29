@@ -65,29 +65,28 @@
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
+                      <Dropdown @on-click="resourcesClick">
                           <a href="javascript:void(0)">
                             <i class="fas fa-cogs"></i>
                             <span class='sub-nav-title'>Tools</span> 
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem>Spectra Clustering Toolsuite</DropdownItem>
-                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
-                              <DropdownItem>PRIDE Archive API</DropdownItem>
-                              <DropdownItem>PRIDE Peptidome API</DropdownItem>
-                              <DropdownItem>PRIDE Utilities Libraries</DropdownItem>
+                              <DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>
+                              <DropdownItem name="goToPrideInspector">PRIDE Inspector Toolsuite</DropdownItem>
+                              <DropdownItem name="goToPrideUtilities">PRIDE Utilities Libraries</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
+                      <Dropdown @on-click="resourcesClick">
                           <a href="javascript:void(0)">
                             <i class="fas fa-graduation-cap"></i>
                             <span class='sub-nav-title'>Docs</span> 
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
+                              <!--
                               <Dropdown placement="right-start">
                                   <DropdownItem>
                                       User Guide
@@ -98,13 +97,15 @@
                                       <DropdownItem>PRIDE Peptidome</DropdownItem>
                                   </DropdownMenu>
                               </Dropdown>
-                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
+                              -->
+                              <DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>
+                              <DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)">
+                          <a href="javascript:void(0)" @click="gotoAbout">
                             <i class="fas fa-info-circle"></i>
                             <span class='sub-nav-title'>About</span> 
                           </a>
@@ -159,7 +160,24 @@
                 else if(name=='gotoSpectrumLibrary'){
                     this.$router.push({name:'spectrumlibrary'});
                 }
-             
+                else if(name=='goToSpectraClustering'){
+                    this.$router.push({path:'/markdownpage/spectraclustering'});
+                }
+                else if(name=='goToPrideInspector'){
+                    this.$router.push({path:'/markdownpage/prideinspector'});
+                }
+                else if(name=='goToPrideUtilities'){
+                    this.$router.push({path:'/markdownpage/prideutilities'});
+                }
+                else if(name=='goToPrideArchiveWS'){
+                    this.$router.push({path:'/markdownpage/pridearchivews'});
+                }
+                else if(name=='goToPridePeptidomeWS'){
+                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
+                }
+            },
+            gotoAbout(){
+              this.$router.push({path:'/markdownpage/about'});
             }
         },
         
