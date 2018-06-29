@@ -1,4 +1,4 @@
-0ok<template>
+<template>
     <div class="nav-container">
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
