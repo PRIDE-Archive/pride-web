@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_Archive.png" alt="logo" width="500"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_Archive.png" alt="logo" width="410"></a>
                 </div>
               </div>
               <!-- /local-title -->
