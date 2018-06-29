@@ -12,7 +12,6 @@
                             v-model="keyword"
                             :data="autoCompleteWords"
                             @on-search="keywordSearch"
-                            v-on:keyup.enter="addKeyword"
                             icon="ios-search"
                             :filter-method="autoCompleteFilter"
                             placeholder="input here"
@@ -24,7 +23,7 @@
                         <div class="filter-wrapper">
                             <div class="filter-condition">
                                 <Select class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
-                                    <Option v-for="item in fieldSelectors" :value="item.value" :label="item.label" :key="item.value" >
+                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value" >
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
                                     </Option>
@@ -32,8 +31,8 @@
                             </div>
                             <span class="separator">></span>
                             <div class="filter-condition ">
-                                <Select ref="containRef" class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading..." @on-open-change="containDropdownOpen" @on-query-change="queryChange">
-                                    <Option v-for="item in containSelectors" :value="item.value" :label="item.label" :key="item.value">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading...">
+                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
                                       <span>
                                             <span>{{ item.label }}</span>
                                             <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
@@ -91,45 +90,37 @@
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
-                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}"><HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{publicationItem.accession}}</HighlightText></router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
-                      <p class="resource-title"><HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{publicationItem.title}}</HighlightText></p> 
-                      <p>Species: <span v-for="item in publicationItem.species"><HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{item}}</HighlightText></span></p>
-                      <span>Project description: <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{publicationItem.projectDescription}}</HighlightText>
-                        <a @click="gotoDetails(publicationItem.accession)">(More)</a>
-                        <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
-                      </span>
-                      <p>Made public: <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{publicationItem.publicationDate}}</HighlightText></p>
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}">{{publicationItem.accession}}</router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
+                      <p class="resource-title">{{publicationItem.title}}</p> 
+                      <p>Species: <span v-for="item in publicationItem.species">{{item}} </span></p>
+                      <span>Project description: <read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more></span>
+                      <p>Made public: {{publicationItem.publicationDate}}</p>
                       <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
                           <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{datesetItem}}</HighlightText> Dataset
+                              {{datesetItem}} Dataset
                           </a>
                           <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{datesetItem}}</HighlightText> Dataset Dataset
+                              {{datesetItem}} Dataset
                           </a>
                           <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{datesetItem}}</HighlightText> Dataset Dataset
+                              {{datesetItem}} Dataset
                           </a>
                           <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{datesetItem}}</HighlightText> Dataset Dataset
+                              {{datesetItem}} Dataset
                           </a>
                           <a v-else class="button gray-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              <HighlightText :keyword="highlightKeyword" :sensitive="HighlightKeywordSensitive" :overWriteStyle="{color:'#495060',backgroundColor:'rgb(255, 204, 0)',borderRadius:'3px'}">{{datesetItem}}</HighlightText> Dataset Dataset
+                              {{datesetItem}} Dataset
                           </a>
                           <DropdownMenu slot="list">
                               <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
-                      <Collapse v-if="hightlightMode">
-                          <Panel>
-                              Matched Items
-                              <p slot="content">XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX</p>
-                          </Panel>
-                      </Collapse>
+      
                   </Card>
                   
                   <div class="page-container">
@@ -149,25 +140,21 @@
       return {
           keyword:'',
           fieldValue:'',
-          containValue:'',
+          containValue:[],
           loading:true,
           querySpecificFacetsLoading:false,
-          highlightKeyword:'',
-          HighlightKeywordSensitive:false,
-          autoCompleteWords:[],
+          autoCompleteWords:['aaa','bbb','ccc','ddd'],
           facetsURL:'http://ves-pg-41:9020/facet/projects',
           searchConfigURL:'/static/facets/config.json',
           queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
           containItemSearch:'',
           fieldSelectors:[],
-          
           containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
               value: '',
               label: '',
               check: false,
               number: ''
           }],
-          //containSelectors:[],
           filterCombination:[],
           sortType:'Date',
           publicaitionList:[],
@@ -195,7 +182,6 @@
           sort:'publication_date',
           total:0,
           configRes:'',
-          hightlightMode:false
       }
     },
     components: {
@@ -207,7 +193,7 @@
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
                 let facetsMap = res.body._embedded.facets;
-                //console.log(facetsMap);
+                console.log(facetsMap);
                 this.$http
                     .get(this.searchConfigURL)
                     .then(function(configRes){
@@ -237,8 +223,6 @@
                           this.fieldSelectors.push(item);
                       }
                       this.fieldValue = this.fieldSelectors[0].value;
-                      //console.log( this.fieldSelectors[0].value);
-                      //console.log('this.fieldValue',this.fieldValue);
                       this.containSelectors = this.fieldSelectors[0].containItems;
                     },function(err){
 
@@ -255,170 +239,77 @@
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
-                if(res.body._embedded && res.body._embedded.compactprojects){
-                    this.highlightKeyword = this.keyword;
-                    let projectsList = res.body._embedded.compactprojects;
-                      for(let i=0; i<projectsList.length; i++){
-                          let item = {
-                              accession: projectsList[i].accession,
-                              title: projectsList[i].title,
-                              species: projectsList[i].organisms,
-                              projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                              publicationDate: projectsList[i].publicationDate,
-                              projectTags: projectsList[i].projectTags,
-                              submissionType: projectsList[i].submissionType
-                          }
-                          this.publicaitionList.push(item);
-                      }
+                let projectsList = res.body._embedded.compactprojects;
+                for(let i=0; i<projectsList.length; i++){
+                    let item = {
+                        accession: projectsList[i].accession,
+                        title: projectsList[i].title,
+                        species: projectsList[i].species,
+                        projectDescription: projectsList[i].projectDescription,
+                        publicationDate: projectsList[i].publicationDate,
+                        projectTags: projectsList[i].projectTags,
+                        submissionType: projectsList[i].submissionType
+                    }
+                    this.publicaitionList.push(item);
                 }
-                else{
-                  this.$Message.error({content:'No results', duration:1});
-                }
-                
             },function(err){
 
             });
            
       },
-      queryChange(query){
-        console.log('queryChange',query);
-      },
-      gotoDetails(id){
-          this.$router.push({name:'dataset',params:{id:id}});
-      },
       querySpecificFacets(keyword){
-        console.log('querySpecificFacets this.containValue',this.containValue);
-        console.log('querySpecificFacets keyword',keyword);
-          if(this.containSelectors[0] && !this.containSelectors[0].value)
-            return;
-          //this.containSelectors=[];
-          if(keyword.length == 0){
-              console.log('keyword=0');
-              for(let i=0; i<this.fieldSelectors.length; i++){
-                  if(this.fieldSelectors[i].value == this.fieldValue){
-                      this.containSelectors = this.fieldSelectors[i].containItems;
-                      break;
-                  }
-              }
-          }
-          else if(keyword.length<4 && keyword.length>0) {
-              console.log('keyword.length<4 && keyword.length>0',keyword.length);
-              //console.log(keyword);
-              this.querySpecificFacetsLoading = true;
-              for(let i=0; i<this.fieldSelectors.length; i++){
-                //console.log('aaa');
-                  if(this.fieldSelectors[i].value == this.fieldValue){
-                      let itemArray=[];
-                      for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
-                          var re = new RegExp(keyword,'i');
-                          if(this.fieldSelectors[i].containItems[j].value.match(re)){
-                              let item = {
-                                  value: this.fieldSelectors[i].containItems[j].value,
-                                  label: this.fieldSelectors[i].containItems[j].label,
-                                  check: false,
-                                  number: this.fieldSelectors[i].containItems[j].number,
-                              }
-                              let itemArray=[];
-                              itemArray.push(item);
-                          }
-                      }
-                      this.containSelectors=itemArray;
-                      //console.log(this.containSelectors.);
-                      if(this.containSelectors.length>0){
-                          this.querySpecificFacetsLoading = false;
-                      }
-                      else{
-                          for(let i in this.configRes.body.archive){
-                            //console.log('ccc');
-                              if(this.configRes.body.archive[i].name == this.fieldValue)
-                                //go to back end to search
-                                this.$http
-                                .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
-                                .then(function(res){
-                                    //console.log(res.body._embedded);
-                                     if(res.body._embedded && res.body._embedded.facets){
-                                          let facetsArray = res.body._embedded.facets;
-                                          let fieldFind = false;
-                                          for(let j=0; j<facetsArray.length; j++){
-                                            //console.log('ddd');
-                                              if(this.configRes.body.archive[facetsArray[j].field] && this.configRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
-                                                  fieldFind = true;
-                                                  this.querySpecificFacetsLoading = false;
-                                                  let itemArray = [];
-                                                  for(let k=0; k<facetsArray[j].values.length; k++){
-                                                    //console.log('eee');
-                                                        let item = {
-                                                            value: facetsArray[j].values[k].value,
-                                                            label: facetsArray[j].values[k].value,
-                                                            check: false,
-                                                            number: facetsArray[j].values[k].count,
-                                                        }
-                                                        itemArray.push(item);
-                                                  }
-                                                  this.containSelectors = itemArray;
-                                              }
-                                          }
-                                          if(!fieldFind){
-                                              this.querySpecificFacetsLoading = false;
-                                          }
-                                     }
-                                },function(err){
-                                    this.querySpecificFacetsLoading = false;
-                                });
-                          }
-                      }
-                  }
-              }
-          }
-          else if(keyword.length>=4) { 
-                console.log('keyword.length>=4');
-               this.querySpecificFacetsLoading = true;
-               for(let i in this.configRes.body.archive){
-                    if(this.configRes.body.archive[i].name == this.fieldValue)
-                      //go to back end to search
-                      this.$http
-                      .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
-                      .then(function(res){
-                          //console.log(res.body._embedded);
-                           if(res.body._embedded && res.body._embedded.facets){
-                                let facetsArray = res.body._embedded.facets;
-                                let fieldFind = false;
-                                for(let j=0; j<facetsArray.length; j++){
-                                    if(this.configRes.body.archive[facetsArray[j].field] && this.configRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
-                                        fieldFind = true;
-                                        this.querySpecificFacetsLoading = false;
-                                        let itemArray = [];
-                                        for(let k=0; k<facetsArray[j].values.length; k++){
-                                              let item = {
-                                                  value: facetsArray[j].values[k].value,
-                                                  label: facetsArray[j].values[k].value,
-                                                  check: false,
-                                                  number: facetsArray[j].values[k].count,
-                                              }
-                                              itemArray.push(item);
-                                        }
-                                        this.containSelectors = itemArray;
-                                    }
-                                }
-                                if(!fieldFind){
-                                    this.querySpecificFacetsLoading = false;
-                                }
-                           }
-                      },function(err){
-                          this.querySpecificFacetsLoading = false;
-                      });
+          if (keyword !== '') {
+              this.querySpecificFacetsLoading= true;
+              let fieldValue='';
+              for(let i in this.configRes.body.archive){
+                if(this.configRes.body.archive[i].name == this.fieldValue){
+                    fieldValue = i;
+                    break;
                 }
+              }
+              this.$http
+                .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+fieldValue+'=='+keyword)
+                .then(function(res){
+                    let facetsMap = res.body._embedded.facets;
+
+
+                    
+                   
+                    for(let j in facetsMap){
+                        if(facetsMap[j].field == fieldValue){
+                          
+                          break;
+                        }
+                    }
+                    //console.log('facetsMap',facetsMap);
+                    this.containSelectors=[];
+                     this.querySpecificFacetsLoading= false;
+
+                     for(let i in this.fieldSelectors){
+                        if(this.fieldSelectors[i].value == this.fieldValue){
+                            //this.fieldSelectors[i].containItems = this.containSelectors;
+                        }
+                     }
+                },function(err){
+
+                });
+               
+            
+          } else {
+              
           }
-      },
-      containDropdownOpen(open){
-          //console.log( this.$refs.containRef);
-          //console.log('aaaaaa');
-          if(!open && this.$refs.containRef.isFocused){
-            this.$refs.containRef.toggleMenu()
-          }
-      },
-      addKeyword(e){
-        console.log(e);
+         
+        /*
+        console.log(keyword);
+        this.querySpecificFacetsLoading= true;
+          this.$http
+            .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+this.fieldValue+'='+keyword)
+            .then(function(res){
+                 this.querySpecificFacetsLoading= false;
+            },function(err){
+
+            });
+           */
       },
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
@@ -429,41 +320,66 @@
       fieldChange(){
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
-              /*
-              this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-                  value: '',
-                  label: '',
-                  check: false,
-                  number: ''
-              }],*/
-             //console.log('fieldChange his.fieldValue', this.fieldValue);
-              //console.log('fieldChange this.containSelectors',this.containSelectors);
-              this.containSelectors = this.fieldSelectors[i].containItems
-              this.containValue='';
+              this.containSelectors = this.fieldSelectors[i].containItems;
+              this.containValue=[];
+              for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                if(this.fieldSelectors[i].containItems[j].check)
+                  this.containValue.push(this.fieldSelectors[i].containItems[j].value); 
+              }
               break;
           }
         }
       },
       containChange(){
-          if(this.containValue){
-              this.$refs.containRef.toggleMenu();
-              let filterCombinationFound =false;
-              for(let j=0; j<this.filterCombination.length; j++){
-                  if(this.filterCombination[j].field == this.fieldValue && this.filterCombination[j].contains == this.containValue){
-                    filterCombinationFound = true;
-                    this.$Message.success({content:'repeated item', duration:1});
-                    break;
-                  }
-              }
-              if(!filterCombinationFound){
-                  let item={
-                      condition:'And',
-                      field:this.fieldValue,
-                      contains:this.containValue
-                  };
-                  this.filterCombination.push(item);
-              }
-          }
+        for(let i=0; i< this.fieldSelectors.length; i++){
+            if(this.fieldSelectors[i].value == this.fieldValue){
+                for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                    let found = false;
+                    for(let k=0; k<this.containValue.length; k++){
+                       if(this.fieldSelectors[i].containItems[j].value == this.containValue[k]){
+                            this.fieldSelectors[i].containItems[j].check = true;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if(!found){
+                      this.fieldSelectors[i].containItems[j].check = false;
+                      //console.log(this.containValue);
+                      /*
+                      let newItem = {
+                          value: facetsMap[j].values[k].value,
+                          label: facetsMap[j].values[k].value,
+                          check: false,
+                          number: facetsMap[j].values[k].count
+                      };
+                      this.fieldSelectors[i].containItems.push(newItem);*/
+                    }
+                    
+
+                    let filterCombinationFound = false;
+                    for(let m=0; m<this.filterCombination.length; m++){
+                        if(this.filterCombination[m].field == this.fieldValue && this.filterCombination[m].contains == this.fieldSelectors[i].containItems[j].value){
+                          filterCombinationFound = true;
+                          if(!this.fieldSelectors[i].containItems[j].check)
+                            this.filterCombination.splice(m,1);
+
+                          break;
+                        }
+                    }
+                    if(!filterCombinationFound){
+                        if(this.fieldSelectors[i].containItems[j].check){
+                            let item={
+                                condition:'And',
+                                field:this.fieldValue,
+                                contains:this.fieldSelectors[i].containItems[j].value
+                            };
+                            this.filterCombination.push(item);
+                        }
+                    }
+                }
+                break;
+            }
+        }
       },
       submitSearchCondition(){
       },
@@ -472,7 +388,9 @@
       },
       conditionDelete(index,item){
         this.filterCombination.splice(index,1);
-       
+        if(item.field == this.fieldValue)
+           this.containValue.splice(this.containValue.indexOf(item.contains),1) 
+        else{
           for(let i=0; i<this.fieldSelectors.length; i++){
               if(this.fieldSelectors[i].value == item.field){
                   for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
@@ -484,20 +402,14 @@
                   break;
               }
           }
-        
+        }
       },
       keywordSearch(value){
 
-        //console.log('this.keyword',this.keyword);
+        console.log('this.keyword',this.keyword);
         //this.keyword = value;
       },
       submitSearch(){
-        console.log(this.query);
-        if(this.keyword)
-          this.hightlightMode = true;
-        else
-          this.hightlightMode = false;
-        this.queryArchiveProjectList();
         this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
@@ -755,7 +667,6 @@
     }
      .filter-selector .ivu-select-input:focus{
           border: none;
-          background:none !important;
     }
     .filter-selector .ivu-tag{
       background: none ;
@@ -788,10 +699,6 @@
     .filter-selector .ivu-icon-ios-close-empty{
       display: none;
     }
-    .filter-selector .ivu-select-selection{
-      height: 30px !important;
-      line-height: 30px !important;
-    }
     .sortOption .ivu-select-selection{
       height: 18px !important;
       line-height: 18px !important;
@@ -814,23 +721,5 @@
     }
     .resource-item .readMore p{
       display: inline !important;
-    }
-    .resource-item .readMore span{
-      display: inline !important;
-    }
-    .resource-item .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header{
-      padding-left: 0px;
-      height: 20px;
-      line-height: 20px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-    }
-    .resource-item .ivu-collapse{
-      border:none;
-      background: none;
-    }
-    .resource-item .ivu-collapse-content > .ivu-collapse-content-box{
-      padding-top: 0;
-      padding-bottom: 0;
     }
 </style>
