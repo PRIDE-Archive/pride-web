@@ -102,12 +102,32 @@
                             <div class="property-row">
                                 <div class="summary-content-header">Instrument</div>
                                 <div class="property-wrapper">
-                                  <a v-for="item in instrumentNames">{{item}}</a>
+                                  <a v-for="item in instrumentNames">{{item.name}}</a>
                                 </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Software</div>
-                                <p>{{software}}</p>
+                                <div class="property-wrapper">
+                                  <div v-if="software.length>0">
+                                      <a v-for="item in software">{{item}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div class="summary-content-header">Diseases</div>
+                                <div class="property-wrapper">
+                                  <div v-if="diseases.length>0">
+                                      <a v-for="item in diseases">{{item}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
+                                  
+                                </div>
                             </div>
                           </div>
                           <div class="property-col">
@@ -122,7 +142,7 @@
                                       <a v-for="item in quantificationMethods">{{item}}</a>
                                   </div>
                                   <div v-else>
-                                      <p>Not available</p>
+                                      <p>Unknown</p>
                                   </div>
                                 </div>
                                 
@@ -253,12 +273,13 @@
           dataProcessingProtocol:'',
           publications:[],
           species:[],
+          diseases:[],
           tissues:[],
           instrumentNames:[],
           quantificationMethods:[],
           experimentTypes:[],
-          software:'',
-          queryArchiveProjectApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/'+this.$route.params.id,
+          software:[],
+          queryArchiveProjectApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id,
           queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -482,7 +503,7 @@
            this.$http
             .get(this.queryArchiveProjectApi)
             .then(function(res){
-                //console.log(res.body);
+                console.log(res.body);
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -490,33 +511,35 @@
                 this.submissionDate = res.body.submissionDate.split('-')[2] +'/'+ res.body.submissionDate.split('-')[1] +'/'+ res.body.submissionDate.split('-')[0];
                 this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
                 this.dataProcessingProtocol = res.body.dataProcessingProtocol;
-                this.species = res.body.species;
-                this.tissues = res.body.tissues;
-                this.instrumentNames = res.body.instrumentNames;
-                this.software = res.body.software || 'Unknown';
-                this.quantificationMethods = res.body.quantificationMethods; 
-                this.experimentTypes = res.body.experimentTypes; 
+                this.species = res.body.organisms || [];
+                this.tissues = res.body.organismParts || [];
+                this.diseases = res.body.diseases || [];
+                this.instrumentNames = res.body.instruments || [];
+                this.software = res.body.software || [];
+                this.quantificationMethods = res.body.quantificationMethods || [];
+                this.experimentTypes = res.body.projectTags || [];
                 //for contactors
-                let submitter = res.body.submitter;
-                let item = {
-                  name: submitter.firstName + ' ' + submitter.lastName,
-                  affiliation: submitter.affiliation,
-                  email:submitter.email
-                }
-                this.contactors.push(item);
-                for(let i=0; i<res.body.labHeads.length; i++){
+                for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
-                    name: res.body.labHeads[i].firstName + ' ' + res.body.labHeads[i].lastName,
-                    affiliation: res.body.labHeads[i].affiliation + ' ' +'(lab head)',
-                    email:res.body.labHeads[i].email
+                    name: res.body.submitters[i].name,
+                    affiliation: res.body.submitters[i].affiliation,
+                    email:res.body.submitters[i].email
+                  }
+                  this.contactors.push(item);
+                }
+                for(let i=0; i<res.body.labPIs.length; i++){
+                  let item = {
+                    name: res.body.labPIs[i].name,
+                    affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
+                    email:res.body.labPIs[i].email
                   }
                   this.contactors.push(item);
                 }
                 //for publications
                 for(let i=0; i<res.body.references.length; i++){
                   let item = {
-                    desc:res.body.references[i].desc,
-                    pmid:res.body.references[i].ids[1].split(':')[1],
+                    desc:res.body.references[i].referenceLine,
+                    pmid:res.body.references[i].pubmedId,
                   }
                   this.publications.push(item);
                 }
