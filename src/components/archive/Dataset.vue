@@ -89,14 +89,24 @@
                           <div class="property-col">
                             <div class="property-row">
                                 <div class="summary-content-header">Species</div>
-                                <div>
-                                  <a v-for="item in species">{{item}}</a>
+                                <div class="property-wrapper">
+                                  <div v-if="species.length>0">
+                                      <a v-for="item in species">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
                                 </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Tissue</div>
                                 <div class="property-wrapper">
-                                  <a v-for="item in tissues">{{item}}</a>
+                                  <div v-if="tissues.length>0">
+                                      <a v-for="item in tissues">{{item}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
                                 </div>
                             </div>
                             <div class="property-row">
@@ -126,7 +136,6 @@
                                   <div v-else>
                                       <p>Unknown</p>
                                   </div>
-                                  
                                 </div>
                             </div>
                           </div>
@@ -224,17 +233,24 @@
               <Col span="8">
                    <Card class="card">
                        <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
+                       <!--
                        <div class="filter-wrapper">
                            <div class="summary-content-header">Filter</div>
                            <Select v-model="model1" size="small" style="width:100px">
                               <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                            </Select>
                        </div>
+                        -->
                        <div class="download-list-wrapper">
                          <div class="summary-content-header">List</div>
                          <div class="download-list">
-                           <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-                           <Button class= "download-button">Download</Button>
+                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
+                           <!--
+                           <div class="page-container">
+                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
+                           </div>
+                           -->
+                           <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
                        </div>
                   </Card>
@@ -280,20 +296,24 @@
           experimentTypes:[],
           software:[],
           queryArchiveProjectApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id,
+          queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/files',
           queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
           contactors:[],
-          columns4: [
+          fileListLoading:false,
+          fileListCol: [
+            /*
               {
                   type: 'selection',
                   width: 40,
                   align: 'center'
-              },
+              },*/
               {
                   title: 'Name',
                   key: 'name',
+                  align:'center',
                   ellipsis:true
               },
               {
@@ -301,28 +321,65 @@
                   width: 80,
                   key: 'size',
                   sortable: true,
-                    align:'center'
+                  align:'center'
               },
+              {
+                  title: 'Download',
+                  key: 'download',
+                  align:'center',
+                  width:100,
+                  render: (h, params) => {
+                      return h('div', [
+                          /*
+                          h('Button', {
+                             
+                              on: {
+                                  click: () => {
+                                      this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'Blast'),
+                          */
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px'
+                              },
+                              on: {
+                                  click: () => {
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.url.ftp)
+                                      console.log(params.row.url.ftp);
+                                      //this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'FTP'),
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px'
+                              },
+                              on: {
+                                  click: () => {
+                                      //window.location.href = params.row.url.asp;
+                                      window.open(params.row.url.asp)
+                                      console.log(params.row.url.asp);
+                                  }
+                              }
+                          }, 'ASP'),
+                      ]);
+                  }
+              }
           ],
-          data1: [
-            {
-                name: '41598_2018_23766_MOESM1_ESM.doc',
-                size: 1312.606,
-               
-            },
-            {
-                name: '41598_2018_23766_MOESM1_ESM.doc',
-                size: 1312.606,
-            },
-            {
-                name: '41598_2018_23766_MOESM1_ESM.doc',
-                size: 1312.606,
-            },
-            {
-                name: '41598_2018_23766_MOESM1_ESM.doc',
-                size: 1312.606,
-            }
-          ],
+          fileList: [],
           cityList: [
                   {
                       value: 'New York',
@@ -493,6 +550,10 @@
           page:0, //TODO for queryAssayApi
           size:20, //TODO for queryAssayApi
           total:0, //TODO for queryAssayApi
+          pageDownLoad:0,
+          pageSizeDownLoad:100,
+          totalDownLoad:0,
+          selectAllfiles:false,
       }
     },
     components: {
@@ -548,6 +609,34 @@
 
             });
       },
+      queryArchiveProjectFiles(){
+           this.fileListLoading = true;
+           this.$http
+            .get(this.queryArchiveProjectFilesApi + this.queryDownload)
+            .then(function(res){
+              console.log(res.body);
+                this.totalDownLoad = res.body.page.totalElements;
+                if(res.body._embedded.files){
+                  let filesArray = res.body._embedded.files;
+                  let tempArray = [];
+                  for(let i=0;i<filesArray.length;i++){
+                      let item ={
+                            name: filesArray[i].fileName,
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024),
+                            url: {
+                              ftp: filesArray[i].publicFileLocations[0].value,
+                              asp: filesArray[i].publicFileLocations[1].value
+                            }
+                      }
+                      tempArray.push(item);
+                  }
+                  this.fileListLoading = false;
+                  this.fileList=tempArray;
+                }
+            },function(err){
+
+            });
+      },
       pageChange(page){
           this.page = page-1;
           this.queryAssay();
@@ -595,17 +684,39 @@
       europePMC(id){
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
+      },
+      pageChangeDownload(page){
+          this.pageDownLoad = page-1;
+          this.queryArchiveProjectFiles();
+      },
+      pageSizeChangeDownload(size){
+          this.pageSizeDownLoad = size;
+          this.queryArchiveProjectFiles();
+      },
+      downLoadSelect(selection,row){
+          console.log(selection);
+           console.log(row);
+      },
+      filesSelectAll(){
+        this.selectAllfiles =! this.selectAllfiles;
+        this.$refs.selection.selectAll(this.selectAllfiles);
       }
     },
     mounted: function(){
         this.queryProjectDetails();
         this.queryAssay();
+        this.queryArchiveProjectFiles();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
           let page='page='+this.page+'&';
           let size='size='+this.size;
           return '?'+sequence+project+mod+page+size;
+      },
+      queryDownload:function(){
+          let pageDownLoad='page='+this.pageDownLoad+'&';
+          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
+          return '?'+pageDownLoad+pageSizeDownLoad;
       }
     },
   }
