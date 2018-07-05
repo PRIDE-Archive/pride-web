@@ -83,8 +83,9 @@
                               <p>{{publicationDate}}</p>
                           </div>
                     </Card>
+                    <!--
                     <Card class="card">
-                       <p slot="title">Property</p>
+                       <p slot="title">Properties</p>
                        <div class="property">
                           <div class="property-col">
                             <div class="property-row">
@@ -102,7 +103,7 @@
                                 <div class="summary-content-header">Tissue</div>
                                 <div class="property-wrapper">
                                   <div v-if="tissues.length>0">
-                                      <a v-for="item in tissues">{{item}}</a>
+                                      <a v-for="item in tissues">{{item.name}}</a>
                                   </div>
                                   <div v-else>
                                       <p>Unknown</p>
@@ -116,10 +117,10 @@
                                 </div>
                             </div>
                             <div class="property-row">
-                                <div class="summary-content-header">Software</div>
+                                <div class="summary-content-header">Softwares</div>
                                 <div class="property-wrapper">
-                                  <div v-if="software.length>0">
-                                      <a v-for="item in software">{{item}}</a>
+                                  <div v-if="softwares.length>0">
+                                      <a v-for="item in softwares">{{item}}</a>
                                   </div>
                                   <div v-else>
                                       <p>Unknown</p>
@@ -131,7 +132,7 @@
                                 <div class="summary-content-header">Diseases</div>
                                 <div class="property-wrapper">
                                   <div v-if="diseases.length>0">
-                                      <a v-for="item in diseases">{{item}}</a>
+                                      <a v-for="item in diseases">{{item.name}}</a>
                                   </div>
                                   <div v-else>
                                       <p>Unknown</p>
@@ -142,13 +143,20 @@
                           <div class="property-col">
                             <div class="property-row">
                                 <div class="summary-content-header">Modification</div>
-                                <a>No PTMs are included in the dataset</a>
+                                <div class="property-wrapper">
+                                  <div v-if="modification.length>0">
+                                      <a v-for="item in modification">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>No PTMs are included in the dataset</p>
+                                  </div>
+                                </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Quantification</div>
                                 <div class="property-wrapper">
                                   <div v-if="quantificationMethods.length>0">
-                                      <a v-for="item in quantificationMethods">{{item}}</a>
+                                      <a v-for="item in quantificationMethods">{{item.name}}</a>
                                   </div>
                                   <div v-else>
                                       <p>Unknown</p>
@@ -168,6 +176,7 @@
                             </div>
                           </div>
                        </div>
+                        -->
                     </Card>
                     <Card class="card">
                         <p slot="title">Publication</p>
@@ -180,6 +189,29 @@
                           <p>Publication pending</p>
                         </div>
                     </Card>
+                    <Card class="card">
+                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
+                       <!--
+                       <div class="filter-wrapper">
+                           <div class="summary-content-header">Filter</div>
+                           <Select v-model="model1" size="small" style="width:100px">
+                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                           </Select>
+                       </div>
+                        -->
+                       <div class="download-list-wrapper">
+                         <!--<div class="summary-content-header">List</div>-->
+                         <div class="download-list">
+                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
+                           <!--
+                           <div class="page-container">
+                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
+                           </div>
+                           -->
+                           <Button v-if="selectAllfiles" class= "download-button">Download</Button>
+                         </div>
+                       </div>
+                  </Card>
                     <Card v-if="total>0" class="card">
                         <p slot="title">Assay</p>
                         <div class="assay-search-container">
@@ -231,28 +263,115 @@
                 -->
               </Col>
               <Col span="8">
-                   <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
-                       <!--
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                        -->
-                       <div class="download-list-wrapper">
-                         <div class="summary-content-header">List</div>
-                         <div class="download-list">
-                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
-                           <!--
-                           <div class="page-container">
-                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
-                           </div>
-                           -->
-                           <Button v-if="selectAllfiles" class= "download-button">Download</Button>
-                         </div>
-                       </div>
+                  <Card class="card">
+                     <p slot="title">Properties</p>
+                     <div class="property">
+                          <div class="property-row">
+                              <div class="summary-content-header">Species</div>
+                              <div class="property-wrapper">
+                                <div v-if="species.length>0">
+                                  <div v-for="item in species">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Tissue</div>
+                              <div class="property-wrapper">
+                                <div v-if="tissues.length>0">
+                                  <div v-for="item in tissues">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Instrument</div>
+                              <div class="property-wrapper">
+                                <div v-if="instrumentNames.length>0">
+                                  <div v-for="item in instrumentNames">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Softwares</div>
+                              <div class="property-wrapper">
+                                <div v-if="softwares.length>0">
+                                  <div v-for="item in softwares">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                                
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Diseases</div>
+                              <div class="property-wrapper">
+                                <div v-if="diseases.length>0">
+                                  <div v-for="item in diseases">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Modification</div>
+                              <div class="property-wrapper">
+                                <div v-if="modification.length>0">
+                                  <div v-for="item in modification">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>No PTMs are included in the dataset</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Quantification</div>
+                              <div class="property-wrapper">
+                                <div v-if="quantificationMethods.length>0">
+                                  <div v-for="item in quantificationMethods">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Experiment Type</div>
+                              <div class="property-wrapper">
+                                <div v-if="experimentTypes.length>0">
+                                  <div v-for="item in experimentTypes">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                     </div>
                   </Card>
                   <Card class="card">
                        <p slot="title"><i class="fas fa-link icon-tag"></i>Similar Studies</p>
@@ -294,7 +413,8 @@
           instrumentNames:[],
           quantificationMethods:[],
           experimentTypes:[],
-          software:[],
+          softwares:[],
+          modification:[],
           queryArchiveProjectApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id,
           queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/files',
           queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
@@ -327,7 +447,7 @@
                   title: 'Download',
                   key: 'download',
                   align:'center',
-                  width:100,
+                  width:160,
                   render: (h, params) => {
                       return h('div', [
                           /*
@@ -347,7 +467,9 @@
                               },
                               style: {
                                   display:'inline-block',
-                                  marginRight: '5px'
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
                               },
                               on: {
                                   click: () => {
@@ -365,7 +487,7 @@
                               },
                               style: {
                                   display:'inline-block',
-                                  marginRight: '5px'
+                                  marginRight: '0px'
                               },
                               on: {
                                   click: () => {
@@ -374,7 +496,7 @@
                                       console.log(params.row.url.asp);
                                   }
                               }
-                          }, 'ASP'),
+                          }, 'ASPERA'),
                       ]);
                   }
               }
@@ -564,7 +686,7 @@
            this.$http
             .get(this.queryArchiveProjectApi)
             .then(function(res){
-                console.log(res.body);
+                console.log(res.body.softwares);
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -576,9 +698,10 @@
                 this.tissues = res.body.organismParts || [];
                 this.diseases = res.body.diseases || [];
                 this.instrumentNames = res.body.instruments || [];
-                this.software = res.body.software || [];
+                this.softwares = res.body.softwares || [];
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
+                this.modification = res.body.identifiedPTMStrings || [];
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -776,7 +899,8 @@
         color: #5bc0be;
   }
   .card .property{
-    display: flex;
+    /*display: flex;*/
+    display: block;
   }
   .card .property .property-col{
     display: flex;
@@ -786,11 +910,19 @@
   .card .property .property-col:not(:last-child) {
     margin-right: 40px;
   }
+  /*
   .card .property .property-col .property-row{
     display: flex;
     padding: 12px 0;
     justify-content: space-between;
     border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 10px;
+  }*/
+  .card .property .property-row{
+    /*display: flex;*/
+    /*padding: 2px 0;*/
+    /*border-bottom: 1px solid #e7e7e7;*/
+    margin-bottom: 10px;
   }
   .list-wrapper{
     padding-left: 20px;
@@ -810,14 +942,18 @@
     opacity: .8;
   }
   .download-list-wrapper{
-    margin-top: 10px;
+    /*margin-top: 10px;*/
   }
   .card-item-wrapper{
     margin-bottom: 10px;
   }
+  /*
   .property-wrapper{
     display: flex;
     flex-direction: column;
+  }*/
+  .property-wrapper{
+    display: block;
   }
   .summary-content-header{
     display: flex;
