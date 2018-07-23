@@ -11,7 +11,7 @@
                         <div class="search-input-wrapper">
                             <div class="fake-input">
                               <div class="tag-wrapper">
-                                  <Tag class="tag-in-search-input" v-for="item in tagArray" closable @on-close="tagDelete">{{item}}</Tag>
+                                  <Tag class="tag-in-search-input" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
                                   <Select
                                       ref="searchRef"
                                       v-model="selectTemp"
@@ -72,7 +72,7 @@
                     </div>
                     <div class="search-condition-container">
                       <div class="tag-container">
-                          <Tag type="border" v-for="item in tagArray" closable @on-close="tagDelete">{{item}}</Tag>
+                          <Tag type="border" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
                       </div>
                     </div>
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
@@ -303,7 +303,7 @@
           this.publicaitionList = [];
           this.loading = true; 
           this.$http
-            .get(this.queryArchiveProjectListApi + this.query)
+            .get(this.queryArchiveProjectListApi +this.query+ '&dateGap=%2B1YEAR')
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
