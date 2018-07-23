@@ -293,6 +293,32 @@
                               </div>
                           </div>
                           <div class="property-row">
+                              <div class="summary-content-header">Diseases</div>
+                              <div class="property-wrapper">
+                                <div v-if="diseases.length>0">
+                                  <div v-for="item in diseases">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Modification</div>
+                              <div class="property-wrapper">
+                                <div v-if="modification.length>0">
+                                  <div v-for="item in modification">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>No PTMs are included in the dataset</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
                               <div class="summary-content-header">Instrument</div>
                               <div class="property-wrapper">
                                 <div v-if="instrumentNames.length>0">
@@ -320,28 +346,15 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Diseases</div>
+                              <div class="summary-content-header">Experiment Type</div>
                               <div class="property-wrapper">
-                                <div v-if="diseases.length>0">
-                                  <div v-for="item in diseases">
+                                <div v-if="experimentTypes.length>0">
+                                  <div v-for="item in experimentTypes">
                                     <a>{{item}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
                                     <p>Unknown</p>
-                                </div>
-                              </div>
-                          </div>
-                          <div class="property-row">
-                              <div class="summary-content-header">Modification</div>
-                              <div class="property-wrapper">
-                                <div v-if="modification.length>0">
-                                  <div v-for="item in modification">
-                                    <a>{{item.name}}</a>
-                                  </div>
-                                </div>
-                                <div v-else>
-                                    <p>No PTMs are included in the dataset</p>
                                 </div>
                               </div>
                           </div>
@@ -351,19 +364,6 @@
                                 <div v-if="quantificationMethods.length>0">
                                   <div v-for="item in quantificationMethods">
                                     <a>{{item.name}}</a>
-                                  </div>
-                                </div>
-                                <div v-else>
-                                    <p>Unknown</p>
-                                </div>
-                              </div>
-                          </div>
-                          <div class="property-row">
-                              <div class="summary-content-header">Experiment Type</div>
-                              <div class="property-wrapper">
-                                <div v-if="experimentTypes.length>0">
-                                  <div v-for="item in experimentTypes">
-                                    <a>{{item}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
