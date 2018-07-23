@@ -30,9 +30,11 @@
             <div class="example-wrapper">
                 <a class="example-item" v-for="item in searchExample" v-bind:key = "item" @click="setSearchKeyword(item)">{{item}}></a>
             </div>
+            <!--
             <div class="advance-search">
                 <a @click="advanceSearchToggle">Advance</a>
             </div>
+            -->
         </div>
     </div>
     <div class="button-container">
