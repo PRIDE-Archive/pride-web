@@ -43,7 +43,7 @@
                         </div>
 
                         <div class="search-button">
-                            <a class="button search-button" @click="">Search</a>
+                            <a class="button search-button" @click="submitSearch">Search</a>
                         </div>
                     </div>
                     <div v-if="keyword" class="search-condition-container">
@@ -90,13 +90,13 @@
 </template>
 
 <script>
-  import NavBar from '@/components/landingpage/Nav'
+  import NavBar from '@/components/peptidome/Nav'
   export default {
     name: 'archive',
     data(){
       return {
           queryClusterListApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
-          peptideSearchConfigURL:'/static/peptidomeSearch/config.json',
+          searchConfigURL:'/static/facets/config.json',
           q:'',
           peptide:'',
           modFilters:'',
@@ -117,6 +117,7 @@
           containSelectors:[],
           filterCombination:[],
           loading: true,
+          //filterInitBool:false,
           columns5: [
 
               {
@@ -185,17 +186,17 @@
     },
     methods:{
       setFilter(){
+          //if(!this.filterInitBool)
           this.$http
-            .get(this.peptideSearchConfigURL)
+            .get(this.searchConfigURL)
             .then(function(configRes){
+             // this.filterInitBool=true;
               this.fieldSelectors = [];
-              console.log(configRes.body.facetMap);
               for(let i in this.facetsMap){
-                if(configRes.body.facetMap[i] && configRes.body.facetMap[i].name){
-                    console.log(i);
+                if(configRes.body.peptidome[i] && configRes.body.peptidome[i].name){
                     let item = {
-                      value: configRes.body.facetMap[i].name,
-                      label: configRes.body.facetMap[i].name,
+                      value: configRes.body.peptidome[i].name,
+                      label: configRes.body.peptidome[i].name,
                       containItems:[]
                     }
                     for(let j in this.facetsMap[i]){
@@ -220,7 +221,6 @@
             },function(err){
 
             });
-
       },
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
@@ -307,8 +307,6 @@
       },
       keywordSearch(value){
 
-        //console.log('this.keyword',this.keyword);
-        //this.keyword = value;
       },
       pageChange(page){
           this.page = page-1;
@@ -354,11 +352,27 @@
       },
       updateQuery(){
           this.q = this.$route.query.q || '';
+      },
+      submitSearch(){
+          this.q = this.keyword;
+          let tempSpeciesFilters = '';
+          let tempModFilters='';
+          for (let i in this.filterCombination){
+              if(this.filterCombination[i].condition == 'And'){
+                  if(this.filterCombination[i].field == 'Species')
+                      tempSpeciesFilters += this.filterCombination[i].contains + ',';
+                  else if(this.filterCombination[i].field == 'Modifications')
+                      tempModFilters += this.filterCombination[i].contains + ',';
+              }
+          }
+          this.speciesFilters = tempSpeciesFilters.replace(/,$/gi,""); 
+          this.modFilters = tempModFilters.replace(/,$/gi,"");
 
-      },
-      queryConfig(){
-          
-      },
+          this.queryClusterList();
+      }
+
+
+     
     },
 
     watch: {
@@ -366,7 +380,6 @@
           //combine keyword (this.keyword) and filters together (val)
           //this.queryClusterList();
       },
-
     },
     computed:{
       query:function(){
@@ -386,7 +399,6 @@
     mounted: function(){
         this.updateQuery();
         this.queryClusterList();
-        this.queryConfig();
     },
     created(){
        
@@ -535,7 +547,6 @@
       margin-bottom: 0 !important;
     }
     .filter-condition .filter-selector .ivu-select-item-selected{
-      
       color: rgba(91, 192, 190, 0.9) !important;
       background: inherit !important;
     }
@@ -562,7 +573,7 @@
       display: none !important; 
     }
     .tag-container .ivu-tag-border.ivu-tag-closable:after{
-      display: none !important;
+        /*display: none !important;*/
     }
     .filter-selector .ivu-select-input{
       height: 30px;
