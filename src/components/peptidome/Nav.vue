@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_Concept_2.png" alt="logo" width="300" height="300"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_Peptide.png" alt="logo" width="500"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -44,72 +44,49 @@
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoPeptideHome">
+                          <a href="javascript:void(0)" @click="gotoLandingpage">
                             <i class="fas fa-home"></i>
                             <span class='sub-nav-title'>Home</span> 
                           </a>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoPeptideSearch">
-                            <i class="fas fa-home"></i>
-                            <span class='sub-nav-title'>Peptide Search</span> 
+                      <Dropdown @on-click="resourcesClick">
+                          <a href="javascript:void(0)">
+                            <i class="fas fa-search"></i>
+                            <span class='sub-nav-title'>Resources</span> 
+                            <Icon type="chevron-down"></Icon>
                           </a>
+                          <DropdownMenu slot="list">
+                              <DropdownItem name="goToArchive">PRIDE Archive</DropdownItem>
+                              <DropdownItem name="goToPeptidome">PRIDE Peptidome</DropdownItem>
+                              <DropdownItem name="gotoSpectrumLibrary">PRIDE Spectral Libraries</DropdownItem>
+                          </DropdownMenu>
                       </Dropdown>
-                      <!--
-                        <Dropdown>
-                            <a href="javascript:void(0)">
-                              <i class="fas fa-search"></i>
-                              <span class='sub-nav-title'>Resources</span> 
-                              <Icon type="chevron-down"></Icon>
-                            </a>
-                            <DropdownMenu slot="list">
-                                <DropdownItem>PRIDE Archive</DropdownItem>
-                                <DropdownItem>PRIDE Peptidome</DropdownItem>
-                                <DropdownItem>PRIDE Spectral Libraries</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
-                      -->
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoSpectrumLibrary">
-                            <i class="fas fa-home"></i>
-                            <span class='sub-nav-title'>Spectrum Library</span> 
-                          </a>
-                      </Dropdown>
-                    <!--
-                      <Dropdown>
+                      <Dropdown @on-click="resourcesClick">
                           <a href="javascript:void(0)">
                             <i class="fas fa-cogs"></i>
                             <span class='sub-nav-title'>Tools</span> 
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem>Spectra Clustering Toolsuite</DropdownItem>
-                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
-                              <DropdownItem>PRIDE Restful Web-services</DropdownItem>
-                              <DropdownItem>PRIDE Utilities Libraries</DropdownItem>
+                              <DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>
+                              <DropdownItem name="goToPrideInspector">PRIDE Inspector Toolsuite</DropdownItem>
+                              <DropdownItem name="goToPrideUtilities">PRIDE Utilities Libraries</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
-                    -->
                   </li>
                   <li class="sub-nav-list">
-                      <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoPeptideDownload">
-                            <i class="fas fa-home"></i>
-                            <span class='sub-nav-title'>Download</span> 
-                          </a>
-                      </Dropdown>
-                    <!--
-                      <Dropdown>
+                      <Dropdown @on-click="resourcesClick">
                           <a href="javascript:void(0)">
                             <i class="fas fa-graduation-cap"></i>
                             <span class='sub-nav-title'>Docs</span> 
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
+                              <!--
                               <Dropdown placement="right-start">
                                   <DropdownItem>
                                       User Guide
@@ -120,16 +97,17 @@
                                       <DropdownItem>PRIDE Peptidome</DropdownItem>
                                   </DropdownMenu>
                               </Dropdown>
-                              <DropdownItem>PRIDE Inspector Toolsuite</DropdownItem>
+                              -->
+                              <DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>
+                              <DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
-                    -->
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoPeptideAPI">
+                          <a href="javascript:void(0)" @click="gotoAbout">
                             <i class="fas fa-info-circle"></i>
-                            <span class='sub-nav-title'>API</span> 
+                            <span class='sub-nav-title'>About</span> 
                           </a>
                       </Dropdown>
                   </li>
@@ -169,20 +147,37 @@
             failSearch(){
                 this.$Message.error({content:'error search', duration:3});
             },
-            gotoPeptideHome(){
-                this.$router.push({name:'peptidome'});
+            gotoLandingpage(){
+              this.$router.push({name:'landingpage'});
             },
-            gotoPeptideSearch(){
-                this.$router.push({name:'peptidesearch'});
+            resourcesClick(name){
+                if(name=='goToArchive'){
+                    this.$router.push({name:'archive'});
+                }
+                else if(name=='goToPeptidome'){
+                    this.$router.push({name:'peptidome'});
+                }
+                else if(name=='gotoSpectrumLibrary'){
+                    this.$router.push({name:'spectrumlibrary'});
+                }
+                else if(name=='goToSpectraClustering'){
+                    this.$router.push({path:'/markdownpage/spectraclustering'});
+                }
+                else if(name=='goToPrideInspector'){
+                    this.$router.push({path:'/markdownpage/prideinspector'});
+                }
+                else if(name=='goToPrideUtilities'){
+                    this.$router.push({path:'/markdownpage/prideutilities'});
+                }
+                else if(name=='goToPrideArchiveWS'){
+                    this.$router.push({path:'/markdownpage/pridearchivews'});
+                }
+                else if(name=='goToPridePeptidomeWS'){
+                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
+                }
             },
-            gotoSpectrumLibrary(){
-                this.$router.push({name:'spectrumlibrary'});
-            },
-            gotoPeptideDownload(){
-                this.$router.push({name:'peptidedownload'});
-            },
-            gotoPeptideAPI(){
-               this.$router.push({path:'/markdownpage/peptideAPI'});
+            gotoAbout(){
+              this.$router.push({path:'/markdownpage/about'});
             }
         },
         
@@ -205,9 +200,7 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        /*background-image: url('../../assets/image/menu-bg.png');*/
-        background-color: #5bc0be;
-        border-bottom: 1px solid #ddd;
+        background-image: url('/static/image/hero-beta-banner.png');
     }
     .ebi-masthead nav ul.menu li{
         border-right: 1px solid rgb(248,248,248,0.7);
@@ -226,11 +219,10 @@
       border: 0;
     }
     .sub-nav-ebi a:hover{
-        background: transparent;
-         color: #f8f8f8; 
+        opacity: 0.7;
     }
     .ebi-masthead h1, .ebi-masthead a{
-      color:#f8f8f8;
+      color:#454548;
     }
     .landingpage-title{
       font-size: 3rem;

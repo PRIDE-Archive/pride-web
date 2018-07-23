@@ -1,29 +1,53 @@
 <template>
   <div class="archive-container">
-      <div class="panel nav"><Nav/></div>
+      <div class="panel nav"><NavBar/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
                 <p slot="title">Search</p>
                 <div class="search-container">
                     <div class="search-input">
+                       
+                        <div class="search-input-wrapper">
+                            <div class="fake-input">
+                              <div class="tag-wrapper">
+                                  <Tag class="tag-in-search-input" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
+                                  <Select
+                                      ref="searchRef"
+                                      v-model="selectTemp"
+                                      filterable
+                                      remote
+                                      placeholder="input here"
+                                      :remote-method="searchInputChange"
+                                      :loading="searchInputLoading"
+                                      @on-open-change="searchInputLoadingDropdownOpen"
+                                      style="width:500px">
+                                      <!--<Option v-for="(option, index) in options2" :value="option.value" :key="index">{{option.label}}</Option>-->
+                                  </Select>
+                                  <!--<Input class="tag-input" v-model="keyword" placeholder="input here" style="width: 500px;"></Input>-->
+                              </div>
+                              <Icon type="ios-search"></Icon>
+                            </div>
+                        </div>
+                        <!--
                         <AutoComplete
                             class="archive-search-input"
                             v-model="keyword"
-                            :data="autoCompleteWords"
                             @on-search="keywordSearch"
+ 
                             icon="ios-search"
                             :filter-method="autoCompleteFilter"
                             placeholder="input here"
                             style="width: 100%" 
                             size="large">
                         </AutoComplete>
+                      -->
                     </div>
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
                                 <Select class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
-                                    <Option v-for="item in fieldSelectors" :value="item.value" :key="item.value" >
+                                    <Option v-for="item in fieldSelectors" :value="item.value" :label="item.label" :key="item.value" >
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
                                     </Option>
@@ -31,8 +55,8 @@
                             </div>
                             <span class="separator">></span>
                             <div class="filter-condition ">
-                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple  @on-change="containChange">
-                                    <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
+                                <Select ref="containRef" class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading..." @on-open-change="containDropdownOpen" @on-query-change="queryChange">
+                                    <Option v-for="item in containSelectors" :value="item.value" :label="item.label" :key="item.value">
                                       <span>
                                             <span>{{ item.label }}</span>
                                             <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
@@ -46,11 +70,9 @@
                             <a class="button search-button" @click="submitSearch">Search</a>
                         </div>
                     </div>
-                    <div v-if="keyword" class="search-condition-container">
+                    <div class="search-condition-container">
                       <div class="tag-container">
-                          <Tag type="border" closable @on-close="keywordDelete">
-                            <span class="search-condition first">{{keyword}}</span>
-                          </Tag>
+                          <Tag type="border" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
                       </div>
                     </div>
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
@@ -88,28 +110,54 @@
                 
                     </span>
                   </p>
-                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.id">
-                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.id}}">{{publicationItem.id}}</router-link>
-                     
-                      <a class="resource-id"></a>
-                      <p class="resource-title">{{publicationItem.name}}</p>
-                      <p>Species: {{publicationItem.species}}</p>
-                      <span>Project description: {{publicationItem.description}}</span><a @click="getDetailedResource(publicationItem.id)" class="detailed-resouce">(More)</a>
-                      <p>Made public: {{publicationItem.date}}</p>
-                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.dataset">
-                          <a class="button dataset-button" href="javascript:void(0)">
+                  <Spin size="large" fix v-if="loading"></Spin>
+                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.accession}}</text-highlight></router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
+                      <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.title}}</text-highlight></p> 
+                      <p><span class="project-info">{{projectItemsSpecies}}: </span> <span v-for="item in publicationItem.species"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight></span></p>
+                      <span><span class="project-info">{{projectItemsProjectDescription}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.projectDescription}}</text-highlight>
+                        <a @click="gotoDetails(publicationItem.accession)">(More)</a>
+                        <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
+                      </span>
+                      <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
+                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
+                          <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
-                              {{datesetItem}} 
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                          </a>
+                          <a v-else class="button gray-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem>{{datesetItem}}</DropdownItem>
+                              <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
-      
+                      <Collapse v-if="hightlightMode">
+                          <Panel>
+                              <span>Matched Items</span>
+                              <p class="matched-items" v-for="highlightItem in publicationItem.hightlightItemArray" slot="content">
+                                  <span class="project-info">{{highlightItem.name}}: </span>
+                                 <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{highlightItem.content}}</text-highlight>
+                              </p>
+                          </Panel>
+                      </Collapse>
                   </Card>
                   
                   <div class="page-container">
-                    <Page :total="200" :page-size="20" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                    <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                   </div>
               </Card>
           </Row>
@@ -118,49 +166,38 @@
 </template>
 
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import NavBar from '@/components/archive/Nav'
+  var paramsFromLandingPage='';
   export default {
     name: 'archive',
     data(){
       return {
           keyword:'',
+          selectTemp:'',
+          searchInputLoading:false,
           fieldValue:'',
-          containValue:[],
-          autoCompleteWords:['aaa','bbb','ccc','ddd'],
+          containValue:'',
+          loading:true,
+          querySpecificFacetsLoading:false,
+          highlightKeyword:'',
+          HighlightKeywordSensitive:false,
+          facetsURL:'http://ves-pg-41:9020/facet/projects',
+          searchConfigURL:'/static/config/facets/config.json',
+          projectItemsConfigURL:'/static/config/projectItems/config.json',
+          queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
           containItemSearch:'',
           fieldSelectors:[],
-          containSelectors:[],
+          
+          containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+              value: '',
+              label: '',
+              check: false,
+              number: ''
+          }],
+          //containSelectors:[],
           filterCombination:[],
-          sortType:'Accession',
-          publicaitionList:[
-            {
-              id:'PXD008343',
-              completeState:false,
-              name: 'CRISPR/Cas9-mediated knockout and endogenous complex analysis of Cluap1/ IFT38',
-              species: 'Homo sapiens (Human)',
-              description:'CRISPR/Cas9-mediated gene-editing allows manipulation of a gene',
-              date:'2018-04-04',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008267',
-              completeState:true,
-              name: 'Proteomic profiling of human iPSC-derived pancreatic endocrine cells for the identification of clinical biomarkers ',
-              species: 'Homo sapiens (Human)',
-              description:'Great progresses have been made for generating in vitro pluripot',
-              date:'2005-08-16',
-              dataset:['Biological Dataset']
-            },
-            {
-              id:'PXD008970',
-              completeState:false,
-              name: 'Protein citrullination in human tissues',
-              species: 'Homo sapiens (Human)',
-              description:'Citrullination is a post-translational modification of arginine',
-              date:'2018-04-04',
-              dataset:['ProteomeTools','Biological Dataset']
-            }
-          ],
+          sortType:'Date',
+          publicaitionList:[],
           sortList:[
             {
                 value: 'Accession',
@@ -173,263 +210,385 @@
             {
                 value: 'Relevance',
                 label: 'Relevance'
+            },
+            {
+                value: 'Date',
+                label: 'Date'
             }
-          ]
+          ],
+          page:0,
+          pageSize:20,
+          filter:'',
+          sort:'publication_date',
+          total:0,
+          facetsConfigRes:'',
+          projectItemsConfigRes:'',
+          hightlightMode:false,
+          hightlightItemArray:[],
+          tagArray:[],
+          projectItemsSpecies:'',
+          projectItemsProjectDescription:'',
+          projectItemsPublicationDate:'',
       }
     },
     components: {
-      Nav
+      NavBar
     },
     methods:{
-      initFilter(){
-          let tempArray = [
-              {
-                  value: 'Species',
-                  label: 'Species',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                      {
-                          value: 'Paris',
-                          label: 'Paris',
-                          check: false,
-                          number:'3421'
-                      },
-                      {
-                          value: 'Canberra',
-                          label: 'Canberra',
-                          check: false,
-                          number:'32'
+      searchInputChange (query, splitBool) {
+          if(splitBool){
+            this.tadAdd(query);
+            this.$refs.searchRef.setQuery(null);
+          }
+      },
+      setFilter(){
+          this.$http
+            .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
+            .then(function(res){
+                let facetsMap = res.body._embedded.facets;
+                //console.log(facetsMap);
+                this.$http
+                    .get(this.searchConfigURL)
+                    .then(function(facetsConfigRes){
+                      this.facetsConfigRes = facetsConfigRes;
+                      this.fieldSelectors = [];
+                      let archiveObj = facetsConfigRes.body.archive;
+                      for(let i in archiveObj){
+                          let item = {
+                              value: archiveObj[i].name,
+                              label: archiveObj[i].name,
+                              containItems:[]
+                          }
+                          for(let j in facetsMap){
+                              if(facetsMap[j].field == i){
+                                for(let k=0; k<facetsMap[j].values.length; k++){
+                                    let containItem = {
+                                        value: facetsMap[j].values[k].value,
+                                        label: facetsMap[j].values[k].value,
+                                        check: false,
+                                        number: facetsMap[j].values[k].count
+                                    }
+                                    item.containItems.push(containItem);
+                                }
+                                break;
+                              }
+                          }
+                          this.fieldSelectors.push(item);
                       }
-                  ],
-              },
-              {
-                  value: 'Tissue',
-                  label: 'Tissue',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },
-              {
-                  value: 'Disease',
-                  label: 'Disease',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                      {
-                          value: 'Ottawa',
-                          label: 'Ottawa',
-                          check: false,
-                          number:'345'
-                      },
-                  ],
-              },  
-              {
-                  value: 'Modification',
-                  label: 'Modification',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-              },
-              {
-                  value: 'Instrument',
-                  label: 'Instrument',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                 
-              },
-              {
-                  value: 'Experiment type',
-                  label: 'Experiment type',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                 
-              },
-              {
-                  value: 'Project lags',
-                  label: 'Project lags',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                  
-              },
-              {
-                  value: 'Submission type',
-                  label: 'Submission type',
-                  containItems:[
-                      {
-                          value: 'London',
-                          label: 'London',
-                          check: false,
-                          number:'100'
-                      },
-                      {
-                          value: 'Sydney',
-                          label: 'Sydney',
-                          check: false,
-                           number:'157'
-                      },  
-                  ],
-                  
+                      this.fieldValue = this.fieldSelectors[0].value;
+                      //console.log( this.fieldSelectors[0].value);
+                      //console.log('this.fieldValue',this.fieldValue);
+                      this.containSelectors = this.fieldSelectors[0].containItems;
+                    },function(err){
+
+                    });
+            },function(err){
+
+            });
+      },
+      setSearchCondition(){
+          let condition='';       
+          for(let i=0; i<this.filterCombination.length; i++){
+            for(let j in this.facetsConfigRes.body.archive){
+              if(this.facetsConfigRes.body.archive[j].name == this.filterCombination[i].field){
+                   condition += j+'=='+this.filterCombination[i].contains+','
+                break;
               }
-          ];
-          this.fieldSelectors = tempArray;
-          this.fieldValue = this.fieldSelectors[0].value;
-          this.containSelectors = this.fieldSelectors[0].containItems;
+            }
+          }
+          this.filter = condition.replace(/,$/gi,'');
+          //console.log(this.filter);
+      },
+      queryArchiveProjectList(){
+          this.publicaitionList = [];
+          this.loading = true; 
+          this.$http
+            .get(this.queryArchiveProjectListApi +this.query+ '&dateGap=%2B1YEAR')
+            .then(function(res){
+              this.total = res.body.page.totalElements;
+                this.loading = false;
+                if(res.body._embedded && res.body._embedded.compactprojects){
+                    this.setHighlightKeywords();
+                    let projectsList = res.body._embedded.compactprojects;
+                      for(let i=0; i<projectsList.length; i++){
+                          let item = {
+                              accession: projectsList[i].accession,
+                              title: projectsList[i].title,
+                              species: projectsList[i].organisms,
+                              projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                              publicationDate: projectsList[i].publicationDate,
+                              projectTags: projectsList[i].projectTags,
+                              submissionType: projectsList[i].submissionType,
+                              hightlightItemArray:[],
+                          }
+                          this.$http
+                            .get(this.projectItemsConfigURL)
+                            .then(function(projectItemsConfigRes){
+                                this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
+                                //console.log('projectsList[i].highlights',projectsList[i].highlights);
+                                for(let j in projectsList[i].highlights){
+                                    let content='';
+                                    for(let k=0; k<projectsList[i].highlights[j].length;k++){
+                                      //let temp = projectsList[i].highlights[j].k;
+                                      //console.log(projectsList[i].highlights[j][k]);
+                                      content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
+                                    }
+                                    let hightlightItem={
+                                        name:this.projectItemsConfigRes[j],
+                                        content:content.replace(/,$/gi,'')
+                                    }
+                                    item.hightlightItemArray.push(hightlightItem);
+                                }
+                                this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
+                                this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
+                                this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
+                                this.publicaitionList.push(item);
+                            },function(err){
+
+                            });
+                      }
+                }
+                else{
+                  this.$Message.error({content:'No results', duration:1});
+                }
+                
+            },function(err){
+
+            });
+           
+      },
+      queryChange(query){
+        if(query === ''){
+            for(let i=0; i<this.fieldSelectors.length; i++){
+                if(this.fieldSelectors[i].value == this.fieldValue){
+                    this.containSelectors = this.fieldSelectors[i].containItems;
+                    break;
+                }
+            }
+        }
+      },
+      gotoDetails(id){
+          this.$router.push({name:'dataset',params:{id:id}});
+      },
+      setHighlightKeywords(){
+          this.highlightKeyword = this.keyword.split(',');
+      },
+      querySpecificFacets(keyword){
+          if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
+            return;
+         
+          if(keyword.length<4 && keyword.length>0) {
+              this.querySpecificFacetsLoading = true;
+              for(let i=0; i<this.fieldSelectors.length; i++){
+                //console.log('aaa');
+                  if(this.fieldSelectors[i].value == this.fieldValue){
+                      let itemArray=[];
+                      var re = new RegExp(keyword,'i');
+                      for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
+                          if(this.fieldSelectors[i].containItems[j].value.match(re)){
+                              let item = {
+                                  value: this.fieldSelectors[i].containItems[j].value,
+                                  label: this.fieldSelectors[i].containItems[j].label,
+                                  check: false,
+                                  number: this.fieldSelectors[i].containItems[j].number,
+                              }
+                              itemArray.push(item);
+                          }
+                      }
+                      this.containSelectors=itemArray;
+                      if(this.containSelectors.length>0){
+                          this.querySpecificFacetsLoading = false;
+                          break;
+                      }
+                      else{
+                          for(let i in this.facetsConfigRes.body.archive){
+                              if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
+                                  this.$http
+                                    .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                                    .then(function(res){
+                                        //console.log(res.body._embedded);
+                                         if(res.body._embedded && res.body._embedded.facets){
+                                              let facetsArray = res.body._embedded.facets;
+                                              let fieldFind = false;
+                                              for(let j=0; j<facetsArray.length; j++){
+                                                //console.log('ddd');
+                                                  if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                                      fieldFind = true;
+                                                      this.querySpecificFacetsLoading = false;
+                                                      let itemArray = [];
+                                                      for(let k=0; k<facetsArray[j].values.length; k++){
+                                                        //console.log('eee');
+                                                            let item = {
+                                                                value: facetsArray[j].values[k].value,
+                                                                label: facetsArray[j].values[k].value,
+                                                                check: false,
+                                                                number: facetsArray[j].values[k].count,
+                                                            }
+                                                            itemArray.push(item);
+                                                      }
+                                                      this.containSelectors = itemArray;
+                                                  }
+                                              }
+                                              if(!fieldFind){
+                                                  this.querySpecificFacetsLoading = false;
+                                              }
+                                         }
+                                    },function(err){
+                                        this.querySpecificFacetsLoading = false;
+                                    });
+                                  break;
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+          else if(keyword.length>=4) { 
+              this.querySpecificFacetsLoading = true;
+              for(let i in this.facetsConfigRes.body.archive){
+                  if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
+                      this.$http
+                        .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                        .then(function(res){
+                            //console.log(res.body._embedded);
+                             if(res.body._embedded && res.body._embedded.facets){
+                                  let facetsArray = res.body._embedded.facets;
+                                  let fieldFind = false;
+                                  for(let j=0; j<facetsArray.length; j++){
+                                    //console.log('ddd');
+                                      if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                          fieldFind = true;
+                                          this.querySpecificFacetsLoading = false;
+                                          let itemArray = [];
+                                          for(let k=0; k<facetsArray[j].values.length; k++){
+                                            //console.log('eee');
+                                                let item = {
+                                                    value: facetsArray[j].values[k].value,
+                                                    label: facetsArray[j].values[k].value,
+                                                    check: false,
+                                                    number: facetsArray[j].values[k].count,
+                                                }
+                                                itemArray.push(item);
+                                          }
+                                          this.containSelectors = itemArray;
+                                      }
+                                  }
+                                  if(!fieldFind){
+                                      this.querySpecificFacetsLoading = false;
+                                  }
+                             }
+                        },function(err){
+                            this.querySpecificFacetsLoading = false;
+                        });
+                      break;
+                  }
+              }
+          }
+      },
+      containDropdownOpen(open){
+          //console.log( this.$refs.containRef);
+          //console.log('aaaaaa');
+          if(!open && this.$refs.containRef.isFocused){
+            this.$refs.containRef.toggleMenu();
+            //this.$Message.success({content:'repeated item', duration:1});
+          }
+      },
+      searchInputLoadingDropdownOpen(open){
+          if(open){
+              window.addEventListener('mousedown', this.searchInputBlur, false);
+              window.addEventListener('touchstart', this.searchInputBlur, false);
+          }
+          else{
+            window.removeEventListener('mousedown', this.searchInputBlur, false);
+            window.removeEventListener('touchstart', this.searchInputBlur, false);
+          }
+      },
+      searchInputBlur(e){
+        this.$nextTick(()=>{
+            e.target.click();
+        });
+      },
+      keywordChange(keyword){
+        /*
+        if(keyword == ';'){
+          this.keyword = ''
+          console.log(123);
+          return;
+        }
+        if(keyword.charAt(keyword.length-1) ==';')
+          console.log(keyword);*/
       },
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
       },
       conditionChange(index,condition){
         this.filterCombination[index].condition = condition;
+        this.setSearchCondition();
       },
       fieldChange(){
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
-              this.containSelectors = this.fieldSelectors[i].containItems;
-              this.containValue=[];
-              for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
-                if(this.fieldSelectors[i].containItems[j].check)
-                  this.containValue.push(this.fieldSelectors[i].containItems[j].value); 
-              }
+              /*
+              this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+                  value: '',
+                  label: '',
+                  check: false,
+                  number: ''
+              }],*/
+             //console.log('fieldChange his.fieldValue', this.fieldValue);
+              //console.log('fieldChange this.containSelectors',this.containSelectors);
+              this.containSelectors = this.fieldSelectors[i].containItems
+              this.containValue='';
+              this.$refs.containRef.setQuery(null);
               break;
           }
         }
       },
       containChange(){
-        for(let i=0; i< this.fieldSelectors.length; i++){
-            if(this.fieldSelectors[i].value == this.fieldValue){
-                for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
-                    let found = false;
-                    for(let k=0; k<this.containValue.length; k++){
-                       if(this.fieldSelectors[i].containItems[j].value == this.containValue[k]){
-                            this.fieldSelectors[i].containItems[j].check = true;
-                            found = true;
-                            break;
-                        }
-                    }
-                    if(!found)
-                      this.fieldSelectors[i].containItems[j].check = false;
-                    
-
-                    let filterCombinationFound = false;
-                    for(let m=0; m<this.filterCombination.length; m++){
-                        if(this.filterCombination[m].field == this.fieldValue && this.filterCombination[m].contains == this.fieldSelectors[i].containItems[j].value){
-                          filterCombinationFound = true;
-                          if(!this.fieldSelectors[i].containItems[j].check)
-                            this.filterCombination.splice(m,1);
-
-                          break;
-                        }
-                    }
-                    if(!filterCombinationFound){
-                        if(this.fieldSelectors[i].containItems[j].check){
-                            let item={
-                                condition:'And',
-                                field:this.fieldValue,
-                                contains:this.fieldSelectors[i].containItems[j].value
-                            };
-                            this.filterCombination.push(item);
-                        }
-                    }
-                }
-                break;
-            }
-        }
+          if(this.containValue){
+              this.$refs.containRef.toggleMenu();
+              let filterCombinationFound =false;
+              for(let j=0; j<this.filterCombination.length; j++){
+                  if(this.filterCombination[j].field == this.fieldValue && this.filterCombination[j].contains == this.containValue){
+                    filterCombinationFound = true;
+                    //this.$Message.success({content:'repeated item', duration:1});
+                    break;
+                  }
+              }
+              if(!filterCombinationFound){
+                  let item={
+                      condition:'And',
+                      field:this.fieldValue,
+                      contains:this.containValue
+                  };
+                  this.filterCombination.push(item);
+                  this.setSearchCondition();
+              }
+          }
       },
       submitSearchCondition(){
       },
-      keywordDelete(){
-          this.keyword = '';
+      tadAdd(item){
+        this.tagArray.push(item);
+        this.setKeywords();
+      },
+      tagDelete(event, name){
+          const index = this.tagArray.indexOf(name);
+          this.tagArray.splice(index, 1);
+          this.setKeywords();
+      },
+      setKeywords(){
+          this.keyword='';
+          for(let i=0; i<this.tagArray.length; i++){
+              this.keyword += this.tagArray[i]+',';
+          }
+          this.keyword.replace(/,$/gi,'');
       },
       conditionDelete(index,item){
         this.filterCombination.splice(index,1);
-        if(item.field == this.fieldValue)
-           this.containValue.splice(this.containValue.indexOf(item.contains),1) 
-        else{
+        this.$refs.containRef.setQuery(null);
+        this.setSearchCondition();
+        /*
           for(let i=0; i<this.fieldSelectors.length; i++){
               if(this.fieldSelectors[i].value == item.field){
                   for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
@@ -441,45 +600,114 @@
                   break;
               }
           }
-        }
+        */
       },
       keywordSearch(value){
 
-        console.log('this.keyword',this.keyword);
+        //console.log('this.keyword',this.keyword);
         //this.keyword = value;
       },
       submitSearch(){
+        let temp = this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').value;
+        if(temp && this.tagArray.length == 0){
+          this.tadAdd(temp);
+          this.$refs.searchRef.setQuery(null);
+        }
+        
+        if(this.keyword)
+          this.hightlightMode = true;
+        else
+          this.hightlightMode = false;
+        this.queryArchiveProjectList();
         this.$Message.success({content:'new result', duration:1});
       },
-      pageChange(){
-          this.$Message.success({content:'pageChange', duration:1});
+      pageChange(page){
+          this.page = page-1;
+          this.setFilter();
+          this.queryArchiveProjectList();
       },
-      pageSizeChange(){
-          this.$Message.success({content:'pageSizeChange', duration:1});
+      pageSizeChange(size){
+          this.pageSize = size;
+          this.setFilter();
+          this.queryArchiveProjectList();
       },
-      sortChange(){
-        this.$Message.success({content:'sortChange', duration:1});
+      sortChange(type){
+        console.log(type);
+        if(type == 'Title')
+          this.sort = 'project_title'
+        else if(type == 'Accession')
+          this.sort = 'id'
+        else if(type == 'Relevance')
+          this.sort = 'score'
+        else if(type == 'Date')
+          this.sort = 'publication_date';
+
+        this.setFilter();
+        this.queryArchiveProjectList();
+      },
+      updateQuery(){
+        this.keyword
+        this.sort = 'publication_date';
+        this.page = 0;
+        this.pageSize = 20;
+      },
+      searchInputListener(){
+          this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').addEventListener('keydown',(e)=>{
+              if(e.keyCode == 13 || e.keyCode == 188){
+                  e.preventDefault();
+                  e.stopPropagation();
+                  //this.searchInputChange(',');
+              }
+          });
+
+          this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').addEventListener('keyup',(e)=>{
+           // console.log('123');
+           
+              if(e.keyCode == 13 || e.keyCode == 188){
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if(e.target.value)
+                    this.searchInputChange(e.target.value, true);
+              }
+          });
       }
     },
 
     watch: {
       filterCombination: function (val) {
           //combine keyword (this.keyword) and filters together (val)
-          this.submitSearch();
+          //this.submitSearch();
       },
 
     },
-   
+    computed:{
+      query:function(){
+          let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
+          let filter = this.filter? 'filter='+this.filter+'&' : '';
+          let page='page='+this.page+'&';
+          let pageSize='pageSize='+this.pageSize;
+          return '?'+keyword+filter+page+pageSize;
+          
+      }
+    },
     mounted: function(){
-        this.initFilter();
-        
+      this.updateQuery();
+      this.setFilter();
+      this.queryArchiveProjectList();
+      this.searchInputListener();
     },
     created(){
-       
+      
     },
     beforeDestroy(){
           
     },
+    beforeRouteEnter(to,from,next){
+      if(from.name == 'landingpage' && from.params.keyword)
+        paramsFromLandingPage = from.params.keyword;
+      
+      next();
+    }
   }
 </script>
 
@@ -509,7 +737,44 @@
   }
   .search-input{
     text-align: center;
+    margin-bottom: 10px;
   }
+  .search-input-wrapper{
+    position: relative;
+  }
+  .search-input-wrapper .fake-input{
+    padding-right: 32px;
+    border-radius: 3px !important;
+        font-size: 14px;
+    padding: 6px 7px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    line-height: 1.5;
+        border: 1px solid #5bc0be;
+            color: #495060;
+                background-color: #fcfcfc;
+    background-image: none;
+    cursor: text;
+    text-align:left;
+  }
+  .search-input-wrapper .tag-wrapper{
+    display: inline-block;
+    width: 100%
+   /* position: absolute;*/
+  }
+
+  .search-input-wrapper .tag-wrapper .tag-in-search-input:hover{
+      opacity: 1 !important;
+  }
+  .search-input-wrapper .tag-wrapper .tag-in-search-input{
+      background: none !important;
+  }
+  .search-input-wrapper .tag-wrapper .ivu-select{
+      width: auto
+  }
+
   .refine-name{
     font-size: 12px;
   }
@@ -536,6 +801,9 @@
   .search-condition-container a{
     border:none;
   }
+  .search-condition-container .ivu-select-dropdown .ivu-dropdown-menu{
+    min-width: 50px;
+  }
   .resource-list-title-container{
     display: flex;
     justify-content: space-between;
@@ -561,8 +829,12 @@
     .resource-item{
       margin-bottom: 20px;
     }
+    .resource-item .project-info{
+      font-weight: 400;
+    }
     .resource-id{
       font-size: 14px;
+      margin-right: 2px;
     }
     .resource-title{
       font-weight: bold;
@@ -570,13 +842,49 @@
     .detailed-resouce{
       margin-left: 5px;
     }
-    .dataset-button{
+    .biological-dataset-button{
         padding: 2px 3px;
         font-size: 12px;
         margin-bottom: 0;
         /*padding: 20px 85px;
         font-size: 24px;*/
         background-color: #5bc0be;
+        border-radius: 3px;
+    }
+    .biomedical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #bd7edc;
+        border-radius: 3px;
+    }
+    .highlighted-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #e2c94c;
+        border-radius: 3px;
+    }
+    .technical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #6acaef;
+        border-radius: 3px;
+    }
+    .gray-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #999c9c;
         border-radius: 3px;
     }
     .dataset-wrapper{
@@ -590,9 +898,10 @@
       padding-bottom: 5px;
       border-bottom: 1px solid rgb(200,200,200,0.5);
     }
+    /*
     .archive-search-input{
       margin-bottom: 10px;
-    }
+    }*/
     .dropdown-action{
       width: 50px;
     }
@@ -603,25 +912,35 @@
       display: inline-block;
       margin-left: 5px;
     }
-    
+    .matched-items{
+      color: #948d8d;
+    }
+    .readMore{
+      display: inline;
+    }
 </style>
 
 <style>
     .page .ivu-select-dropdown-list{
       margin-left: 0 !important;
     }
+    /*
     .archive-search-input input{
       border-radius: 3px !important;
       margin-bottom: 0 !important;
     }
+    .archive-search-input input:focus{
+      border:none !important;
+      box-shadow: none !important;
+    }
     .archive-search-input .ivu-select-dropdown{
       text-align: left;
-    }
+    }*/
     .search-item-input input{
       margin-bottom: 0 !important;
     }
     .filter-selector .ivu-select-item-selected{
-      color: inherit !important;
+      color: rgba(91, 192, 190, 0.9) !important;
       background: inherit !important;
     }
     .filter-selector .ivu-checkbox-wrapper{
@@ -632,24 +951,29 @@
       margin-bottom: 0;
       box-shadow: none;
     }
-     .filter-selector .ivu-select-input:focus{
+    .filter-selector .ivu-select-input:focus{
           border: none;
+          background:none !important;
     }
     .filter-selector .ivu-tag{
       background: none ;
     }
-    .filter-selector .ivu-select-multiple .ivu-select-item-selected:after{
+    .filter-selector .ivu-select-item-selected::after{
       line-height: 0.8 !important;
       font-size: 22px;
       margin-right: 5px;
       float:left;
+      display: none !important; 
+    }
+    .tag-container .ivu-tag-border.ivu-tag-closable:after{
+        /*display: none !important;*/
     }
     .filter-selector .ivu-select-input{
       height: 30px;
       line-height: 30px;
     }
     .filter-selector .ivu-tag{
-      /*display: none;*/
+      display: none;
       margin:2px 4px 2px 0;
     }
     .filter-selector .ivu-select-selection{
@@ -661,6 +985,10 @@
     }
     .filter-selector .ivu-icon-ios-close-empty{
       display: none;
+    }
+    .filter-selector .ivu-select-selection{
+      height: 30px !important;
+      line-height: 30px !important;
     }
     .sortOption .ivu-select-selection{
       height: 18px !important;
@@ -681,5 +1009,60 @@
     .sortOption .ivu-select-dropdown .ivu-select-item{
       font-weight: normal !important;
 
+    }
+    .resource-item .readMore p{
+      display: inline !important;
+    }
+    .resource-item .readMore span{
+      display: inline !important;
+    }
+    .resource-item .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header{
+      padding-left: 0px;
+      height: 20px;
+      line-height: 20px;
+      margin-top: 10px;
+      margin-bottom: 5px;
+    }
+    .resource-item .ivu-collapse{
+      border:none;
+      background: none;
+    }
+    .resource-item .ivu-collapse-content > .ivu-collapse-content-box{
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+    .search-input .tag-input .ivu-input{
+      width: 100%;
+      height: 29px;
+      line-height: 32px;
+      padding: 0 0 0 4px;
+      display: inline-block;
+      font-size: 14px;
+      outline: 0;
+      border: none !important;
+      box-sizing: border-box;
+      color: #495060;
+      background-color: transparent;
+      position: relative;
+      margin:0 !important;
+      box-shadow:none !important;
+    }
+    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection{
+      border:none !important;
+      box-shadow:none !important;
+      background: none;
+      padding:0;
+    }
+    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input:focus{
+      border:none !important;
+      box-shadow:none !important;
+    }
+    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input{
+      border:none !important;
+      box-shadow:none !important;
+      background: none;
+    }
+    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
+      display: none;/******this will be removed when autocomplete function needed********/
     }
 </style>

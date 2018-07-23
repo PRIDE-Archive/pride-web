@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-download-container">
-        <div class="panel nav"><Nav/></div>
+        <div class="panel nav"><NavBar/></div>
         <div class="jumbotron">
             <div class="container">
                 <p class="head">Spectrum Libraries</p>
@@ -17,7 +17,7 @@
                         <p slot="title">{{item.speciesScientificName}}</p>
                         <div class="card-content">
                             <p>Common name: {{item.speciesName}}</p>
-                            <p>Taxonomy: <a v-if="item.taxonomyId !='0'">{{item.taxonomyId}}</a><span v-else>Unknown</span></p>
+                            <p>Taxonomy: <a @click="goToUniprot(item.taxonomyId)" v-if="item.taxonomyId !='0'">{{item.taxonomyId}}</a><span v-else>Unknown</span></p>
                             <p>Number of spectra: {{item.numberOfSpectra}}</p>
                             <p>Number of peptides: {{item.numberOfPeptides}}</p>
                             <p>File Size: {{Math.round(item.fileSize/1024/1024)}}M</p>
@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-    import Nav from '@/components/peptidome/Nav'
+    import NavBar from '@/components/peptidome/Nav'
     export default {
         data () {
             return {
@@ -45,7 +45,7 @@
             }
         },
         components: {
-          Nav
+          NavBar
         },
         methods: {
             beforeEnter:function(el){
@@ -65,6 +65,9 @@
                   },function(err){
 
                   });
+            },
+            goToUniprot(id){
+                window.open('http://www.uniprot.org/taxonomy/'+id);
             }
         },
         mounted: function(){

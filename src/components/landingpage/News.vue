@@ -79,7 +79,7 @@
                             </div>
                         </div>
                     </div>
-                    <Button class="news-button" @click="moreButtonAction">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction(citation.button.markdownFolder)">MORE</Button>
                 </div>
             </Col>
      </Row>
@@ -111,6 +111,7 @@
                     linetwo:'',
                     linethree:'',
                     linefour:'',
+                    button:{}
                 },
                 landingPageJsonURL:'/static/landingPage/landing_page.json'
             }
@@ -125,6 +126,7 @@
                     this.citation.linetwo = res.body.news.citation.linetwo;
                     this.citation.linethree = res.body.news.citation.linethree;
                     this.citation.linefour = res.body.news.citation.linefour;
+                    this.citation.button = res.body.news.citation.button;
                     this.toolsSection = res.body.news.tools.section;
                     this.toolsButton = res.body.news.tools.button;
                     this.documentationSection = res.body.news.documentation.section;
@@ -169,7 +171,8 @@
                 //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
             },
             twitterMoreButtonAction(){
-                location.href="https://twitter.com/pride_ebi"
+                window.open("https://twitter.com/pride_ebi");
+                //location.href="https://twitter.com/pride_ebi"
             }
         },
         mounted:function(){

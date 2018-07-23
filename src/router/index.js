@@ -15,8 +15,7 @@ const SpectrumLibrary = resolve => require(['@/components/peptidome/SpectrumLibr
 const PeptideDetails = resolve => require(['@/components/peptidome/PeptideDetails'], resolve);
 const PSM = resolve => require(['@/components/peptidome/PSM'], resolve);
 const ClusterProjects = resolve => require(['@/components/peptidome/ClusterProjects'], resolve);
-
-
+const Assay = resolve => require(['@/components/peptidome/Assay'], resolve);
 Vue.use(Router)
 
 export default new Router({
@@ -101,8 +100,11 @@ export default new Router({
       name: 'clusterprojects',
       component: ClusterProjects
     },
-
-
+    {
+      path:'/assay/:id',
+      name: 'assay',
+      component: Assay
+    },
     {
       path:'/404',
       name: '404',

@@ -1,13 +1,13 @@
 <template>
     <div class="submit-data-container">
-        <div class="panel nav"><Nav/></div>
+        <div class="panel nav"><NavBar/></div>
         <div class="markdown-wrapper">
             <vue-markdown class="markdown-body" :source="source"></vue-markdown>
         </div>
     </div>
 </template>
 <script>
-    import Nav from '@/components/landingpage/Nav'
+    import NavBar from '@/components/landingpage/Nav'
     export default {
         data () {
             return {
@@ -16,7 +16,7 @@
             }
         },
         components: {
-            Nav,
+            NavBar,
         },
         methods:{
             markdownQuery(){

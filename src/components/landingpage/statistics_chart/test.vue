@@ -14,12 +14,14 @@ export default {
 
     return {
       polar: {
+        /*
         title: {
           text: '极坐标双数值轴'
-        },
+        },*/
+        /*
         legend: {
           data: ['line']
-        },
+        },*/
         polar: {
           center: ['50%', '54%']
         },

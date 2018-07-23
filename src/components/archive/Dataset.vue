@@ -1,6 +1,6 @@
 <template>
   <div class="dataset-container">
-      <div class="panel nav"><Nav/></div>
+      <div class="panel nav"><NavBar/></div>
       <div class="content">
           <Row>
             <Col span="24">
@@ -83,46 +83,83 @@
                               <p>{{publicationDate}}</p>
                           </div>
                     </Card>
+                    <!--
                     <Card class="card">
-                       <p slot="title">Property</p>
+                       <p slot="title">Properties</p>
                        <div class="property">
                           <div class="property-col">
                             <div class="property-row">
                                 <div class="summary-content-header">Species</div>
-                                <div>
-                                  <a v-for="item in species">{{item}}</a>
+                                <div class="property-wrapper">
+                                  <div v-if="species.length>0">
+                                      <a v-for="item in species">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
                                 </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Tissue</div>
                                 <div class="property-wrapper">
-                                  <a v-for="item in tissues">{{item}}</a>
+                                  <div v-if="tissues.length>0">
+                                      <a v-for="item in tissues">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
                                 </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Instrument</div>
                                 <div class="property-wrapper">
-                                  <a v-for="item in instrumentNames">{{item}}</a>
+                                  <a v-for="item in instrumentNames">{{item.name}}</a>
                                 </div>
                             </div>
                             <div class="property-row">
-                                <div class="summary-content-header">Software</div>
-                                <p>{{software}}</p>
+                                <div class="summary-content-header">Softwares</div>
+                                <div class="property-wrapper">
+                                  <div v-if="softwares.length>0">
+                                      <a v-for="item in softwares">{{item}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
+                                  
+                                </div>
+                            </div>
+                            <div class="property-row">
+                                <div class="summary-content-header">Diseases</div>
+                                <div class="property-wrapper">
+                                  <div v-if="diseases.length>0">
+                                      <a v-for="item in diseases">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>Unknown</p>
+                                  </div>
+                                </div>
                             </div>
                           </div>
                           <div class="property-col">
                             <div class="property-row">
                                 <div class="summary-content-header">Modification</div>
-                                <a>No PTMs are included in the dataset</a>
+                                <div class="property-wrapper">
+                                  <div v-if="modification.length>0">
+                                      <a v-for="item in modification">{{item.name}}</a>
+                                  </div>
+                                  <div v-else>
+                                      <p>No PTMs are included in the dataset</p>
+                                  </div>
+                                </div>
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Quantification</div>
                                 <div class="property-wrapper">
                                   <div v-if="quantificationMethods.length>0">
-                                      <a v-for="item in quantificationMethods">{{item}}</a>
+                                      <a v-for="item in quantificationMethods">{{item.name}}</a>
                                   </div>
                                   <div v-else>
-                                      <p>Not available</p>
+                                      <p>Unknown</p>
                                   </div>
                                 </div>
                                 
@@ -135,10 +172,11 @@
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Assay count</div>
-                                <p>{{assayAccount}}</p>
+                                <p>{{total}}</p>
                             </div>
                           </div>
                        </div>
+                        -->
                     </Card>
                     <Card class="card">
                         <p slot="title">Publication</p>
@@ -151,6 +189,40 @@
                           <p>Publication pending</p>
                         </div>
                     </Card>
+                    <Card class="card">
+                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
+                       <!--
+                       <div class="filter-wrapper">
+                           <div class="summary-content-header">Filter</div>
+                           <Select v-model="model1" size="small" style="width:100px">
+                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                           </Select>
+                       </div>
+                        -->
+                       <div class="download-list-wrapper">
+                         <!--<div class="summary-content-header">List</div>-->
+                         <div class="download-list">
+                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
+                           <!--
+                           <div class="page-container">
+                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
+                           </div>
+                           -->
+                           <Button v-if="selectAllfiles" class= "download-button">Download</Button>
+                         </div>
+                       </div>
+                  </Card>
+                    <Card v-if="total>0" class="card">
+                        <p slot="title">Assay</p>
+                        <div class="assay-search-container">
+                        <!--<Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>-->
+                        <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
+                        </div>
+                        <div class="page-container">
+                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                        </div>
+                    </Card>
+                   
                   </div>
                  <!--
                   <Tabs :animated="false">
@@ -191,32 +263,123 @@
                 -->
               </Col>
               <Col span="8">
-                   <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                       <div class="download-list-wrapper">
-                         <div class="summary-content-header">List</div>
-                         <div class="download-list">
-                           <Table border ref="selection" :columns="columns4" :data="data1"></Table>
-                           <Button class= "download-button">Download</Button>
-                         </div>
-                       </div>
+                  <Card class="card">
+                     <p slot="title">Properties</p>
+                     <div class="property">
+                          <div class="property-row">
+                              <div class="summary-content-header">Species</div>
+                              <div class="property-wrapper">
+                                <div v-if="species.length>0">
+                                  <div v-for="item in species">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Tissue</div>
+                              <div class="property-wrapper">
+                                <div v-if="tissues.length>0">
+                                  <div v-for="item in tissues">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Diseases</div>
+                              <div class="property-wrapper">
+                                <div v-if="diseases.length>0">
+                                  <div v-for="item in diseases">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Modification</div>
+                              <div class="property-wrapper">
+                                <div v-if="modification.length>0">
+                                  <div v-for="item in modification">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>No PTMs are included in the dataset</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Instrument</div>
+                              <div class="property-wrapper">
+                                <div v-if="instrumentNames.length>0">
+                                  <div v-for="item in instrumentNames">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Softwares</div>
+                              <div class="property-wrapper">
+                                <div v-if="softwares.length>0">
+                                  <div v-for="item in softwares">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                                
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Experiment Type</div>
+                              <div class="property-wrapper">
+                                <div v-if="experimentTypes.length>0">
+                                  <div v-for="item in experimentTypes">
+                                    <a>{{item}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Quantification</div>
+                              <div class="property-wrapper">
+                                <div v-if="quantificationMethods.length>0">
+                                  <div v-for="item in quantificationMethods">
+                                    <a>{{item.name}}</a>
+                                  </div>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                     </div>
                   </Card>
                   <Card class="card">
                        <p slot="title"><i class="fas fa-link icon-tag"></i>Similar Studies</p>
                        <div class="list-wrapper">
-                        <ul>
-                          <li><a>Homo sapiens (Human) XXXXXXX  XXXXXX XXXXX XXXX XXXXX</a></li>
-                          <li><a>Homo sapiens (Human) XXXXXXX  XXXXXX XXXXX XXXX XXXXX</a></li>
-                          <li><a>Homo sapiens (Human) XXXXXXX  XXXXXX XXXXX XXXX XXXXX</a></li>
-                          <li><a>Homo sapiens (Human) XXXXXXX  XXXXXX XXXXX XXXX XXXXX</a></li>
-                          <li><a>Homo sapiens (Human) XXXXXXX  XXXXXX XXXXX XXXX XXXXX</a></li>
-                        </ul>
+                            <Card class="similarity-card" v-for="item in similarProjects">
+                              <div class="similarity-title"><a>{{item.title}}</a></div>
+                              <div><span>{{item.submissionDate}}</span></div>
+                            </Card>
                        </div>
                       </p>
                   </Card>
@@ -228,39 +391,49 @@
 </template>
 
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import NavBar from '@/components/landingpage/Nav'
   export default {
     name: 'archive',
     data(){
       return {
-         accession:'',
-         title:'',
-         projectDescription:'',
-         publicationDate:'',
-         submissionDate:'',
-         sampleProcessingProtocol:'',
-         dataProcessingProtocol:'',
-         publications:[],
-         species:[],
-         tissues:[],
-         instrumentNames:[],
-         quantificationMethods:[],
-         experimentTypes:[],
-         assayAccount:0,
-         software:'',
-         queryArchiveProjectApi:'https://www.ebi.ac.uk:443/pride/ws/archive/project/'+this.$route.params.id,
-         queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
-         europepmcApi:'http://europepmc.org/abstract/MED/',
-         contactors:[],
-         columns4: [
+          accession:'',
+          title:'',
+          projectDescription:'',
+          publicationDate:'',
+          submissionDate:'',
+          sampleProcessingProtocol:'',
+          dataProcessingProtocol:'',
+          publications:[],
+          species:[],
+          diseases:[],
+          tissues:[],
+          instrumentNames:[],
+          quantificationMethods:[],
+          experimentTypes:[],
+          softwares:[],
+          modification:[],
+          queryArchiveProjectApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id,
+          queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/files',
+          queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
+          europepmcApi:'http://europepmc.org/abstract/MED/',
+          reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
+          viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
+          similarityApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/similarProjects',
+          contactors:[],
+          similarProjects:[],
+          similarityLoading:false,
+          fileListLoading:false,
+          fileListCol: [
+            /*
               {
                   type: 'selection',
                   width: 40,
                   align: 'center'
-              },
+              },*/
               {
                   title: 'Name',
                   key: 'name',
+                  align:'center',
                   ellipsis:true
               },
               {
@@ -268,68 +441,252 @@
                   width: 80,
                   key: 'size',
                   sortable: true,
-                    align:'center'
-              },
-            
-          ],
-          data1: [
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-                 
+                  align:'center'
               },
               {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-              },
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
-              },
-              {
-                  name: '41598_2018_23766_MOESM1_ESM.doc',
-                  size: 1312.606,
+                  title: 'Download',
+                  key: 'download',
+                  align:'center',
+                  width:160,
+                  render: (h, params) => {
+                      return h('div', [
+                          /*
+                          h('Button', {
+                             
+                              on: {
+                                  click: () => {
+                                      this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'Blast'),
+                          */
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: () => {
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.url.ftp)
+                                      console.log(params.row.url.ftp);
+                                      //this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'FTP'),
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '0px'
+                              },
+                              on: {
+                                  click: () => {
+                                      //window.location.href = params.row.url.asp;
+                                      window.open(params.row.url.asp)
+                                      console.log(params.row.url.asp);
+                                  }
+                              }
+                          }, 'ASPERA'),
+                      ]);
+                  }
               }
           ],
+          fileList: [],
           cityList: [
-                    {
-                        value: 'New York',
-                        label: 'New York'
-                    },
-                    {
-                        value: 'London',
-                        label: 'London'
-                    },
-                    {
-                        value: 'Sydney',
-                        label: 'Sydney'
-                    },
-                    {
-                        value: 'Ottawa',
-                        label: 'Ottawa'
-                    },
-                    {
-                        value: 'Paris',
-                        label: 'Paris'
-                    },
-                    {
-                        value: 'Canberra',
-                        label: 'Canberra'
-                    }
-                ],
-                model1: ''
+                  {
+                      value: 'New York',
+                      label: 'New York'
+                  },
+                  {
+                      value: 'London',
+                      label: 'London'
+                  },
+                  {
+                      value: 'Sydney',
+                      label: 'Sydney'
+                  },
+                  {
+                      value: 'Ottawa',
+                      label: 'Ottawa'
+                  },
+                  {
+                      value: 'Paris',
+                      label: 'Paris'
+                  },
+                  {
+                      value: 'Canberra',
+                      label: 'Canberra'
+                  }
+          ],
+          model1: '',
+          viewInReactomeButtonArray:[],
+          assayLoading:true,
+          assayCol: [
+              {
+                  type: 'index',
+                  width: 60,
+                  align: 'center'
+              },
+              {
+                  title: 'Accession',
+                  key: 'accession',
+                  align:'center',
+                  width: 100,
+                  render: (h, params) => {
+                      return h('div', [
+                        h('Icon', {
+                            props: {
+                                type: 'eye',
+                            },
+                            style: {
+                                marginRight: '1px'
+                            },
+                        }),
+                        h('a', {
+                          on: {
+                              click: () => {
+                                  this.$router.push({name:'assay',params:{id:params.row.accession}})
+                              }
+                          }
+                        }, params.row.accession),
+                      ]);
+                  }
+              },
+              {
+                  title: 'Title',
+                  key: 'title',
+                  sortable: false,
+                  align:'center',
+              },
+              {
+                  title: 'Proteins',
+                  key: 'proteins',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Peptides',
+                  key: 'peptides',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Unique Peptides',
+                  key: 'uniquepeptides',
+                  sortable: false,
+                  align:'center',
+                  width: 110,
+              },
+              {
+                  title: 'Spectra',
+                  key: 'spectra',
+                  sortable: false,
+                  align:'center',
+                  width: 80,
+              },
+              {
+                  title: 'Identified Spectra',
+                  key: 'identifiedspectra',
+                  sortable: false,
+                  align:'center',
+                  width: 120,
+              },
+              {
+                  title: 'View in Reactome',
+                  key: 'viewinreactome',
+                  align:'center',
+                  width: 120,
+                  render: (h, params) => {
+                      return h('div', [
+                          /*
+                          h('Button', {
+                             
+                              on: {
+                                  click: () => {
+                                      this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'Blast'),
+                          */
+                          h('Tooltip',//first item
+                              {
+                                  props: {
+                                      placement:"bottom",
+                                      content: 'Analysis the protein set in Reactome',
+                                      disabled: this.viewInReactomeButtonArray[params.row._index].disabled,
+                                  },
+                              },//second item
+                              [
+                                  h('Button', {
+                                      props: {
+                                          type: this.viewInReactomeButtonArray[params.row._index].type,
+                                          size: 'small',
+                                          loading: this.viewInReactomeButtonArray[params.row._index].loading,
+                                      },
+                                      style: {
+                                          marginRight: '5px'
+                                      },
+                                      on: {
+                                          click: () => {
+                                              if(this.viewInReactomeButtonArray[params.row._index].type != 'success'){
+                                                  this.viewInReactomeButtonArray[params.row._index].loading = true;
+                                                  this.$http
+                                                      .post(this.reactomeApi,this.viewInReactomeButtonArray[params.row._index].api, {headers: {'Content-Type': 'text/plain'}})
+                                                      .then(function(res){
+                                                          this.viewInReactomeButtonArray[params.row._index].loading = false;
+                                                          this.viewInReactomeButtonArray[params.row._index].disabled = true;
+                                                          this.viewInReactomeButtonArray[params.row._index].content = 'View ' + '(' + res.body.pathwaysFound + ')';
+                                                          this.viewInReactomeButtonArray[params.row._index].type = 'success';
+                                                          this.viewInReactomeButtonArray[params.row._index].token = JSON.parse(res.bodyText).summary.token;
+                                                        //this.$router.push({name:'me',  params: {username: res.body.data.user.username}});
+                                                      },function(err){
+                                                       
+                                                      });   
+                                              }
+                                              else{
+                                                  window.open('https://reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS='+this.viewInReactomeButtonArray[params.row._index].token+'&RESOURCE=UNIPROT');
+                                              }
+                                              
+                                          }
+                                      }
+                                  }, this.viewInReactomeButtonArray[params.row._index].content),
+                              ]//third item
+                          ),
+                      ]);
+                  }
+              },
+          ],
+          assayResults:[],
+          page:0, //TODO for queryAssayApi
+          size:20, //TODO for queryAssayApi
+          total:0, //TODO for queryAssayApi
+          pageDownLoad:0,
+          pageSizeDownLoad:100,
+          totalDownLoad:0,
+          selectAllfiles:false,
       }
     },
     components: {
-      Nav
+      NavBar
     },
     methods:{
       queryProjectDetails(){
            this.$http
             .get(this.queryArchiveProjectApi)
             .then(function(res){
-                this.loading=false;
-                //console.log(res.body);
+                //console.log(res.body.softwares);
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -337,33 +694,36 @@
                 this.submissionDate = res.body.submissionDate.split('-')[2] +'/'+ res.body.submissionDate.split('-')[1] +'/'+ res.body.submissionDate.split('-')[0];
                 this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
                 this.dataProcessingProtocol = res.body.dataProcessingProtocol;
-                this.species = res.body.species;
-                this.tissues = res.body.tissues;
-                this.instrumentNames = res.body.instrumentNames;
-                this.software = res.body.software || 'Unknown';
-                this.quantificationMethods = res.body.quantificationMethods; 
-                this.experimentTypes = res.body.experimentTypes; 
+                this.species = res.body.organisms || [];
+                this.tissues = res.body.organismParts || [];
+                this.diseases = res.body.diseases || [];
+                this.instrumentNames = res.body.instruments || [];
+                this.softwares = res.body.softwares || [];
+                this.quantificationMethods = res.body.quantificationMethods || [];
+                this.experimentTypes = res.body.projectTags || [];
+                this.modification = res.body.identifiedPTMStrings || [];
                 //for contactors
-                let submitter = res.body.submitter;
-                let item = {
-                  name: submitter.firstName + ' ' + submitter.lastName,
-                  affiliation: submitter.affiliation,
-                  email:submitter.email
-                }
-                this.contactors.push(item);
-                for(let i=0; i<res.body.labHeads.length; i++){
+                for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
-                    name: res.body.labHeads[i].firstName + ' ' + res.body.labHeads[i].lastName,
-                    affiliation: res.body.labHeads[i].affiliation + ' ' +'(lab head)',
-                    email:res.body.labHeads[i].email
+                    name: res.body.submitters[i].name,
+                    affiliation: res.body.submitters[i].affiliation,
+                    email:res.body.submitters[i].email
+                  }
+                  this.contactors.push(item);
+                }
+                for(let i=0; i<res.body.labPIs.length; i++){
+                  let item = {
+                    name: res.body.labPIs[i].name,
+                    affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
+                    email:res.body.labPIs[i].email
                   }
                   this.contactors.push(item);
                 }
                 //for publications
                 for(let i=0; i<res.body.references.length; i++){
                   let item = {
-                    desc:res.body.references[i].desc,
-                    pmid:res.body.references[i].ids[1].split(':')[1],
+                    desc:res.body.references[i].referenceLine,
+                    pmid:res.body.references[i].pubmedId,
                   }
                   this.publications.push(item);
                 }
@@ -372,14 +732,74 @@
 
             });
       },
+      queryArchiveProjectFiles(){
+           this.fileListLoading = true;
+           this.$http
+            .get(this.queryArchiveProjectFilesApi + this.queryDownload)
+            .then(function(res){
+              //console.log(res.body);
+                this.totalDownLoad = res.body.page.totalElements;
+                if(res.body._embedded.files){
+                  let filesArray = res.body._embedded.files;
+                  let tempArray = [];
+                  for(let i=0;i<filesArray.length;i++){
+                      let item ={
+                            name: filesArray[i].fileName,
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024),
+                            url: {
+                              ftp: filesArray[i].publicFileLocations[0].value,
+                              asp: filesArray[i].publicFileLocations[1].value
+                            }
+                      }
+                      tempArray.push(item);
+                  }
+                  this.fileListLoading = false;
+                  this.fileList=tempArray;
+                }
+            },function(err){
+
+            });
+      },
+      pageChange(page){
+          this.page = page-1;
+          this.queryAssay();
+      },
+      pageSizeChange(size){
+          this.size = size;
+          this.queryAssay();
+      },
       queryAssay(){
+          this.assayResults=[];
+          this.assayLoading=true;
           this.$http
             .get(this.queryAssayApi)
             .then(function(res){
-                this.loading=false;
-                console.log(res.body);
-                this.assayAccount = res.body.list.length;
-                
+                this.assayLoading=false;
+                //console.log(res.body);
+                this.total = res.body.list.length;
+                for(let i=0;i<res.body.list.length; i++){
+                    let item = {
+                        accession: res.body.list[i].assayAccession,
+                        title: res.body.list[i].title,
+                        proteins: res.body.list[i].proteinCount,
+                        peptides: res.body.list[i].peptideCount,
+                        uniquepeptides:  res.body.list[i].uniquePeptideCount,
+                        spectra: res.body.list[i].totalSpectrumCount,
+                        identifiedspectra: res.body.list[i].identifiedSpectrumCount,
+                        
+                    } 
+
+                    let button = {
+                        type:'primary',
+                        content:'Analyse',
+                        loading:false,
+                        disabled:false,
+                        token:'',
+                        api: this.viewInreactomeApi+res.body.list[i].assayAccession+'.acc'
+                    }
+                    this.viewInReactomeButtonArray.push(button);
+                    this.assayResults.push(item);
+                }
             },function(err){
 
             });
@@ -387,11 +807,53 @@
       europePMC(id){
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
+      },
+      pageChangeDownload(page){
+          this.pageDownLoad = page-1;
+          this.queryArchiveProjectFiles();
+      },
+      pageSizeChangeDownload(size){
+          this.pageSizeDownLoad = size;
+          this.queryArchiveProjectFiles();
+      },
+      downLoadSelect(selection,row){
+          console.log(selection);
+          console.log(row);
+      },
+      filesSelectAll(){
+          this.selectAllfiles =! this.selectAllfiles;
+          this.$refs.selection.selectAll(this.selectAllfiles);
+      },
+      querySimilarity(){
+          this.similarProjects=[];
+          this.similarityLoading=true;
+          this.$http
+            .get(this.similarityApi)
+            .then(function(res){
+                this.similarityLoading=false;
+                this.similarProjects=res.body._embedded.compactprojects;
+            },function(err){
+
+            });
       }
     },
     mounted: function(){
         this.queryProjectDetails();
         this.queryAssay();
+        this.queryArchiveProjectFiles();
+        this.querySimilarity();
+    },
+    computed:{//TODO for queryAssayApi
+      query:function(){
+          let page='page='+this.page+'&';
+          let size='size='+this.size;
+          return '?'+sequence+project+mod+page+size;
+      },
+      queryDownload:function(){
+          let pageDownLoad='page='+this.pageDownLoad+'&';
+          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
+          return '?'+pageDownLoad+pageSizeDownLoad;
+      }
     },
   }
 </script>
@@ -450,7 +912,8 @@
         color: #5bc0be;
   }
   .card .property{
-    display: flex;
+    /*display: flex;*/
+    display: block;
   }
   .card .property .property-col{
     display: flex;
@@ -460,14 +923,28 @@
   .card .property .property-col:not(:last-child) {
     margin-right: 40px;
   }
+  /*
   .card .property .property-col .property-row{
     display: flex;
     padding: 12px 0;
     justify-content: space-between;
     border-bottom: 1px solid #e7e7e7;
+    margin-bottom: 10px;
+  }*/
+  .card .property .property-row{
+    /*display: flex;*/
+    /*padding: 2px 0;*/
+    /*border-bottom: 1px solid #e7e7e7;*/
+    margin-bottom: 10px;
   }
   .list-wrapper{
-    padding-left: 20px;
+   
+  }
+  .similarity-card{
+    margin-bottom: 5px;
+  }
+  .similarity-title{
+    margin-bottom: 3px;
   }
   .download-button{
     padding: 6px 8px;
@@ -484,18 +961,26 @@
     opacity: .8;
   }
   .download-list-wrapper{
-    margin-top: 10px;
+    /*margin-top: 10px;*/
   }
   .card-item-wrapper{
     margin-bottom: 10px;
   }
+  /*
   .property-wrapper{
     display: flex;
     flex-direction: column;
+  }*/
+  .property-wrapper{
+    display: block;
   }
   .summary-content-header{
     display: flex;
     align-items: center;
+  }
+  .page-container{
+    text-align: center;
+    margin-top: 20px;
   }
   /*
   @media (min-width: 768px) {
@@ -553,4 +1038,19 @@
       display: block;
       margin-top: 15px;
   }
+  .assay-detail-table table{
+    margin-bottom: 0 !important;
+  }
+
+  .assay-detail-table a{
+      color:#495060;
+  }
+  .assay-detail-table a:hover{
+      color:#5bc0be;
+      border-bottom-style:dotted;
+  }
+  .assay-detail-table .ivu-tooltip-inner{
+      white-space:nowrap !important;
+  }
 </style>
+

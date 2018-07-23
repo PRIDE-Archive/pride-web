@@ -31,7 +31,7 @@
                             </div>
                             <span class="separator">></span>
                             <div class="filter-condition ">
-                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple  @on-change="containChange" placeholder="">
+                                <Select class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable multiple remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading...">
                                     <Option v-for="item in containSelectors" :value="item.value" :key="item.value">
                                       <span>
                                             <span>{{ item.label }}</span>
@@ -75,110 +75,113 @@
               </Card>
           </Row>
           <Row>
-            <Card>
-                <p slot="title">Results</p>
-                <div class="search-container">
-                <Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>
-                </div>
-                <div class="page-container">
-                  <Page :total="total" :page-size="size" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                </div>
-            </Card>
+              <Card>
+                  <p slot="title" class="resource-list-title-container">
+                    <span>Resources List</span>
+                    <span>
+                        <span>Sort by: </span>
+                        <div class="sortOption">
+                            <Select v-model="sortType" size="small" style="width:95px" @on-change="sortChange">
+                                <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                            </Select>
+                        </div>
+                
+                    </span>
+                  </p>
+                  <Spin size="large" fix v-if="loading"></Spin>
+                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
+                      <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}">{{publicationItem.accession}}</router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
+                      <p class="resource-title">{{publicationItem.title}}</p> 
+                      <p>Species: <span v-for="item in publicationItem.species">{{item}} </span></p>
+                      <span>Project description: <read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more></span>
+                      <p>Made public: {{publicationItem.publicationDate}}</p>
+                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
+                          <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <a v-else class="button gray-dataset-button" href="javascript:void(0)">
+                             <Icon type="ios-pricetag"></Icon>
+                              {{datesetItem}} Dataset
+                          </a>
+                          <DropdownMenu slot="list">
+                              <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
+                          </DropdownMenu>
+                      </Dropdown>
+      
+                  </Card>
+                  
+                  <div class="page-container">
+                    <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                  </div>
+              </Card>
           </Row>
       </div>
   </div>
 </template>
 
 <script>
-  import NavBar from '@/components/peptidome/Nav'
+  import NavBar from '@/components/archive/Nav'
   export default {
     name: 'archive',
     data(){
       return {
-          queryClusterListApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
-          searchConfigURL:'/static/facets/config.json',
-          q:'',
-          peptide:'',
-          modFilters:'',
-          speciesFilters:'',
-          sort:'',
-          order:'desc',
-          facets:true,
-          highligts:false,
-          page:0,
-          size:20,
-          total:0,
           keyword:'',
           fieldValue:'',
           containValue:[],
+          loading:true,
+          querySpecificFacetsLoading:false,
           autoCompleteWords:['aaa','bbb','ccc','ddd'],
+          facetsURL:'http://ves-pg-41:9020/facet/projects',
+          searchConfigURL:'/static/facets/config.json',
+          queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
           containItemSearch:'',
           fieldSelectors:[],
-          containSelectors:[],
+          containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+              value: '',
+              label: '',
+              check: false,
+              number: ''
+          }],
           filterCombination:[],
-          loading: true,
-          //filterInitBool:false,
-          columns5: [
-
-              {
-                  title: 'Peptide',
-                  key: 'peptide',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: 'Pre Charge',
-                  key: 'precharge',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: 'Pre m/z',
-                  key: 'premz',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: '#Spectra',
-                  key: 'spectra',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: 'Projects',
-                  key: 'projects',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: '#Species',
-                  key: 'species',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: 'Ratio',
-                  key: 'ratio',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
-              {
-                  title: 'ID',
-                  key: 'ID',
-                  width:1,
-                  //maxWidth:0,
-                  className:'peptideID'
-              }
+          sortType:'Date',
+          publicaitionList:[],
+          sortList:[
+            {
+                value: 'Accession',
+                label: 'Accession'
+            },
+            {
+                value: 'Title',
+                label: 'Title'
+            },
+            {
+                value: 'Relevance',
+                label: 'Relevance'
+            },
+            {
+                value: 'Date',
+                label: 'Date'
+            }
           ],
-          results: [],
-          facetsMap:{},
+          page:0,
+          pageSize:20,
+          filter:'',
+          sort:'publication_date',
+          total:0,
+          configRes:'',
       }
     },
     components: {
@@ -186,41 +189,127 @@
     },
     methods:{
       setFilter(){
-          //if(!this.filterInitBool)
           this.$http
-            .get(this.searchConfigURL)
-            .then(function(configRes){
-             // this.filterInitBool=true;
-              this.fieldSelectors = [];
-              for(let i in this.facetsMap){
-                if(configRes.body.peptidome[i] && configRes.body.peptidome[i].name){
-                    let item = {
-                      value: configRes.body.peptidome[i].name,
-                      label: configRes.body.peptidome[i].name,
-                      containItems:[]
-                    }
-                    for(let j in this.facetsMap[i]){
-                      let containItem = {
-                          value: j,
-                          label: j,
-                          check: false,
-                          number: this.facetsMap[i][j]
+            .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
+            .then(function(res){
+                let facetsMap = res.body._embedded.facets;
+                console.log(facetsMap);
+                this.$http
+                    .get(this.searchConfigURL)
+                    .then(function(configRes){
+                      this.configRes = configRes;
+                      this.fieldSelectors = [];
+                      let archiveObj = configRes.body.archive;
+                      for(let i in archiveObj){
+                          let item = {
+                              value: archiveObj[i].name,
+                              label: archiveObj[i].name,
+                              containItems:[]
+                          }
+                          for(let j in facetsMap){
+                              if(facetsMap[j].field == i){
+                                for(let k=0; k<facetsMap[j].values.length; k++){
+                                    let containItem = {
+                                        value: facetsMap[j].values[k].value,
+                                        label: facetsMap[j].values[k].value,
+                                        check: false,
+                                        number: facetsMap[j].values[k].count
+                                    }
+                                    item.containItems.push(containItem);
+                                }
+                                break;
+                              }
+                          }
+                          this.fieldSelectors.push(item);
                       }
-                      item.containItems.push(containItem);
-                    }
-                    this.fieldSelectors.push(item);
-                }
-                else{
-                    console.error("Please check config.json in peptidomeSearch Folder");
-                }
-               
-              }
-              this.fieldValue = this.fieldSelectors[0].value;
-              this.containSelectors = this.fieldSelectors[0].containItems;
-  
+                      this.fieldValue = this.fieldSelectors[0].value;
+                      this.containSelectors = this.fieldSelectors[0].containItems;
+                    },function(err){
+
+                    });
             },function(err){
 
             });
+      },
+      queryArchiveProjectList(){
+          this.publicaitionList = [];
+          this.loading = true; 
+          this.$http
+            .get(this.queryArchiveProjectListApi + this.query)
+            .then(function(res){
+              this.total = res.body.page.totalElements;
+                this.loading = false;
+                let projectsList = res.body._embedded.compactprojects;
+                for(let i=0; i<projectsList.length; i++){
+                    let item = {
+                        accession: projectsList[i].accession,
+                        title: projectsList[i].title,
+                        species: projectsList[i].species,
+                        projectDescription: projectsList[i].projectDescription,
+                        publicationDate: projectsList[i].publicationDate,
+                        projectTags: projectsList[i].projectTags,
+                        submissionType: projectsList[i].submissionType
+                    }
+                    this.publicaitionList.push(item);
+                }
+            },function(err){
+
+            });
+           
+      },
+      querySpecificFacets(keyword){
+          if (keyword !== '') {
+              this.querySpecificFacetsLoading= true;
+              let fieldValue='';
+              for(let i in this.configRes.body.archive){
+                if(this.configRes.body.archive[i].name == this.fieldValue){
+                    fieldValue = i;
+                    break;
+                }
+              }
+              this.$http
+                .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+fieldValue+'=='+keyword)
+                .then(function(res){
+                    let facetsMap = res.body._embedded.facets;
+
+
+                    
+                   
+                    for(let j in facetsMap){
+                        if(facetsMap[j].field == fieldValue){
+                          
+                          break;
+                        }
+                    }
+                    //console.log('facetsMap',facetsMap);
+                    this.containSelectors=[];
+                     this.querySpecificFacetsLoading= false;
+
+                     for(let i in this.fieldSelectors){
+                        if(this.fieldSelectors[i].value == this.fieldValue){
+                            //this.fieldSelectors[i].containItems = this.containSelectors;
+                        }
+                     }
+                },function(err){
+
+                });
+               
+            
+          } else {
+              
+          }
+         
+        /*
+        console.log(keyword);
+        this.querySpecificFacetsLoading= true;
+          this.$http
+            .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+this.fieldValue+'='+keyword)
+            .then(function(res){
+                 this.querySpecificFacetsLoading= false;
+            },function(err){
+
+            });
+           */
       },
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
@@ -253,8 +342,18 @@
                             break;
                         }
                     }
-                    if(!found)
+                    if(!found){
                       this.fieldSelectors[i].containItems[j].check = false;
+                      //console.log(this.containValue);
+                      /*
+                      let newItem = {
+                          value: facetsMap[j].values[k].value,
+                          label: facetsMap[j].values[k].value,
+                          check: false,
+                          number: facetsMap[j].values[k].count
+                      };
+                      this.fieldSelectors[i].containItems.push(newItem);*/
+                    }
                     
 
                     let filterCombinationFound = false;
@@ -282,7 +381,7 @@
             }
         }
       },
-      queryClusterListCondition(){
+      submitSearchCondition(){
       },
       keywordDelete(){
           this.keyword = '';
@@ -307,98 +406,64 @@
       },
       keywordSearch(value){
 
+        console.log('this.keyword',this.keyword);
+        //this.keyword = value;
+      },
+      submitSearch(){
+        this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
-          this.queryClusterList();
+          this.setFilter();
+          this.queryArchiveProjectList();
       },
       pageSizeChange(size){
-          this.size = size;
-          this.queryClusterList();
+          this.pageSize = size;
+          this.setFilter();
+          this.queryArchiveProjectList();
       },
-      sortChange(){
-        this.$Message.success({content:'sortChange', duration:1});
-      },
-      rowClick(row,index){
-        this.$router.push({name:'peptidedetails',params:{id:row.ID}});
-      },
-      queryClusterList(){
-        this.results=[];
-        this.loading=true;
-        this.$http
-            .get(this.queryClusterListApi+this.query)
-            .then(function(clusterRes){
-                this.loading=false;
-                this.total = clusterRes.body.totalResults;
-                this.facetsMap = clusterRes.body.facetsMap;
-                this.setFilter();
-                //console.log('this.facetsMap',this.facetsMap);
-                for(let i=0; i < clusterRes.body.results.length; i++){
-                  var item = {
-                      ID:clusterRes.body.results[i].id,
-                      peptide: clusterRes.body.results[i].sequence,
-                      precharge: clusterRes.body.results[i].averagePrecursorCharge,
-                      premz: clusterRes.body.results[i].averagePrecursorMz.toFixed(2),
-                      spectra: clusterRes.body.results[i].totalNumberOfSpectra,
-                      projects: clusterRes.body.results[i].totalNumberOfProjects,
-                      species: clusterRes.body.results[i].totalNumberOfSpecies,
-                      ratio: (clusterRes.body.results[i].maxRatio*100).toFixed(1) + '%'
-                  }
-                  this.results.push(item);
-                }
-            },function(err){
+      sortChange(type){
+        console.log(type);
+        if(type == 'Title')
+          this.sort = 'project_title'
+        else if(type == 'Accession')
+          this.sort = 'id'
+        else if(type == 'Relevance')
+          this.sort = 'score'
+        else if(type == 'Date')
+          this.sort = 'publication_date';
 
-            });
+        this.setFilter();
+        this.queryArchiveProjectList();
       },
       updateQuery(){
-          this.q = this.$route.query.q || '';
-      },
-      submitSearch(){
-          this.q = this.keyword;
-          let tempSpeciesFilters = '';
-          let tempModFilters='';
-          for (let i in this.filterCombination){
-              if(this.filterCombination[i].condition == 'And'){
-                  if(this.filterCombination[i].field == 'Species')
-                      tempSpeciesFilters += this.filterCombination[i].contains + ',';
-                  else if(this.filterCombination[i].field == 'Modifications')
-                      tempModFilters += this.filterCombination[i].contains + ',';
-              }
-          }
-          this.speciesFilters = tempSpeciesFilters.replace(/,$/gi,""); 
-          this.modFilters = tempModFilters.replace(/,$/gi,"");
-
-          this.queryClusterList();
+        this.sort = 'publication_date';
+        this.page = 0;
+        this.pageSize = 20;
       }
-
-
-     
     },
 
     watch: {
       filterCombination: function (val) {
           //combine keyword (this.keyword) and filters together (val)
-          //this.queryClusterList();
+          //this.submitSearch();
       },
+
     },
     computed:{
       query:function(){
-          let q=this.q?'q='+this.q+'&' : '';
-          let peptide=this.peptide?'peptide='+this.peptide+'&' : '';
-          let modFilters=this.modFilters?'modFilters='+this.modFilters+'&' : '';
-          let speciesFilters=this.speciesFilters?'speciesFilters='+this.speciesFilters+'&' : '';
-          let sort=this.sort?'sort='+this.sort+'&' : '';
-          let order= this.order?'order='+this.order+'&' : '';
-          let facets='facets='+this.facets+'&';
-          let highligts='highligts='+this.highligts+'&';
+          let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
+          let filter = this.filter? 'filter='+this.filter+'&' : '';
           let page='page='+this.page+'&';
-          let size='size='+this.size;
-          return '?'+q+peptide+modFilters+speciesFilters+sort+order+facets+highligts+page+size;
+          let pageSize='pageSize='+this.pageSize;
+          return '?'+keyword+filter+page+pageSize;
+          
       }
     },
     mounted: function(){
         this.updateQuery();
-        this.queryClusterList();
+        this.setFilter();
+        this.queryArchiveProjectList();
     },
     created(){
        
@@ -444,7 +509,6 @@
   }
   .page-container{
     text-align: center;
-    margin-top: 20px;
   }
   .filter-condition{
     display: inline-block;
@@ -493,6 +557,7 @@
     }
     .resource-id{
       font-size: 14px;
+      margin-right: 2px;
     }
     .resource-title{
       font-weight: bold;
@@ -500,13 +565,49 @@
     .detailed-resouce{
       margin-left: 5px;
     }
-    .dataset-button{
+    .biological-dataset-button{
         padding: 2px 3px;
         font-size: 12px;
         margin-bottom: 0;
         /*padding: 20px 85px;
         font-size: 24px;*/
         background-color: #5bc0be;
+        border-radius: 3px;
+    }
+    .biomedical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #bd7edc;
+        border-radius: 3px;
+    }
+    .highlighted-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #e2c94c;
+        border-radius: 3px;
+    }
+    .technical-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #6acaef;
+        border-radius: 3px;
+    }
+    .gray-dataset-button{
+        padding: 2px 3px;
+        font-size: 12px;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        background-color: #999c9c;
         border-radius: 3px;
     }
     .dataset-wrapper{
@@ -533,9 +634,15 @@
       display: inline-block;
       margin-left: 5px;
     }
+    .readMore{
+      display: inline;
+    }
 </style>
 
 <style>
+    .page .ivu-select-dropdown-list{
+      margin-left: 0 !important;
+    }
     .archive-search-input input{
       border-radius: 3px !important;
       margin-bottom: 0 !important;
@@ -546,7 +653,7 @@
     .search-item-input input{
       margin-bottom: 0 !important;
     }
-    .filter-condition .filter-selector .ivu-select-item-selected{
+    .filter-selector .ivu-select-item-selected{
       color: rgba(91, 192, 190, 0.9) !important;
       background: inherit !important;
     }
@@ -558,12 +665,11 @@
       margin-bottom: 0;
       box-shadow: none;
     }
-    .filter-selector .ivu-select-input:focus{
+     .filter-selector .ivu-select-input:focus{
           border: none;
     }
     .filter-selector .ivu-tag{
       background: none ;
-      display: none;
     }
     .filter-selector .ivu-select-item-selected::after{
       line-height: 0.8 !important;
@@ -580,7 +686,7 @@
       line-height: 30px;
     }
     .filter-selector .ivu-tag{
-      /*display: none;*/
+      display: none;
       margin:2px 4px 2px 0;
     }
     .filter-selector .ivu-select-selection{
@@ -613,10 +719,7 @@
       font-weight: normal !important;
 
     }
-    .peptide-table table{
-      margin-bottom: 0 !important;
-    }
-            .peptide-table .peptideID{
-      display: none;
+    .resource-item .readMore p{
+      display: inline !important;
     }
 </style>

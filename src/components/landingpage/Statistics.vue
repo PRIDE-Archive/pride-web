@@ -1,31 +1,24 @@
 <template>
   <div class="statistics-container">
     <Row class="row">
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <test></test>
+                      <Sunburst></Sunburst>
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <test></test>
+                      <Sankey></Sankey>
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <test></test>
-                </div>
-            </div>
-        </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 6}" :lg="{ span: 6}">
-            <div class="item-container">
-                <div class="item">
-                      <test></test>
+                      <MapPride></MapPride>
                 </div>
             </div>
         </Col>
@@ -33,6 +26,10 @@
   </div>
 </template>
 <script>
+    import LineSimple from './statistics_chart/LineSimple.vue'
+    import Sunburst from './statistics_chart/Sunburst.vue'
+    import Sankey from './statistics_chart/Sankey.vue'
+    import MapPride from './statistics_chart/Map.vue'
     import test from './statistics_chart/test.vue'
     export default {
         data () {
@@ -45,6 +42,10 @@
             }
         },
         components: {
+            LineSimple,
+            Sunburst,
+            Sankey,
+            MapPride,
             test
         },
     }

@@ -30,14 +30,16 @@
             <div class="example-wrapper">
                 <a class="example-item" v-for="item in searchExample" v-bind:key = "item" @click="setSearchKeyword(item)">{{item}}></a>
             </div>
+            <!--
             <div class="advance-search">
                 <a @click="advanceSearchToggle">Advance</a>
             </div>
+            -->
         </div>
     </div>
     <div class="button-container">
         <a class="button resource-button" @click="goToArchive">{{archivebutton}}</a>
-        <a class="button resource-button" @click="goToPeptidome">{{peptidomebutton}}</a>
+        <a class="button resource-button peptidome" @click="goToPeptidome">{{peptidomebutton}}</a>
     </div>
   </div>
 </template>
@@ -172,7 +174,10 @@
                 this.submitSearchCondition();
             },
             submitSearchCondition(){
-                this.$router.push({name:'archive',query:{ q: this.keyword }});
+                if(this.selected == 'archive')
+                    this.$router.push({name:'archive',query:{ q: this.keyword }});
+                else if(this.selected == 'peptidome')
+                    this.$router.push({name:'peptidesearch',query:{ q: this.keyword }});   
             },
             advanceSearchConditoinRemove (index) {
                 this.searchItems.splice(index, 1);
@@ -286,6 +291,9 @@
         margin: 0 0 40px 0;
         background-color: #5bc0be;
         border-radius: 6px;
+    }
+    .resource-button.peptidome{
+        background-color: #ef7831;
     }
     #search-bar-pride .ivu-select-single{
         /*width: 100px !important;*/

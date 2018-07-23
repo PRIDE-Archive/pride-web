@@ -1,6 +1,6 @@
 <template>
     <div class="submit-data-container">
-        <div class="panel nav"><Nav/></div>
+        <div class="panel nav"><NavBar/></div>
         <div class="content-container">
             <Affix :offset-top="20">
                 <div class="menu-wrapper">
@@ -22,7 +22,7 @@
     </div>
 </template>
 <script>
-    import Nav from '@/components/landingpage/Nav'
+    import NavBar from '@/components/landingpage/Nav'
     export default {
         data () {
             return {
@@ -44,20 +44,29 @@
             next();
         },*/
         beforeRouteUpdate:function (to, from, next) {
-            this.$nextTick(function(){
-                this.goAnchor(location.hash.replace(/\#/,''));
+            if(to.params.subpage != from.params.subpage){
+                this.markdownQuery(to.params.subpage);
+            }
+            else{
                 this.$nextTick(function(){
-                    this.activeName = location.hash.replace(/\#/,'');
+                    this.goAnchor(location.hash.replace(/\#/,''));
+                    this.$nextTick(function(){
+                        this.activeName = location.hash.replace(/\#/,'');
+                    });
                 });
-            });
+            }
+            
             next();
         },
         components: {
-            Nav,
+            NavBar,
         },
         methods:{
-            markdownQuery(){
-                this.markdownURL = '/static/markdown/'+this.$route.params.subpage+'/content.md';
+            markdownQuery(subpage){
+                this.source = '';
+                this.activeName='';
+                this.tableList=[];
+                this.markdownURL = '/static/markdown/'+subpage+'/content.md';
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){
@@ -96,7 +105,6 @@
                 location.hash = name;
             },
             addID(){
-
                 let list = document.querySelector('.markdown-body').querySelectorAll('h2');
                 for(let i=0; i<list.length; i++){
                     var title = list[i].innerHTML.replace(/(^\s*)|(\s*$)/g,'');
@@ -109,7 +117,6 @@
                     if(i!=0)
                         this.tableList.push(item);
                 }
-
                 document.addEventListener('scroll', ()=> {
                     if(document.documentElement.scrollTop + document.documentElement.clientHeight >= document.documentElement.scrollHeight){
                         this.activeName =list[list.length-1].getAttribute('id');
@@ -150,7 +157,7 @@
            
         },
         mounted:function(){
-            this.markdownQuery();
+            this.markdownQuery(this.$route.params.subpage);
         
         },
     }
@@ -175,7 +182,6 @@
         padding: 90px 0 200px 0px;
         margin: 0 auto;
     }
-
     .markdown-body{
         display: inline-block;
     }
