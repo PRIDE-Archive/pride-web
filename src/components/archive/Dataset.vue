@@ -297,7 +297,7 @@
                               <div class="property-wrapper">
                                 <div v-if="diseases.length>0">
                                   <div v-for="item in diseases">
-                                    <a>{{item}}</a>
+                                    <a>{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -332,11 +332,11 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Softwares</div>
+                              <div class="summary-content-header">Software</div>
                               <div class="property-wrapper">
                                 <div v-if="softwares.length>0">
                                   <div v-for="item in softwares">
-                                    <a>{{item}}</a>
+                                    <a>{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
