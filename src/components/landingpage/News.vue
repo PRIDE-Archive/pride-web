@@ -136,7 +136,7 @@
                   });
             },
             tweetQuery(){
-                this.$Message.success({content:'documents update', duration:1});
+                //this.$Message.success({content:'documents update', duration:1});
                 this.info.tweet = Math.floor(Math.random()* 1000);
                 /*
                 this.$http
@@ -149,7 +149,7 @@
                 */
             },
             citationQuery(){
-                this.$Message.success({content:'documents update', duration:1});
+                //this.$Message.success({content:'documents update', duration:1});
                 this.info.citation = Math.floor(Math.random()* 1000);
                 /*
                 this.$http
