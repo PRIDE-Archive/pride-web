@@ -211,18 +211,18 @@
                            <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
                        </div>
-                  </Card>
+                    </Card>
+                    <!--
                     <Card v-if="total>0" class="card">
                         <p slot="title">Assay</p>
                         <div class="assay-search-container">
-                        <!--<Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>-->
                         <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
                         </div>
                         <div class="page-container">
                           <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                         </div>
                     </Card>
-                   
+                    -->
                   </div>
                  <!--
                   <Tabs :animated="false">
