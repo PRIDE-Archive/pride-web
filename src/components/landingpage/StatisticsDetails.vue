@@ -108,7 +108,7 @@
                 sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
@@ -148,7 +148,7 @@
                   .get(this.linePrideApi)
                   .then(function(res){
                     this.linePrideShow=false;
-                    this.$bus.$emit('show-line', res.body.speciesCounts);
+                    this.$bus.$emit('show-line', res.body);
                   },function(err){
 
                   });
