@@ -1,6 +1,5 @@
 <template>
   <div>
-        <a @click="changeDate('year')">Year</a> <a @click="changeDate('month')">Month</a>
         <chart class="test" :options="options" :auto-resize="true"></chart>
   </div>
     
@@ -14,7 +13,7 @@ export default {
       lineMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
       options: {
         title: {
-            text: 'Beijing AQI'
+            /*text: 'Beijing AQI'*/
         },
         tooltip: {
             trigger: 'axis'
@@ -88,28 +87,6 @@ export default {
     }
   },
   methods:{
-      changeDate(item){
-          if(item == 'year'){
-              this.$http
-                  .get(this.lineYearApi)
-                  .then(function(res){
-                    this.$bus.$emit('show-line', res.body);
-                  },function(err){
-
-                  });
-             
-          }
-          if(item == 'month'){
-             this.$http
-                  .get(this.lineMonthApi)
-                  .then(function(res){
-                    this.sunburstPrideShow=false;
-                    this.$bus.$emit('show-line', res.body);
-                  },function(err){
-
-                  });
-          }
-      },
       setOptions(data){
         let xValue = [];
         let yValue = [];

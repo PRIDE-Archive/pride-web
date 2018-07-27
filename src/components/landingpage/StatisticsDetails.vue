@@ -52,17 +52,12 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Line</p>
-                             <!--
+                             <p slot="title">SUBMISSIONS</p>
+                             
                              <p slot="extra">
-                                <Tooltip>
-                                    <i class="fas fa-info-circle"></i>
-                                    <div class="tooltip-content" slot="content">
-                                        Species distribution for all the PSMs within the cluster.
-                                    </div>
-                                </Tooltip>
+                               <a class="submission-options" @click="queryLine('year')">Year</a> <a class="submission-options" @click="queryLine('month')">Month</a>
                              </p>
-                             -->
+                             
                              <div class="card-content-pie">
                                  <Spin fix v-if="linePrideShow"></Spin>
                                  <LinePride></LinePride>
@@ -108,7 +103,8 @@
                 sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+                linePrideYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+                linePrideMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
@@ -124,6 +120,7 @@
         },
         methods: {
            querySunburst(){
+                this.sunburstPrideShow=true;
                 this.$http
                   .get(this.sunburstPrideApi)
                   .then(function(res){
@@ -134,6 +131,7 @@
                   });
            },
            querySankey(){
+                this.sankeyPrideShow=true;
                 this.$http
                   .get(this.sankeyPrideApi)
                   .then(function(res){
@@ -143,9 +141,12 @@
 
                   });
            },
-           queryLine(){
+           queryLine(item){
+                this.linePrideShow=true;
+                let temp = item || 'year'
+                let api = temp == 'year' ? this.linePrideYearApi:this.linePrideMonthApi;
                 this.$http
-                  .get(this.linePrideApi)
+                  .get(api)
                   .then(function(res){
                     this.linePrideShow=false;
                     this.$bus.$emit('show-line', res.body);
@@ -154,6 +155,7 @@
                   });
            },
            queryMap(){
+                this.mapPrideShow=true;
                 this.$http
                   .get(this.mapPrideApi)
                   .then(function(res){
@@ -235,7 +237,9 @@
     .tooltip-content{
         white-space: normal
     }
-    
+    .submission-options{
+      border-bottom-style:none !important;
+    }
     @media (max-width: 700px) { 
       .item{ 
         width: calc((100% - 0px) / 1 - 1px);
