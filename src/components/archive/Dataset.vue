@@ -473,7 +473,7 @@
                               style: {
                                   color:iconColor,
                                   marginRight: '5px',
-                                  marginLeft: '10px'
+                                  marginLeft: '0px'
                               },
                           }),
                           h('span', {
