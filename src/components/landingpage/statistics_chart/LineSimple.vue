@@ -126,8 +126,17 @@ export default {
               //this.options.xAxis.data=[]
                console.log('month');
           }
-      }
+      },
+      setOptions(data){
+        console.log('line',data);
+    }
   },
+  created(){
+    this.$bus.$on('show-simple-line', this.setOptions);
+  },
+  beforeCreate:function(){
+    this.$bus.$off('show-simple-line');
+  }
 }
 </script>
 

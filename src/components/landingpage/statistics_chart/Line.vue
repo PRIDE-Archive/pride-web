@@ -21,9 +21,11 @@ export default {
         xAxis: {
             type: 'category',
             boundaryGap: false,
+            //name:'Years',
             data: ['null','null']
         },
         yAxis: {
+            //name:'Num',
             splitLine: {
                 show: false
             }

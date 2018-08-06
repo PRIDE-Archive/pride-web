@@ -1,5 +1,5 @@
 <template>
-    <chart class="map-pride" :options="options" :auto-resize="true"></chart>
+    <chart class="test" :options="options" :auto-resize="true"></chart>
 </template>
 <script>
 export default {
@@ -461,7 +461,6 @@ export default {
               name: 'World Population (2010)',
               type: 'map',
               map: 'world',
-              zoom:1.3,
               roam: true,
               label: {
                   emphasis: {
@@ -514,17 +513,17 @@ export default {
     }
   },
   created(){
-    this.$bus.$on('show-map', this.setOptions);
+    this.$bus.$on('show-simple-map', this.setOptions);
   },
   beforeCreate:function(){
-    this.$bus.$off('show-map');
+    this.$bus.$off('show-simple-map');
   }
 }
 </script>
 
 <style>
-.echarts.map-pride  {
-  height: 600px !important;
+.echarts.test  {
+  height: 400px !important;
   width: auto !important;
 }
 </style>

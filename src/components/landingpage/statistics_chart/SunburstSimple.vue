@@ -6,42 +6,42 @@ export default {
   data: function () {
     let data =  [
         {
-            name: 'AA',
+            name: 'Grandpa',
             children: [
                 {
-                    name: 'aa',
+                    name: 'Uncle Leo',
                     value: 15,
                     children: [
                         {
-                            name: '11',
+                            name: 'Cousin Jack',
                             value: 2
                         }, 
                         {
-                            name: '22',
+                            name: 'Cousin Mary',
                             value: 5,
                             children: [
                                 {
-                                    name: 'ββ',
+                                    name: 'Jackson',
                                     value: 2
                                 }
                             ]
                         }, 
                         {
-                            name: '33',
+                            name: 'Cousin Ben',
                             value: 4
                         }
                     ]
                 }, 
                 {
-                    name: 'bb',
+                    name: 'Father',
                     value: 10,
                     children: [
                         {
-                            name: '11',
+                            name: 'Me',
                             value: 5
                         }, 
                         {
-                            name: '22',
+                            name: 'Brother Peter',
                             value: 1
                         }
                     ]
@@ -49,17 +49,17 @@ export default {
             ]
         }, 
         {
-            name: 'BB',
+            name: 'Nancy',
             children: [
                 {
-                    name: 'aa',
+                    name: 'Uncle Nike',
                     children: [
                         {
-                            name: '11',
+                            name: 'Cousin Betty',
                             value: 1
                         }, 
                         {
-                            name: '22',
+                            name: 'Cousin Jenny',
                             value: 2
                         }
                     ]
@@ -87,10 +87,10 @@ export default {
     }
   },
   created(){
-    this.$bus.$on('show-sunburst', this.setOptions);
+    this.$bus.$on('show-simple-sunburst', this.setOptions);
   },
   beforeCreate:function(){
-    this.$bus.$off('show-sunburst');
+    this.$bus.$off('show-simple-sunburst');
   }
 }
 </script>
