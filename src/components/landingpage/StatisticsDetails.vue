@@ -69,6 +69,27 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
+                             <p slot="title">Facets</p>
+                             
+                             <p slot="extra">
+                                  <Select v-model="facetsType" size="small" style="width:125px" @on-change="facetsTypeChange">
+                                      <Option v-for="item in facetsTypeList" :value="item" :key="item">{{ item }}</Option>
+                                  </Select>
+                             </p>
+                             
+                             <div class="card-content-pie">
+                                 <Spin fix v-if="piePrideShow"></Spin>
+                                 <PiePride></PiePride>
+                             </div>
+                             
+                        </Card>
+                    </div>
+                </Col>
+            </Row>
+            <Row type="flex" justify="center" class="code-row-bg">
+                <Col span="20">
+                    <div class="visualization-wrapper">
+                        <Card>
                              <p slot="title">Map</p>
                              <!--
                              <p slot="extra">
@@ -95,6 +116,7 @@
     import SunburstPride from './statistics_chart/Sunburst.vue'
     import SankeyPride from './statistics_chart/Sankey.vue'
     import LinePride from './statistics_chart/Line.vue'
+    import PiePride from './statistics_chart/Pie.vue'
     import MapPride from './statistics_chart/Map.vue'
     import NavBar from '@/components/landingpage/Nav'
     export default {
@@ -109,12 +131,16 @@
                 sankeyPrideShow:true,
                 mapPrideShow:true,
                 linePrideShow:true,
+                piePrideShow:true,
+                facetsType:'INSTRUMENT',
+                facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS']
             }
         },
         components: {
             SunburstPride,
             SankeyPride,
             LinePride,
+            PiePride,
             MapPride,
             NavBar,
         },
@@ -165,6 +191,18 @@
 
                   });
            },
+           facetsTypeChange(facets){
+            console.log('facets',facets);
+              this.piePrideShow=true;
+              this.$http
+                  .get('http://ves-pg-41:9020/stats/SUBMISSIONS_PER_'+facets)
+                  .then(function(res){
+                      this.piePrideShow=false;
+                      this.$bus.$emit('show-pie', res.body);
+                  },function(err){
+
+                  });
+           }
         },
         computed:{  
        
@@ -174,6 +212,7 @@
             this.querySankey();
             this.queryLine();
             this.queryMap();
+            this.facetsTypeChange('INSTRUMENT');
         },
     }
 </script>
