@@ -107,7 +107,6 @@
                                 <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </div>
-                
                     </span>
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
