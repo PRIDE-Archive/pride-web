@@ -124,7 +124,7 @@
             return {
                 sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_COUNTRY',
                 linePrideYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
                 linePrideMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 sunburstPrideShow:true,
@@ -186,13 +186,12 @@
                   .get(this.mapPrideApi)
                   .then(function(res){
                     this.mapPrideShow=false;
-                    this.$bus.$emit('show-map', res.body.speciesCounts);
+                    this.$bus.$emit('show-map', res.body);
                   },function(err){
 
                   });
            },
            facetsTypeChange(facets){
-            console.log('facets',facets);
               this.piePrideShow=true;
               this.$http
                   .get('http://ves-pg-41:9020/stats/SUBMISSIONS_PER_'+facets)

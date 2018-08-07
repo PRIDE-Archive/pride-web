@@ -492,7 +492,7 @@ export default {
                           label: {
                               emphasis: {
                                   position: 'right',
-                                  show: true
+                                  show: false
                               }
                           },
                           itemStyle: {
@@ -509,7 +509,7 @@ export default {
   },
   methods:{
       setOptions(data){
-        console.log('map',data);
+        console.log('map',this.options.series[0].data);
     }
   },
   created(){
@@ -517,6 +517,9 @@ export default {
   },
   beforeCreate:function(){
     this.$bus.$off('show-simple-map');
+  },
+  mounted(){
+
   }
 }
 </script>
