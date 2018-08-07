@@ -447,7 +447,7 @@
                       var className;
                       var iconColor;
                       if(params.row.type == 'PEAK'){
-                        className='fab fa-autoprefixer';
+                        className='far fa-chart-bar';
                         iconColor='#bd7edc'
                       }
                       else if (params.row.type == 'RAW'){
@@ -455,7 +455,7 @@
                         iconColor='#e2c94c'
                       }
                       else if (params.row.type == 'RESULT'){
-                        className ='far fa-chart-bar';
+                        className ='far fa-envelope-open';
                         iconColor='#6acaef'
                       }
                       else if (params.row.type == 'OTHER'){
