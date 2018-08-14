@@ -3,10 +3,10 @@
         <NavBar></NavBar>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="10">
+                <Col span="20">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Sunburst</p>
+                             <p slot="title">Tree</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>
@@ -20,30 +20,9 @@
                             -->
                              <div class="card-content-pie">
                                  <Spin fix v-if="sunburstPrideShow"></Spin>
-                                 <SunburstPride></SunburstPride>
+                                 <TreetPride></TreetPride>
                              </div>
                              
-                        </Card>
-                    </div>
-                </Col>
-                <Col span="10">
-                    <div class="visualization-wrapper">
-                        <Card>
-                             <p slot="title">Sankey</p>
-                             <!--
-                             <p slot="extra">
-                                <Tooltip>
-                                    <i class="fas fa-info-circle"></i>
-                                    <div class="tooltip-content" slot="content">
-                                        Modification distribution for all the PSMs within the cluster.
-                                    </div>
-                                </Tooltip>
-                             </p>
-                             -->
-                             <div class="card-content-pie">
-                                <Spin fix v-if="sankeyPrideShow"></Spin>
-                                 <SankeyPride></SankeyPride>
-                             </div>
                         </Card>
                     </div>
                 </Col>
@@ -113,6 +92,7 @@
     </div>
 </template>
 <script>
+    import TreetPride from './statistics_chart/Tree.vue'
     import SunburstPride from './statistics_chart/Sunburst.vue'
     import SankeyPride from './statistics_chart/Sankey.vue'
     import LinePride from './statistics_chart/Line.vue'
@@ -122,7 +102,8 @@
     export default {
         data () {
             return {
-                sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                treePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
+                sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_COUNTRY',
                 linePrideYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
@@ -132,11 +113,13 @@
                 mapPrideShow:true,
                 linePrideShow:true,
                 piePrideShow:true,
+                treePrideShow:true,
                 facetsType:'INSTRUMENT',
                 facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS']
             }
         },
         components: {
+            TreetPride,
             SunburstPride,
             SankeyPride,
             LinePride,
@@ -145,13 +128,24 @@
             NavBar,
         },
         methods: {
+           queryTree(){
+              this.treePrideShow=true;
+              this.$http
+                .get(this.treePrideApi)
+                .then(function(res){
+                  this.treePrideShow=false;
+                  this.$bus.$emit('show-tree', res.body);
+                },function(err){
+
+                });
+           },
            querySunburst(){
                 this.sunburstPrideShow=true;
                 this.$http
                   .get(this.sunburstPrideApi)
                   .then(function(res){
                     this.sunburstPrideShow=false;
-                    this.$bus.$emit('show-sunburst', res.body.speciesCounts);
+                    this.$bus.$emit('show-sunburst', res.body);
                   },function(err){
 
                   });
@@ -207,6 +201,7 @@
        
         },
         mounted: function(){
+            this.queryTree();
             this.querySunburst();
             this.querySankey();
             this.queryLine();
