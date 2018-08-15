@@ -1,8 +1,17 @@
 <template>
+  <div class="tree-container">
+    <div class="legend">
+        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#6083d2"></i><span>Organism</span></div>
+        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#5cc8db"></i></i><span>Organism_Part</span></div>
+        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#d4a03a"></i><span>Diseases</span></div>
+        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#2ba47cd6"></i><span>Modifications</span></div>
+    </div>
     <chart class="sunburst-chart" :options="options" :auto-resize="true"></chart>
+  </div>
 </template>
 <script>
 const LIMITLENGTH = 4;
+var layer = 0;
 const matchColor={
   "brain":'#7093e2',
   "cell culture":"#d48365",
@@ -179,7 +188,24 @@ export default {
                   //}
               }
           },
-          
+          legend: {
+              top: '2%',
+              left: '3%',
+              orient: 'vertical',
+              data: [{
+                  name: 'tree1',
+                  icon: 'rectangle'
+              } ,
+              {
+                  name: 'tree2',
+                  icon: 'rectangle'
+              }],
+              borderColor: '#c23531',
+              selectedMode:false,
+          },
+          itemStyle:{
+            borderColor:"blue"
+          },
           series: {
               type: 'tree',
               data: data,
@@ -187,19 +213,10 @@ export default {
               left: '5%',
               bottom: '0%',
               right: '20%',
+              symbol:"circle",
               //layout: 'radial',
               symbolSize: 7,
               initialTreeDepth:3,
-              itemStyle:{
-                normal: {
-                                color: function(params) {
-
-                                      console.log('params',params);
-                                        return "blue";
-                                   
-                                }
-                            }
-              },
               label: {
                   normal: {
                       position: 'left',
@@ -354,7 +371,6 @@ export default {
                       }
                   }
               },
-
               leaves: {
                   label: {
                       normal: {
@@ -365,20 +381,19 @@ export default {
                       }
                   }
               },
-
               expandAndCollapse: true,
-
               animationDuration: 550,
               animationDurationUpdate: 750
-          }
+            },
       }
     }
   },
   methods:{
-    sortData(data){
+    sortData(data, level){
+        level++;
         if(data.length==0)
           return data;
-
+      
         data.sort((a,b)=>{
             return b.category.value-a.category.value;
         })
@@ -388,13 +403,30 @@ export default {
         //let cutData = data;
         let newData = [];
         for(let i=0; i<cutData.length ; i++){
+            let color;
+            if(level == 1){
+                color='#6083d2'
+            }
+            else if(level == 2){
+               color='#5cc8db'
+            }
+            else if(level ==3){
+              color='#d4a03a'
+            }
+            else if(level ==4){
+              color='#2ba47cd6'
+            }
             let item ={
                 name:cutData[i].category.key+'('+cutData[i].category.value+')',
                 value: cutData[i].category.value,
                 rawValue: cutData[i].category.value,
-                children: this.sortData(cutData[i].subCategories)
+                itemStyle:{
+                  borderColor:color,
+                  color:color
+                },
+                level:level,
+                children: this.sortData(cutData[i].subCategories, level)
             }
-            
             if(i == 0){
               item.value = Math.floor(Math.log(cutData[i].category.value));
               //item.value = Math.floor(Math.log(cutData[i].category.value));
@@ -405,12 +437,17 @@ export default {
         return newData
     },
     setOptions(data){
-        //let
-        //console.log('before',data);
-        let sortedData = this.sortData(data);
+        let sortedData = this.sortData(data, 0);
+        for(let i=0; i<sortedData.length; i++){
+
+        }
         let array = [{
             name:"Category",
-            children:sortedData
+            children:sortedData,
+            itemStyle:{
+              borderColor:"#c23531",
+              color:"#c23531"
+            },
         }]
 
         console.log('array',array);
@@ -449,6 +486,29 @@ export default {
 </script>
 
 <style>
+.tree-container{
+  position: relative;
+}
+.legend{
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 10px;
+  top: 10px;
+  color: #6f6f6f;
+  font-family: sans-serif;
+  font-size: 14px;
+}
+.legend .item-wrapper{
+    display: flex;
+    text-align: left;
+    align-items: center;
+    flex-direction: row;
+}
+.legend .item-wrapper span{
+    margin-left: 5px;
+    padding-top: 1px;
+}
 .echarts.sunburst-chart  {
   height: 900px !important;
   width: auto !important;
