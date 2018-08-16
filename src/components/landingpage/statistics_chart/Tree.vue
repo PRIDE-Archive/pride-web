@@ -1,12 +1,13 @@
 <template>
   <div class="tree-container">
     <div class="legend">
+
         <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#6083d2"></i><span>Organism</span></div>
         <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#5cc8db"></i></i><span>Organism_Part</span></div>
         <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#d4a03a"></i><span>Diseases</span></div>
         <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#2ba47cd6"></i><span>Modifications</span></div>
     </div>
-    <chart class="sunburst-chart" :options="options" :auto-resize="true"></chart>
+    <chart class="sunburst-chart" :options="options" :auto-resize="true" @click="itemClick"></chart>
   </div>
 </template>
 <script>
@@ -176,15 +177,27 @@ export default {
       options: {
            tooltip: {
               trigger: 'item',
+              enterable:true,
+              hideDelay:300,
               formatter:function(param){
-                  //if(param.data.name && param.data.value){
-                    //console.log('param',param);//
-                    //return 'Category: '+param.data.name+', Value: ' + param.data.value;
-                  //}
-                  //if(param.data.name && param.data.rawValue){
-                    //console.log('param',param);//
-                    if(param.data.name !='Category')
-                      return 'Category: '+param.data.name+', Value: ' + param.data.rawValue;
+
+                    if(param.data.name !='Category'){
+                        let facets;
+                        let value = param.data.name.split('(')[0];
+                        if(param.data.level == 1){
+                            facets='Organism';
+                        }
+                        else if(param.data.level == 2){
+                           facets='Organism Part';
+                        }
+                        else if(param.data.level ==3){
+                          facets='Diseases';
+                        }
+                        else if(param.data.level ==4){
+                          facets='Modifications';
+                        }
+                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?facets='+facets+'&value='+value+'">More</a></p>'
+                    }
                   //}
               }
           },
@@ -470,10 +483,18 @@ export default {
         }*/
 
     },
-   
+    itemClick(item){
+      if(item.data.level==4)
+        console.log('准备跳转',item.data.name);
+
+      console.log(item);
+    },
     sortNode(node){
         if(node.subCategories.length==0) return;
         dataProcess(node.subCategories);
+    },
+    search(item){
+      console.log('item',item);
     }
   },
   created(){
@@ -512,5 +533,11 @@ export default {
 .echarts.sunburst-chart  {
   height: 900px !important;
   width: auto !important;
+}
+.search{
+  color: rgb(255, 255, 255) !important;
+  margin-top: 5px;
+  font-size: 12px;
+  float: right;
 }
 </style>
