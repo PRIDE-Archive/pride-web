@@ -228,7 +228,20 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
+          normalQuery:{}
       }
+    },
+    beforeRouteUpdate:function (to, from, next) {
+      //console.log('to query',to.query);
+      /*
+      let filter = to.query.split('?')[1].split('filter');
+      if(filter.length>1)
+        filter.split("=");
+      console.log('filter',filter);*/
+      console.log('to.query',to.query);
+      this.queryArchiveProjectList(to.query);
+      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
+      next();
     },
     components: {
       NavBar
@@ -296,13 +309,25 @@
             }
           }
           this.filter = condition.replace(/,$/gi,'');
-          //console.log(this.filter);
       },
-      queryArchiveProjectList(){
+      queryArchiveProjectList(q){
           this.publicaitionList = [];
-          this.loading = true; 
+          this.loading = true;
+          let query = q || this.$route.query;
+          query.dateGap = '+1YEAR';
+          let pageSizeFound = false;
+          for(let i in query){
+              if(i == 'pageSize'){
+                  pageSizeFound = true;
+                  break;
+              }
+          }
+          if(!pageSizeFound)
+            query.pageSize = this.pageSize;
+
+          console.log('search query',query);
           this.$http
-            .get(this.queryArchiveProjectListApi +this.query+ '&dateGap=%2B1YEAR')
+            .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
@@ -581,7 +606,7 @@
           for(let i=0; i<this.tagArray.length; i++){
               this.keyword += this.tagArray[i]+',';
           }
-          this.keyword.replace(/,$/gi,'');
+          this.keyword = this.keyword.replace(/,$/gi,'');
       },
       conditionDelete(index,item){
         this.filterCombination.splice(index,1);
@@ -617,7 +642,10 @@
           this.hightlightMode = true;
         else
           this.hightlightMode = false;
-        this.queryArchiveProjectList();
+
+        //console.log('push',this.normalQuery);
+        this.$router.push({name: 'archive', query: this.query});
+        //this.queryArchiveProjectList();
         this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
@@ -645,10 +673,10 @@
         this.queryArchiveProjectList();
       },
       updateQuery(){
-        this.keyword
         this.sort = 'publication_date';
         this.page = 0;
         this.pageSize = 20;
+        //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
       searchInputListener(){
           this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').addEventListener('keydown',(e)=>{
@@ -669,6 +697,18 @@
                     this.searchInputChange(e.target.value, true);
               }
           });
+      },
+      queryFormatter(query){
+          console.log('query',query);
+          let queryTemp = '?';
+          for(let i in query){
+              if(query[i] && i == 'keyword'){
+                  queryTemp = queryTemp + i + '='+query[i]
+              }
+              else if(query[i] && i == 'filter'){
+                console.log('query[i]',query[i]);
+              }
+          }
       }
     },
 
@@ -680,12 +720,25 @@
 
     },
     computed:{
+      //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
-          let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
-          let filter = this.filter? 'filter='+this.filter+'&' : '';
-          let page='page='+this.page+'&';
-          let pageSize='pageSize='+this.pageSize;
-          return '?'+keyword+filter+page+pageSize;
+          //let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
+          //let filter = this.filter? 'filter='+this.filter+'&' : '';
+          //let page='page='+this.page+'&';
+          //let pageSize='pageSize='+this.pageSize;
+          let normalQuery = {}
+          console.log('filterCombination',this.filterCombination);
+          console.log('tagArray',this.tagArray);
+          for(let i=0; i<this.tagArray.length; i++){
+
+          }
+          normalQuery.keyword = this.keyword;
+          normalQuery.filter = this.filter;
+          normalQuery.page = this.page;
+          normalQuery.pageSize = this.pageSize;
+          //console.log('this.normalQuery',this.normalQuery);
+          //return '?'+keyword+filter+page+pageSize;
+          return normalQuery;
           
       }
     },
