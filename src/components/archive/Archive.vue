@@ -745,7 +745,7 @@
       }
     },
     mounted: function(){
-      this.updateQuery();
+      //this.updateQuery();
       this.setFilter();
       this.queryArchiveProjectList();
       this.searchInputListener();
@@ -757,7 +757,7 @@
           
     },
     beforeRouteEnter(to,from,next){
-      console.log('from',from);
+      //console.log('from',from);
       if(from.name == 'landingpage' && from.params.keyword)
         paramsFromLandingPage = from.params.keyword;
       
