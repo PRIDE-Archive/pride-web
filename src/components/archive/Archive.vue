@@ -100,6 +100,7 @@
               <Card>
                   <p slot="title" class="resource-list-title-container">
                     <span>Resources List</span>
+                    <!--new api has no sort function
                     <span>
                         <span>Sort by: </span>
                         <div class="sortOption">
@@ -108,6 +109,7 @@
                             </Select>
                         </div>
                     </span>
+                    -->
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
@@ -396,6 +398,7 @@
       },
       setHighlightKeywords(){
           this.highlightKeyword = this.keyword.split(',');
+          //console.log('this.highlightKeyword',this.highlightKeyword);
       },
       querySpecificFacets(keyword){
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
@@ -643,21 +646,20 @@
         else
           this.hightlightMode = false;
 
-        //console.log('push',this.normalQuery);
         this.$router.push({name: 'archive', query: this.query});
-        //this.queryArchiveProjectList();
         this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
           this.setFilter();
-          this.queryArchiveProjectList();
+          this.$router.push({name: 'archive', query: this.query});
       },
       pageSizeChange(size){
           this.pageSize = size;
           this.setFilter();
-          this.queryArchiveProjectList();
+          this.$router.push({name: 'archive', query: this.query});
       },
+      /*new api has no sort funtions
       sortChange(type){
         console.log(type);
         if(type == 'Title')
@@ -671,7 +673,7 @@
 
         this.setFilter();
         this.queryArchiveProjectList();
-      },
+      },*/
       updateQuery(){
         this.sort = 'publication_date';
         this.page = 0;
@@ -755,6 +757,7 @@
           
     },
     beforeRouteEnter(to,from,next){
+      console.log('from',from);
       if(from.name == 'landingpage' && from.params.keyword)
         paramsFromLandingPage = from.params.keyword;
       

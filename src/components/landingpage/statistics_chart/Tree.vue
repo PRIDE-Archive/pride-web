@@ -185,18 +185,18 @@ export default {
                         let facets;
                         let value = param.data.name.split('(')[0];
                         if(param.data.level == 1){
-                            facets='Organism';
+                            facets='organisms_facet=='+value;
                         }
                         else if(param.data.level == 2){
-                           facets='Organism Part';
+                           facets='organisms_part_facet=='+value;
                         }
                         else if(param.data.level ==3){
-                          facets='Diseases';
+                          facets='diseases_facet=='+value;
                         }
                         else if(param.data.level ==4){
-                          facets='Modifications';
+                          facets='Modifications=='+value;
                         }
-                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?facets='+facets+'&value='+value+'">More</a></p>'
+                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?keyword=&filter='+facets+'&page=0&pageSize=20">More</a></p>'
                     }
                   //}
               }
