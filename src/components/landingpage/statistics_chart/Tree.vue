@@ -196,7 +196,7 @@ export default {
                         else if(param.data.level ==4){
                           facets='Modifications=='+value;
                         }
-                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?keyword=&filter='+facets+'&page=0&pageSize=20">More</a></p>'
+                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?filter='+facets+'&page=0&pageSize=20">More</a></p>'
                     }
                   //}
               }
