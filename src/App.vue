@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <defaultNav/>
-    <keep-alive include="archive">
+    <!--<keep-alive include="archive">-->
       <router-view/>
-    </keep-alive>
+    <!--/keep-alive>-->
     <defaultFooter/>
   </div>
 </template>

@@ -1,6 +1,5 @@
 <template>
   <div>
-        <a @click="changeDate('year')">Year</a> <a @click="changeDate('month')">Month</a>
         <chart class="test" :options="options" :auto-resize="true"></chart>
   </div>
     
@@ -10,9 +9,11 @@ export default {
   data: function () {
     //let data = 
     return {
+      lineYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+      lineMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
       options: {
         title: {
-            text: 'Beijing AQI'
+            /*text: 'Beijing AQI'*/
         },
         tooltip: {
             trigger: 'axis'
@@ -20,9 +21,11 @@ export default {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一','周二','周三','周四','周五','周六','周日']
+            //name:'Years',
+            data: ['null','null']
         },
         yAxis: {
+            //name:'Num',
             splitLine: {
                 show: false
             }
@@ -77,52 +80,32 @@ export default {
         },*/
         series: [
               {
-                  name:'邮件营销',
+                  name:'SUBMISSIONS_PER_YEAR',
                   type:'line',
-                  stack: '总量',
-                  data:[120, 132, 101, 134, 90, 230, 210]
-              },
-              {
-                  name:'联盟广告',
-                  type:'line',
-                  stack: '总量',
-                  data:[220, 182, 191, 234, 290, 330, 310]
-              },
-              {
-                  name:'视频广告',
-                  type:'line',
-                  stack: '总量',
-                  data:[150, 232, 201, 154, 190, 330, 410]
-              },
-              {
-                  name:'直接访问',
-                  type:'line',
-                  stack: '总量',
-                  data:[320, 332, 301, 334, 390, 330, 320]
-              },
-              {
-                  name:'搜索引擎',
-                  type:'line',
-                  stack: '总量',
-                  data:[820, 932, 901, 934, 1290, 1330, 1320]
+                  data:[0,0]
               }
         ]
       }
     }
   },
   methods:{
-      changeDate(item){
-          if(item == 'year'){
-           
-              this.options.xAxis.data=['1995','1995','1995','1995','1995','1995','1995']
-          }
-          if(item == 'month'){
-            this.options.xAxis.data=['周一','周二','周三','周四','周五','周六','周日']
-              //this.options.xAxis.data=[]
-               console.log('month');
-          }
-      }
+      setOptions(data){
+        let xValue = [];
+        let yValue = [];
+        for(let i=0; i<data.length; i++){
+          xValue.push(data[i].key);
+          yValue.push(data[i].value);
+        }
+        this.options.xAxis.data = xValue;
+        this.options.series[0].data = yValue;
+    }
   },
+  created(){
+    this.$bus.$on('show-line', this.setOptions);
+  },
+  beforeCreate:function(){
+    this.$bus.$off('show-line');
+  }
 }
 </script>
 

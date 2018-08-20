@@ -100,6 +100,7 @@
               <Card>
                   <p slot="title" class="resource-list-title-container">
                     <span>Resources List</span>
+                    <!--new api has no sort function
                     <span>
                         <span>Sort by: </span>
                         <div class="sortOption">
@@ -107,8 +108,8 @@
                                 <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </div>
-                
                     </span>
+                    -->
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
@@ -229,7 +230,20 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
+          normalQuery:{}
       }
+    },
+    beforeRouteUpdate:function (to, from, next) {
+      //console.log('to query',to.query);
+      /*
+      let filter = to.query.split('?')[1].split('filter');
+      if(filter.length>1)
+        filter.split("=");
+      console.log('filter',filter);*/
+      console.log('to.query',to.query);
+      this.queryArchiveProjectList(to.query);
+      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
+      next();
     },
     components: {
       NavBar
@@ -297,13 +311,25 @@
             }
           }
           this.filter = condition.replace(/,$/gi,'');
-          //console.log(this.filter);
       },
-      queryArchiveProjectList(){
+      queryArchiveProjectList(q){
           this.publicaitionList = [];
-          this.loading = true; 
+          this.loading = true;
+          let query = q || this.$route.query;
+          query.dateGap = '+1YEAR';
+          let pageSizeFound = false;
+          for(let i in query){
+              if(i == 'pageSize'){
+                  pageSizeFound = true;
+                  break;
+              }
+          }
+          if(!pageSizeFound)
+            query.pageSize = this.pageSize;
+
+          console.log('search query',query);
           this.$http
-            .get(this.queryArchiveProjectListApi +this.query+ '&dateGap=%2B1YEAR')
+            .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
@@ -372,6 +398,7 @@
       },
       setHighlightKeywords(){
           this.highlightKeyword = this.keyword.split(',');
+          //console.log('this.highlightKeyword',this.highlightKeyword);
       },
       querySpecificFacets(keyword){
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
@@ -582,7 +609,7 @@
           for(let i=0; i<this.tagArray.length; i++){
               this.keyword += this.tagArray[i]+',';
           }
-          this.keyword.replace(/,$/gi,'');
+          this.keyword = this.keyword.replace(/,$/gi,'');
       },
       conditionDelete(index,item){
         this.filterCombination.splice(index,1);
@@ -618,19 +645,21 @@
           this.hightlightMode = true;
         else
           this.hightlightMode = false;
-        this.queryArchiveProjectList();
+
+        this.$router.push({name: 'archive', query: this.query});
         this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
           this.setFilter();
-          this.queryArchiveProjectList();
+          this.$router.push({name: 'archive', query: this.query});
       },
       pageSizeChange(size){
           this.pageSize = size;
           this.setFilter();
-          this.queryArchiveProjectList();
+          this.$router.push({name: 'archive', query: this.query});
       },
+      /*new api has no sort funtions
       sortChange(type){
         console.log(type);
         if(type == 'Title')
@@ -644,12 +673,12 @@
 
         this.setFilter();
         this.queryArchiveProjectList();
-      },
+      },*/
       updateQuery(){
-        this.keyword
         this.sort = 'publication_date';
         this.page = 0;
         this.pageSize = 20;
+        //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
       searchInputListener(){
           this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').addEventListener('keydown',(e)=>{
@@ -670,6 +699,18 @@
                     this.searchInputChange(e.target.value, true);
               }
           });
+      },
+      queryFormatter(query){
+          console.log('query',query);
+          let queryTemp = '?';
+          for(let i in query){
+              if(query[i] && i == 'keyword'){
+                  queryTemp = queryTemp + i + '='+query[i]
+              }
+              else if(query[i] && i == 'filter'){
+                console.log('query[i]',query[i]);
+              }
+          }
       }
     },
 
@@ -681,17 +722,30 @@
 
     },
     computed:{
+      //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
-          let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
-          let filter = this.filter? 'filter='+this.filter+'&' : '';
-          let page='page='+this.page+'&';
-          let pageSize='pageSize='+this.pageSize;
-          return '?'+keyword+filter+page+pageSize;
+          //let keyword= this.keyword? 'keyword='+this.keyword+'&' : '';
+          //let filter = this.filter? 'filter='+this.filter+'&' : '';
+          //let page='page='+this.page+'&';
+          //let pageSize='pageSize='+this.pageSize;
+          let normalQuery = {}
+          console.log('filterCombination',this.filterCombination);
+          console.log('tagArray',this.tagArray);
+          for(let i=0; i<this.tagArray.length; i++){
+
+          }
+          normalQuery.keyword = this.keyword;
+          normalQuery.filter = this.filter;
+          normalQuery.page = this.page;
+          normalQuery.pageSize = this.pageSize;
+          //console.log('this.normalQuery',this.normalQuery);
+          //return '?'+keyword+filter+page+pageSize;
+          return normalQuery;
           
       }
     },
     mounted: function(){
-      this.updateQuery();
+      //this.updateQuery();
       this.setFilter();
       this.queryArchiveProjectList();
       this.searchInputListener();
@@ -703,6 +757,7 @@
           
     },
     beforeRouteEnter(to,from,next){
+      //console.log('from',from);
       if(from.name == 'landingpage' && from.params.keyword)
         paramsFromLandingPage = from.params.keyword;
       

@@ -211,18 +211,18 @@
                            <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
                        </div>
-                  </Card>
+                    </Card>
+                    <!--
                     <Card v-if="total>0" class="card">
                         <p slot="title">Assay</p>
                         <div class="assay-search-container">
-                        <!--<Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>-->
                         <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
                         </div>
                         <div class="page-container">
                           <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                         </div>
                     </Card>
-                   
+                    -->
                   </div>
                  <!--
                   <Tabs :animated="false">
@@ -297,7 +297,7 @@
                               <div class="property-wrapper">
                                 <div v-if="diseases.length>0">
                                   <div v-for="item in diseases">
-                                    <a>{{item}}</a>
+                                    <a>{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -332,11 +332,11 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Softwares</div>
+                              <div class="summary-content-header">Software</div>
                               <div class="property-wrapper">
                                 <div v-if="softwares.length>0">
                                   <div v-for="item in softwares">
-                                    <a>{{item}}</a>
+                                    <a>{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -433,8 +433,81 @@
               {
                   title: 'Name',
                   key: 'name',
-                  align:'center',
+                  align:'left',
                   ellipsis:true
+              },
+              {
+                  title: 'Type',
+                  width: 100,
+                  key: 'type',
+                  align:'left',
+                  sortable: true,
+                  ellipsis:true,
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.type == 'PEAK'){
+                        className='far fa-chart-bar';
+                        iconColor='#bd7edc'
+                      }
+                      else if (params.row.type == 'RAW'){
+                        className ='far fa-list-alt';
+                        iconColor='#e2c94c'
+                      }
+                      else if (params.row.type == 'RESULT'){
+                        className ='far fa-envelope-open';
+                        iconColor='#6acaef'
+                      }
+                      else if (params.row.type == 'OTHER'){
+                        className ='far fa-file';
+                        iconColor='#999c9c'
+                      }
+                      else if (params.row.type == 'SEARCH'){
+                        className ='fas fa-search';
+                        iconColor='#5bc0be'
+                      }
+                      return h('div', [
+
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  marginRight: '5px',
+                                  marginLeft: '0px'
+                              },
+                          }),
+                          h('span', {
+                              on: {
+                                  click: () => {
+                                      
+                                  }
+                              }
+                          }, params.row.type),
+                          
+                          /*
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: () => {
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.url.ftp)
+                                      console.log(params.row.url.ftp);
+                                      //this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'FTP'),*/
+                         
+                      ]);
+                  }
               },
               {
                   title: 'Size (M)',
@@ -737,7 +810,7 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + this.queryDownload)
             .then(function(res){
-              //console.log(res.body);
+                console.log(res.body);
                 this.totalDownLoad = res.body.page.totalElements;
                 if(res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
@@ -745,6 +818,7 @@
                   for(let i=0;i<filesArray.length;i++){
                       let item ={
                             name: filesArray[i].fileName,
+                            type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024),
                             url: {
                               ftp: filesArray[i].publicFileLocations[0].value,

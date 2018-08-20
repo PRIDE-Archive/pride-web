@@ -4,49 +4,113 @@
         <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <Sunburst></Sunburst>
+                      <Spin fix v-if="sunburstPrideShow"></Spin>
+                      <SunburstPrideSimple></SunburstPrideSimple>
+                      <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
         </Col>
         <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <Sankey></Sankey>
+                      <Spin fix v-if="sankeyPrideShow"></Spin>
+                      <SankeyPrideSimple></SankeyPrideSimple>
+                      <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
         </Col>
         <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <MapPride></MapPride>
+                      <Spin fix v-if="mapPrideShow"></Spin>
+                      <MapPrideSimple></MapPrideSimple>
+                      <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
         </Col>
     </Row>
+    <!--
+    <div class="button-wrapper">
+        <a class="button statistic-button" @click="">More Data</a>
+    </div>
+    -->
   </div>
 </template>
 <script>
-    import LineSimple from './statistics_chart/LineSimple.vue'
-    import Sunburst from './statistics_chart/Sunburst.vue'
-    import Sankey from './statistics_chart/Sankey.vue'
-    import MapPride from './statistics_chart/Map.vue'
-    import test from './statistics_chart/test.vue'
+    import LinePrideSimple from './statistics_chart/LineSimple.vue'
+    import SunburstPrideSimple from './statistics_chart/SunburstSimple.vue'
+    import SankeyPrideSimple from './statistics_chart/SankeySimple.vue'
+    import MapPrideSimple from './statistics_chart/MapSimple.vue'
     export default {
         data () {
             return {
-                value1: 0,
-                setting: {
-                    dots: 'none',
-                },
-                landingPageJsonURL:'/static/landingPage/landing_page.json'
+                sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+                sunburstPrideShow:true,
+                sankeyPrideShow:true,
+                mapPrideShow:true,
+                linePrideShow:true,
             }
         },
         components: {
-            LineSimple,
-            Sunburst,
-            Sankey,
-            MapPride,
-            test
+            LinePrideSimple,
+            SunburstPrideSimple,
+            SankeyPrideSimple,
+            MapPrideSimple,
+        },
+        methods:{
+            gotoStaticDetails(){
+                this.$router.push({name:'statisticsdetails'})
+            },
+            querySunburst(){
+                this.$http
+                  .get(this.sunburstPrideApi)
+                  .then(function(res){
+                    this.sunburstPrideShow=false;
+                    this.$bus.$emit('show-simple-sunburst', res.body.speciesCounts);
+                  },function(err){
+
+                  });
+           },
+           querySankey(){
+                this.$http
+                  .get(this.sankeyPrideApi)
+                  .then(function(res){
+                    this.sankeyPrideShow=false;
+                    this.$bus.$emit('show-simple-sankey', res.body.speciesCounts);
+                  },function(err){
+
+                  });
+           },
+           queryLine(){
+                this.$http
+                  .get(this.linePrideApi)
+                  .then(function(res){
+                    this.linePrideShow=false;
+                    console.log(res.body);
+                    this.$bus.$emit('show-simple-line', res.body.speciesCounts);
+                  },function(err){
+
+                  });
+           },
+           queryMap(){
+                this.$http
+                  .get(this.mapPrideApi)
+                  .then(function(res){
+                    this.mapPrideShow=false;
+                    this.$bus.$emit('show-simple-map', res.body.speciesCounts);
+                  },function(err){
+
+                  });
+           },
+        },
+        mounted: function(){
+            this.querySunburst();
+            this.querySankey();
+            this.queryLine();
+            this.queryMap();
         },
     }
 </script>
@@ -68,16 +132,33 @@
 
     .item-container{
         text-align: center;
-        margin: 50px 10px;
+        margin: 10px 15px;
     }
 
     .item{
-       
-       
-
-       
+        position: relative;
+        border: 1px solid #ececec;
+        border-radius: 6px;
+    } 
+    .static-more-button{
+        position: absolute;
+        top: 5px;
+        right: 10px;
+        border-bottom-style:none !important;
     }
-
+    .button-wrapper{
+        text-align: center;
+    }
+       
+    .statistic-button{
+        margin: 0 auto;
+        padding: 20px 85px;
+        text-decoration: none;
+        text-transform: uppercase;
+        background-color: #5bc0be;
+        font-size: 24px;
+        border-radius: 6px;
+    }
     @media (min-width: 768px) { 
         .statistics-container{
             width: 750px;
