@@ -46,7 +46,7 @@
                     <div class="search-filter">
                         <div class="filter-wrapper">
                             <div class="filter-condition">
-                                <Select class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
+                                <Select ref="fieldRef" class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
                                     <Option v-for="item in fieldSelectors" :value="item.value" :label="item.label" :key="item.value" >
                                             <span>{{ item.label }}</span>
                                             <span style="float:right;color:#ccc">{{item.number}}</span>
@@ -158,7 +158,7 @@
                   </Card>
                   
                   <div class="page-container">
-                    <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                    <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                   </div>
               </Card>
           </Row>
@@ -188,7 +188,7 @@
           queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
           containItemSearch:'',
           fieldSelectors:[],
-          
+          currentPage:1,
           containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
               value: '',
               label: '',
@@ -240,6 +240,7 @@
       if(filter.length>1)
         filter.split("=");
       console.log('filter',filter);*/
+      this.updateCondition(to.query);
       console.log('to.query',to.query);
       this.queryArchiveProjectList(to.query);
       //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
@@ -251,6 +252,7 @@
     methods:{
       searchInputChange (query, splitBool) {
           if(splitBool){
+            //console.log('searchInputChange',query);
             this.tadAdd(query);
             this.$refs.searchRef.setQuery(null);
           }
@@ -260,42 +262,34 @@
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
                 let facetsMap = res.body._embedded.facets;
-                //console.log(facetsMap);
-                this.$http
-                    .get(this.searchConfigURL)
-                    .then(function(facetsConfigRes){
-                      this.facetsConfigRes = facetsConfigRes;
-                      this.fieldSelectors = [];
-                      let archiveObj = facetsConfigRes.body.archive;
-                      for(let i in archiveObj){
-                          let item = {
-                              value: archiveObj[i].name,
-                              label: archiveObj[i].name,
-                              containItems:[]
-                          }
-                          for(let j in facetsMap){
-                              if(facetsMap[j].field == i){
-                                for(let k=0; k<facetsMap[j].values.length; k++){
-                                    let containItem = {
-                                        value: facetsMap[j].values[k].value,
-                                        label: facetsMap[j].values[k].value,
-                                        check: false,
-                                        number: facetsMap[j].values[k].count
-                                    }
-                                    item.containItems.push(containItem);
-                                }
-                                break;
+                this.fieldSelectors = [];
+                    let archiveObj = this.facetsConfigRes.body.archive;
+                    for(let i in archiveObj){
+                        let item = {
+                            value: archiveObj[i].name,
+                            label: archiveObj[i].name,
+                            containItems:[]
+                        }
+                        for(let j in facetsMap){
+                            if(facetsMap[j].field == i){
+                              for(let k=0; k<facetsMap[j].values.length; k++){
+                                  let containItem = {
+                                      value: facetsMap[j].values[k].value,
+                                      label: facetsMap[j].values[k].value,
+                                      check: false,
+                                      number: facetsMap[j].values[k].count
+                                  }
+                                  item.containItems.push(containItem);
                               }
-                          }
-                          this.fieldSelectors.push(item);
-                      }
-                      this.fieldValue = this.fieldSelectors[0].value;
-                      //console.log( this.fieldSelectors[0].value);
-                      //console.log('this.fieldValue',this.fieldValue);
-                      this.containSelectors = this.fieldSelectors[0].containItems;
-                    },function(err){
-
-                    });
+                              break;
+                            }
+                        }
+                        this.fieldSelectors.push(item);
+                    }
+                    this.fieldValue = this.fieldSelectors[0].value;
+                    //console.log( this.fieldSelectors[0].value);
+                    //console.log('this.fieldValue',this.fieldValue);
+                    this.containSelectors = this.fieldSelectors[0].containItems;
             },function(err){
 
             });
@@ -347,31 +341,26 @@
                               submissionType: projectsList[i].submissionType,
                               hightlightItemArray:[],
                           }
-                          this.$http
-                            .get(this.projectItemsConfigURL)
-                            .then(function(projectItemsConfigRes){
-                                this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
-                                //console.log('projectsList[i].highlights',projectsList[i].highlights);
-                                for(let j in projectsList[i].highlights){
-                                    let content='';
-                                    for(let k=0; k<projectsList[i].highlights[j].length;k++){
-                                      //let temp = projectsList[i].highlights[j].k;
-                                      //console.log(projectsList[i].highlights[j][k]);
-                                      content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
-                                    }
-                                    let hightlightItem={
-                                        name:this.projectItemsConfigRes[j],
-                                        content:content.replace(/,$/gi,'')
-                                    }
-                                    item.hightlightItemArray.push(hightlightItem);
-                                }
-                                this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
-                                this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
-                                this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
-                                this.publicaitionList.push(item);
-                            },function(err){
-
-                            });
+                        
+                          //console.log('projectsList[i].highlights',projectsList[i].highlights);
+                          for(let j in projectsList[i].highlights){
+                              let content='';
+                              for(let k=0; k<projectsList[i].highlights[j].length;k++){
+                                //let temp = projectsList[i].highlights[j].k;
+                                //console.log(projectsList[i].highlights[j][k]);
+                                content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
+                              }
+                              let hightlightItem={
+                                  name:this.projectItemsConfigRes[j],
+                                  content:content.replace(/,$/gi,'')
+                              }
+                              item.hightlightItemArray.push(hightlightItem);
+                          }
+                          this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
+                          this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
+                          this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
+                          this.publicaitionList.push(item);
+                           
                       }
                 }
                 else{
@@ -553,6 +542,7 @@
         this.setSearchCondition();
       },
       fieldChange(){
+          console.log('fieldChange');
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
               /*
@@ -572,6 +562,7 @@
         }
       },
       containChange(){
+        console.log('containChange');
           if(this.containValue){
               this.$refs.containRef.toggleMenu();
               let filterCombinationFound =false;
@@ -592,8 +583,6 @@
                   this.setSearchCondition();
               }
           }
-      },
-      submitSearchCondition(){
       },
       tadAdd(item){
         this.tagArray.push(item);
@@ -674,10 +663,47 @@
         this.setFilter();
         this.queryArchiveProjectList();
       },*/
-      updateQuery(){
-        this.sort = 'publication_date';
-        this.page = 0;
-        this.pageSize = 20;
+      updateCondition(q){
+          let query = q || this.$route.query;
+          for(let i in query){
+              if(i == 'keyword'){
+                  this.tagArray=[];
+                  if(query[i]){
+                      let keywordArray = query[i].split(',');
+                      for(let i=0; i<keywordArray.length;i++){
+                          this.tadAdd(keywordArray[i]);
+                      }
+                  }
+              }
+              else if(i == 'filter'){
+                if(query[i]){
+                    let filterArray = query[i].split(',');
+                    this.filterCombination=[];
+                      for(let i=0; i<filterArray.length;i++){
+                          let facetsArray = filterArray[i].split('==')
+                          let item={
+                              condition:'And',
+                              field: this.facetsConfigRes.body.archive[facetsArray[0]].name,     
+                              contains:facetsArray[1]
+                          };
+                          this.filterCombination.push(item);
+                          //this.tadAdd(keywordArray[i]);
+                      }
+                }
+              }
+              else if(i =='page'){
+                this.currentPage = parseInt(query[i]);
+                //console.log(this.currentPage );
+              }
+              else if(i =='pageSize'){
+                  let tempPageSize = parseInt(query[i]);
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.pageSize = parseInt(query[i]);
+                  else 
+                    this.pageSize = 20;
+              }
+          }
+          //console.log();
         //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
       searchInputListener(){
@@ -711,6 +737,25 @@
                 console.log('query[i]',query[i]);
               }
           }
+      },
+      queryConfig(){
+          this.$http
+            .get(this.searchConfigURL)
+            .then(function(facetsConfigRes){
+                this.facetsConfigRes = facetsConfigRes;
+                this.$http
+                  .get(this.projectItemsConfigURL)
+                  .then(function(projectItemsConfigRes){
+                      this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
+                      this.setFilter();
+                      this.updateCondition();
+                      this.queryArchiveProjectList();
+                  },function(err){
+
+                  });
+            },function(err){
+
+            });
       }
     },
 
@@ -745,9 +790,10 @@
       }
     },
     mounted: function(){
-      //this.updateQuery();
-      this.setFilter();
-      this.queryArchiveProjectList();
+      this.queryConfig();
+      //this.updateCondition();//move into queryConfig function
+      //this.queryArchiveProjectList();//move into queryConfig function
+      //this.setFilter();//move into queryConfig function
       this.searchInputListener();
     },
     created(){
