@@ -14,6 +14,6 @@ app.use(compression());
 app.use(require('../lib/router.js'));
 
 
-app.listen(8081, function () {
-   console.log("Example app listening at http://localhost:8081");
+app.listen(7000, function () {
+   console.log("Example app listening at http://localhost:7000");
 })
