@@ -310,6 +310,7 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
+          console.log('this.$route.query',this.$route.query);
           query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){
@@ -320,8 +321,7 @@
           }
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
-
-          console.log('search query',query);
+          
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
@@ -636,7 +636,7 @@
           this.hightlightMode = false;
 
         this.$router.push({name: 'archive', query: this.query});
-        this.$Message.success({content:'new result', duration:1});
+        //this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
@@ -692,7 +692,7 @@
                 }
               }
               else if(i =='page'){
-                this.currentPage = parseInt(query[i]);
+                this.currentPage = parseInt(query[i])+1;
                 //console.log(this.currentPage );
               }
               else if(i =='pageSize'){
@@ -774,13 +774,13 @@
           //let page='page='+this.page+'&';
           //let pageSize='pageSize='+this.pageSize;
           let normalQuery = {}
-          console.log('filterCombination',this.filterCombination);
-          console.log('tagArray',this.tagArray);
           for(let i=0; i<this.tagArray.length; i++){
 
           }
-          normalQuery.keyword = this.keyword;
-          normalQuery.filter = this.filter;
+          if(this.keyword)
+            normalQuery.keyword = this.keyword;
+          if(this.filter)
+            normalQuery.filter = this.filter;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
           //console.log('this.normalQuery',this.normalQuery);
