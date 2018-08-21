@@ -759,7 +759,7 @@
            this.$http
             .get(this.queryArchiveProjectApi)
             .then(function(res){
-                //console.log(res.body.softwares);
+                
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -793,6 +793,7 @@
                   this.contactors.push(item);
                 }
                 //for publications
+                //console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
                   let item = {
                     desc:res.body.references[i].referenceLine,
