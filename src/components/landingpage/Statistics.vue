@@ -4,8 +4,8 @@
         <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <Spin fix v-if="sunburstPrideShow"></Spin>
-                      <SunburstPrideSimple></SunburstPrideSimple>
+                      <Spin fix v-if="treePrideShow"></Spin>
+                      <TreePrideSimple></TreePrideSimple>
                       <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
@@ -41,14 +41,15 @@
     import SunburstPrideSimple from './statistics_chart/SunburstSimple.vue'
     import SankeyPrideSimple from './statistics_chart/SankeySimple.vue'
     import MapPrideSimple from './statistics_chart/MapSimple.vue'
+    import TreePrideSimple from './statistics_chart/TreeSimple.vue'
     export default {
         data () {
             return {
-                sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                treePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
                 linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
-                sunburstPrideShow:true,
+                treePrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
                 linePrideShow:true,
@@ -59,17 +60,18 @@
             SunburstPrideSimple,
             SankeyPrideSimple,
             MapPrideSimple,
+            TreePrideSimple
         },
         methods:{
             gotoStaticDetails(){
                 this.$router.push({name:'statisticsdetails'})
             },
-            querySunburst(){
+            queryTree(){
                 this.$http
-                  .get(this.sunburstPrideApi)
+                  .get(this.treePrideApi)
                   .then(function(res){
-                    this.sunburstPrideShow=false;
-                    this.$bus.$emit('show-simple-sunburst', res.body.speciesCounts);
+                    this.treePrideShow=false;
+                    this.$bus.$emit('show-simple-tree', res.body);
                   },function(err){
 
                   });
@@ -107,7 +109,7 @@
            },
         },
         mounted: function(){
-            this.querySunburst();
+            this.queryTree();
             this.querySankey();
             this.queryLine();
             this.queryMap();
