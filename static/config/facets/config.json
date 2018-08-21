@@ -31,8 +31,12 @@
     },
     "organisms_facet":{
         "name":"Organisms"
-    }, "project_identified_ptms_facet": {
+    }, 
+    "project_identified_ptms_facet": {
         "name": "PTMs"
+    },
+    "countries_facet": {
+        "name": "Country"
     }
   }
 }
