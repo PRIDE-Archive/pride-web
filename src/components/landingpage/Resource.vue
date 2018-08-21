@@ -175,9 +175,9 @@
             },
             submitSearchCondition(){
                 if(this.selected == 'archive')
-                    this.$router.push({name:'archive',query:{ q: this.keyword }});
+                    this.$router.push({name:'archive',query:{ keyword: this.keyword }});
                 else if(this.selected == 'peptidome')
-                    this.$router.push({name:'peptidesearch',query:{ q: this.keyword }});   
+                    this.$router.push({name:'peptidesearch',query:{ keyword: this.keyword }});   
             },
             advanceSearchConditoinRemove (index) {
                 this.searchItems.splice(index, 1);
