@@ -48,130 +48,10 @@ export default {
   data: function () {
     let data =  [
         {
-            name: 'AA',
+            name: '',
             children: [
-                {
-                    name: 'aa',
-                    //value: 15,
-                    children: [
-                        {
-                            name: '11',
-                            //value: 2,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 1
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 3
-                                }
-                            ]
-                        }, 
-                        {
-                            name: '22',
-                            //value: 6,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 3
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 1
-                                }
-                            ]
-                        }, 
-                        {
-                            name: '33',
-                            //value: 4,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 2
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 2
-                                }
-                            ]
-                        }
-                    ]
-                }, 
-                {
-                    name: 'bb',
-                    //value: 10,
-                    children: [
-                        {
-                            name: '11',
-                            //value: 5,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 3
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 2
-                                }
-                            ]
-                        }, 
-                        {
-                            name: '22',
-                            //value: 1,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 2
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 6
-                                }
-                            ]
-                        }
-                    ]
-                }
             ]
         }, 
-        {
-            name: 'BB',
-            children: [
-                {
-                    name: 'aa',
-                    children: [
-                        {
-                            name: '11',
-                            //value: 1,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 2
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 5
-                                }
-                            ]
-                        }, 
-                        {
-                            name: '22',
-                            //value: 2,
-                            children: [
-                                {
-                                    name: 'ββ',
-                                    value: 1
-                                },
-                                {
-                                    name: 'β1β',
-                                    value: 4
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
     ];
     return {
       options: {
@@ -196,7 +76,7 @@ export default {
                         else if(param.data.level ==4){
                           facets='Modifications=='+value;
                         }
-                        return '<p>Category: '+param.data.name+'</p>'+'<p>Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?filter='+facets+'&page=0&pageSize=20">More</a></p>'
+                        return '<p class="tooltip-content">Category: '+param.data.name+'</p>'+'<p class="tooltip-content">Value: '+param.data.rawValue+'</p>'+'<p><a class="search" href="archive?filter='+facets+'&page=0&pageSize=20">More</a></p>'
                     }
                   //}
               }
@@ -223,9 +103,9 @@ export default {
               type: 'tree',
               data: data,
               top: '0%',
-              left: '5%',
+              left: '7%',
               bottom: '0%',
-              right: '20%',
+              right: '23%',
               symbol:"circle",
               //layout: 'radial',
               symbolSize: 7,
@@ -539,5 +419,8 @@ export default {
   margin-top: 5px;
   font-size: 12px;
   float: right;
+}
+.tree-container .tooltip-content{
+  text-align: left;
 }
 </style>
