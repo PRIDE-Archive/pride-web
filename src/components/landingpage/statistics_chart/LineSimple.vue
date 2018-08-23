@@ -1,9 +1,6 @@
 <template>
-  <div class="line-simple-container">
-      <div class="button-wrapper">
-          <a @click="changeDate('year')">Year</a> <a @click="changeDate('month')">Month</a>
-      </div>
-        <chart class="test" :options="options" :auto-resize="true"></chart>
+  <div>
+        <chart class="line-simple" :options="options" :auto-resize="true"></chart>
   </div>
     
 </template>
@@ -12,22 +9,56 @@ export default {
   data: function () {
     //let data = 
     return {
+      lineYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+      lineMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
       options: {
         title: {
-            left: 'center',
-            text: 'Beijing AQI'
+          text: 'Submission',
+          textStyle:{
+            fontSize:14,
+            fontWeight:'normal',
+          },
+          padding:[10,0,0,10]
         },
         tooltip: {
             trigger: 'axis'
         },
+        grid:{
+          left:'12%',
+          top: 70,
+          right:'12%'
+        },
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            data: ['周一','周二','周三','周四','周五','周六','周日']
+            name:'Years',
+            nameLocation:'end',
+            /*offset:10,*/
+            nameGap:8,
+            nameTextStyle:{
+              align:'right',
+              /*color:'red',*/
+              verticalAlign:'top'
+            },
+            axisLabel:{
+              margin:20,
+            }
         },
         yAxis: {
+            name:'Num',
+            nameLocation:'end',
+            /*offset:-10,*/
+            nameGap:8,
+            nameTextStyle:{
+              align:'middle',
+              /*color:'red',*/
+              verticalAlign:'top'
+            },
             splitLine: {
                 show: false
+            },
+            axisLabel:{
+              margin:15,
             }
         },
         /*
@@ -46,8 +77,7 @@ export default {
             startValue: '2014-06-01'
         }, {
             type: 'inside'
-        }],
-        */
+        }],*/
         /*
         visualMap: {
             top: 10,
@@ -82,53 +112,24 @@ export default {
         },*/
         series: [
               {
-                  name:'邮件营销',
+                  name:'SUBMISSIONS_PER_YEAR',
                   type:'line',
-                  stack: '总量',
-                  data:[120, 132, 101, 134, 90, 230, 210]
-              },
-              {
-                  name:'联盟广告',
-                  type:'line',
-                  stack: '总量',
-                  data:[220, 182, 191, 234, 290, 330, 310]
-              },
-              {
-                  name:'视频广告',
-                  type:'line',
-                  stack: '总量',
-                  data:[150, 232, 201, 154, 190, 330, 410]
-              },
-              {
-                  name:'直接访问',
-                  type:'line',
-                  stack: '总量',
-                  data:[320, 332, 301, 334, 390, 330, 320]
-              },
-              {
-                  name:'搜索引擎',
-                  type:'line',
-                  stack: '总量',
-                  data:[820, 932, 901, 934, 1290, 1330, 1320]
+                  data:[0,0]
               }
         ]
       }
     }
   },
   methods:{
-      changeDate(item){
-          if(item == 'year'){
-           
-              this.options.xAxis.data=['1995','1995','1995','1995','1995','1995','1995']
-          }
-          if(item == 'month'){
-            this.options.xAxis.data=['周一','周二','周三','周四','周五','周六','周日']
-              //this.options.xAxis.data=[]
-               console.log('month');
-          }
-      },
       setOptions(data){
-        console.log('line',data);
+        let xValue = [];
+        let yValue = [];
+        for(let i=0; i<data.length; i++){
+          xValue.push(data[i].key);
+          yValue.push(data[i].value);
+        }
+        this.options.xAxis.data = xValue;
+        this.options.series[0].data = yValue;
     }
   },
   created(){
@@ -140,18 +141,9 @@ export default {
 }
 </script>
 
-<style scoped>
-.echarts.test  {
+<style>
+.echarts.line-simple  {
   height: 400px !important;
   width: auto !important;
-}
-.line-simple-container{
-  position: relative;
-}
-.line-simple-container .button-wrapper{
-  position: absolute;
-  right: 50px;
-  top:30px;
-  z-index: 1000;
 }
 </style>

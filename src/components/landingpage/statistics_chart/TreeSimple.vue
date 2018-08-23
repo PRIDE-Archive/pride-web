@@ -54,6 +54,14 @@ export default {
     ];
     return {
       options: {
+          title: {
+            text: 'Facets',
+            textStyle:{
+              fontSize:14,
+              fontWeight:'normal',
+            },
+            padding:[10,0,0,10]
+          },
            tooltip: {
               trigger: 'item',
               enterable:true,

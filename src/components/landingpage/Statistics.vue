@@ -13,8 +13,8 @@
         <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
-                      <Spin fix v-if="sankeyPrideShow"></Spin>
-                      <SankeyPrideSimple></SankeyPrideSimple>
+                      <Spin fix v-if="linePrideShow"></Spin>
+                      <LinePrideSimple></LinePrideSimple>
                       <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
@@ -47,7 +47,7 @@
             return {
                 treePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
                 sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_COUNTRY',
                 linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
                 treePrideShow:true,
                 sankeyPrideShow:true,
@@ -81,7 +81,7 @@
                   .get(this.sankeyPrideApi)
                   .then(function(res){
                     this.sankeyPrideShow=false;
-                    this.$bus.$emit('show-simple-sankey', res.body.speciesCounts);
+                    this.$bus.$emit('show-simple-sankey', res.body);
                   },function(err){
 
                   });
@@ -92,7 +92,7 @@
                   .then(function(res){
                     this.linePrideShow=false;
                     console.log(res.body);
-                    this.$bus.$emit('show-simple-line', res.body.speciesCounts);
+                    this.$bus.$emit('show-simple-line', res.body);
                   },function(err){
 
                   });
@@ -102,7 +102,7 @@
                   .get(this.mapPrideApi)
                   .then(function(res){
                     this.mapPrideShow=false;
-                    this.$bus.$emit('show-simple-map', res.body.speciesCounts);
+                    this.$bus.$emit('show-simple-map', res.body);
                   },function(err){
 
                   });
