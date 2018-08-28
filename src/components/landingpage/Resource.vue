@@ -38,8 +38,22 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="goToArchive">{{archivebutton}}</a>
-        <a class="button resource-button peptidome" @click="goToPeptidome">{{peptidomebutton}}</a>
+        <a class="button resource-button" @click="goToArchive">
+            <span>
+            <svg class="icon-archive" aria-hidden="true">
+                <use xlink:href="#icon-data"></use>
+            </svg>
+            </span>
+            <span>{{archivebutton}}</span>
+        </a>
+        <a class="button resource-button peptidome" @click="goToPeptidome">
+            <span>
+            <svg class="icon-peptidome" aria-hidden="true">
+                <use xlink:href="#icon-checklist"></use>
+            </svg>
+            </span>
+            <span>{{peptidomebutton}}</span>
+        </a>
     </div>
   </div>
 </template>
@@ -227,6 +241,8 @@
         text-align: center;
         padding: 50px 0;
         margin:0 auto;
+        display: flex;
+        flex-direction: column;
         /*background-image: url("~/src/assets/image/bioinformatics-slide-slide-1-Slideviewer.jpg");
         background-position: center center;
         background-size: cover;*/
@@ -271,7 +287,11 @@
     }
 
     .button-container{
-        text-align: center;
+        display: flex;
+         align-items: center; 
+        justify-content: center;
+            flex-direction: column;
+        
     }
     .search-container{
         margin: 0 auto 10px auto;
@@ -279,18 +299,21 @@
         text-align: center;
         border-radius:6px;
         padding:50px;
-        background:#fff;
+        background:#fbfdff;
     }
     .resource-button{
         padding: 50px 105px 50px 105px;
         font-size: 18px;
-        width: 100%;
+        width: 80%;
         /*padding: 20px 85px;
         font-size: 24px;*/
         font-weight: 700;
         margin: 0 0 40px 0;
         background-color: #5bc0be;
         border-radius: 6px;
+        display:flex;
+        align-items: center;
+        justify-content: center;
     }
     .resource-button.peptidome{
         background-color: #ef7831;
@@ -331,7 +354,20 @@
         width: 50px !important;
         padding: 2px 0 !important;
     }
-
+    .icon-archive {
+       width: 2em; height: 2em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+       margin-right: 10px;
+    }
+    .icon-peptidome {
+       width: 2em; height: 2em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+       margin-right: 10px;
+    }
     @media (min-width: 768px) {
         .resource-container{
             width: 750px;
@@ -344,6 +380,9 @@
     @media (min-width: 992px) {
         .resource-container{
             width: 970px;
+        }
+        .button-container{
+            flex-direction: row
         }
     }
     @media (min-width: 1200px) {
@@ -401,5 +440,5 @@
     .ivu-poptip-body{
         padding: 15px 16px;
     }
-
+    
 </style>
