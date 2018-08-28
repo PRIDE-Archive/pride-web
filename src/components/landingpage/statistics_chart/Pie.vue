@@ -31,8 +31,8 @@ export default {
                 {
                     name:'PSM for',
                     type:'pie',
-                    radius: ['50%', '70%'],
-                    center: ['80%', '50%'],
+                    radius: ['40%', '60%'],
+                    center: ['70%', '50%'],
                     avoidLabelOverlap: false,
                     label: {
                         normal: {
