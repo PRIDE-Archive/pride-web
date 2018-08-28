@@ -22,7 +22,7 @@
                                       :loading="searchInputLoading"
                                       @on-open-change="searchInputLoadingDropdownOpen"
                                       style="width:500px">
-                                      <!--<Option v-for="(option, index) in options2" :value="option.value" :key="index">{{option.label}}</Option>-->
+                                      <Option v-for="(item, index) in autoCompleteArray" :value="item" :key="index">{{item}}</Option>
                                   </Select>
                                   <!--<Input class="tag-input" v-model="keyword" placeholder="input here" style="width: 500px;"></Input>-->
                               </div>
@@ -186,6 +186,7 @@
           searchConfigURL:'/static/config/facets/config.json',
           projectItemsConfigURL:'/static/config/projectItems/config.json',
           queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
+          autoCompleteApi:"http://ves-pg-41:9020/search/autocomplete?keyword=",
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -230,7 +231,8 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
-          normalQuery:{}
+          normalQuery:{},
+          autoCompleteArray:[]
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -241,7 +243,7 @@
         filter.split("=");
       console.log('filter',filter);*/
       this.updateCondition(to.query);
-      console.log('to.query',to.query);
+      console.log('beforeRouteUpdate',to.query);
       this.queryArchiveProjectList(to.query);
       //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
       next();
@@ -255,6 +257,21 @@
             //console.log('searchInputChange',query);
             this.tadAdd(query);
             this.$refs.searchRef.setQuery(null);
+          }
+
+          if(query !== ''){
+              console.log('query',query);
+              this.searchInputLoading = false;
+              this.$http
+                  .get(this.autoCompleteApi + query)
+                  .then(function(res){
+                     this.autoCompleteArray=res.body;
+                  },function(err){
+
+                  });
+          }
+          else{
+            this.autoCompleteArray = [];
           }
       },
       setFilter(){
@@ -310,7 +327,7 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
-          console.log('this.$route.query',this.$route.query);
+          console.log('queryArchiveProjectList');
           query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){
@@ -321,7 +338,7 @@
           }
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
-          
+
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
@@ -1164,6 +1181,6 @@
       background: none;
     }
     .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
-      display: none;/******this will be removed when autocomplete function needed********/
+      /*display: none;*//******this will be removed when autocomplete function needed********/
     }
 </style>
