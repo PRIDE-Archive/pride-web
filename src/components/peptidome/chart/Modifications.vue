@@ -32,7 +32,7 @@ export default {
                     name:'PSM include',
                     type:'pie',
                     radius: ['50%', '70%'],
-                    center: ['80%', '50%'],
+                    center: ['75%', '50%'],
                     avoidLabelOverlap: false,
                     label: {
                         normal: {
