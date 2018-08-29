@@ -44,15 +44,16 @@
                 <use xlink:href="#icon-data"></use>
             </svg>
             </span>
-            <span>{{archivebutton}}</span>
+            <span class="resource-button-content">{{archivebutton}}</span>
         </a>
         <a class="button resource-button peptidome" @click="goToPeptidome">
             <span>
             <svg class="icon-peptidome" aria-hidden="true">
                 <use xlink:href="#icon-checklist"></use>
+                <!--<use xlink:href="#icon-checklist1"></use>-->
             </svg>
             </span>
-            <span>{{peptidomebutton}}</span>
+            <span class="resource-button-content">{{peptidomebutton}}</span>
         </a>
     </div>
   </div>
@@ -302,7 +303,7 @@
         background:#fbfdff;
     }
     .resource-button{
-        padding: 50px 105px 50px 105px;
+        padding: 30px 105px 30px 105px;
         font-size: 18px;
         width: 80%;
         /*padding: 20px 85px;
@@ -314,6 +315,7 @@
         display:flex;
         align-items: center;
         justify-content: center;
+        flex-direction: column;
     }
     .resource-button.peptidome{
         background-color: #ef7831;
@@ -355,18 +357,21 @@
         padding: 2px 0 !important;
     }
     .icon-archive {
-       width: 2em; height: 2em;
+       width: 4em; height: 4em;
        vertical-align: -0.15em;
        fill: currentColor;
        overflow: hidden;
-       margin-right: 10px;
+       margin-bottom: 20px;
     }
     .icon-peptidome {
-       width: 2em; height: 2em;
+       width: 4em; height: 4em;
        vertical-align: -0.15em;
        fill: currentColor;
        overflow: hidden;
-       margin-right: 10px;
+       margin-bottom: 20px;
+    }
+    .resource-button-content{
+        font-size: 20px;
     }
     @media (min-width: 768px) {
         .resource-container{

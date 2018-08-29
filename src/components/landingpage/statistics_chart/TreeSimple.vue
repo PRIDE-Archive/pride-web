@@ -1,11 +1,5 @@
 <template>
   <div class="tree-container">
-    <div class="legend">
-        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#6083d2"></i><span>Organism</span></div>
-        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#5cc8db"></i></i><span>Organism_Part</span></div>
-        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#d4a03a"></i><span>Diseases</span></div>
-        <div class="item-wrapper"><i class="fas fa-circle fa-xs" style="color:#2ba47cd6"></i><span>Modifications</span></div>
-    </div>
     <chart class="tree-chart" :options="options" :auto-resize="true" @click="itemClick"></chart>
   </div>
 </template>
@@ -397,27 +391,6 @@ export default {
 <style>
 .tree-container{
   position: relative;
-}
-.tree-container .legend{
-  position: absolute;
-  /*display: flex;*/
-  display: none;
-  flex-direction: column;
-  left: 10px;
-  top: 10px;
-  color: #6f6f6f;
-  font-family: sans-serif;
-  font-size: 14px;
-}
-.tree-container .legend .item-wrapper{
-    display: flex;
-    text-align: left;
-    align-items: center;
-    flex-direction: row;
-}
-.tree-container .legend .item-wrapper span{
-    margin-left: 5px;
-    padding-top: 1px;
 }
 .echarts.tree-chart  {
   height: 400px !important;
