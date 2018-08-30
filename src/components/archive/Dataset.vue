@@ -373,11 +373,11 @@
                           </div>
                      </div>
                   </Card>
-                  <Card class="card">
+                  <Card class="card" v-if="similarProjects.length>0">
                        <p slot="title"><i class="fas fa-link icon-tag"></i>Similar Studies</p>
                        <div class="list-wrapper">
                             <Card class="similarity-card" v-for="item in similarProjects">
-                              <div class="similarity-title"><a>{{item.title}}</a></div>
+                              <div class="similarity-title"><a @click="gotoDetails(item.accession)">{{item.title}}</a></div>
                               <div><span>{{item.submissionDate}}</span></div>
                             </Card>
                        </div>
@@ -412,13 +412,13 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id,
-          queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/files',
-          queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/'+this.$route.params.id,
+          queryArchiveProjectApi:'http://ves-pg-41:9020/projects/',
+          queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/',
+          queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
-          similarityApi:'http://ves-pg-41:9020/projects/'+this.$route.params.id+'/similarProjects',
+          similarityApi:'http://ves-pg-41:9020/projects/',
           contactors:[],
           similarProjects:[],
           similarityLoading:false,
@@ -751,15 +751,29 @@
           selectAllfiles:false,
       }
     },
+    beforeRouteUpdate:function (to, from, next) {
+      this.queryProjectDetails(to.params.id);
+      this.queryAssay(to.params.id);
+      this.queryArchiveProjectFiles(to.params.id);
+      this.querySimilarity(to.params.id);
+      //console.log('to query',to.query);
+      /*
+      let filter = to.query.split('?')[1].split('filter');
+      if(filter.length>1)
+        filter.split("=");
+      console.log('filter',filter);*/
+      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
+      next();
+    },
     components: {
       NavBar
     },
     methods:{
-      queryProjectDetails(){
+      queryProjectDetails(id){
+           var id = id || this.$route.params.id;
            this.$http
-            .get(this.queryArchiveProjectApi)
+            .get(this.queryArchiveProjectApi + id)
             .then(function(res){
-                
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -806,10 +820,11 @@
 
             });
       },
-      queryArchiveProjectFiles(){
+      queryArchiveProjectFiles(id){
+           var id = id || this.$route.params.id;
            this.fileListLoading = true;
            this.$http
-            .get(this.queryArchiveProjectFilesApi + this.queryDownload)
+            .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
             .then(function(res){
                 console.log(res.body);
                 this.totalDownLoad = res.body.page.totalElements;
@@ -843,11 +858,12 @@
           this.size = size;
           this.queryAssay();
       },
-      queryAssay(){
+      queryAssay(id){
+          var id = id || this.$route.params.id;
           this.assayResults=[];
           this.assayLoading=true;
           this.$http
-            .get(this.queryAssayApi)
+            .get(this.queryAssayApi + id)
             .then(function(res){
                 this.assayLoading=false;
                 //console.log(res.body);
@@ -899,18 +915,22 @@
           this.selectAllfiles =! this.selectAllfiles;
           this.$refs.selection.selectAll(this.selectAllfiles);
       },
-      querySimilarity(){
+      querySimilarity(id){
+          var id = id || this.$route.params.id;
           this.similarProjects=[];
           this.similarityLoading=true;
           this.$http
-            .get(this.similarityApi)
+            .get(this.similarityApi +id+'/similarProjects')
             .then(function(res){
                 this.similarityLoading=false;
                 this.similarProjects=res.body._embedded.compactprojects;
             },function(err){
 
             });
-      }
+      },
+      gotoDetails(id){
+          this.$router.push({name:'dataset',params:{id:id}});
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
