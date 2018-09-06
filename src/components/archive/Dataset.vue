@@ -55,7 +55,7 @@
                               </div>
                           </div>
                           <div class="card-item-wrapper">
-                              <div class="summary-content-header">Data Processing Protocol1</div>
+                              <div class="summary-content-header">Data Processing Protocol</div>
                               <div v-if="dataProcessingProtocol != 'Not available'">
                                 <read-more class="readMore" more-str="Read more" :text="dataProcessingProtocol" link="#" less-str="Read less" :max-chars="400"></read-more>
                               </div>
@@ -125,7 +125,7 @@
                                   <div v-else>
                                       <p>Unknown</p>
                                   </div>
-                                  
+
                                 </div>
                             </div>
                             <div class="property-row">
@@ -162,7 +162,7 @@
                                       <p>Unknown</p>
                                   </div>
                                 </div>
-                                
+
                             </div>
                             <div class="property-row">
                                 <div class="summary-content-header">Experiment Type</div>
@@ -342,7 +342,7 @@
                                 <div v-else>
                                     <p>Unknown</p>
                                 </div>
-                                
+
                               </div>
                           </div>
                           <div class="property-row">
@@ -385,7 +385,7 @@
                   </Card>
               </Col>
           </Row>
-          
+
       </div>
   </div>
 </template>
@@ -479,11 +479,11 @@
                           h('span', {
                               on: {
                                   click: () => {
-                                      
+
                                   }
                               }
                           }, params.row.type),
-                          
+
                           /*
                           h('Button', {
                               props: {
@@ -505,7 +505,7 @@
                                   }
                               }
                           }, 'FTP'),*/
-                         
+
                       ]);
                   }
               },
@@ -525,7 +525,7 @@
                       return h('div', [
                           /*
                           h('Button', {
-                             
+
                               on: {
                                   click: () => {
                                       this.gotoBlast(params);
@@ -685,7 +685,7 @@
                       return h('div', [
                           /*
                           h('Button', {
-                             
+
                               on: {
                                   click: () => {
                                       this.gotoBlast(params);
@@ -725,13 +725,13 @@
                                                           this.viewInReactomeButtonArray[params.row._index].token = JSON.parse(res.bodyText).summary.token;
                                                         //this.$router.push({name:'me',  params: {username: res.body.data.user.username}});
                                                       },function(err){
-                                                       
-                                                      });   
+
+                                                      });
                                               }
                                               else{
                                                   window.open('https://reactome.org/PathwayBrowser/#/DTAB=AN&ANALYSIS='+this.viewInReactomeButtonArray[params.row._index].token+'&RESOURCE=UNIPROT');
                                               }
-                                              
+
                                           }
                                       }
                                   }, this.viewInReactomeButtonArray[params.row._index].content),
@@ -815,7 +815,7 @@
                   }
                   this.publications.push(item);
                 }
-                
+
             },function(err){
 
             });
@@ -877,8 +877,8 @@
                         uniquepeptides:  res.body.list[i].uniquePeptideCount,
                         spectra: res.body.list[i].totalSpectrumCount,
                         identifiedspectra: res.body.list[i].identifiedSpectrumCount,
-                        
-                    } 
+
+                    }
 
                     let button = {
                         type:'primary',
@@ -954,7 +954,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>  
+<style scoped>
   .dataset-container{
     width: 100%;
   }
@@ -1033,7 +1033,7 @@
     margin-bottom: 10px;
   }
   .list-wrapper{
-   
+
   }
   .similarity-card{
     margin-bottom: 5px;
@@ -1085,26 +1085,26 @@
 
   }
   @media (min-width: 992px) {
-      
+
 
   }
   @media (min-width: 1200px) {
-      
+
   }
 
   @media (min-width: 1600px) {
-      
+
   }
   @media (min-width: 1800px) {
-      
+
   }
   @media (min-width: 2000px) {
-      
+
   }
   @media (min-width: 2300px) {
-      
+
   }*/
-  
+
 </style>
 <style>
   .card .ivu-card-body table{
