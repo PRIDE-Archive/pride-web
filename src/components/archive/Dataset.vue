@@ -753,7 +753,7 @@
     },
     beforeRouteUpdate:function (to, from, next) {
       this.queryProjectDetails(to.params.id);
-      this.queryAssay(to.params.id);
+      //this.queryAssay(to.params.id);
       this.queryArchiveProjectFiles(to.params.id);
       this.querySimilarity(to.params.id);
       //console.log('to query',to.query);
@@ -817,7 +817,7 @@
                 }
                 
             },function(err){
-
+                //this.$router.replace({name:'404'});
             });
       },
       queryArchiveProjectFiles(id){
@@ -827,8 +827,9 @@
             .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
             .then(function(res){
                 console.log(res.body);
+                this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
-                if(res.body._embedded.files){
+                if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
                   let tempArray = [];
                   for(let i=0;i<filesArray.length;i++){
@@ -843,20 +844,23 @@
                       }
                       tempArray.push(item);
                   }
-                  this.fileListLoading = false;
+                  
                   this.fileList=tempArray;
                 }
+                else{
+                    this.$Message.error({content:'No results', duration:1});
+                }
             },function(err){
-
+                this.fileListLoading = false;
             });
       },
       pageChange(page){
           this.page = page-1;
-          this.queryAssay();
+          //this.queryAssay();
       },
       pageSizeChange(size){
           this.size = size;
-          this.queryAssay();
+          //this.queryAssay();
       },
       queryAssay(id){
           var id = id || this.$route.params.id;
@@ -934,7 +938,7 @@
     },
     mounted: function(){
         this.queryProjectDetails();
-        this.queryAssay();
+        //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
     },
