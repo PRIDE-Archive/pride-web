@@ -72,7 +72,8 @@
                     <Icon type="chevron-down"></Icon>
                   </a>
                   <DropdownMenu slot="list">
-                    <DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>
+                    <!--<DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>-->
+                    <DropdownItem name="goToPrideInspector">PRIDE Submission Tool</DropdownItem>
                     <DropdownItem name="goToPrideInspector">PRIDE Inspector Toolsuite</DropdownItem>
                     <DropdownItem name="goToPrideUtilities">PRIDE Utilities Libraries</DropdownItem>
                   </DropdownMenu>
