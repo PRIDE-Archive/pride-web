@@ -278,6 +278,7 @@
           this.$http
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
+                //console.log('res.body._embedded',res.body._embedded);
                 let facetsMap = res.body._embedded.facets;
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;
@@ -316,7 +317,7 @@
           for(let i=0; i<this.filterCombination.length; i++){
             for(let j in this.facetsConfigRes.body.archive){
               if(this.facetsConfigRes.body.archive[j].name == this.filterCombination[i].field){
-                   condition += j+'=='+this.filterCombination[i].contains+','
+                   condition += j+'='+this.filterCombination[i].contains+','
                 break;
               }
             }
@@ -695,9 +696,10 @@
               else if(i == 'filter'){
                 if(query[i]){
                     let filterArray = query[i].split(',');
+                    console.log('filterArray',filterArray);
                     this.filterCombination=[];
                       for(let i=0; i<filterArray.length;i++){
-                          let facetsArray = filterArray[i].split('==')
+                          let facetsArray = filterArray[i].split('=')
                           let item={
                               condition:'And',
                               field: this.facetsConfigRes.body.archive[facetsArray[0]].name,     
