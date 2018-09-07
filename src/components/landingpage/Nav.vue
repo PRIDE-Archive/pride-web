@@ -73,7 +73,7 @@
                   </a>
                   <DropdownMenu slot="list">
                     <!--<DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>-->
-                    <DropdownItem name="goToPrideInspector">PRIDE Submission Tool</DropdownItem>
+                    <DropdownItem name="goToPrideSubmission">PRIDE Submission Tool</DropdownItem>
                     <DropdownItem name="goToPrideInspector">PRIDE Inspector Toolsuite</DropdownItem>
                     <DropdownItem name="goToPrideUtilities">PRIDE Utilities Libraries</DropdownItem>
                   </DropdownMenu>
@@ -163,6 +163,9 @@
         }
         else if(name=='goToSpectraClustering'){
           this.$router.push({path:'/markdownpage/spectraclustering'});
+        }
+        else if(name=='goToPrideSubmission'){
+          this.$router.push({path:'/markdownpage/pridesubmissiontool'});
         }
         else if(name=='goToPrideInspector'){
           this.$router.push({path:'/markdownpage/prideinspector'});
