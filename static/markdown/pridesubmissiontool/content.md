@@ -1,6 +1,6 @@
 ## PRIDE Submission Tool
 
-For each cluster, we offer a detailed summary page where you can view the key statistics and quliaty metrics of a cluster. A spectrum cluster is a group of Mass Spec spectra that share the same characteristics, namely the shapes of their peaks. The spectra that are similar are grouped together in the PRIDE Cluster pipeline.
+The PRIDE Submission Tool is the main tool used to submit the proteomics experiment to [PRIDE Archive](wwwwebi.ac.uk/pride/archive/). This tool has been implemented as a Wizard, guiding the submitter trougth a set of simple steps to build the final submission.
 
 ## Species chart
 
