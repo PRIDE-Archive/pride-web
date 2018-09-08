@@ -1,50 +1,79 @@
-## prideutilities
+## PRIDE Utilities
 
-For each cluster, we offer a detailed summary page where you can view the key statistics and quliaty metrics of a cluster.
-
-## prideutilities
-
-A spectrum cluster is a group of Mass Spec spectra that share the same characteristics, namely the shapes of their peaks. The spectra that are similar are grouped together in the PRIDE Cluster pipeline.
-
-## Species chart
-
-The original spectrum comes from PRIDE Archive, which is a submission based data repository.
-
-Due the diversity of PRIDE Archive submissions, we have spectrum from a large number of species and also covers many post translational modifications.
-
-In order to keep the data submitted to us save and secure, we only take the public experiments into account for running the PRIDE Cluster production pipeline.
+Libraries and Algorithms supporting the PRIDE Database ToolSuite
 
 
+## ms-data-core-api: Reading any proteomics format
 
-## Modification chart
+The ms-data-core-api is a modular and open-source library aimed to develop computational proteomics tools. The API, written in Java,  enables rapid tool creation by providing a robust, pluggable programming interface and common data model. The data object model is based on controlled vocabularies/ontologies and captures the whole range of data types included in common proteomics experimental workflows, going from spectra and identification data to quantification results. The library contains readers of three of the most used Proteomics Standards Initiative standard file formats (mzML, mzIdentML and mzTab). In addition to mzML, it also supports the other most commonly used mass spectra formats: dta, ms2, mgf, pkl, apl (text-based), mzXML and mzData (XML-based).
 
-The current release of the PRIDE Cluster API is version 1. To find out more about this version, please refer to its documentaiton.
+Should be cited using: 
 
-## Web browsable API
+Perez-Riverol, Y., Uszkoreit, J., Sanchez, A., Ternent, T., del Toro, N., Hermjakob, H., ... & Wang, R. (2015). 
+ms-data-core-api: an open-source, metadata-oriented library for computational proteomics. Bioinformatics, 31(17), 2903-2905. [pdf](https://academic.oup.com/bioinformatics/article/31/17/2903/183125)
 
-The PRIDE Cluster RESTful API is web browsable, which means that:
+## pride utilities
 
-The query results returned by the API are available in JSON format. This ensures that they can be viewed by human and accessed programmatically by computer.
+The PRIDE Utilities module contains a series of data structures and algorithms used by all the components of the PRIDE Inspector Toolsuite 
+and other PRIDE Projects such as PRIDE Archive libraries and PRIDE Cluster. Some of the values defined in PRIDE Utilities are the definition of
+the amino acid mass table, pK values and hydrophobic indexes. The module also contains the mappings between different ontology terms meaning the same 
+concept, e.g. the b ion annotation could be annotated using the PRIDE ontology term PRIDE:0000194 or the PSI-MS ontology term MS:1001224. 
+These modules homogenize all the terms and concepts used in metadata annotations. For instance, the library contains the definition of the 
+well-established search engines and processing software and their corresponding scores in different controlled vocabularies (CVs) or ontologies.
 
-The main RESTful API page provides a simple web-based user interface, which allows developers can familiarise themselves with the API and get a better sense of the PRIDE Cluster data before writing single line of code.
+## jmzReader
+ 
+The jmzReader Library is a collection of Java APIs to parse the most commonly used MS peak list formats. Currently, the library contains parsers for:
 
-## Versioning
+- dta
+- mgf
+- ms2
+- mzData
+- mzXML
+- pkl
+- mzML
+- PRIDE XML
 
-To ensure that changes in the PRIDE Cluster API don't break the applications relying on it, the API is versioned, and the version is included in the API's URL.
+All parsers are optimized to be used in conjunction with mzIdentML (see link in the left panel). Based on a custom build class to efficiently parse
+text files line by line all parsers can handle arbitrary large files in minimal memory, allowing easy and efficient processing of peak list files
+using the Java programming language. mzIdentML files do not contain spectra data but refer to external peak list files. All peak list parsers support 
+the methods used by mzIdentML to reference external spectra and implement a common interface. Thus, when developing software for mzIdentML programmers
+no longer have to support multiple peak list file formats but only this one interface. 
 
-No backward-incompatible changes are made to each version after it's been made public. More specifically, it's guaranteed that within one version there will be no:
+## PIA: Protein inference toolbox 
 
-changing urls
-deleting or renaming data fields
-changing data field types
-The following non-disruptive changes may be implemented to a public API:
+Protein Inference Algorithms (PIA) is a toolbox for MS based protein inference and identification analysis. PIA allows you to inspect the results
+of common proteomics spectrum identification search engines, combine them and conduct statistical analyses. The main focus of PIA lays on the integrated
+inference algorithms, i.e. concluding the proteins from a set of identified spectra. But it also allows you to inspect your peptide spectrum matches,
+calculate FDR values across different search engine results and visualize the correspondence between PSMs, peptides and proteins.
 
-adding new endpoints
-adding new data fields
-adding new filtering methods
-An advance notice will be given before obsoleting an API version. To stay up to date, please consider signing up for the PRIDE Twitter account.
+Most search engines for protein identification in MS/MS experiments return protein lists, although the actual search yields a set of peptide
+spectrum matches (PSMs). The step from PSMs to proteins is called “protein inference”. If a set of identified PSMs supports the detection of more
+than one protein in the searched database (“protein ambiguity”), usually only one representative accession is reported. These representatives may
+differ according to the used search engine and settings. Thus the protein lists of different search engines generally cannot be compared with one
+another. PSMs of complementary search engines are often combined to enhance the number of reported proteins or to verify the evidence of a peptide,
+which is improved by detection with distinct algorithms.
 
-## API version 1 documentation
+Should be cited using:
+
+Uszkoreit, J., Maerkens, A., Perez-Riverol, Y., Meyer, H. E., Marcus, K., Stephan, C., ... & Eisenacher, M. (2015). PIA: An intuitive protein 
+inference engine with a web-based user interface. Journal of proteome research, 14(7), 2988-2997. [PDF](https://pubs.acs.org/doi/full/10.1021/acs.jproteome.5b00121)
 
 
-## Implementation
+## PRIDE Mod 
+
+The PRIDE Modification library is used to retrieve the protein modification information for a specific identifier from different databases:
+Unimod, PSI-MOD and the PRIDE Modification controlled vocabulary.
+
+Protein post-translational modifications (PTM) increase the functional diversity of the proteome by the covalent addition of functional groups
+or proteins, proteolytic cleavage of regulatory subunits or degradation of entire proteins. These modifications include phosphorylation, glycosylation,
+ubiquitination, nitrosylation, methylation, acetylation, lipidation and proteolysis and influence almost all aspects of normal cell biology and
+pathogenesis. Therefore, identifying and understanding PTMs is critical in the study of cell biology and disease treatment and prevention. 
+In addition to PTMs, there are other artefactual protein modifications that are added due to the experimental protocol followed by the researchers.
+Some examples are carbamydomethylation or oxidation. The proteomics community has developed tow major resources for protein modifications
+(including PTMs): Unimod and PSI-MOD. However, modification idenfifiers from these two resources are not trivial to map since some of the modification 
+in Unimod are not present in PSI-MOD and vice versa. Also, every search engine uses their notation and either Unimod or PSI-MOD. The PRIDE Modification
+library is used to retrieve the modification information for a specific identifier from different databases: Unimod, PSI-MOD and the PRIDE Modification
+controlled vocabulary (internal nomenclature used in PRIDE tools). This library is now used by different tools and pipelines.
+
+
