@@ -198,8 +198,6 @@ For the matched peaks, a rule-based expert system is used to filter them. These 
 
 ## PRIDE QC Plots 
 
-# PRIDE chart Documentation 
-
 PRIDE Inspector Toolsuite ‘Quality Chart’ is a library to provide quality charts for quality assessment of MS/MS proteomics experiments ranging
 from spectrum and peptide/protein identifications to quantitation results. It provides at present nine charts: Delta m/z, Number of peptides identified
 per protein, Number of missed tryptic cleavages, Average MS/MS Spectrum, Precursor ion charge distribution, Precursor ion masses distribution,
@@ -288,3 +286,19 @@ This is a histogram representing the ion intensity vs. the frequency for all MS2
 The Peptide per Ratio is a chart representing the peptide distribution versus the study variables in the quantitation experiment. It shows the differences between all the replicates and samples for every peptide. In addition, it shows the relation between different conditions globally. The following example shows the differences between all the samples in an 8-plex iTRAQ experiment.
 
 ![Peptide per Ratio](/static/markdown/prideinspector/files/peptideRatio.png)
+
+## Searching experiments in PRIDE 
+
+PRIDE Inspector ‘Search PRIDE’ Panel. This panel gives access to the public PX ‘Complete’ submissions available in PRIDE. 
+
+Users can search (Search box) using metadata information such as species, tissue, publication, and project title, among others. 
+If the use select a Project, all the assays (files) corresponding with the select project are shown. Then, the user can download the files using the
+ corresponding download button. 
+
+![Search Data in PRIDE](/static/markdown/prideinspector/files/search.png)
+
+The user can remove the search terms in the right side of the screen. 
+
+## Videos
+
+[![PRIDE Inspector Toolsuite: Peaks File](http://img.youtube.com/vi/gdWd03yFpVE/0.jpg)](http://www.youtube.com/watch?v=gdWd03yFpVE) [![PRIDE Inspector Toolsuite: Peaks File](http://img.youtube.com/vi/38OUn2oox6c/0.jpg)](https://www.youtube.com/watch?v=38OUn2oox6c)
