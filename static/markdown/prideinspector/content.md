@@ -1,50 +1,59 @@
-## prideinspector
+## PRIDE Inspector: Reviewing public proteomics data
 
-For each cluster, we offer a detailed summary page where you can view the key statistics and quliaty metrics of a cluster.
+The GUI module of the PRIDE Inspector organizes itself in the form of several views, where each view focuses on a particular aspect of the data.
+There are currently six views:
 
-## prideinspector
+1. ‘Overview’ view – shows experimental metadata.
 
-A spectrum cluster is a group of Mass Spec spectra that share the same characteristics, namely the shapes of their peaks. The spectra that are similar are grouped together in the PRIDE Cluster pipeline.
+2. Protein view – shows protein identifications 
 
-## Species chart
+3. Peptide view – shows peptides used to generate the protein identifications
 
-The original spectrum comes from PRIDE Archive, which is a submission based data repository.
+4. Spectrum view – shows spectra and chromatograms
 
-Due the diversity of PRIDE Archive submissions, we have spectrum from a large number of species and also covers many post translational modifications.
+5. Quantification view – show quantitative data for both proteins and peptides
 
-In order to keep the data submitted to us save and secure, we only take the public experiments into account for running the PRIDE Cluster production pipeline.
+6. ‘Summary charts’ view – provides data chars for assessing data quality
 
+To enable maximum reusability, each view is implemented as an independent component using [Java Swing](http://download.oracle.com/javase/tutorial/uiswing/).
+This way, more views can be added easily in the future.
 
+[Inspector-mzgraph-browser](https://github.com/PRIDE-Toolsuite/inspector-mzgraph-browser), the component responsible for visualizing spectra and chromatograms,
+is released and available as self-contained Java library and distributed as part of the PRIDE Inspector. Both this component and the statistical charts in the
+‘Summary Charts’ view, are implemented using the [JFreeChart](http://www.jfree.org/jfreechart/) API.
 
-## Modification chart
+Next to the previous six layers, a generic application management framework maintains the context and information shared by the whole environment.
+It consists of features frequently required by medium or large Java Swing based applications, such as: lifecycle services for background tasks, in-memory caching,
+event bus, user property management and error handling. The framework is independent from the PRIDE Inspector and therefore can be reused for other rich
+client applications.
 
-The current release of the PRIDE Cluster API is version 1. To find out more about this version, please refer to its documentaiton.
+## Visualising Peptide/Protein Information
 
-## Web browsable API
+### PSMs
 
-The PRIDE Cluster RESTful API is web browsable, which means that:
+The ‘Peptide View’ tab includes the information at PSM level for every peptide. The Peptide Table panel shows for each peptide the list of PSMs with
+the corresponding scores from the search engines, the list of modifications, Precursor charge and precursor mass. In the example ech PSM contains the 
+information of the OMSSA and XTandem Score, also the table provides the information of the peptide sequence length; start and end position in the protein
+sequence. 
 
-The query results returned by the API are available in JSON format. This ensures that they can be viewed by human and accessed programmatically by computer.
+![PSMs Information](/static/markdown/prideinspector/files/peptideTable2.png)
 
-The main RESTful API page provides a simple web-based user interface, which allows developers can familiarise themselves with the API and get a better sense of the PRIDE Cluster data before writing single line of code.
+### Peptide Information
 
-## Versioning
+The Peptide Table also provides the information about each protein identified in the file. It provides information about the peptide sequence, 
+Protein identifier, sequence length, isoelectric point, number of PSMs, and modification summary.
 
-To ensure that changes in the PRIDE Cluster API don't break the applications relying on it, the API is versioned, and the version is included in the API's URL.
+![Peptide Table](/static/markdown/prideinspector/files/peptideTable.png)   
 
-No backward-incompatible changes are made to each version after it's been made public. More specifically, it's guaranteed that within one version there will be no:
+### Protein Information
 
-changing urls
-deleting or renaming data fields
-changing data field types
-The following non-disruptive changes may be implemented to a public API:
+The protein panel shows all the information about identified proteins: protein level scores, protein sequences, protein identifier, number of 
+PSM for each protein, modifications and number of unique peptides. The first column is a three table structure when the protein inference 
+is provided (![](/static/markdown/prideinspector/files/plus.png)), if the use 
+click in the sign the group is collapsed. 
 
-adding new endpoints
-adding new data fields
-adding new filtering methods
-An advance notice will be given before obsoleting an API version. To stay up to date, please consider signing up for the PRIDE Twitter account.
+![Protein Table](/static/markdown/prideinspector/files/proteinTable.png)
 
-## API version 1 documentation
+Finally, the sequence coverage is shown in a column for each protein: 
 
-
-## Implementation
+![Protein Sequence coverage](/static/markdown/prideinspector/files/coverage.png)
