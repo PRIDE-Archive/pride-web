@@ -181,7 +181,7 @@
         }
       },
       gotoAbout(){
-        this.$router.push({path:'/markdownpage/about'});
+        this.$router.push({path:'/markdownpage/citationpage'});
       }
     },
 
