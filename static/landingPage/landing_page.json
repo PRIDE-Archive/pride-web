@@ -42,28 +42,28 @@
         {
           "title":"Submission Tool",
           "content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive.",
-          "moreID":"register_into_pride",
-          "markdownFolder":"submitdatapage"
+          "moreID":"submission_tool",
+          "markdownFolder":"pridesubmissiontool"
 
         },
         {
           "title":"PRIDE Inspector",
           "content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data.",
-          "moreID":"xxxxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"pride_inspector",
+          "markdownFolder":"prideinspector"
         },
         {
           "title":"PRIDE Archive API",
           "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
-          "moreID":"xxxxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"pride_archive_ws",
+          "markdownFolder":"pridearchivews"
         },
 
         {
           "title":"PRIDE Utilities",
           "content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics.",
-          "moreID":"xxxxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"pride_utilities",
+          "markdownFolder":"prideutilities"
         }
       ],
       "button":{
@@ -76,8 +76,8 @@
         {
           "title":"How to Submit data",
           "content":"How to submit identification and quantification results from proteomics experiments into PRIDE Archive",
-          "moreID":"xxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"how_to_submit_data",
+          "markdownFolder":"submitdatapage"
         },
         {
           "title":"How to review data",
@@ -88,14 +88,14 @@
         {
           "title":"Searching public datasets",
           "content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
-          "moreID":"xxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"searching_pride_data",
+          "markdownFolder":"searchingpridedata"
         },
         {
           "title":"Retrieving PRIDE data programmatically",
           "content":"Retrieving PRIDE Archive data can be done programatically using the PRIDE Archive Web service Restful API",
-          "moreID":"xxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"programatically_search",
+          "markdownFolder":"programaticallyapi"
         }
       ],
       "button":{
