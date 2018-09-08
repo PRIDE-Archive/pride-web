@@ -81,7 +81,7 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 
 - mzIdentML (version 1.1 and 1.2 http://www.psidev.info/mzidentml):  mzIdentML is one of the standards developed by the Proteomics Informatics working group of the PSI. The extension of the file .mzid is used by the submission tool to recognize the file format. The mzIdentML only contains the peptide/protein identification information of a proteomics experiment not the Quantitation.
 
-- mzTabb (version 1.0 http://www.psidev.info/mztab): mzTab is one of the standards developed by members of the Proteomics Informatics working group of the PSI to represent Quantification data. For PRIDE Archive the mzTab file MUST contains the Protein and PSM tables and is optional the Peptide section. **We recommended this file format to report the Quantification Results**
+- mzTab (version 1.0 http://www.psidev.info/mztab): mzTab is one of the standards developed by members of the Proteomics Informatics working group of the PSI to represent Quantification data. For PRIDE Archive the mzTab file MUST contains the Protein and PSM tables and is optional the Peptide section. **We recommended this file format to report the Quantification Results**
 
 | Software | Standard File format supported|
 |----------|-------------------------------|

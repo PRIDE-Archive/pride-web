@@ -32,7 +32,7 @@ Optionally other files can be included in your submission to facilitate the revi
 
 If you have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](/submissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file](/static/markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
 
-**Metadata**: Minimun experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
+**Metadata**: Minimum experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
 **Mapping between the uploaded files**: for instance between the raw files and the corresponding result or search engine output files.
 
 >If you are using the PX submission tool, the file will be created automatically for you.
