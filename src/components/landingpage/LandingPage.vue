@@ -32,7 +32,7 @@
       News
     },
     mounted: function(){
-      
+        console.log('this.$router',this.$router);
     }
   }
 </script>

@@ -8,7 +8,7 @@ The first step to submit a dataset to PRIDE Archive is to log into PRIDE using a
 
 </br> 
 
-![Login panel](/static/markdown/pridesubmissiontool/files/login-page.png)
+![Login panel](../../static/markdown/pridesubmissiontool/files/login-page.png)
 
 ## Submission Details 
 
@@ -18,13 +18,13 @@ The user also picks a mass spectrometry experiment type from a drop-down menu.
 
 </br>
 
-![Project description](/static/markdown/pridesubmissiontool/files/project-description.png)
+![Project description](../../static/markdown/pridesubmissiontool/files/project-description.png)
 
 ## Add Files and assign file types
 
 In this stage, you should choose the files you would like submit. You can add files by clicking on the highlighted button. 
 
-![Add files](/static/markdown/pridesubmissiontool/files/add-files.png)
+![Add files](../../static/markdown/pridesubmissiontool/files/add-files.png)
 
 > Depending on the [files provided](/markdownpage/pridefileformats) and the type of submission, the tool will try to link the relation between files and also the file 
 type. 
@@ -35,7 +35,7 @@ type.
 When a Complete submission is performed based on mzIdentMLs files. The dataset should contains at least one PEAK list associated with the mzIdentML
 (identification file). 
  
-![Add files](/static/markdown/pridesubmissiontool/files/file-relations-1.png)
+![Add files](../../static/markdown/pridesubmissiontool/files/file-relations-1.png)
 
 The Submission tool will automatically detect the _Type_ of the File (e.g. RAW, PEAK, RESULT, SEARCH). In the case of ‘PEAK’ files, the tool will 
 check and validate that all the required file(s) that were referenced in the mzIdentML file’s <SpectraData> element are present. 
@@ -56,7 +56,7 @@ for instance as .msp, .splib or .nist files.
 Complete Submissions based on mzIdentML only contains the identified peptides/proteins and the corresponding spectra used to identified them. However, most of the 
 shotgun proteomics experiments are _Quantitative_ experiments. 
 
-For Quantitative Complete experiments the user should provide using [mzTab files](/markdownpage/pridefileformats#result_files)  
+For Quantitative Complete experiments the user should provide using [mzTab files](./pridefileformats#result_files)  
 
 
 ## Assign relationships between the submitted files
@@ -67,7 +67,7 @@ for example, which ‘RAW’ (mandatory), ‘PEAK’ (mandatory for mzIdentML an
  
 This will enable others users to understand how your data is connected and structured. 
 
-![Add files](/static/markdown/pridesubmissiontool/files/file-relations-2.png)
+![Add files](../../static/markdown/pridesubmissiontool/files/file-relations-2.png)
 
 
 > By default, the tool makes an attempt to generate the mapping between the ‘RESULT’ and the other - most importantly ‘RAW’ - files. 
@@ -83,7 +83,7 @@ If the automatic mapping is partial only or does not apply, the submitter is ask
 Additional metadata need be provided for each ‘RESULT’ file in the case of a ‘Complete’ submission, and what is needed is the same for both subtypes
 of submissions (mzTab and mzIdentML). 
 
-![Annotate Result Files](/static/markdown/pridesubmissiontool/files/annotate.png)
+![Annotate Result Files](../../static/markdown/pridesubmissiontool/files/annotate.png)
 
 Previous figure shows the screen where the _‘Annotate’_ button can be clicked for each ‘RESULT’ file. This information is usually imported automatically
 in the case of a mzTab file (if the recommended CVs/ontologies are used). For mzIdentML, the information needs to be manually annotated.
@@ -93,7 +93,7 @@ The following additional metadata is **Mandatory**:
  - Tissue: Tissue (not applicable should be used in case of cell line experiments). 
  - Instrument information. 
  
-![Annotate Result Files](/static/markdown/pridesubmissiontool/files/annotate-2.png)
+![Annotate Result Files](../../static/markdown/pridesubmissiontool/files/annotate-2.png)
 
 Each of these information should be provided in Controlled Vocabulary (CV) terms from a drop-down menu. Optionally, providing information 
 about the _cell type_, _disease_ and _quantification method_ (if applicable) is recommended. 
@@ -110,14 +110,14 @@ e.g. the fish Grayling (Thymallus thymallus) the species is not available from t
 _Other species_ and search for Thymallus thymallus in the OLS panel. 
 
 
-![OLS Client](/static/markdown/pridesubmissiontool/files/ols-client.png)
+![OLS Client](../../static/markdown/pridesubmissiontool/files/ols-client.png)
 
 ## Last steps 
 
 
 ### Providing contact details for the Lab Head
 
-![Add Lab Head](/static/markdown/pridesubmissiontool/files/la-head.png)
+![Add Lab Head](../../static/markdown/pridesubmissiontool/files/la-head.png)
  
 ### Optional metadata annotation
 
@@ -129,14 +129,14 @@ In this panel, it is recommended to provide additional metadata in four cases:
 -	There are other “omics” datasets (for instance transcriptomics, metabolomics data present in other repositories) that can be associated with it. In this case, please provide the accession number of the dataset in the corresponding repository.
 
  
-![Additional Information](/static/markdown/pridesubmissiontool/files/additionals.png)
+![Additional Information](../../static/markdown/pridesubmissiontool/files/additionals.png)
  
 ### Check before submission
 
 This is the last step before the file upload actually starts. You should double-check that all the necessary files are included in the submission summary before continuing to the upload step, see an example of an mzIdentML based ‘complete’ submission.
 
  
-![Check Before Submission](/static/markdown/pridesubmissiontool/files/check-final.png)
+![Check Before Submission](../../static/markdown/pridesubmissiontool/files/check-final.png)
 
  
 ## File Submission 

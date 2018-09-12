@@ -376,7 +376,7 @@
                   <Card class="card" v-if="similarProjects.length>0">
                        <p slot="title"><i class="fas fa-link icon-tag"></i>Similar Studies</p>
                        <div class="list-wrapper">
-                            <Card class="similarity-card" v-for="item in similarProjects">
+                            <Card class="similarity-card" v-for="item in similarProjects" :key="item.accession">
                               <div class="similarity-title"><a @click="gotoDetails(item.accession)">{{item.title}}</a></div>
                               <div><span>{{item.submissionDate}}</span></div>
                             </Card>
@@ -392,6 +392,7 @@
 
 <script>
   import NavBar from '@/components/landingpage/Nav'
+  import store from "@/store/store.js"
   export default {
     name: 'archive',
     data(){
@@ -412,13 +413,13 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi:'http://ves-pg-41:9020/projects/',
-          queryArchiveProjectFilesApi:'http://ves-pg-41:9020/projects/',
+          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
           queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
-          similarityApi:'http://ves-pg-41:9020/projects/',
+          similarityApi: this.$store.state.baseApiURL + '/projects/',
           contactors:[],
           similarProjects:[],
           similarityLoading:false,

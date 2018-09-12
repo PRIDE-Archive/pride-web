@@ -91,12 +91,13 @@
 
 <script>
   import NavBar from '@/components/peptidome/Nav'
+  import store from "@/store/store.js"
   export default {
     name: 'archive',
     data(){
       return {
           queryClusterListApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
-          searchConfigURL:'/static/facets/config.json',
+          searchConfigURL: this.$store.state.baseURL + '/static/facets/config.json',
           q:'',
           peptide:'',
           modFilters:'',

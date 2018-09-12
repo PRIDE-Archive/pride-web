@@ -77,7 +77,7 @@ Peak files correspond to MS/MS files that can be use to verified the correspondi
 
 ## RESULT files
 
-Result files are standard file formats developed by HUPO-PSI Consortium to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provides these files are called **COMPLETE** submissions. These files are really important in PRIDE because they are the only result files that PRIDE ecosystem (resources, tools) are able to read/write/transform. For example, for these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](/static/documentation/searchinginpridearchive).
+Result files are standard file formats developed by HUPO-PSI Consortium to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provides these files are called **COMPLETE** submissions. These files are really important in PRIDE because they are the only result files that PRIDE ecosystem (resources, tools) are able to read/write/transform. For example, for these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](../../static/documentation/searchinginpridearchive).
 
 - mzIdentML (version 1.1 and 1.2 http://www.psidev.info/mzidentml):  mzIdentML is one of the standards developed by the Proteomics Informatics working group of the PSI. The extension of the file .mzid is used by the submission tool to recognize the file format. The mzIdentML only contains the peptide/protein identification information of a proteomics experiment not the Quantitation.
 

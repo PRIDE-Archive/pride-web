@@ -142,7 +142,7 @@
                              <p slot="title">Consensus Spectrum</p>
                              <Spin fix v-if="consensusSpectrumSpinShow"></Spin>
                              <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
-                             <iframe ref="lorikeetIframe" class="lorikeet-iframe" src="/static/lorikeet/html/pride.html"></iframe>
+                             <iframe ref="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe>
                              <!--<Lorikeet></Lorikeet>-->
                         </Card>
                     </div>
@@ -155,9 +155,11 @@
     import PiesSecies from '@/components/peptidome/chart/PieSpecies.vue'
     import Modifications from '@/components/peptidome/chart/Modifications.vue'
     import NavBar from '@/components/landingpage/Nav'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
+                iframeURL: this.$store.state.baseURL + '/static/lorikeet/html/pride.html',
                 clusterIDApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/' + this.$route.params.id,
                 clusterSpeciesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
                 clusterModificationApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',

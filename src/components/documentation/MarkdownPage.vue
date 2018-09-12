@@ -5,7 +5,7 @@
             <Affix :offset-top="20">
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
-                        <MenuItem v-for="item in tableList" :name="item.name">
+                        <MenuItem v-for="item in tableList" :name="item.name" :key="item.name">
                             <Icon type="ios-paper"></Icon>{{item.content}}
                         </MenuItem>
                     </Menu>
@@ -23,12 +23,13 @@
 </template>
 <script>
     import NavBar from '@/components/landingpage/Nav'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
                 source: '',
                 activeName:'',
-                landingPageJsonURL:'/static/landingPage/landing_page.json',
+                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 tableList:[],
                 /*
                 anchorAttrs: {
@@ -66,7 +67,7 @@
                 this.source = '';
                 this.activeName='';
                 this.tableList=[];
-                this.markdownURL = '/static/markdown/'+subpage+'/content.md';
+                this.markdownURL = this.$store.state.baseURL + '/static/markdown/'+subpage+'/content.md';
                 this.$http
                   .get(this.markdownURL)
                   .then(function(res){

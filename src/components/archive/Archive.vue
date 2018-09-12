@@ -121,7 +121,7 @@
                         <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                       </span>
                       <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
-                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
+                      <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                           <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
                               <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
@@ -168,6 +168,7 @@
 
 <script>
   import NavBar from '@/components/archive/Nav'
+  import store from "@/store/store.js"
   var paramsFromLandingPage='';
   export default {
     name: 'archive',
@@ -182,11 +183,11 @@
           querySpecificFacetsLoading:false,
           highlightKeyword:'',
           HighlightKeywordSensitive:false,
-          facetsURL:'http://ves-pg-41:9020/facet/projects',
-          searchConfigURL:'/static/config/facets/config.json',
-          projectItemsConfigURL:'/static/config/projectItems/config.json',
-          queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
-          autoCompleteApi:"http://ves-pg-41:9020/search/autocomplete?keyword=",
+          facetsURL: this.$store.state.baseApiURL + '/facet/projects',
+          searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
+          projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
+          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -328,7 +329,6 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
-          console.log('queryArchiveProjectList');
           query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){
@@ -359,7 +359,6 @@
                               submissionType: projectsList[i].submissionType,
                               hightlightItemArray:[],
                           }
-                        
                           //console.log('projectsList[i].highlights',projectsList[i].highlights);
                           for(let j in projectsList[i].highlights){
                               let content='';

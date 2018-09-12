@@ -50,9 +50,10 @@
     },
 
     beforeRouteEnter: function(to, from, next){
+        console.log('from',from);
         //console.log(from);
-       //console.log(document.getElementById('elixir-banner'));
-       //document.getElementById('elixir-banner').setAttribute('display','none');
+        //console.log(document.getElementById('elixir-banner'));
+        //document.getElementById('elixir-banner').setAttribute('display','none');
         next();
     },
     mounted(){

@@ -5,15 +5,15 @@
     <Carousel v-model="value1" loop>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-1.png" height="443" width="1235"></div>
+            <div class="demo-carousel"><img :src="image1URL" height="443" width="1235"></div>
         </CarouselItem>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-2.png" height="443" width="1235"></div>
+            <div class="demo-carousel"><img :src="image2URL" height="443" width="1235"></div>
         </CarouselItem>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img src="/static/peptidome/tutorial-3.png" height="443" width="1235"></div>
+            <div class="demo-carousel"><img :src="image3URL" height="443" width="1235"></div>
         </CarouselItem>
     </Carousel>
     <div class = "content">
@@ -144,6 +144,7 @@
 </template>
 <script>
   import NavBar from '@/components/peptidome/Nav'
+  import store from "@/store/store.js"
   export default {
     name: 'notfound',
     components: {
@@ -201,7 +202,11 @@
     data(){
       return {
         msg: '',
-        value1: 0
+        value1: 0,
+        image1URL: this.$store.state.baseURL + '/static/peptidome/tutorial-1.png',
+        image2URL: this.$store.state.baseURL + '/static/peptidome/tutorial-2.png',
+        image3URL: this.$store.state.baseURL + '/static/peptidome/tutorial-3.png',
+
       }
     },
 

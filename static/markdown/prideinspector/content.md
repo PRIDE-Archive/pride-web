@@ -36,48 +36,48 @@ the corresponding scores from the search engines, the list of modifications, Pre
 information of the OMSSA and XTandem Score, also the table provides the information of the peptide sequence length; start and end position in the protein
 sequence. 
 
-![PSMs Information](/static/markdown/prideinspector/files/peptideTable2.png)
+![PSMs Information](../../static/markdown/prideinspector/files/peptideTable2.png)
 
 ### Peptide Information
 
 The Peptide Table also provides the information about each protein identified in the file. It provides information about the peptide sequence, 
 Protein identifier, sequence length, isoelectric point, number of PSMs, and modification summary.
 
-![Peptide Table](/static/markdown/prideinspector/files/peptideTable.png)   
+![Peptide Table](../../static/markdown/prideinspector/files/peptideTable.png)   
 
 ### Protein Information
 
 The protein panel shows all the information about identified proteins: protein level scores, protein sequences, protein identifier, number of 
 PSM for each protein, modifications and number of unique peptides. The first column is a three table structure when the protein inference 
-is provided (![](/static/markdown/prideinspector/files/plus.png)), if the use 
+is provided (![](../../static/markdown/prideinspector/files/plus.png)), if the use 
 click in the sign the group is collapsed. 
 
-![Protein Table](/static/markdown/prideinspector/files/proteinTable.png)
+![Protein Table](../../static/markdown/prideinspector/files/proteinTable.png)
 
 Finally, the sequence coverage is shown in a column for each protein: 
 
-![Protein Sequence coverage](/static/markdown/prideinspector/files/coverage.png)
+![Protein Sequence coverage](../../static/markdown/prideinspector/files/coverage.png)
 
 ## PRIDE Inspector metadata
 
 PRIDE Inspector ‘Overview’ panel: ‘Experiment General View’. The tab contains basic metadata information about an experimental file: experiment and project titles,
 contact information, software used for the file generation, and original file format, amongst others.
 
-![General Experiment Data](/static/markdown/prideinspector/files/metadata1.png)
+![General Experiment Data](../../static/markdown/prideinspector/files/metadata1.png)
 
 PRIDE Inspector ‘Overview’ panel: ‘Sample & Protocol View’. This tab contains metadata information about the sample (species, tissues, etc) and the
 experimental protocol.
 
-![](/static/markdown/prideinspector/files/metadata2.png)
+![](../../static/markdown/prideinspector/files/metadata2.png)
 
 PRIDE Inspector ‘Overview’ panel: ‘Instrument & Processing View’. This tab contains metadata information about the instrument configuration and software used.
 
-![](/static/markdown/prideinspector/files/metadata3.png)
+![](../../static/markdown/prideinspector/files/metadata3.png)
 
 PRIDE Inspector ‘Overview’ panel: ‘Identification Protocol View’. This tab contains metadata information about the peptide/protein identification protocols
 such as search parameters, databases, search engines and software used.
 
-![](/static/markdown/prideinspector/files/metadata4.png)
+![](../../static/markdown/prideinspector/files/metadata4.png)
 
 ## Protein Sequence Panel 
 
@@ -92,7 +92,7 @@ To do this we integrated specific components that access the identifications sou
 
 If the identifier was only updated, the new accession is automatically displayed in the protein table and the updated sequence retrieved. In some cases, even though a protein’s identifier did not change its underlying sequence was altered in the protein sequence database. Therefore, PRIDE Inspector automatically fetches a protein’s current sequence and checks whether the reported peptides still fit this identification.
 
-![Protein Sequence Status and Update](/static/markdown/prideinspector/files/proteinSequence.png)
+![Protein Sequence Status and Update](../../static/markdown/prideinspector/files/proteinSequence.png)
 
 When using the **Obtain Protein Details** feature in the PRIDE Inspector, the status of the protein according to the original database is downloaded
 in addition to the protein name and protein sequence. It could be one of the following cases:
@@ -118,21 +118,21 @@ The PRIDE Inspector provides as home screen were the user can select the option 
 mzIdentML or mzTab:
 
 
-![PRIDE Inspector Home Page](/static/markdown/prideinspector/files/option.png "PRIDE Inspector Home Page")
+![PRIDE Inspector Home Page](../../static/markdown/prideinspector/files/option.png "PRIDE Inspector Home Page")
 
 If the user provides an mzIdentML without protein inference information the tool will popup a message to run the protein inference algorithm:
 
 
-![Protein Inference option](/static/markdown/prideinspector/files/inference.png "Protein Inference option")
+![Protein Inference option](../../static/markdown/prideinspector/files/inference.png "Protein Inference option")
 
 When the algorithm finish the protein panel shows the list of identified proteins, including the new protein groups and the proteins than bellows to them, the "Show Protein Inference Option" provides a new popup with the protein inference visualisation:   
 
-![Protein Visualisation Panel](/static/markdown/prideinspector/files/proteins.png "Protein Visualisation Panel")
+![Protein Visualisation Panel](../../static/markdown/prideinspector/files/proteins.png "Protein Visualisation Panel")
 
 The final aim of the pride-protein-inference library and PRIDE Inspector tool is to show and present the inference information to the final users. Especially the information for each group and the number of PSMs and peptides shared by interested proteins can be seen using the Protein Inference Visualisation:
 
  
-![Protein Inference Visualisation](/static/markdown/prideinspector/files/viz.png "Protein Inference Visualisation")
+![Protein Inference Visualisation](../../static/markdown/prideinspector/files/viz.png "Protein Inference Visualisation")
 
 ## Protein inference Panel 
 
@@ -155,7 +155,7 @@ and PSMs, which are not contained in the selected but in a super-protein, are fi
 which have no relation to the currently selected, but are not filtered out, have a thick dark border and no filling. If a PSM, peptide or even 
 protein is filtered out due to the score threshold, the corresponding node has no filling and a thin, black border.
 
-![Protein Inference Panel](/static/markdown/prideinspector/files/proteinInferencePanel.png)
+![Protein Inference Panel](../../static/markdown/prideinspector/files/proteinInferencePanel.png)
 
 The ‘protein inference panel’ has options for node picking and transforming and also zoom in and out functionality are enabled. Different colours
 and shapes are used for proteins (green rectangle), peptides (orange rectangle), PSMs (blue rectangle) and protein groups (blue circles).
@@ -169,11 +169,11 @@ The cumulative binomial probability (P) (Equation 1) represents the probability 
 to the tandem mass spectrum, which is calculated by using the total number of fragment ions for the given peptide (N), the number of ions matched to
 the spectrum (n) and the probability of matching a peak (p).
 
-![Probability](/static/markdown/prideinspector/files/formulaF1.png)    
+![Probability](../../static/markdown/prideinspector/files/formulaF1.png)    
 
 To make the scores more human readable, the result from Equation 1 (Pi) is transformed to a logarithmic scale and the final PeptideScore(i) is obtained (Equation 2):
   
-![PeptideScore](/static/markdown/prideinspector/files/formulaF2.png)   
+![PeptideScore](../../static/markdown/prideinspector/files/formulaF2.png)   
 
 This entire process is repeated in 10 iterations. In each loop different peak depths (i) are chosen to calculate the cumulative binomial probability and
 finally ten different  are generated. A different weight is assigned for each score (1 = 0.5; 2 = 0.75; 3 = 1; 4 = 1; 5 = 1; 6 = 1; 7 = 0.75; 8 = 0.5; 9 = 0.25;
@@ -181,7 +181,7 @@ and 10 = 0.25), and then a weighted average score called peptide score is genera
 
 The pipeline:
 
-![The fragment annotation pipeline](/static/markdown/prideinspector/files/fragmentPipeline.png)
+![The fragment annotation pipeline](../../static/markdown/prideinspector/files/fragmentPipeline.png)
 
 ### Fragmentation annotation rules
 
@@ -211,7 +211,7 @@ Mass deltas close to zero reflect more accurate identifications and also that th
 done accurately. This plot can highlight systematic bias if not centered on zero. Other distributions can reflect modifications not being reported
 properly. Also it is easy to see the different between the target and the decoys identifications.
 
-![Delta Mass Chart](/static/markdown/prideinspector/files/delta.png)
+![Delta Mass Chart](../../static/markdown/prideinspector/files/delta.png)
 
 In Figure 1, we can clearly see that the distribution for this experiment is centred close to zero with for target identifications, but for
  decoy identifications peaks at 0.5 and around 0.7 m/z units show that are wrong identifications. Peptide sequences, charges and modifications,
@@ -223,7 +223,7 @@ This is a bar chart displaying the percentage of protein identifications in the 
 
 **Note**: To investigate further, in the Protein view, one can sort the proteins by number of peptide identifications.
 
-![Peptides Per Proteins](/static/markdown/prideinspector/files/peptidesproteins.png)
+![Peptides Per Proteins](../../static/markdown/prideinspector/files/peptidesproteins.png)
 
 In the experiment represented in Figure 2, 60% of the proteins were identified through one PSM only. The rest of the protein identifications, especially the ones with higher peptide numbers can be considered more reliable identifications.
 
@@ -233,7 +233,7 @@ This is a histogram representing the percentage of peptides in the experiment wi
 
 In a more practical way, this chart has two immediate applications: first, checking that the search engine is working correctly and the number of missed cleavages found in the identified peptides matches with the "missed cleavages" parameter used in the search engine. Second, by knowing the distribution of this chart, the researcher can adjust the number of missed cleavages used in future searches: e.g. maybe the use of 4 missed cleavages instead of 1 is producing only a 0.1% increase in peptide identifications with searches that are 10 times longer.
 
-![Miss-cleavages](/static/markdown/prideinspector/files/misscl.png)
+![Miss-cleavages](../../static/markdown/prideinspector/files/misscl.png)
 
 Figure 3 shows an example where only about 72% of the target peptides do not have a missed cleavage. However, it is interesting to see that most of the decoy identifications contain missed cleavages.
 
@@ -241,13 +241,13 @@ Figure 3 shows an example where only about 72% of the target peptides do not hav
 
 This graph is obtained adding all the MS/MS spectra in a given experiment. The result is an averaged spectrum. The highest peaks will reflect abundant and intense peaks in the overall set of MS/MS spectra. Most intense and ubiquitous peaks (both conditions needed) will be displayed here: contaminants, reagents used in the experiment, frequent fragmentations from highly common peptides. The next chart (Figure 4) shows an example of a public experiment in PRIDE, using iTRAQ reagents for quantification. The zoom has been used to show in detail the highlighted information.
 
-![Spectrum average](/static/markdown/prideinspector/files/spectrum-average.png) 
+![Spectrum average](../../static/markdown/prideinspector/files/spectrum-average.png) 
 
 ### Precursor Ion Charge
 
 This is a bar chart representing the distribution of the precursor ion charges for a given whole experiment. This information can be used to identify potential ionization problems including many 1+ charges from an ESI ionization source or an unexpected distribution of charges. MALDI experiments are expected to contain almost exclusively 1+ charged ions. An unexpected charge distribution may furthermore be caused by specific search engine parameter settings such as limiting the search to specific ion charges.
 
-![Precursor Ion charge](/static/markdown/prideinspector/files/ion-charge.png)
+![Precursor Ion charge](../../static/markdown/prideinspector/files/ion-charge.png)
 
 In this ESI experiment there are no single charged ions but only double and triple charged ones.
 
@@ -265,7 +265,7 @@ Experiments that only contained peptides without missed cleavages were ignored a
 
 A curve that lies to the left of the empirical distribution (in a different colour) identifies a disproportionate number of lower mass peptides being identified/ fragmented. In an analogous way, a curve that lies to the right of the empirical distribution identifies a disproportionate number of higher mass peptides being identified/ fragmented. Such alterations may be caused by the general amino acid composition of the organism being investigated, or the digestion protocol used (non-tryptic) but does not necessarily indicate a problem in your experiment.
 
-![Precursor Ion Mass Distribution](/static/markdown/prideinspector/files/precursorMass.png)
+![Precursor Ion Mass Distribution](../../static/markdown/prideinspector/files/precursorMass.png)
 
 For human, the average tryptic peptide mass is 1,100 Da. This distribution should encompass this average. A shift to the right in this distribution should be expected due to a number of missed cleavages resulting in higher mass peptides.
 
@@ -273,19 +273,19 @@ For human, the average tryptic peptide mass is 1,100 Da. This distribution shoul
 
 This chart represents a histogram containing the number of peaks per MS/MS spectrum in a given experiment. This chart assumes centroid data. Too few peaks can identify poor fragmentation or a detector fault, as opposed to a large number of peaks representing very noisy spectra. This chart is extensively dependent on the pre-processing steps performed to the spectra (centroiding, deconvolution, peak picking approach, etc). The example shown in Figure 7 shows that poor quality spectra are more likely to be decoy identifications that target identifications.
 
-![Peaks per MS/MS](/static/markdown/prideinspector/files/peaks.png)
+![Peaks per MS/MS](../../static/markdown/prideinspector/files/peaks.png)
 
 ### Peak Intensity Distribution
 
 This is a histogram representing the ion intensity vs. the frequency for all MS2 spectra in a whole given experiment (Figure 8). It is possible to filter the information for all, identified and unidentified spectra. This plot can give a general estimation of the noise level of the spectra. Generally, one should expect to have a high number of low intensity noise peaks with a low number of high intensity signal peaks. A disproportionate number of high signal peaks may indicate heavy spectrum pre-filtering or potential experimental problems. In the case of data reuse this plot can be useful in identifying the requirement for pre-processing of the spectra prior to any downstream analysis. The quality of the identifications is not linked to this data as most search engines perform internal spectrum pre-processing before matching the spectra. Thus, the spectra reported are not necessarily pre-processed since the search engine may have applied the pre-processing step internally. This pre-processing is not necessarily reported in the experimental metadata.
 
-![Peaks Intensity Distribution](/static/markdown/prideinspector/files/peaksInt.png)
+![Peaks Intensity Distribution](../../static/markdown/prideinspector/files/peaksInt.png)
 
 ### Peptide per Ratio
 
 The Peptide per Ratio is a chart representing the peptide distribution versus the study variables in the quantitation experiment. It shows the differences between all the replicates and samples for every peptide. In addition, it shows the relation between different conditions globally. The following example shows the differences between all the samples in an 8-plex iTRAQ experiment.
 
-![Peptide per Ratio](/static/markdown/prideinspector/files/peptideRatio.png)
+![Peptide per Ratio](../../static/markdown/prideinspector/files/peptideRatio.png)
 
 ## Searching experiments in PRIDE 
 
@@ -295,7 +295,7 @@ Users can search (Search box) using metadata information such as species, tissue
 If the use select a Project, all the assays (files) corresponding with the select project are shown. Then, the user can download the files using the
  corresponding download button. 
 
-![Search Data in PRIDE](/static/markdown/prideinspector/files/search.png)
+![Search Data in PRIDE](../../static/markdown/prideinspector/files/search.png)
 
 The user can remove the search terms in the right side of the screen. 
 
