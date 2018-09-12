@@ -81,27 +81,26 @@
               </li>
               <li class="sub-nav-list">
                 <Dropdown @on-click="resourcesClick">
-                  <a href="javascript:void(0)">
+                          <a href="javascript:void(0)" @click="gotoDocs">
                     <i class="fas fa-graduation-cap"></i>
                     <span class='sub-nav-title'>Docs</span>
-                    <Icon type="chevron-down"></Icon>
                   </a>
-                  <DropdownMenu slot="list">
-                    <!--
-                    <Dropdown placement="right-start">
-                        <DropdownItem>
-                            User Guide
-                            <Icon type="ios-arrow-right"></Icon>
-                        </DropdownItem>
-                        <DropdownMenu slot="list">
-                            <DropdownItem>PRIDE Archive</DropdownItem>
-                            <DropdownItem>PRIDE Peptidome</DropdownItem>
-                        </DropdownMenu>
-                    </Dropdown>
-                    -->
-                    <DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>
-                    <DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>
-                  </DropdownMenu>
+                          <!--<DropdownMenu slot="list">-->
+                              <!--&lt;!&ndash;-->
+                              <!--<Dropdown placement="right-start">-->
+                                  <!--<DropdownItem>-->
+                                      <!--User Guide-->
+                                      <!--<Icon type="ios-arrow-right"></Icon>-->
+                                  <!--</DropdownItem>-->
+                                  <!--<DropdownMenu slot="list">-->
+                                      <!--<DropdownItem>PRIDE Archive</DropdownItem>-->
+                                      <!--<DropdownItem>PRIDE Peptidome</DropdownItem>-->
+                                  <!--</DropdownMenu>-->
+                              <!--</Dropdown>-->
+                              <!--&ndash;&gt;-->
+                              <!--<DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>-->
+                              <!--<DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>-->
+                          <!--</DropdownMenu>-->
                 </Dropdown>
               </li>
               <li class="sub-nav-list">
@@ -183,7 +182,10 @@
         }
       },
       gotoAbout(){
-        this.$router.push({path:'/markdownpage/citationpage'});
+              this.$router.push({path:'/markdownpage/citationpage'});
+            },
+            gotoDocs(){
+              this.$router.push({path:'/markdownpage/documentationpage'});
       }
     },
 
