@@ -16,11 +16,11 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button" @click="moreButtonAction(item.markdownFolder,item.moreID)">More</a>
+                            <a class="content-button" @click="moreButtonAction(item.markdownFolder,item.moreID,item.externalURL)">More</a>
                         </div>
 
                     </div>
-                    <Button class="news-button" @click="moreButtonAction(toolsButton.markdownFolder,toolsButton.moreID)">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction(toolsButton.markdownFolder,toolsButton.moreID,toolsButton.externalURL)">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -37,10 +37,10 @@
                             <div class="content-text">
                                 {{item.content}}
                             </div>
-                            <a class="content-button"@click="moreButtonAction(item.markdownFolder,item.moreID)">More</a>
+                            <a class="content-button"@click="moreButtonAction(item.markdownFolder,item.moreID,item.externalURL)">More</a>
                         </div>
                     </div>
-                    <Button class="news-button" @click="moreButtonAction(documentationButton.markdownFolder,documentationButton.moreID)">MORE</Button>
+                    <Button class="news-button" @click="moreButtonAction(documentationButton.markdownFolder,documentationButton.moreID,documentationButton.externalURL)">MORE</Button>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -162,7 +162,11 @@
                   });
                 */
             },
-            moreButtonAction(subpage, id){
+            moreButtonAction(subpage, id, externalLink){
+                if(externalLink){
+                    window.open(externalLink);
+                    return;
+                }
                 if(id){
                     id = id.replace(/(^\s*)|(\s*$)/g,'').replace(/\s/g,'_').toLowerCase();
                     this.$router.push({path:'/markdownpage/'+subpage+'#'+id});
