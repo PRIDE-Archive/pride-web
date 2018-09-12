@@ -13,14 +13,14 @@ Before submitting to PRIDE database the user need to be sure that it has an acco
 
 The first step to prepare your submission for PRIDE Archive is to know which files are **Mandatory**, which are **Recommended**; and the benefit of providing each file type. Each submitted dataset to PRIDE Archive **MUST** contain the following information (following ProteomeXchange guidelines):
 
-- Mass spectrometer output files (called ‘RAW’) (**Mandatory**): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](/markdownpage/pridefileformats#search_files). Each RAW file needs to be realted with at least one SEARCH file.
+- Mass spectrometer output files (called ‘RAW’) (**Mandatory**): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](./pridefileformats#search_files). Each RAW file needs to be realted with at least one SEARCH file.
 
 
 - Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](/markdownpage/pridefileformats#search_files). Each SEARCH file needs to be related with at least one RAW file.
 
 - mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](/markdownpage/pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Idnetification results. These files needs to be related with at least one PEAK file.
 
-- PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to be able to check the MS/MS spectrum evidences that support the peptide/protein identifications ([check the full list here](/markdownpage/pridefileformats#peak_files)).
+- PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to be able to check the MS/MS spectrum evidences that support the peptide/protein identifications ([check the full list here](./pridefileformats#peak_files)).
 
 > The submissions that provides the 'RESULT' and corresponding 'PEAK' files are classify in PRIDE Archive as **Complete Submissions** following the ProteomeXchange guidelines. Please, read here the [benefits of Complete Submissions](/markdownpage/whycompletesubmissions#whycompletesubmissions).
 
