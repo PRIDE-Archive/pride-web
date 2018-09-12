@@ -267,7 +267,7 @@
                      <p slot="title">Properties</p>
                      <div class="property">
                           <div class="property-row">
-                              <div class="summary-content-header">Species</div>
+                              <div class="summary-content-header">Organism</div>
                               <div class="property-wrapper">
                                 <div v-if="species.length>0">
                                   <div v-for="item in species">
@@ -280,7 +280,7 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Tissue</div>
+                              <div class="summary-content-header">Organism part</div>
                               <div class="property-wrapper">
                                 <div v-if="tissues.length>0">
                                   <div v-for="item in tissues">
@@ -844,7 +844,7 @@
                       }
                       tempArray.push(item);
                   }
-                  
+
                   this.fileList=tempArray;
                 }
                 else{
