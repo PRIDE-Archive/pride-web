@@ -23,7 +23,7 @@ export default {
       options: {
           backgroundColor: 'white', //'#404a59',
           title: {
-              text: 'Distribution',
+              text: 'Submissions per country',
               textStyle:{
                 fontSize:14,
                 fontWeight:'normal',
@@ -118,7 +118,7 @@ export default {
                     this.showMapdata.push(item);
                     break;
                 }
-                
+
             }
         }
         this.options.series[0].data = this.showMapdata;

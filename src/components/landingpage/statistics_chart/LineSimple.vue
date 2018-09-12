@@ -2,18 +2,18 @@
   <div>
         <chart class="line-simple" :options="options" :auto-resize="true"></chart>
   </div>
-    
+
 </template>
 <script>
 export default {
   data: function () {
-    //let data = 
+    //let data =
     return {
       lineYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
       lineMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
       options: {
         title: {
-          text: 'Submission',
+          text: 'Public submission',
           textStyle:{
             fontSize:14,
             fontWeight:'normal',
