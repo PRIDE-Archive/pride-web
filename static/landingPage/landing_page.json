@@ -82,14 +82,14 @@
         {
           "title":"How to review data",
           "content":"How to review private and public experiments in PRIDE Archive",
-          "moreID":"xxx",
-          "markdownFolder":"xxxxx"
+          "moreID":"review_pride_data",
+          "markdownFolder":"reviewpridedata"
         },
         {
           "title":"Searching public datasets",
           "content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
           "moreID":"searching_pride_data",
-          "markdownFolder":"searchingpridedata"
+          "markdownFolder":"searchpridearchive"
         },
         {
           "title":"Retrieving PRIDE data programmatically",

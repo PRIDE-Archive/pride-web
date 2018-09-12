@@ -16,7 +16,7 @@ The first step to prepare your submission for PRIDE Archive is to know which fil
 - Mass spectrometer output files (called ‘RAW’) (**Mandatory**): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](/markdownpage/pridefileformats#search_files). Each RAW file needs to be realted with at least one SEARCH file.
 
 
-- Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](/markdownpage/pridefileformats#peak_files). Each SEARCH file needs to be related with at least one RAW file.
+- Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](/markdownpage/pridefileformats#search_files). Each SEARCH file needs to be related with at least one RAW file.
 
 - mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](/markdownpage/pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Idnetification results. These files needs to be related with at least one PEAK file.
 
