@@ -16,13 +16,13 @@ The first step to prepare your submission for PRIDE Archive is to know which fil
 - Mass spectrometer output files (called ‘RAW’) (**Mandatory**): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](./pridefileformats#search_files). Each RAW file needs to be realted with at least one SEARCH file.
 
 
-- Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](/markdownpage/pridefileformats#search_files). Each SEARCH file needs to be related with at least one RAW file.
+- Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](./pridefileformats#search_files). Each SEARCH file needs to be related with at least one RAW file.
 
-- mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](/markdownpage/pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Idnetification results. These files needs to be related with at least one PEAK file.
+- mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](./pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Idnetification results. These files needs to be related with at least one PEAK file.
 
 - PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to be able to check the MS/MS spectrum evidences that support the peptide/protein identifications ([check the full list here](./pridefileformats#peak_files)).
 
-> The submissions that provides the 'RESULT' and corresponding 'PEAK' files are classify in PRIDE Archive as **Complete Submissions** following the ProteomeXchange guidelines. Please, read here the [benefits of Complete Submissions](/markdownpage/whycompletesubmissions#whycompletesubmissions).
+> The submissions that provides the 'RESULT' and corresponding 'PEAK' files are classify in PRIDE Archive as **Complete Submissions** following the ProteomeXchange guidelines.
 
 Optionally other files can be included in your submission to facilitate the review process or reproduce of the original results and better understanding of the dataset:
 
@@ -30,7 +30,7 @@ Optionally other files can be included in your submission to facilitate the revi
 
 ## Submit dataset
 
-If you have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](/submissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file](../../static/markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
+If you have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](./pridesubmissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file](../../static/markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
 
 **Metadata**: Minimum experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
 **Mapping between the uploaded files**: for instance between the raw files and the corresponding result or search engine output files.
@@ -55,7 +55,7 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 #### PRIDE Inspector
 
-[PRIDE Inspector](/prideinspector) is a Java Standalone Desktop tool that can be used in to query and retrieve the information from PRIDE Archive data:
+[PRIDE Inspector](./prideinspector) is a Java Standalone Desktop tool that can be used in to query and retrieve the information from PRIDE Archive data:
 
 The following applies for both Complete and Partial Submissions:
 
@@ -73,7 +73,7 @@ The particular post-submission steps include the following:
 
 - Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spreadhseets, scripts) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional raw files and accompanying result or search files, you need to resubmit the whole dataset again. Please follow the procedure here. In case of an Aspera bulk submission you have to upload the modified and missing files into a new subdirectory within your target directory and regenerate the submission summary file including all the old and modified and new files again.
 
-- Referencing the dataset in the [paper](/citation):
+- Referencing the dataset in the [paper](./citationpage):
 
 - Releasing the dataset: By default, your data will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. You can notify us two ways:
 
