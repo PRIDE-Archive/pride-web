@@ -3,6 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import store from './store/store.js'
 import iView from 'iview';
 import locale from 'iview/dist/locale/en-US';
 import './assets/my-theme/index.less';
@@ -50,6 +51,7 @@ new Vue({
   el: '#app',
   router,
   template: '<App/>',
+  store,
   data:{bus},
   components: { App }
 })
