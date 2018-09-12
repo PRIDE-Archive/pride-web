@@ -57,15 +57,15 @@
         {
           "title":"PRIDE Archive API",
           "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
-          "externalURL":"",
+          "externalURL":"https://pride-archive.github.io/PrideAPIDocs/",
           "moreID":"pride_archive_ws",
-          "markdownFolder":"pridearchivews"
+          "markdownFolder":""
         },
 
         {
           "title":"PRIDE Utilities",
           "content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics.",
-          "externalURL":"http://pride-archive.github.io/PrideAPIDocs",
+          "externalURL":"",
           "moreID":"pride_utilities",
           "markdownFolder":"prideutilities"
         }
