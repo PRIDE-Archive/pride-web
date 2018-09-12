@@ -44,12 +44,12 @@ export default {
             name: '',
             children: [
             ]
-        }, 
+        },
     ];
     return {
       options: {
           title: {
-            text: 'Facets',
+            text: 'Submission properties tree',
             textStyle:{
               fontSize:14,
               fontWeight:'normal',
@@ -121,62 +121,62 @@ export default {
                           if(param.data.name.split('(')[0] == 'brain')
                             return '{brain|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'cell culture')
-                            return '{cell|' + param.data.name + '}'  
+                            return '{cell|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'epithelial cell')
-                            return '{epithelial|' + param.data.name + '}' 
+                            return '{epithelial|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'disease free')
-                            return '{disease|' + param.data.name + '}' 
+                            return '{disease|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'lymphoma')
-                            return '{lymphoma|' + param.data.name + '}' 
+                            return '{lymphoma|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'acute leukemia')
-                            return '{acute|' + param.data.name + '}' 
+                            return '{acute|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'breast cancer')
-                            return '{breast|' + param.data.name + '}' 
+                            return '{breast|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'FTDALS1')
-                            return '{FTDALS1|' + param.data.name + '}' 
+                            return '{FTDALS1|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Wounds and Injuries')
-                            return '{Wounds|' + param.data.name + '}' 
+                            return '{Wounds|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'mixed disorder as reaction to stress')
-                            return '{mixed|' + param.data.name + '}' 
+                            return '{mixed|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Parkinson disease')
-                            return '{Parkinson|' + param.data.name + '}' 
+                            return '{Parkinson|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Cervix carcinoma')
-                            return '{Cervix|' + param.data.name + '}' 
+                            return '{Cervix|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Oxidation')
-                            return '{Oxidation|' + param.data.name + '}' 
+                            return '{Oxidation|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'No PTMs are included in the dataset')
-                            return '{No|' + param.data.name + '}' 
+                            return '{No|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Hypusine')
-                            return '{Hypusine|' + param.data.name + '}' 
+                            return '{Hypusine|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'iTRAQ8plex-116 reporter+balance reagent acylated residue')
-                            return '{iTRAQ8plex|' + param.data.name + '}' 
+                            return '{iTRAQ8plex|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'acetylated residue')
-                            return '{acetylated|' + param.data.name + '}' 
+                            return '{acetylated|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'deamidated residue')
-                            return '{deamidated|' + param.data.name + '}' 
+                            return '{deamidated|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'S-carboxamidoethyl-L-cysteine')
-                            return '{S|' + param.data.name + '}' 
+                            return '{S|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'monohydroxylated residue')
-                            return '{monohydroxylated|' + param.data.name + '}' 
+                            return '{monohydroxylated|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'iodoacetamide derivatized residue')
-                            return '{iodoacetamide|' + param.data.name + '}' 
+                            return '{iodoacetamide|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'phosphorylated residue')
-                            return '{phosphorylated|' + param.data.name + '}' 
+                            return '{phosphorylated|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Carbamidomethyl')
-                            return '{Carbamidomethyl|' + param.data.name + '}' 
+                            return '{Carbamidomethyl|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'N-ethylmaleimide derivatized cysteine')
-                            return '{N|' + param.data.name + '}' 
+                            return '{N|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'TMT6plex-126 reporter+balance reagent acylated residue')
-                            return '{TMT6plex|' + param.data.name + '}' 
+                            return '{TMT6plex|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'dimethylated residue')
-                            return '{dimethylated|' + param.data.name + '}' 
+                            return '{dimethylated|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'Acetyl')
-                            return '{Acetyl|' + param.data.name + '}' 
+                            return '{Acetyl|' + param.data.name + '}'
                           else if(param.data.name.split('(')[0] == 'methylthiolated residue')
                             return '{methylthiolated|' + param.data.name + '}'
-                          else 
-                            return param.data.name;  
-                      },    
+                          else
+                            return param.data.name;
+                      },
                       rich:{
                           brain:{
                               color: matchColor['brain']
@@ -287,7 +287,7 @@ export default {
         level++;
         if(data.length==0)
           return data;
-      
+
         data.sort((a,b)=>{
             return b.category.value-a.category.value;
         })
@@ -328,7 +328,7 @@ export default {
             }
             newData.push(item);
         }
-        
+
         return newData
     },
     setOptions(data){
@@ -358,7 +358,7 @@ export default {
             if(data1[i].subCategories.length!=0){
                 let data2 = this.dataProcess(data1[i]);
                 //for(let j=0; j<data1.length; j++)
-                
+
               //console.log('newData',newData);
             }
             //nonRecursiveWidthFirstTraversal(sortedData[i])

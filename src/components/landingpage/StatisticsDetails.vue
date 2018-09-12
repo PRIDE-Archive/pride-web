@@ -6,7 +6,7 @@
                 <Col span="20">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Tree</p>
+                             <p slot="title">Submissions properties tree</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>
@@ -15,14 +15,14 @@
                                         Species distribution for all the PSMs within the cluster.
                                     </div>
                                 </Tooltip>
-                                
+
                              </p>
                             -->
                              <div class="card-content-pie">
                                  <Spin fix v-if="sunburstPrideShow"></Spin>
                                  <TreetPride></TreetPride>
                              </div>
-                             
+
                         </Card>
                     </div>
                 </Col>
@@ -31,36 +31,36 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">SUBMISSIONS</p>
-                             
+                             <p slot="title">Public submissions</p>
+
                              <p slot="extra">
                                <a class="submission-options" @click="queryLine('year')">Year</a> <a class="submission-options" @click="queryLine('month')">Month</a>
                              </p>
-                             
+
                              <div class="card-content-pie">
                                  <Spin fix v-if="linePrideShow"></Spin>
                                  <LinePride></LinePride>
                              </div>
-                             
+
                         </Card>
                     </div>
                 </Col>
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Facets</p>
-                             
+                             <p slot="title">Submissions properties</p>
+
                              <p slot="extra">
                                   <Select v-model="facetsType" size="small" style="width:125px" @on-change="facetsTypeChange">
                                       <Option v-for="item in facetsTypeList" :value="item" :key="item">{{ item }}</Option>
                                   </Select>
                              </p>
-                             
+
                              <div class="card-content-pie">
                                  <Spin fix v-if="piePrideShow"></Spin>
                                  <PiePride></PiePride>
                              </div>
-                             
+
                         </Card>
                     </div>
                 </Col>
@@ -69,7 +69,7 @@
                 <Col span="20">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Map</p>
+                             <p slot="title">Submissions per country</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>
@@ -198,8 +198,8 @@
                   });
            }
         },
-        computed:{  
-       
+        computed:{
+
         },
         mounted: function(){
             this.queryTree();
@@ -274,20 +274,20 @@
     .submission-options{
       border-bottom-style:none !important;
     }
-    @media (max-width: 700px) { 
-      .item{ 
+    @media (max-width: 700px) {
+      .item{
         width: calc((100% - 0px) / 1 - 1px);
         margin-left: 0 !important;
         margin-right: 0 !important;
       }
     }
-    @media (max-width: 1015px) and (min-width: 701px){ 
-      .item{ 
+    @media (max-width: 1015px) and (min-width: 701px){
+      .item{
         width: calc((100% - 60px) / 2 - 1px);
       }
     }
-    @media (max-width: 1510px) and (min-width: 1016px){ 
-      .item{ 
+    @media (max-width: 1510px) and (min-width: 1016px){
+      .item{
         width: calc((100% - 90px) / 3 - 1px);
       }
       .button-wrapper a{
@@ -298,13 +298,13 @@
 
         }
     }
-    @media (max-width: 1910px) and (min-width: 1511px){ 
-      .item{ 
+    @media (max-width: 1910px) and (min-width: 1511px){
+      .item{
         width: calc((100% - 120px) / 4 - 1px);
       }
     }
-    @media (min-width: 1911px){ 
-      .item{ 
+    @media (min-width: 1911px){
+      .item{
         width: calc((100% - 150px) / 5 - 1px);
       }
     }

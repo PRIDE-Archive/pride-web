@@ -2,16 +2,16 @@
   <div>
         <chart class="line-simple" :options="options" :auto-resize="true"></chart>
   </div>
-    
+
 </template>
 <script>
 export default {
   data: function () {
-    //let data = 
+    //let data =
     return {
       options: {
         title: {
-          text: 'Submission',
+          text: 'Public submission',
           textStyle:{
             fontSize:14,
             fontWeight:'normal',
