@@ -25,3 +25,24 @@ Private **PARTIAL** submissions only contains [RAW Files](./pridefileformats#sea
 ## Reviewing Complete Submissions
 
 For **COMPLETE** submissions the corresponding mzIdentML or mzTab, [RSULT Files](./pridefileformats#result_files) , can be download using [PRIDE Inspector](./prideinspector).
+
+### Checking the identified spectra
+
+User can check any relevant peptide identification in the RESULT File and visualize the corresponding spectrum annotation:
+
+</br>
+
+![Peptide Table](../../static/markdown/prideinspector/files/peptideTable2.png)
+
+The **fragment ion table** presents the difference between the theoretical identified ion and the experimental one:
+
+</br>
+
+![Fragmentation table](../../static/markdown/reviewpridedata/files/fragmenttable.png)
+
+In addition the user can check the **protein coverage**, and protein sequence identified for all the idenfied proteins:
+
+![Fragmentation table](../../static/markdown/prideinspector/files/proteinSequence.png)
+
+You can check how to use [PRIDE Inspector here](./prideinspector)
+

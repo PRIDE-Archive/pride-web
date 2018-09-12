@@ -99,13 +99,6 @@
           "externalURL":"",
           "moreID":"searching_pride_data",
           "markdownFolder":"searchpridearchive"
-        },
-        {
-          "title":"Retrieving PRIDE data programmatically",
-          "content":"Retrieving PRIDE Archive data can be done programatically using the PRIDE Archive Web service Restful API",
-          "externalURL":"",
-          "moreID":"programatically_search",
-          "markdownFolder":"programaticallyapi"
         }
       ],
       "button":{
