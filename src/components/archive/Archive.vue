@@ -121,7 +121,7 @@
                         <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                       </span>
                       <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
-                      <Dropdown class="dataset-wrapper" v-for="datesetItem in publicationItem.projectTags">
+                      <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                           <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                              <Icon type="ios-pricetag"></Icon>
                               <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
@@ -359,7 +359,6 @@
                               submissionType: projectsList[i].submissionType,
                               hightlightItemArray:[],
                           }
-                        
                           //console.log('projectsList[i].highlights',projectsList[i].highlights);
                           for(let j in projectsList[i].highlights){
                               let content='';

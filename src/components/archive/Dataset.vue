@@ -376,7 +376,7 @@
                   <Card class="card" v-if="similarProjects.length>0">
                        <p slot="title"><i class="fas fa-link icon-tag"></i>Similar Studies</p>
                        <div class="list-wrapper">
-                            <Card class="similarity-card" v-for="item in similarProjects">
+                            <Card class="similarity-card" v-for="item in similarProjects" :key="item.accession">
                               <div class="similarity-title"><a @click="gotoDetails(item.accession)">{{item.title}}</a></div>
                               <div><span>{{item.submissionDate}}</span></div>
                             </Card>

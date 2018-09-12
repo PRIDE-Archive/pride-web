@@ -5,7 +5,7 @@
             <Affix :offset-top="20">
                 <div class="menu-wrapper">
                     <Menu mode="vertical" :active-name="activeName" @on-select="menuSlect">
-                        <MenuItem v-for="item in tableList" :name="item.name">
+                        <MenuItem v-for="item in tableList" :name="item.name" :key="item.name">
                             <Icon type="ios-paper"></Icon>{{item.content}}
                         </MenuItem>
                     </Menu>
