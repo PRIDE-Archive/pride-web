@@ -168,6 +168,7 @@
 
 <script>
   import NavBar from '@/components/archive/Nav'
+  import store from "@/store/store.js"
   var paramsFromLandingPage='';
   export default {
     name: 'archive',
@@ -182,11 +183,11 @@
           querySpecificFacetsLoading:false,
           highlightKeyword:'',
           HighlightKeywordSensitive:false,
-          facetsURL:'http://ves-pg-41:9020/facet/projects',
-          searchConfigURL:'/static/config/facets/config.json',
-          projectItemsConfigURL:'/static/config/projectItems/config.json',
-          queryArchiveProjectListApi:'http://ves-pg-41:9020/search/projects',
-          autoCompleteApi:"http://ves-pg-41:9020/search/autocomplete?keyword=",
+          facetsURL: this.$store.state.baseApiURL + '/facet/projects',
+          searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
+          projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
+          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -328,7 +329,6 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
-          console.log('queryArchiveProjectList');
           query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){

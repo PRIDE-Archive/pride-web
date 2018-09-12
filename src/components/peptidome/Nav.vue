@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_Peptide.png" alt="logo" width="500"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img :src="logoURL" alt="logo" width="500"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -120,6 +120,7 @@
     </div>
 </template>
 <script>
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
@@ -127,7 +128,8 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
-                landingPageJsonURL:'/static/landingPage/landing_page.json'
+                landingPageJsonURL:this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo_Peptide.png',
             }
         },
         methods:{
@@ -200,7 +202,7 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        background-image: url('/static/image/hero-beta-banner.png');
+        background-image: url('../../../static/image/hero-beta-banner.png');
     }
     .ebi-masthead nav ul.menu li{
         border-right: 1px solid rgb(248,248,248,0.7);

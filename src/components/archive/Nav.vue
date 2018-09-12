@@ -120,6 +120,7 @@
     </div>
 </template>
 <script>
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
@@ -127,7 +128,7 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
-                landingPageJsonURL:'/static/landingPage/landing_page.json'
+                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json'
             }
         },
         methods:{
@@ -200,7 +201,7 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        background-image: url('/static/image/hero-beta-banner.png');
+        background-image: url('../../../static/image/hero-beta-banner.png');
     }
     .ebi-masthead nav ul.menu li{
         border-right: 1px solid rgb(248,248,248,0.7);

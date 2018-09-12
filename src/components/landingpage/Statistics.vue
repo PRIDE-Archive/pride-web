@@ -42,13 +42,14 @@
     import SankeyPrideSimple from './statistics_chart/SankeySimple.vue'
     import MapPrideSimple from './statistics_chart/MapSimple.vue'
     import TreePrideSimple from './statistics_chart/TreeSimple.vue'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
-                treePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
-                sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_COUNTRY',
-                linePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
+                treePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sankeyPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_COUNTRY',
+                linePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
                 treePrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,

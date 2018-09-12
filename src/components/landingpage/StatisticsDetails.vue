@@ -99,15 +99,16 @@
     import PiePride from './statistics_chart/Pie.vue'
     import MapPride from './statistics_chart/Map.vue'
     import NavBar from '@/components/landingpage/Nav'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
-                treePrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
-                sunburstPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_CATEGORIES',
-                sankeyPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_COUNTRY',
-                linePrideYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
-                linePrideMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
+                treePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sunburstPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sankeyPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi: this.$store.state.baseApiURL +'/stats/SUBMISSIONS_PER_COUNTRY',
+                linePrideYearApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
+                linePrideMonthApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
@@ -188,7 +189,7 @@
            facetsTypeChange(facets){
               this.piePrideShow=true;
               this.$http
-                  .get('http://ves-pg-41:9020/stats/SUBMISSIONS_PER_'+facets)
+                  .get( this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_'+facets)
                   .then(function(res){
                       this.piePrideShow=false;
                       this.$bus.$emit('show-pie', res.body);

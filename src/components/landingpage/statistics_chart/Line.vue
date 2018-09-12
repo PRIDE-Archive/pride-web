@@ -9,8 +9,6 @@ export default {
   data: function () {
     //let data = 
     return {
-      lineYearApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_YEAR',
-      lineMonthApi:'http://ves-pg-41:9020/stats/SUBMISSIONS_PER_MONTH',
       options: {
         title: {
             /*text: 'Beijing AQI'*/

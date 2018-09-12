@@ -8,11 +8,12 @@
 </template>
 <script>
     import NavBar from '@/components/landingpage/Nav'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
                 source: '',
-                markdownURL:'/static/markdown/citationPage/content.md',
+                markdownURL: this.$store.state.baseURL + '/static/markdown/citationPage/content.md',
             }
         },
         components: {

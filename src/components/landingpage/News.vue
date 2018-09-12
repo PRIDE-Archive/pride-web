@@ -87,6 +87,7 @@
 </template>
 <script>
     import Timeline from 'vue-tweet-embed/timeline'
+    import store from "@/store/store.js"
     export default {
         components: {
           Timeline
@@ -113,7 +114,7 @@
                     linefour:'',
                     button:{}
                 },
-                landingPageJsonURL:'/static/landingPage/landing_page.json'
+                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json'
             }
         },
         methods:{

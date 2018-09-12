@@ -32,11 +32,12 @@
 </template>
 <script>
     import NavBar from '@/components/landingpage/Nav'
+    import store from "@/store/store.js"
     export default {
         data () {
             return {
                 source: '',
-                markdownURL:'/static/markdown/documentationPage/content.md',
+                markdownURL:this.$store.state.baseURL + '/static/markdown/documentationPage/content.md',
                 activeName:'one'
                 /*
                 anchorAttrs: {
