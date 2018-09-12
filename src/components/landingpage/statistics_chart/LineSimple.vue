@@ -11,7 +11,7 @@ export default {
     return {
       options: {
         title: {
-          text: 'Public submission',
+          text: 'Public Submitted datasets',
           textStyle:{
             fontSize:14,
             fontWeight:'normal',

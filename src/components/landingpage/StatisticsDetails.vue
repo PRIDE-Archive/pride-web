@@ -6,7 +6,7 @@
                 <Col span="20">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Submissions properties tree</p>
+                             <p slot="title">Submitted datasets properties tree</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>
@@ -31,7 +31,7 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Public submissions</p>
+                             <p slot="title">Public Submitted datasets</p>
 
                              <p slot="extra">
                                <a class="submission-options" @click="queryLine('year')">Year</a> <a class="submission-options" @click="queryLine('month')">Month</a>
@@ -48,7 +48,7 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Submissions properties</p>
+                             <p slot="title">Submitted datasets properties</p>
 
                              <p slot="extra">
                                   <Select v-model="facetsType" size="small" style="width:125px" @on-change="facetsTypeChange">
@@ -69,7 +69,7 @@
                 <Col span="20">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Submissions per country</p>
+                             <p slot="title">Submitted datasets per country</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>

@@ -49,7 +49,7 @@ export default {
     return {
       options: {
           title: {
-            text: 'Submission properties tree',
+            text: 'Submitted datasets properties tree',
             textStyle:{
               fontSize:14,
               fontWeight:'normal',

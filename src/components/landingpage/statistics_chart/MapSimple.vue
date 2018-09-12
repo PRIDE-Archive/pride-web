@@ -23,7 +23,7 @@ export default {
       options: {
           backgroundColor: 'white', //'#404a59',
           title: {
-              text: 'Submissions per country',
+              text: 'Submitted datasets per country',
               textStyle:{
                 fontSize:14,
                 fontWeight:'normal',
