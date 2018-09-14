@@ -6,7 +6,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state:{
-		baseURL: location.hostname.match(/ebi/)?'/pride':'',
-		baseApiURL: location.hostname.match(/ebi/)?'http://wwwdev.ebi.ac.uk/pride/ws/archive':'http://ves-pg-41:9020',  
+		baseURL: location.hostname.match(/localhost/)?'':'/pride',
+		baseApiURL: location.hostname.match(/localhost/)?'http://wwwdev.ebi.ac.uk/pride/ws/archive':'http://ves-pg-41:9020',  
 	},
 });

@@ -4,9 +4,9 @@
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
             <div class="masthead-inner row">
               <!-- local-title -->
-              <div class="columns medium-5" id="local-title">
+              <div class="columns medium-5" id="local-title"> 
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img src="/static/logo/PRIDE_logo_Archive.png" alt="logo" width="410"></a>
+                  <a href="../../" title="Back to [service-name] homepage"><img :src="logoURL" alt="logo" width="410"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -128,7 +128,9 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
-                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json'
+                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo_Archive.png',
+
             }
         },
         methods:{

@@ -11,6 +11,7 @@
 <script>
 import defaultNav from '@/components/ebi/DefaultNav'
 import defaultFooter from '@/components/ebi/DefaultFooter'
+import '@/assets/js/iconfont.js'
 export default {
   name: 'app',
   components:{

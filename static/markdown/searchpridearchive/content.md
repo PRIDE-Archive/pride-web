@@ -8,7 +8,7 @@ The higher the number of terms matched, the more relevant the result of the sear
 
 </br>
 
-![Login panel](../../static/markdown/searchpridearchive/files/search-terms.png)
+![Login panel](../static/markdown/searchpridearchive/files/search-terms.png)
 
 The search accepts terms for dataset identifiers (PX datasets or PRIDE assay/experiment numbers), PubMed identifiers, sample details (e.g. organisms, organism part, diseases), instruments, post-translational modifications and any word/phrase included in the title or description of a dataset.
 
@@ -26,7 +26,7 @@ The search terms will be matched against the records in PRIDE Archive and a list
 
 If the terms match a word that is not included in those properties, the user can see where they match by collapsing the _Matched Items_ option:
 
-![Login panel](../../static/markdown/searchpridearchive/files/matched-items.png)
+![Login panel](../static/markdown/searchpridearchive/files/matched-items.png)
 
 ## Highlighting
 
@@ -62,7 +62,7 @@ Through filtering we can ensure some information to be present in our search res
 
 When one of the filter types is selected, the second drop-down list will be populated with the available values for that filter type.
 
-![Login panel](../../static/markdown/searchpridearchive/files/filtering.png)
+![Login panel](../static/markdown/searchpridearchive/files/filtering.png)
 
 Multiple filters, of the same or differnt types, can be added. They are cumulative under an AND condition. That is, the search results must pass all the filters (and not just one of them). For example applying filters for 'Homo Sapiens (Human)' and 'Mus musculus (Mouse)' will only list results that have been annotated with both species. Filters can be removed in any order and the results are updated accordingly.
 

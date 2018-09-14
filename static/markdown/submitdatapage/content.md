@@ -3,7 +3,7 @@
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence to be published in peer-reviewed publications. The main focus of PRIDE is to support the deposition of shotgun MS/MS proteomics datasets.
 
-The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../../static/markdown/submitDataPage/files/Submission_Tutorial.pdf). This page contains summarized introduction of the document explaining the steps about How to Submit data to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../static/markdown/submitDataPage/files/Submission_Tutorial.pdf). This page contains summarized introduction of the document explaining the steps about How to Submit data to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
 ## Register into PRIDE
 
@@ -30,7 +30,7 @@ Optionally other files can be included in your submission to facilitate the revi
 
 ## Submit dataset
 
-If you have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](./pridesubmissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file](../../static/markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
+If you have check that you can provide all the files in previous section, the next step is to Download the [Submission Tool](./pridesubmissiontool). The Submission Tool guide the users throught the submission process generating the [submission.px file](../static/markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types crucial information:
 
 **Metadata**: Minimum experimental metadata like experiment description, sample taxonomy information, instruments and modifications used.
 **Mapping between the uploaded files**: for instance between the raw files and the corresponding result or search engine output files.
@@ -50,7 +50,7 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 </br>
 
-![Private Submission List](../../static/markdown/submitDataPage/files/private-submission.png)
+![Private Submission List](../static/markdown/submitDataPage/files/private-submission.png)
 
 
 #### PRIDE Inspector
@@ -61,7 +61,7 @@ The following applies for both Complete and Partial Submissions:
 
 Open PRIDE Inspector by clicking on the pride-inspector-<version-number>.jar file in the tool's working directory -> Private Download -> ProteomeXchange -> PX reviewer account details. You can open the PRIDE XML and mzIdentML result files with PRIDE Inspector or just download all the files that you wish to investigate.
 
-![Private access in PRIDE inspector](../../static/markdown/submitDataPage/files/pride-inspector.png)
+![Private access in PRIDE inspector](../static/markdown/submitDataPage/files/pride-inspector.png)
 
 In case of Complete Submissions you can alternatively launch PRIDE Inspector with a WebStart URL provided in the automatic "Submission Complete" e-mail. This option is for downloading the PRIDE XML and mzIdentML files only into a target folder. In order to use the PRIDE Inspector Java Web Start option to display your data there is a waiting period of up to one day upon getting the automatic "Submission Complete" e-mail.
 
