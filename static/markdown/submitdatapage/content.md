@@ -50,7 +50,7 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 </br>
 
-![Private Submission List](../static/markdown/submitDataPage/files/private-submission.png)
+![Private Submission List](../static/markdown/submitdatapage/files/private-submission.png)
 
 
 #### PRIDE Inspector
@@ -61,7 +61,7 @@ The following applies for both Complete and Partial Submissions:
 
 Open PRIDE Inspector by clicking on the pride-inspector-<version-number>.jar file in the tool's working directory -> Private Download -> ProteomeXchange -> PX reviewer account details. You can open the PRIDE XML and mzIdentML result files with PRIDE Inspector or just download all the files that you wish to investigate.
 
-![Private access in PRIDE inspector](../static/markdown/submitDataPage/files/pride-inspector.png)
+![Private access in PRIDE inspector](../static/markdown/submitdatapage/files/pride-inspector.png)
 
 In case of Complete Submissions you can alternatively launch PRIDE Inspector with a WebStart URL provided in the automatic "Submission Complete" e-mail. This option is for downloading the PRIDE XML and mzIdentML files only into a target folder. In order to use the PRIDE Inspector Java Web Start option to display your data there is a waiting period of up to one day upon getting the automatic "Submission Complete" e-mail.
 
