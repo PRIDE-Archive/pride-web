@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
-                  <a href="../../" title="Back to [service-name] homepage"><img :src="logoURL" alt="logo" width="500"></a>
+                  <a title="Back to [service-name] homepage"><img @click="gotoPeptidomepage" :src="logoURL" alt="logo" width="500"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -151,6 +151,9 @@
             },
             gotoLandingpage(){
               this.$router.push({name:'landingpage'});
+            },
+            gotoPeptidomepage(){
+              this.$router.push({name:'peptidome'});
             },
             resourcesClick(name){
                 if(name=='goToArchive'){
