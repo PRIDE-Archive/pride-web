@@ -22,14 +22,14 @@ export default {
                 formatter: function (name) {
                    // console.log( name);
                     return name;
-                    
+
                 },
                 selected:{},
                 zlevel:-1,
             },
             series: [
                 {
-                    name:'PSM for',
+                    name:'Submitted Datasets for',
                     type:'pie',
                     radius: ['40%', '60%'],
                     center: ['70%', '50%'],
@@ -68,7 +68,7 @@ export default {
             data.sort(function(a,b){
                 return a.value < b.value ? 1 : -1;
             });
-            
+
             var legendName = [];
             for(let i=0; i<data.length; i++){
                 legendName[i] = data[i].key;

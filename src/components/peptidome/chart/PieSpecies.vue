@@ -22,14 +22,14 @@ export default {
                 formatter: function (name) {
                    // console.log( name);
                     return name;
-                    
+
                 },
                 selected:{},
                 zlevel:-1,
             },
             series: [
                 {
-                    name:'PSM for',
+                    name:'Submitted Datasets for',
                     type:'pie',
                     radius: ['50%', '70%'],
                     center: ['75%', '50%'],
