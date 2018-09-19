@@ -13,11 +13,9 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 - **When a dataset has been deposited in PRIDE and ProteomeXchange the citation of the PX should be done in this form**:
 
-  **PX Partial**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org)
-  via the PRIDE partner repository [1] with the dataset identifier PXD000000.
+  **PX Partial**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org) via the PRIDE partner repository [1] with the dataset identifier PXD000000.
 
-  **PX Complete**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org)
-  via the PRIDE partner repository [1] with the dataset identifier PXD000000 and DOI 10.6019/PXD000000.
+  **PX Complete**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org) via the PRIDE partner repository [1] with the dataset identifier PXD000000 and DOI 10.6019/PXD000000.
 
   [1] Vizcaino JA, et al. 2016 update of the PRIDE database and related tools. Nucleic Acids Res. 2016 Jan 1;44(D1):D447-D456.
 
@@ -25,16 +23,13 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 Citing Peptidome and PRIDE Cluster resources:
 
-- **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA.
-  [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
+- **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA. [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
 
 Citing PRIDE Tools:
 
-- **PRIDE Inspector Toolsuite**: Perez-Riverol Y, Xu QW, Wang R, Uszkoreit J, Griss J, Sanchez A, Reisinger F, Csordas A, Ternent T, del Toro N, Dianes JA, Eisenacher M, Hermjakob H, Vizcaíno JA.
- [PRIDE Inspector Toolsuite: moving towards a universal visualization tool for proteomics data standard formats and quality assessment of ProteomeXchange datasets.](http://www.mcponline.org/content/15/1/305.long). Mol Cell Proteomics 2016 Jan; 15(1):305-17. PubMed PMID: 26545397.
+- **PRIDE Inspector Toolsuite**: Perez-Riverol Y, Xu QW, Wang R, Uszkoreit J, Griss J, Sanchez A, Reisinger F, Csordas A, Ternent T, del Toro N, Dianes JA, Eisenacher M, Hermjakob H, Vizcaíno JA. [PRIDE Inspector Toolsuite: moving towards a universal visualization tool for proteomics data standard formats and quality assessment of ProteomeXchange datasets.](http://www.mcponline.org/content/15/1/305.long). Mol Cell Proteomics 2016 Jan; 15(1):305-17. PubMed PMID: 26545397.
 
-- **PRIDE Cluster** or **Spectra Cluster** Toolsuite: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA.
- [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
+- **PRIDE Cluster** or **Spectra Cluster** Toolsuite: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA. [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
 
 
 Previous manuscripts of PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
