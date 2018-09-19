@@ -554,23 +554,23 @@
                                   }
                               }
                           }, 'FTP'),
-                          h('Button', {
-                              props: {
-                                  type: 'primary',
-                                  size: 'small'
-                              },
-                              style: {
-                                  display:'inline-block',
-                                  marginRight: '0px'
-                              },
-                              on: {
-                                  click: () => {
-                                      //window.location.href = params.row.url.asp;
-                                      window.open(params.row.url.asp)
-                                      console.log(params.row.url.asp);
-                                  }
-                              }
-                          }, 'ASPERA'),
+                          // h('Button', {
+                          //     props: {
+                          //         type: 'primary',
+                          //         size: 'small'
+                          //     },
+                          //     style: {
+                          //         display:'inline-block',
+                          //         marginRight: '0px'
+                          //     },
+                          //     on: {
+                          //         click: () => {
+                          //             //window.location.href = params.row.url.asp;
+                          //             window.open(params.row.url.asp)
+                          //             console.log(params.row.url.asp);
+                          //         }
+                          //     }
+                          // }, 'ASPERA'),
                       ]);
                   }
               }
