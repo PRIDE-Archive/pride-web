@@ -354,7 +354,7 @@
                               </div>
                           </div>
                      </div>
-                  </Card>
+                </Card>
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
@@ -373,20 +373,74 @@
                       <span>Input Numbers</span>
                     </p>
                     <div class="card-content">
-                         <div class="number-wrapper">
-                            <span>Samples</span>
-                             <InputNumber class="input-number" v-model="samplesNum" ></InputNumber>
-                             <div class="leaf">
+                         <div class="step-title">1. Choose the experiment type 
+                            <Tooltip class="step-title-tooltip" placement="right">
+                                <Icon type="help-circled"></Icon>
+                                <div slot="content">
+                                    <p>Display multiple lines of information</p>
+                                    <p><i>Can customize the style</i></p>
+                                </div>
+                            </Tooltip>
+                         </div>
+                         <div class="experiment-type-wrapper">
+                            <div v-for="item in annotateExperiment" :class="item.class" @click="experimentTypeChoose(item)">
+                              <span :class="{selectedExperimentText:item.check}">{{item.value}}</span>
+                            </div>
+                            <!--
+                            <div class="human">
+                            
+                            </div> 
+                            <div class="animal">
                                 
-                             </div> 
+                            </div> 
+                            <div class="cellline">
+                            
+                            </div> 
+                            <div class="plant">
+                            
+                            </div> 
+                            <div class="questionmark">
+                                
+                            </div> -->
+                         </div>
+                         <div class="step-title">2. Input Samples Number 
+                            <Tooltip class="step-title-tooltip" placement="right">
+                                <Icon type="help-circled"></Icon>
+                                <div slot="content">
+                                    <p>Display multiple lines of information</p>
+                                    <p><i>Can customize the style</i></p>
+                                </div>
+                            </Tooltip>
                          </div>
                          <div class="number-wrapper">
-                            <span>Techinical Replicate</span>
-                             <InputNumber class="input-number"  v-model="trNum" ></InputNumber>
+                             <!--<span>Samples</span>-->
+                             <InputNumber class="input-number" v-model="samplesNum" size="small" :min='0'></InputNumber>
                          </div>
+                         <div class="step-title">3. Input Techinical Number 
+                            <Tooltip class="step-title-tooltip" placement="right">
+                                <Icon type="help-circled"></Icon>
+                                <div slot="content">
+                                    <p>Display multiple lines of information</p>
+                                    <p><i>Can customize the style</i></p>
+                                </div>
+                            </Tooltip>
+                         </div>
+                         <div class="number-wrapper">
+                             <!--<span>Techinical Replicate</span>-->
+                             <InputNumber class="input-number"  v-model="trNum" size="small" :min='0'></InputNumber>
+                         </div>
+                         <div class="step-title">3. Input Fractions Number 
+                              <Tooltip class="step-title-tooltip" placement="right">
+                                <Icon type="help-circled"></Icon>
+                                <div slot="content">
+                                    <p>Display multiple lines of information</p>
+                                    <p><i>Can customize the style</i></p>
+                                </div>
+                            </Tooltip>
+                          </div>
                          <div  class="number-wrapper">
-                            <span>Fractions</span>
-                             <InputNumber class="input-number"  v-model="fractionsNum" ></InputNumber>
+                              <!--<span>Fractions</span>-->
+                             <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='0'></InputNumber>
                          </div>
                     </div>
                 </Card>
@@ -406,12 +460,13 @@
                 <Card>
                     <p slot="title" class="resource-list-title-container">
                       <span>Sample</span>
+                      <Icon type="plus-round" @click="showAddColumnModal" size="20"></Icon>
                     </p>
                     <div class="card-content">
                         <Table height="295" class="sample-table" border :columns="sampleCol" :data="sampleData" size="small"></Table>
                     </div>
                 </Card>
-                <Card>
+                <Card class="card">
                     <p slot="title" class="resource-list-title-container">
                       <span>File</span>
                     </p>
@@ -432,6 +487,23 @@
               </Row>
           </div>
       </div>
+      <Modal
+          title="Add Column"
+          v-model="addColumnBool"
+          :closable="false"
+          @on-ok="addColumn">
+          <div class="modal-column-name">Column Name: </div>
+          <CheckboxGroup class="new-column-checkbox" v-model="newColumnNameSelectedArray">
+                <Checkbox v-for="item in newColumnNameArray" :label="item.label" :key="item.value">
+                  <!--<div class="checkbox-item-wrapper">-->
+                      <span>{{item.label}}</span>
+                      <!--<InputNumber class="input-number" v-model="samplesNum" size="small" :min='0'></InputNumber>-->
+                  <!--</div>-->
+                </Checkbox>
+
+                
+          </CheckboxGroup>
+      </Modal>
   </div>
 </template>
 
@@ -445,372 +517,413 @@
     name: 'archive',
     data(){
       return {
-        columns: [
-        {title: 'Name', key: 'name', sortable: false},
-        {title: 'Email', key: 'email', editable: true},
-        {title: 'Create-Time', key: 'createTime'},
-        {
-          title: 'Handle',
-          key: 'handle',
-          options: ['delete'],
-          button: [
-            (h, params, vm) => {
-              return h('Poptip', {
-                props: {
-                  confirm: true,
-                  title: '你确定要删除吗?'
-                },
-                on: {
-                  'on-ok': () => {
-                    vm.$emit('on-delete', params)
-                    vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
-                  }
-                }
-              }, [
-                h('Button', '自定义删除')
-              ])
-            }
-          ]
-        }
-      ],
-      tableData:[],
-          organismSample:'',
-          strainbreed:'',
-          organismTest:[
-            {value:'111'},{value:'222'},{value:'333'}
-          ],
-          organismSampleLoading:false,
-          annotationStep:0,
-          accession:'',
-          title:'',
-          projectDescription:'',
-          species:[],
-          diseases:[],
-          tissues:[],
-          instrumentNames:[],
-          quantificationMethods:[],
-          experimentTypes:[],
-          softwares:[],
-          modification:[],
-          samplesNum:1, 
-          trNum:1, 
-          fractionsNum:1,
-          publicationDate:'',
-          submissionDate:'',
-          editProjectBool:false,
-          sampleProcessingProtocol:'',
-          dataProcessingProtocol:'',
-          contactors:[],
-          keyword:'',
-          selectTemp:'',
-          searchInputLoading:false,
-          fieldValue:'',
-          containValue:'',
-          loading:true,
-          sampleCol: [
-              {type: 'selection',
-                        width: 60,
-                        align: 'center'},
-              {title: 'Organism',key: 'organism',align:'center',
-                  renderHeader (h, params) {
-                    return h('div', [
-                        h('span',{
-
-                        },'Organism'),
-                        h('Icon', {
-                            props: {
-                                type: 'checkmark-round',
-                            },
-                            style: {
-                                marginLeft: '5px'
-                            },
-                            on: {
-                                click: () => {
-                                    
-                                }
-                            }
-                        }),
+            addColumnBool:false,
+            newColumnNameSelectedArray:[],
+            newColumnNameArray:[],
+            columns: [
+              {title: 'Name', key: 'name', sortable: false},
+              {title: 'Email', key: 'email', editable: true},
+              {title: 'Create-Time', key: 'createTime'},
+              {
+                title: 'Handle',
+                key: 'handle',
+                options: ['delete'],
+                button: [
+                  (h, params, vm) => {
+                    return h('Poptip', {
+                      props: {
+                        confirm: true,
+                        title: '你确定要删除吗?'
+                      },
+                      on: {
+                        'on-ok': () => {
+                          vm.$emit('on-delete', params)
+                          vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
+                        }
+                      }
+                    }, [
+                      h('Button', '自定义删除')
                     ])
-                  },
-                  render: (h, params) => {
-                       /*
-                        // role是引入的组件名称
-                        return h(SelectSampleTable, {
-                          props: {
-                            //dataType: 1,
-                            //userId: params.row.userId
-                          }
-                        }, '123');
-                        */
-                   
+                  }
+                ]
+              }
+            ],
+            tableData:[],
+            organismSample:'',
+            strainbreed:'',
+            organismTest:[
+              {value:'111'},{value:'222'},{value:'333'}
+            ],
+            organismSampleLoading:false,
+            annotationStep:0,
+            accession:'',
+            title:'',
+            projectDescription:'',
+            species:[],
+            diseases:[],
+            tissues:[],
+            instrumentNames:[],
+            quantificationMethods:[],
+            experimentTypes:[],
+            softwares:[],
+            modification:[],
+            samplesNum:0, 
+            trNum:0, 
+            fractionsNum:0,
+            selectedExperimentType:'',
+            publicationDate:'',
+            submissionDate:'',
+            editProjectBool:false,
+            sampleProcessingProtocol:'',
+            dataProcessingProtocol:'',
+            contactors:[],
+            keyword:'',
+            selectTemp:'',
+            searchInputLoading:false,
+            fieldValue:'',
+            containValue:'',
+            loading:true,
+            sampleCol: [
+                {type: 'selection',
+                          width: 60,
+                          align: 'center'},
+                {title: 'Organism',key: 'organism',align:'center',
+                    renderHeader (h, params) {
                       return h('div', [
-                          h('Select', {
-                              props:{
-                                'v-model':this.organismSample,
-                                filterable:true,
-                                remote:true,
-                                loading:this.organismSampleLoading,
-                                'remote-method':this.organismSampleQuery,
-                                size:'small',
-                                placeholder:''
+                          h('span',{
+
+                          },'Organism'),
+                          h('Icon', {
+                              props: {
+                                  type: 'checkmark-round',
+                              },
+                              style: {
+                                  marginLeft: '5px'
                               },
                               on: {
-                              
-                                'on-query-change': ()=>{
-                                    //console.log('on-query-change',this.organismSample)
-                                },
-                                
-                                  'on-change': () => {
-                                      //console.log('change');
-                                  },
-                                  
-                              }
-                          }, [
-                              this.organismTest.map(function (item) {
-                                  return h('Option', {
-                                      props: {
-                                          value: item.value
-                                      }
-                                  })
-                              })
-
-                          ]),
-                      ]);
-                  }
-              },
-              {title: 'Strain/breed',key: 'strainbreed',align:'center',
-                  renderHeader (h, params) {
-                    return h('div', [
-                        h('span',{
-
-                        },'Organism'),
-                        h('Icon', {
-                            props: {
-                                type: 'checkmark-round',
-                            },
-                            style: {
-                                marginLeft: '5px'
-                            },
-                            on: {
-                                click: () => {
-                                    
-                                }
-                            }
-                        }),
-                    ])
-                  },
-                  render: (h, params) => {
-                      return h('div', [
-                          h('Input', {
-                              props:{
-                                'v-model': this.strainbreed,
-                                size:'small'
-                              },
-                              on: {
-                                  'on-blur': ()=>{
-                                      console.log('this.strainbreed',this.strainbreed);
+                                  click: () => {
+                                      
                                   }
-                                  
                               }
                           }),
-                      ]);
-                  }
-              },
-              {title: 'Age',key: 'age',sortable: false,align:'center',
-                  render: (h, params) => {
-                      return h('InputNumber', {
-                         props:{
-                            min: 0,
-                            step: 1,
-                            value:18,
-                            size:'small'
-                         },
-                         style:{
-                            width: '50px'
-                         }
-                      });
-                  }
-              },
-              {title: 'Developmental stage',key: 'developmentalstage',sortable: false,align:'center',editable: true},
-              {title: 'Sex',key: 'sex',sortable: false,align:'center',editable: true},
-              {title: 'Disease',key: 'disease',align:'center',
-                  children: [
-                      {
-                          title: 'Age',
-                          key: 'age',
-                          align: 'center',
-                          width: 200,
-                          sortable: false,
-                          render: (h, params) => {
-                              return h('div', [
-                                  h('Select', {
-                                      props:{
-                                        'v-model':this.organismSample,
-                                        filterable:true,
-                                        remote:true,
-                                        loading:this.organismSampleLoading,
-                                        'remote-method':this.organismSampleQuery,
-                                        size:'small',
-                                        placeholder:''
-                                      },
-                                      on: {
-                                      
-                                        'on-query-change': ()=>{
-                                            //console.log('on-query-change',this.organismSample)
-                                        },
-                                        
-                                          'on-change': () => {
-                                              //console.log('change');
-                                          },
-                                          
-                                      }
-                                  }, [
-                                      this.organismTest.map(function (item) {
-                                          return h('Option', {
-                                              props: {
-                                                  value: item.value
-                                              }
-                                          })
-                                      })
-
-                                  ]),
-                              ]);
-                          }
-                      },
-                      {
-                          title: 'Age',
-                          key: 'age',
-                          align: 'center',
-                          width: 200,
-                          sortable: false,
-                          render: (h, params) => {
-                              return h('div', [
-                                  h('Select', {
-                                      props:{
-                                        'v-model':this.organismSample,
-                                        filterable:true,
-                                        remote:true,
-                                        loading:this.organismSampleLoading,
-                                        'remote-method':this.organismSampleQuery,
-                                        size:'small',
-                                        placeholder:''
-                                      },
-                                      on: {
-                                      
-                                        'on-query-change': ()=>{
-                                            //console.log('on-query-change',this.organismSample)
-                                        },
-                                        
-                                          'on-change': () => {
-                                              //console.log('change');
-                                          },
-                                          
-                                      }
-                                  }, [
-                                      this.organismTest.map(function (item) {
-                                          return h('Option', {
-                                              props: {
-                                                  value: item.value
-                                              }
-                                          })
-                                      })
-
-                                  ]),
-                              ]);
-                          }
-                      }
-                  ],
-                  renderHeader (h, params) {
-                    return h('div', [
-                        h('span',{
-
-                        },'Disease'),
-                        h('Icon', {
+                      ])
+                    },
+                    render: (h, params) => {
+                         /*
+                          // role是引入的组件名称
+                          return h(SelectSampleTable, {
                             props: {
-                                type: 'ios-plus-outline',
-                            },
-                            style: {
-                                marginLeft: '5px'
-                            },
-                            on: {
-                                click: () => {
-                                    console.log('add disease children columns');
-                                }
+                              //dataType: 1,
+                              //userId: params.row.userId
                             }
-                        }),
-                    ])
-                  },
+                          }, '123');
+                          */
+                     
+                        return h('div', [
+                            h('Select', {
+                                props:{
+                                  'v-model':this.organismSample,
+                                  filterable:true,
+                                  remote:true,
+                                  loading:this.organismSampleLoading,
+                                  'remote-method':this.organismSampleQuery,
+                                  size:'small',
+                                  placeholder:''
+                                },
+                                on: {
+                                
+                                  'on-query-change': ()=>{
+                                      //console.log('on-query-change',this.organismSample)
+                                  },
+                                  
+                                    'on-change': () => {
+                                        //console.log('change');
+                                    },
+                                    
+                                }
+                            }, [
+                                this.organismTest.map(function (item) {
+                                    return h('Option', {
+                                        props: {
+                                            value: item.value
+                                        }
+                                    })
+                                })
+
+                            ]),
+                        ]);
+                    }
+                },
+                {title: 'Strain/breed',key: 'strainbreed',align:'center',
+                    renderHeader (h, params) {
+                      return h('div', [
+                          h('span',{
+
+                          },'Organism'),
+                          h('Icon', {
+                              props: {
+                                  type: 'checkmark-round',
+                              },
+                              style: {
+                                  marginLeft: '5px'
+                              },
+                              on: {
+                                  click: () => {
+                                      
+                                  }
+                              }
+                          }),
+                      ])
+                    },
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Input', {
+                                props:{
+                                  'v-model': this.strainbreed,
+                                  size:'small'
+                                },
+                                on: {
+                                    'on-blur': ()=>{
+                                        console.log('this.strainbreed',this.strainbreed);
+                                    }
+                                    
+                                }
+                            }),
+                        ]);
+                    }
+                },
+                {title: 'Age',key: 'age',sortable: false,align:'center',
+                    render: (h, params) => {
+                        return h('InputNumber', {
+                           props:{
+                              min: 0,
+                              step: 1,
+                              value:18,
+                              size:'small'
+                           },
+                           style:{
+                              width: '50px'
+                           }
+                        });
+                    }
+                },
+                {title: 'Developmental stage',key: 'developmentalstage',sortable: false,align:'center',editable: true},
+                {title: 'Sex',key: 'sex',sortable: false,align:'center',editable: true},
+                {title: 'Disease',key: 'disease',align:'center',
+                    /*
+                    children: [
+                        {
+                            title: 'Age',
+                            key: 'age',
+                            align: 'center',
+                            width: 200,
+                            sortable: false,
+                            render: (h, params) => {
+                                return h('div', [
+                                    h('Select', {
+                                        props:{
+                                          'v-model':this.organismSample,
+                                          filterable:true,
+                                          remote:true,
+                                          loading:this.organismSampleLoading,
+                                          'remote-method':this.organismSampleQuery,
+                                          size:'small',
+                                          placeholder:''
+                                        },
+                                        on: {
+                                        
+                                          'on-query-change': ()=>{
+                                              //console.log('on-query-change',this.organismSample)
+                                          },
+                                          
+                                            'on-change': () => {
+                                                //console.log('change');
+                                            },
+                                            
+                                        }
+                                    }, [
+                                        this.organismTest.map(function (item) {
+                                            return h('Option', {
+                                                props: {
+                                                    value: item.value
+                                                }
+                                            })
+                                        })
+
+                                    ]),
+                                ]);
+                            }
+                        },
+                        {
+                            title: 'Age',
+                            key: 'age',
+                            align: 'center',
+                            width: 200,
+                            sortable: false,
+                            render: (h, params) => {
+                                return h('div', [
+                                    h('Select', {
+                                        props:{
+                                          'v-model':this.organismSample,
+                                          filterable:true,
+                                          remote:true,
+                                          loading:this.organismSampleLoading,
+                                          'remote-method':this.organismSampleQuery,
+                                          size:'small',
+                                          placeholder:''
+                                        },
+                                        on: {
+                                        
+                                          'on-query-change': ()=>{
+                                              //console.log('on-query-change',this.organismSample)
+                                          },
+                                          
+                                            'on-change': () => {
+                                                //console.log('change');
+                                            },
+                                            
+                                        }
+                                    }, [
+                                        this.organismTest.map(function (item) {
+                                            return h('Option', {
+                                                props: {
+                                                    value: item.value
+                                                }
+                                            })
+                                        })
+
+                                    ]),
+                                ]);
+                            }
+                        }
+                    ],*/
+                    renderHeader:(h, params)=> {
+                      return h('div', [
+                          h('span',{
+
+                          },'Disease'),
+                          h('Icon', {
+                              props: {
+                                  type: 'close-round',
+                              },
+                              style: {
+                                  marginLeft: '5px',
+                                  /*display:'none'*/
+                                  display:'inline-block'
+                              },
+                              on: {
+                                  click: () => {
+                                      this.deleteColumn(params);
+                                  }
+                              }
+                          }),
+                      ])
+                    },
+                },
+                {title: 'Cell type',key: 'celltype',sortable: false,align:'center',editable: true},
+                {title: 'Individual',key: 'individual',sortable: false,align:'center',editable: true},
+                {title: 'Cell line Code',key: 'celllinecode',sortable: false,align:'center',editable: true},
+            ],
+            sampleData:[{
+                organism:'123',
+                strainbreed:'123',
+                age:'123',
+                developmentalstage:'123',
+                sex:'123',
+                disease:'123',
+                celltype:'123',
+                individual:'123',
+                celllinecode:'123',
+            }],
+            querySpecificFacetsLoading:false,
+            highlightKeyword:'',
+            HighlightKeywordSensitive:false,
+            facetsURL: this.$store.state.baseApiURL + '/facet/projects',
+            searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
+            projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
+            queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
+            autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
+            queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
+            //getSampleAttributesApi: this.$store.state.baseApiURL + '/ws/archive/annotator/getSampleAttributes',
+            getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
+            containItemSearch:'',
+            fieldSelectors:[],
+            currentPage:1,
+            containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+                value: '',
+                label: '',
+                check: false,
+                number: ''
+            }],
+            //containSelectors:[],
+            filterCombination:[],
+            sortType:'Date',
+            publicaitionList:[],
+            sortList:[
+              {
+                  value: 'Accession',
+                  label: 'Accession'
               },
-              {title: 'Cell type',key: 'celltype',sortable: false,align:'center',editable: true},
-              {title: 'Individual',key: 'individual',sortable: false,align:'center',editable: true},
-              {title: 'Cell line Code',key: 'celllinecode',sortable: false,align:'center',editable: true},
-          ],
-          sampleData:[{
-              organism:'123',
-              strainbreed:'123',
-              age:'123',
-              developmentalstage:'123',
-              sex:'123',
-              disease:'123',
-              celltype:'123',
-              individual:'123',
-              celllinecode:'123',
-          }],
-          querySpecificFacetsLoading:false,
-          highlightKeyword:'',
-          HighlightKeywordSensitive:false,
-          facetsURL: this.$store.state.baseApiURL + '/facet/projects',
-          searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
-          projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
-          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
-          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-          containItemSearch:'',
-          fieldSelectors:[],
-          currentPage:1,
-          containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-              value: '',
-              label: '',
-              check: false,
-              number: ''
-          }],
-          //containSelectors:[],
-          filterCombination:[],
-          sortType:'Date',
-          publicaitionList:[],
-          sortList:[
-            {
-                value: 'Accession',
-                label: 'Accession'
-            },
-            {
-                value: 'Title',
-                label: 'Title'
-            },
-            {
-                value: 'Relevance',
-                label: 'Relevance'
-            },
-            {
-                value: 'Date',
-                label: 'Date'
-            }
-          ],
-          page:0,
-          pageSize:20,
-          filter:'',
-          sort:'publication_date',
-          total:0,
-          facetsConfigRes:'',
-          projectItemsConfigRes:'',
-          hightlightMode:false,
-          hightlightItemArray:[],
-          tagArray:[],
-          projectItemsSpecies:'',
-          projectItemsProjectDescription:'',
-          projectItemsPublicationDate:'',
-          normalQuery:{},
-          autoCompleteArray:[]
+              {
+                  value: 'Title',
+                  label: 'Title'
+              },
+              {
+                  value: 'Relevance',
+                  label: 'Relevance'
+              },
+              {
+                  value: 'Date',
+                  label: 'Date'
+              }
+            ],
+            page:0,
+            pageSize:20,
+            filter:'',
+            sort:'publication_date',
+            total:0,
+            facetsConfigRes:'',
+            projectItemsConfigRes:'',
+            hightlightMode:false,
+            hightlightItemArray:[],
+            tagArray:[],
+            projectItemsSpecies:'',
+            projectItemsProjectDescription:'',
+            projectItemsPublicationDate:'',
+            normalQuery:{},
+            autoCompleteArray:[],
+            annotateExperiment:[
+                {
+                  value:'Human',
+                  class:'human',
+                  check:false,
+                  type:'HUMAN',
+                },
+                {
+                  value:'Vertebrates',
+                  class:'vertebrates',
+                  check:false,
+                  type:'VERTEBRATES'
+                },
+                {
+                  value:'Cell Line',
+                  class:'cellline',
+                  check:false,
+                  type:'CELL_LINES'
+                },
+                {
+                  value:'Plant',
+                  class:'plant',
+                  check:false,
+                  type:'PLANTS'
+                },
+                {
+                  value:'Other',
+                  class:'questionmark',
+                  check:false,
+                  type:'OTHER'
+                },
+            ],   
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1424,7 +1537,25 @@
         this.annotationStep--;
       },
       next(){
-        this.annotationStep++;
+        if(this.annotationStep == 2){
+            //if(this.selectedExperimentType && this.samplesNum != 0 && this.trNum != 0 && this.fractionsNum != 0){
+            if(this.selectedExperimentType && this.samplesNum != 0){
+              this.annotationStep++;
+              this.getSampleAttributes();
+            }
+            else{
+              this.$Message.error({content:'Choose the Experiment Type and All the numbers cannot be 0', duration:1});
+              return;
+            }
+        }
+        else{
+          this.annotationStep++;
+        }
+        
+         
+    
+        //console.log('samplesNum trNum fractionsNum selectedExperimentType',this.selectedExperimentType, this.samplesNum,this.trNum,this.fractionsNum)
+       
       },
       annotationConfirm(){
         console.log('annotationConfirm');
@@ -1442,6 +1573,238 @@
         this.$refs.tables.exportCsv({
           filename: `table-${(new Date()).valueOf()}.csv`
         })
+      },
+      experimentTypeChoose(item){
+        for(let i=0; i<this.annotateExperiment.length; i++){
+            if(this.annotateExperiment[i].value == item.value){
+                this.annotateExperiment[i].check = !this.annotateExperiment[i].check;
+                if(this.annotateExperiment[i].check){
+                  this.selectedExperimentType = this.annotateExperiment[i].type;
+                  console.log('selectedExperimentType',this.selectedExperimentType);
+                  this.annotateExperiment[i].class = this.annotateExperiment[i].class + '-check';
+                }
+                else{
+                  if(this.annotateExperiment[i].class.match('-check'))
+                      this.annotateExperiment[i].class = this.annotateExperiment[i].class.replace('-check','');
+                }
+            } 
+            else{
+                this.annotateExperiment[i].check=false;
+                if(this.annotateExperiment[i].class.match('-check'))
+                  this.annotateExperiment[i].class = this.annotateExperiment[i].class.replace('-check','');
+            }
+        }
+      },
+      showAddColumnModal(){
+        this.newColumnNameSelectedArray=[];
+        this.addColumnBool=true;
+      },
+      addColumn(){
+          let key =[];
+          for(let i=0; i<this.newColumnNameSelectedArray.length; i++){
+              for(let j=0; j<this.newColumnNameArray.length; j++){
+                  if(this.newColumnNameArray[j].label == this.newColumnNameSelectedArray[i]){
+                      let item =  {title:this.newColumnNameArray[j].label,key:this.newColumnNameArray[j].value,align:'center',
+                          renderHeader: (h, params)=> {
+                            return h('div', [
+                                h('span',{
+
+                                },this.newColumnNameArray[j].label),
+                                h('Icon', {
+                                    props: {
+                                        type: 'ios-close-outline',
+                                    },
+                                    style: {
+                                        marginLeft: '5px',
+                                        //display: this.newColumnNameArray[j].required ? 'none':'inline-block'
+                                        display:'inline-block'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.deleteColumn(params);
+                                        }
+                                    }
+                                }),
+                            ])
+                          },
+                          render: (h, params) => {
+                              return h('div', [
+                                  h('Select', {
+                                      props:{
+                                        'v-model':this.organismSample,
+                                        filterable:true,
+                                        remote:true,
+                                        loading:this.organismSampleLoading,
+                                        'remote-method':this.organismSampleQuery,
+                                        size:'small',
+                                        placeholder:''
+                                      },
+                                      on: {
+                                        'on-query-change': ()=>{
+                                            //console.log('on-query-change',this.organismSample)
+                                        },
+                                        
+                                        'on-change': () => {
+                                            //console.log('change');
+                                        },
+                                      }
+                                  }, [
+                                      this.organismTest.map(function (item) {
+                                          return h('Option', {
+                                              props: {
+                                                  value: item.value
+                                              }
+                                          })
+                                      })
+
+                                  ]),
+                              ]);
+                          }
+
+                      };
+                      for(let k=0; k<this.sampleCol.length; k++){
+                          if(this.sampleCol[k].title == item.title){
+                            this.sampleCol.splice(k+1,0,item);
+                            break;
+                          }
+                      }
+                      key.push(item.key)
+                  }
+              }
+          }
+          for(let i=0; i<this.sampleData.length; i++){
+              for(let j=0; j<key.length; j++){
+                  this.sampleData[i][key]=''
+              }
+          }
+          console.log('before this.sampleData',this.sampleData);
+      },
+      deleteColumn(params){
+      
+        this.sampleCol.splice(params.index,1);
+        //console.log('before this.sampleData',this.sampleData);
+        let key = params.column.key;
+        for(let i=0; i<this.sampleData.length; i++){
+            for(let j in this.sampleData[i]){
+                if(j == key){
+                  delete this.sampleData[i][key]
+                  break;
+                }
+            }
+        }
+        
+      },
+      getSampleAttributes(){
+          let tempSampleCol=[];
+          let tempSampleData={};
+          this.sampleCol=[];
+          this.sampleData=[];
+          this.$http
+              .get(this.getSampleAttributesApi)
+              .then((res)=>{
+                  for(let i=0; i<res.body.length; i++){
+                      if(res.body[i].first == this.selectedExperimentType){
+                          console.log('res.body[i]',res.body[i]);
+                          let item = {
+                            experimentType:res.body[i].first,
+                            required: res.body[i].second == 'REQUIRED'? true:false,
+                            cvLable:res.body[i].third.cvLabel.toLowerCase(),
+                            accession:res.body[i].third.accession,
+                            name:this.titleCase(res.body[i].third.name),
+                            orignal_name:res.body[i].third.name
+                          }
+                          tempSampleCol.push(item);
+                      }
+                  }
+                  for(let j=0; j<tempSampleCol.length; j++){
+                      let key = tempSampleCol[j].name.toLowerCase().replace(/\s/ig,'');
+                      let itemColumn =  {
+                          title: tempSampleCol[j].name, 
+                          key: key,
+                          align:'center',
+                          renderHeader: (h, params)=> {
+                            return h('div', [
+                                h('span',{
+
+                                },tempSampleCol[j].name),
+                                h('Icon', {
+                                    props: {
+                                        type: 'ios-close-outline',
+                                    },
+                                    style: {
+                                        marginLeft: '5px',
+                                        display: tempSampleCol[j].required ? 'none':'inline-block'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.deleteColumn(params);
+                                        }
+                                    }
+                                }),
+                            ])
+                          },
+                          render: (h, params) => {
+                              console.log('params',params);
+                              return h('div', [
+                                  h('Select', {
+                                      props:{
+                                        'v-model':params.row[key],
+                                        filterable:true,
+                                        remote:true,
+                                        loading:this.organismSampleLoading,
+                                        'remote-method':this.organismSampleQuery,
+                                        size:'small',
+                                        placeholder:''
+                                      },
+                                      on: {
+                                        'on-query-change': ()=>{
+                                            //console.log('on-query-change',this.organismSample)
+                                        },
+                                        
+                                        'on-change': () => {
+                                            //console.log('change');
+                                        },
+                                      }
+                                  }, [
+                                      this.organismTest.map(function (item) {
+                                          return h('Option', {
+                                              props: {
+                                                  value: item.value
+                                              }
+                                          })
+                                      })
+
+                                  ]),
+                              ]);
+                          }
+                      }
+                      let tempAddNewCol={
+                          value: itemColumn.key,
+                          label: itemColumn.title,
+                          required: tempSampleCol[j].required
+                      }
+                      this.sampleCol.push(itemColumn);
+                      this.newColumnNameArray.push(tempAddNewCol);
+                      tempSampleData[itemColumn.key]='';
+                  }
+                  //console.log('tempSampleData',tempSampleData);
+                  for(let k=0; k<this.samplesNum; k++){
+                      this.sampleData.push(tempSampleData)
+                  }     
+                  console.log('this.sampleData',this.sampleData);
+                 //console.log('tempSampleCol',tempSampleCol);
+              },function(err){
+
+              });
+      },
+      titleCase(str) {
+        str=str.toLowerCase().split(" ");
+        for(var i=0;i<str.length;i++){
+          var char=str[i].charAt(0);
+          str[i]=str[i].replace(char,function(s){return s.toUpperCase();});
+        }
+        str=str.join(" ");
+        return str;
       }
     },
 
@@ -1471,8 +1834,7 @@
           normalQuery.pageSize = this.pageSize;
           //console.log('this.normalQuery',this.normalQuery);
           //return '?'+keyword+filter+page+pageSize;
-          return normalQuery;
-          
+          return normalQuery; 
       }
     },
     mounted: function(){
@@ -1481,6 +1843,8 @@
       //this.queryArchiveProjectList();//move into queryConfig function
       //this.setFilter();//move into queryConfig function
       this.searchInputListener();
+
+     
     },
     created(){
       
@@ -1535,7 +1899,7 @@
   }
   .number-wrapper{
     font-size: 20px;
-    margin: 20px 0;
+    margin: 15px;
     display: flex;
     width: 300px;
     justify-content: space-between;
@@ -1739,13 +2103,193 @@
     .readMore{
       display: inline;
     }
-    .leaf:before{
+    .card-content .step-title{
+      font-size: 14px;
+      color: #5bc0be;
+      font-weight: bold;
+      margin:15px 0 0 0;
+    }
+    .modal-column-name{
+      font-size: 14px;
+      color: #5bc0be;
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
+    .card{
+      margin-top: 20px;
+    }
+    .property-row{
+      margin-top: 10px;
+    }
+    .experiment-type-wrapper{
+      display: flex;
+    }
+    .experiment-type-wrapper div{
+      position: relative;
+      width: 135px;
+      height: 135px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 1px solid;
+      border-color: #5bc0be;
+      border-radius: 6px;
+      /*background-color: #207a79;*/
+      margin: 15px;
+    }
+    .experiment-type-wrapper div span{
+        position: absolute;
+        bottom: 8px;
+    }
+    .step-title-tooltip{
+      margin-left: 5px;
+    }
+    .human:before{
+      content: "H";
+      font-family: "EBI-Species";
+      display: block;
+      font-size: 44pt;
+      margin: 7px;
+      background: none;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+    .human-check{
+      background-color: #5bc0be;
+    }
+    .human-check:before{
+      content: "H";
+      font-family: "EBI-Species";
+      display: block;
+      font-size: 44pt;
+      margin: 7px;
+      color: white;
+      margin-bottom: 15px;
+    }
+    .vertebrates:before{
+      content: "M";
+      font-family: "EBI-Species";
+      display: block;
+      font-size: 44pt;
+      margin: 7px;
+      background: none;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+    .vertebrates-check{
+      background-color: #5bc0be;
+    }
+    .vertebrates-check:before{
+      content: "M";
+      font-family: "EBI-Species";
+      display: block;
+      font-size: 44pt;
+      margin: 7px;
+      color: white;
+      margin-bottom: 15px;
+    }
+    /*
+    .animal:before{
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        background: url(../../../static/font/expsprite.png);
+        background-size: 128px !important;
+        background-color: transparent;
+        background-position: 0 -256px;
+        margin-bottom: 15px;
+    }
+    .animal-check{
+      background-color: #5bc0be;
+    }
+    .animal-check:before{
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        background: url(../../../static/font/expsprite.png);
+        background-size: 128px !important;
+        background-color: transparent;
+        background-position: -64px -256px;
+        margin-bottom: 15px;
+    }*/
+    .cellline:before{
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        background: url(../../../static/font/expsprite.png);
+        background-size: 128px !important;
+        background-color: transparent;
+        background-position: 0 -311px;
+        margin-bottom: 15px;
+    }
+    .cellline-check{
+      background-color: #5bc0be;
+    }
+    .cellline-check:before{
+        content: " ";
+        display: block;
+        width: 64px;
+        height: 64px;
+        background: url(../../../static/font/expsprite.png);
+        background-size: 128px !important;
+        background-color: transparent;
+        background-position: -64px -311px;
+        margin-bottom: 15px;
+    }
+    .plant:before{
         content: "P";
         font-family: "EBI-Species";
         display: block;
+        color: #aaa;
         font-size: 44pt;
-        margin: 7px;
         background: none;
+        margin-bottom: 15px;
+    } 
+    .plant-check{
+        background-color: #5bc0be;
+    }
+    .plant-check:before{
+        content: "P";
+        font-family: "EBI-Species";
+        display: block;
+        color: white;
+        font-size: 44pt;
+        background: none;
+        margin-bottom: 15px;
+    }
+    .questionmark:before{
+        content: "?";
+        font-family: "EBI-Generic";
+        display: block;
+        color: #aaa;
+        font-size: 44pt;
+        background: none;
+        margin-bottom: 15px;
+    }
+    .questionmark-check{
+        background-color: #5bc0be;
+    }
+    .questionmark-check:before{
+        content: "?";
+        font-family: "EBI-Generic";
+        display: block;
+        color: white;
+        font-size: 44pt;
+        background: none;
+        margin-bottom: 15px;
+    }
+    .selectedExperimentText{
+      color: white
+    }
+    .new-column-checkbox{
+          display: flex;
+          flex-direction: column;
+    }
+    .checkbox-item-wrapper{
+      display: flex;
     }
     @font-face {
         font-family: 'EBI-Generic';
