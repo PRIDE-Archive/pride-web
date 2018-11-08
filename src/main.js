@@ -36,6 +36,10 @@ import VueMarkdown from 'vue-markdown';
 import ReadMore from 'vue-read-more';
  
 
+import vSuggest from 'v-suggest';
+Vue.use(vSuggest);
+ 
+
 Vue.component('vue-markdown', VueMarkdown);
 Vue.component('text-highlight', TextHighlight);
 Vue.config.productionTip = false

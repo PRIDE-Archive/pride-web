@@ -463,19 +463,11 @@
                       <Icon type="plus-round" @click="showAddColumnModal" size="20"></Icon>
                     </p>
                     <div class="card-content">
-                        <Table height="295" class="sample-table" border :columns="sampleCol" :data="sampleData" size="small"></Table>
+                        <Table height="295" class="sample-table" border :columns="sampleCol" :data="sampleData" size="small" :disabled-hover="true"></Table>
                     </div>
                 </Card>
-                <Card class="card">
-                    <p slot="title" class="resource-list-title-container">
-                      <span>File</span>
-                    </p>
-                    <div class="card-content">
-                        <!--
-                        <tables ref="tables" editable searchable search-place="top" v-model="tableData" :columns="columns" @on-delete="handleDelete"/>-->
-                        <!--<tables ref="tables" editable v-model="sampleData" :columns="sampleCol" @on-delete="handleDelete"/>-->
-                    </div>
-                </Card>
+                <selfTable :selectedExperimentType="selectedExperimentType" :samplesNum="samplesNum"></selfTable>
+                
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
@@ -512,6 +504,8 @@
   import store from "@/store/store.js"
   import Tables from '@/components/tables'
   import SelectSampleTable from '@/components/select'
+  import draggable from 'vuedraggable'
+  import selfTable from './table.vue'
   var paramsFromLandingPage='';
   export default {
     name: 'archive',
@@ -551,9 +545,7 @@
             tableData:[],
             organismSample:'',
             strainbreed:'',
-            organismTest:[
-              {value:'111'},{value:'222'},{value:'333'}
-            ],
+            organismTest:[],
             organismSampleLoading:false,
             annotationStep:0,
             accession:'',
@@ -583,7 +575,7 @@
             fieldValue:'',
             containValue:'',
             loading:true,
-            sampleCol: [
+            sampleCol: [/*
                 {type: 'selection',
                           width: 60,
                           align: 'center'},
@@ -609,16 +601,6 @@
                       ])
                     },
                     render: (h, params) => {
-                         /*
-                          // role是引入的组件名称
-                          return h(SelectSampleTable, {
-                            props: {
-                              //dataType: 1,
-                              //userId: params.row.userId
-                            }
-                          }, '123');
-                          */
-                     
                         return h('div', [
                             h('Select', {
                                 props:{
@@ -710,7 +692,7 @@
                 {title: 'Developmental stage',key: 'developmentalstage',sortable: false,align:'center',editable: true},
                 {title: 'Sex',key: 'sex',sortable: false,align:'center',editable: true},
                 {title: 'Disease',key: 'disease',align:'center',
-                    /*
+                   
                     children: [
                         {
                             title: 'Age',
@@ -796,7 +778,7 @@
                                 ]);
                             }
                         }
-                    ],*/
+                    ],
                     renderHeader:(h, params)=> {
                       return h('div', [
                           h('span',{
@@ -808,7 +790,7 @@
                               },
                               style: {
                                   marginLeft: '5px',
-                                  /*display:'none'*/
+                                 
                                   display:'inline-block'
                               },
                               on: {
@@ -822,19 +804,9 @@
                 },
                 {title: 'Cell type',key: 'celltype',sortable: false,align:'center',editable: true},
                 {title: 'Individual',key: 'individual',sortable: false,align:'center',editable: true},
-                {title: 'Cell line Code',key: 'celllinecode',sortable: false,align:'center',editable: true},
+                {title: 'Cell line Code',key: 'celllinecode',sortable: false,align:'center',editable: true},*/
             ],
-            sampleData:[{
-                organism:'123',
-                strainbreed:'123',
-                age:'123',
-                developmentalstage:'123',
-                sex:'123',
-                disease:'123',
-                celltype:'123',
-                individual:'123',
-                celllinecode:'123',
-            }],
+            sampleData:[],
             querySpecificFacetsLoading:false,
             highlightKeyword:'',
             HighlightKeywordSensitive:false,
@@ -846,6 +818,7 @@
             queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
             //getSampleAttributesApi: this.$store.state.baseApiURL + '/ws/archive/annotator/getSampleAttributes',
             getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
+            getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
             containItemSearch:'',
             fieldSelectors:[],
             currentPage:1,
@@ -924,6 +897,9 @@
                   type:'OTHER'
                 },
             ],   
+            tempParams:{},
+            tempSampleCol:[],
+            test:'',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -942,18 +918,32 @@
     components: {
       NavBar,
       Tables,
-      SelectSampleTable
+      SelectSampleTable,
+      draggable,
+      selfTable
     },
     methods:{
       organismSampleQuery(searchValue){
+        //console.log('this.tempParams',this.tempParams);
         this.organismSampleLoading = true;
-        setTimeout(()=>{
-             this.organismSampleLoading = false;
-            this.organismTest = [{value:'555'},{value:'666'}]
-             console.log('searchValue',searchValue);
-        },1000)
-        
-       
+        this.organismTest=[];
+        let query={
+          attributeAccession: 'OBI:0100026',
+          ontologyAccession: 'efo',
+          keyword:searchValue
+        }
+        this.$http
+            .get(this.getValuesByAttributeApi,{params: query})
+            .then(function(res){
+                this.organismSampleLoading = false;
+               //console.log('organismSampleQuery',res.body);
+               for(let i=0; i<res.body.length; i++){
+                  let item = {value:res.body[i].name}
+                  this.organismTest.push(item)
+               }
+            },function(err){
+
+            });
       },
       searchInputChange (query, splitBool) {
           if(splitBool){
@@ -1537,6 +1527,7 @@
         this.annotationStep--;
       },
       next(){
+        //console.log('this.samplesNum',this.samplesNum);
         if(this.annotationStep == 2){
             //if(this.selectedExperimentType && this.samplesNum != 0 && this.trNum != 0 && this.fractionsNum != 0){
             if(this.selectedExperimentType && this.samplesNum != 0){
@@ -1580,7 +1571,7 @@
                 this.annotateExperiment[i].check = !this.annotateExperiment[i].check;
                 if(this.annotateExperiment[i].check){
                   this.selectedExperimentType = this.annotateExperiment[i].type;
-                  console.log('selectedExperimentType',this.selectedExperimentType);
+                  //console.log('selectedExperimentType',this.selectedExperimentType);
                   this.annotateExperiment[i].class = this.annotateExperiment[i].class + '-check';
                 }
                 else{
@@ -1641,11 +1632,13 @@
                                       },
                                       on: {
                                         'on-query-change': ()=>{
+                                            this.tempParams = params
                                             //console.log('on-query-change',this.organismSample)
+                                            //console.log('sampleData',this.sampleData);
                                         },
                                         
                                         'on-change': () => {
-                                            //console.log('change');
+                                            //console.log('changechangechangechange');
                                         },
                                       }
                                   }, [
@@ -1677,7 +1670,7 @@
                   this.sampleData[i][key]=''
               }
           }
-          console.log('before this.sampleData',this.sampleData);
+          //console.log('before this.sampleData',this.sampleData);
       },
       deleteColumn(params){
       
@@ -1695,8 +1688,8 @@
         
       },
       getSampleAttributes(){
-          let tempSampleCol=[];
           let tempSampleData={};
+          this.tempSampleCol=[];
           this.sampleCol=[];
           this.sampleData=[];
           this.$http
@@ -1704,36 +1697,37 @@
               .then((res)=>{
                   for(let i=0; i<res.body.length; i++){
                       if(res.body[i].first == this.selectedExperimentType){
-                          console.log('res.body[i]',res.body[i]);
+                          //console.log('res.body[i]',res.body[i]);
                           let item = {
                             experimentType:res.body[i].first,
                             required: res.body[i].second == 'REQUIRED'? true:false,
                             cvLable:res.body[i].third.cvLabel.toLowerCase(),
                             accession:res.body[i].third.accession,
                             name:this.titleCase(res.body[i].third.name),
-                            orignal_name:res.body[i].third.name
+                            orignal_name:res.body[i].third.name,
+                            key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,'')
                           }
-                          tempSampleCol.push(item);
+                          this.tempSampleCol.push(item);
                       }
                   }
-                  for(let j=0; j<tempSampleCol.length; j++){
-                      let key = tempSampleCol[j].name.toLowerCase().replace(/\s/ig,'');
+                  for(let j=0; j<this.tempSampleCol.length; j++){
+                      let key = this.tempSampleCol[j].name.toLowerCase().replace(/\s/ig,'');
                       let itemColumn =  {
-                          title: tempSampleCol[j].name, 
+                          title: this.tempSampleCol[j].name, 
                           key: key,
                           align:'center',
                           renderHeader: (h, params)=> {
                             return h('div', [
                                 h('span',{
 
-                                },tempSampleCol[j].name),
+                                },this.tempSampleCol[j].name),
                                 h('Icon', {
                                     props: {
                                         type: 'ios-close-outline',
                                     },
                                     style: {
                                         marginLeft: '5px',
-                                        display: tempSampleCol[j].required ? 'none':'inline-block'
+                                        display: this.tempSampleCol[j].required ? 'none':'inline-block'
                                     },
                                     on: {
                                         click: () => {
@@ -1744,26 +1738,43 @@
                             ])
                           },
                           render: (h, params) => {
-                              console.log('params',params);
+                              //console.log('params',params);
                               return h('div', [
                                   h('Select', {
                                       props:{
-                                        'v-model':params.row[key],
+                                        //'v-model':this.sampleData[params.index][params.column.key],
+                                        //'v-model':this.test,
                                         filterable:true,
                                         remote:true,
+                                        clearable:true,
                                         loading:this.organismSampleLoading,
                                         'remote-method':this.organismSampleQuery,
                                         size:'small',
                                         placeholder:''
                                       },
                                       on: {
-                                        'on-query-change': ()=>{
+                                         'on-query-change': ()=>{
+                                            this.tempParams = params;
                                             //console.log('on-query-change',this.organismSample)
+                                            //console.log('sampleData',this.sampleData);
+
                                         },
                                         
                                         'on-change': () => {
-                                            //console.log('change');
+                                            this.tempParams = params;
+                                            this.organismTest=[];
+                                            this.pushData();
+                                            //console.log('changechangechangechange');
                                         },
+                                        'on-open-change': (open) => {
+                                            this.tempParams = params;
+                                            this.organismTest=[];
+                                            if(!open){
+                                                this.pushData();
+                                            }
+                                            //console.log('on-open-changeon-open-changeon-open-change');
+                                        },
+                                        
                                       }
                                   }, [
                                       this.organismTest.map(function (item) {
@@ -1781,7 +1792,7 @@
                       let tempAddNewCol={
                           value: itemColumn.key,
                           label: itemColumn.title,
-                          required: tempSampleCol[j].required
+                          required: this.tempSampleCol[j].required
                       }
                       this.sampleCol.push(itemColumn);
                       this.newColumnNameArray.push(tempAddNewCol);
@@ -1792,7 +1803,6 @@
                       this.sampleData.push(tempSampleData)
                   }     
                   console.log('this.sampleData',this.sampleData);
-                 //console.log('tempSampleCol',tempSampleCol);
               },function(err){
 
               });
@@ -1805,7 +1815,31 @@
         }
         str=str.join(" ");
         return str;
-      }
+      },
+      pushData(){
+          //console.log('this.tempSampleCol',this.tempSampleCol);
+          //console.log('this.tempParams.column.key',this.tempParams.column.key);
+
+          for(let i=0; i<this.tempSampleCol.length;i++){
+              if(this.tempSampleCol[i].key == this.tempParams.column.key){
+                  let item ={
+                      cvLable:this.tempSampleCol[i].cvLable,
+                      accession:this.tempSampleCol[i].accession,
+                      name:this.tempSampleCol[i].orignal_name
+                  };
+                  {
+                    key:{columnPrp}
+                    value:{item}
+                  }
+                  this.ad[index].push(item);
+                  console.log('item',item);
+                  break;
+              }
+             
+          }
+          console.log('this.test',this.test);
+          
+      },
     },
 
     watch: {

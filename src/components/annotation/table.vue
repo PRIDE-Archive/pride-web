@@ -55,14 +55,15 @@
                                 </Dropdown>
                           </div>
                           <div v-else>
-                              <div class="accession-col">{{itemRow.accession}}</div>
+                              <div class="accession-col"><Icon v-if="sampleData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
                           </div>
-                            
                     </div>
                 </div>
             </draggable>
             <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon>
             <button @click="check">123</button>
+            <button @click="confirm">2222</button>
+       
         </div>
     </Card>
     
@@ -395,7 +396,7 @@
                                       accession:'null',
                                       cvLabel:'null',
                                       col:item,
-                                      icon:''
+                                      icon:'',
                                   }
                               }
                           }
@@ -532,7 +533,7 @@
                   keyArray.push(item.key);
                   this.sampleCol.push(item)
               }
-              console.log(' this.sampleData', this.sampleData);
+              console.log('keyArray', keyArray);
 
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j=0; j<keyArray.length; j++){
@@ -554,8 +555,23 @@
               console.log(this.newData);
           },
           addRow(){
-            this.sampleNumber++;
-            console.log(this.sampleNumber);
+            let item={};
+            for(let i=0;i<this.sampleCol.length;i++){
+                //console.log('this.sampleCol[i]',this.sampleCol);
+                item[this.sampleCol[i].key] = {
+                    value:'',
+                    dropdown:false,
+                    accession:'null',
+                    cvLabel:'null',
+                    col:this.sampleCol[i],
+                    icon:''
+                } 
+            }
+            console.log('this.sampleCol.length+1',this.sampleData.length+1);
+            item.accession = "PXD_S"+(this.sampleData.length+1);
+            //console.log('itemitem',item);
+            this.sampleData.push(item);
+            //console.log('this.sampleData',this.sampleData);
           },
           deleteCol(itemCol, index){
           
@@ -571,8 +587,17 @@
                 }
             }
           },
+          deleteRow(itemRow, index){
+              console.log('index',index);
+              this.sampleData.splice(index,1);
+
+              for(let i=0; i<this.sampleData.length; i++){
+                this.sampleData[i].accession = "PXD_S"+(i+1);
+                
+            }
+          },
           dropdownClick(e,itemRow,itemCol){
-            console.log('dropdownClick',e,itemRow,itemCol);
+            //console.log('dropdownClick',e,itemRow,itemCol);
             itemRow.dropdown=false;
             if(e == "nodata" && !itemRow.value){
                 itemRow.icon="";
@@ -599,9 +624,37 @@
               //console.log('newColSelectChange',selection);
           },
           applyAll(name,row,col){
-              for(let i=0;i<this.sampleData.length; i++){
-                  this.sampleData[i][col.key] = row[col.key]
+               this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
+                  for(let i=0;i<this.sampleData.length; i++){
+                      let item = JSON.parse(JSON.stringify(row))
+                      console.log('item',item);
+                      this.sampleData[i][col.key] = item[col.key]
+                  }
+              });
+          },
+          confirm(){
+              let results = [];
+              for(let i=0; i<this.sampleData.length; i++){
+                  for(let j in this.sampleData[i]){
+                        console.log('jjjj',j);
+                        if(j!='accession'){
+                            let item={
+                                accession:{},
+                                key:{
+                                  accession:this.sampleData[i][j].col.accession,
+                                  cvLabel:this.sampleData[i][j].col.cvLabel,
+                                },
+                                value:{
+                                  accession:this.sampleData[i][j].accession,
+                                  cvLabel:this.sampleData[i][j].cvLabel,
+                                  value:this.sampleData[i][j].value
+                                }
+                            }
+                            results.push(item);
+                        }   
+                  }
               }
+              console.log('results',results);
           }
     },
     watch: {
@@ -609,8 +662,8 @@
     },
     
     mounted: function(){
-      console.log('this.selectedExperimentType',this.selectedExperimentType);
-      console.log('this.samplesNum',this.samplesNum);
+      //console.log('this.selectedExperimentType',this.selectedExperimentType);
+      //console.log('this.samplesNum',this.samplesNum);
       this.getSampleAttributes();
      
     },
@@ -679,11 +732,19 @@
     right: 10px;
     cursor: default;
   }
+  .icon-in-row{
+    /*position: absolute;
+    left: 10px;*/
+    cursor: default;
+    margin-right: 5px;
+  }
   .add-col-table{
     /*height: 500px;*/
   }
   .accession-col{
     text-align: center;
+    position: relative;
+    min-width: 80px;
   }
   .add-row-icon{
       margin-top: 5px;
