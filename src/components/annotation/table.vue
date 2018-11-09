@@ -43,7 +43,7 @@
                          
                             
                           <div v-if="itemCol.key!='accession'">
-                                <Input  size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key])">
+                                <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key])">
                                 </Input>
                                 <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                     <DropdownMenu class="dropdown-remote111"  slot="list">
@@ -397,6 +397,7 @@
                                       cvLabel:'null',
                                       col:item,
                                       icon:'',
+                                      checked:true,
                                   }
                               }
                           }
@@ -479,6 +480,7 @@
           },
           blur(item){
             item.dropdown = false;
+            item.checked=true;
             //console.log
           },
           removeInputContent(item){
@@ -543,7 +545,8 @@
                           accession:'null',
                           cvLabel:'null',
                           col:item,
-                          icon:''
+                          icon:'',
+                          checked:true,
                       }
                   }
               }
@@ -564,7 +567,8 @@
                     accession:'null',
                     cvLabel:'null',
                     col:this.sampleCol[i],
-                    icon:''
+                    icon:'',
+                    checked:true,
                 } 
             }
             console.log('this.sampleCol.length+1',this.sampleData.length+1);
@@ -604,7 +608,7 @@
                 return;
             }
             itemRow.value=e;
-            
+            itemRow.checked=true;
             
             for(let i=0; i<this.options1.length;i++){
                 if(this.options1[i].name==e){
@@ -634,27 +638,46 @@
           },
           confirm(){
               let results = [];
+              let tempAccession='';
+              let checkPass=true;
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j in this.sampleData[i]){
                         console.log('jjjj',j);
-                        if(j!='accession'){
-                            let item={
-                                accession:{},
-                                key:{
-                                  accession:this.sampleData[i][j].col.accession,
-                                  cvLabel:this.sampleData[i][j].col.cvLabel,
-                                },
-                                value:{
-                                  accession:this.sampleData[i][j].accession,
-                                  cvLabel:this.sampleData[i][j].cvLabel,
-                                  value:this.sampleData[i][j].value
-                                }
+                        if(j=='accession'){
+                            tempAccession = this.sampleData[i][j];
+                            continue;
+                        }
+                        else{
+                            if(!this.sampleData[i][j].value && this.sampleData[i][j].col.required){
+                                checkPass=false;
+                                this.sampleData[i][j].checked=false;
                             }
-                            results.push(item);
-                        }   
+                            else{
+                                 this.sampleData[i][j].checked=true;
+                                let item={
+                                    accession:tempAccession,
+                                    key:{
+                                      accession:this.sampleData[i][j].col.accession,
+                                      cvLabel:this.sampleData[i][j].col.cvLabel,
+                                    },
+                                    value:{
+                                      accession:this.sampleData[i][j].accession,
+                                      cvLabel:this.sampleData[i][j].cvLabel,
+                                      value:this.sampleData[i][j].value
+                                    }
+                                }
+                                results.push(item);
+                            }
+                        }
                   }
               }
-              console.log('results',results);
+              if(checkPass){
+                console.log('results',results);
+              }
+              else{
+                this.$Message.error({content:'Fill required content', duration:1});
+              }
+             // console.log('results',results);
           }
     },
     watch: {
@@ -749,6 +772,7 @@
   .add-row-icon{
       margin-top: 5px;
   }
+
 </style>
 
 <style>
@@ -777,5 +801,8 @@
 .apply-all-button{
   position: absolute;
   left:2px;
+}
+.inputError .ivu-input{
+    border: 1px solid red !important;
 }
 </style>
