@@ -48,7 +48,7 @@
                                 <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                     <DropdownMenu class="dropdown-remote111"  slot="list">
                                         <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
-                                        <DropdownItem v-for="item in options1" :name="item.name">{{item.name}}
+                                        <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
                                             <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>
                                         </DropdownItem>
                                     </DropdownMenu>
@@ -480,7 +480,8 @@
           },
           blur(item){
             item.dropdown = false;
-            item.checked=true;
+            if(item.value)
+              item.checked=true;
             //console.log
           },
           removeInputContent(item){
@@ -642,7 +643,6 @@
               let checkPass=true;
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j in this.sampleData[i]){
-                        console.log('jjjj',j);
                         if(j=='accession'){
                             tempAccession = this.sampleData[i][j];
                             continue;
