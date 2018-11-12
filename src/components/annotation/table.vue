@@ -688,9 +688,9 @@
               console.log('itemRow',itemRow);
               this.sampleData.splice(index,1);
 
-              for(let i=0; i<this.sampleData.length; i++){
+              /*for(let i=0; i<this.sampleData.length; i++){
                 this.sampleData[i].accession = "PXD_S"+(i+1);
-              }
+              }*/
               for(let i=0; i<this.fileData.length; i++){
                 console.log('itemRow.accession',itemRow.accession);
                 if(!this.fileData[i].fractionid.indexOf(itemRow.accession)){
