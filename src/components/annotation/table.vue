@@ -2,7 +2,7 @@
   <div class="archive-container">
     <Card class="card">
         <p slot="title" class="resource-list-title-container">
-          <span>File</span>
+          <span>Sample</span>
         </p>
         <p slot="extra">
           <!--<Icon type="android-more-horizontal" @click="showModal" size="20"></Icon>-->
@@ -66,7 +66,68 @@
        
         </div>
     </Card>
-    
+    <Card class="card">
+        <p slot="title" class="resource-list-title-container">
+          <span>File</span>
+        </p>
+        <!--
+        <p slot="extra">
+          <Icon type="plus-round" @click="showModal" size="20"></Icon>
+        </p>
+        -->
+        <div class="card-content">
+            <draggable class="draggable-class" v-model="fileCol">
+                <div class="table-col" v-for="(itemCol,i) in fileCol" :key="itemCol.key">
+                    <div class="table-row first">{{itemCol.name}}<!--<Icon class="icon-in-th" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon>--></div>
+
+                    <div class="table-row" v-for="(itemRow,j) in fileData">
+                          <!--<input type="text" name="firstname" v-model="sampleData[j][itemCol.key]" @change="someHandler">-->
+                          <!--
+                          <Select
+                              v-model="sampleData[j][itemCol.key]"
+                              filterable
+                              remote
+                              :remote-method="remoteMethod1"
+                              :loading="loading1">
+                              <Option v-for="(option, index) in options1" :value="option.name" :key="index">{{option.name}}</Option>
+                          </Select>
+                          -->
+                          <!--
+                          <select v-model="sampleData[j][itemCol.key]">
+                            <option disabled value="">Please select one</option>
+                            <option>A</option>
+                            <option>B</option>
+                            <option>C</option>
+                          </select>-->
+
+                          <!--
+                          <model-select :options="options1"
+                                        v-model="sampleData[j][itemCol.key]"
+                                        placeholder="select item">
+                          </model-select>
+                          -->
+                         
+                            
+                          <div v-if="itemCol.key!='fractionid'">
+                                <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key])">
+                                </Input>
+                                <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
+                                    <DropdownMenu class="dropdown-remote111"  slot="list">
+                                        <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
+                                        <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
+                                            <!--<Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>-->
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </Dropdown>
+                          </div>
+                          <div v-else>
+                              <div class="accession-col"><!--<Icon v-if="fileData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>--><span>{{itemRow.fractionid}}</span></div>
+                          </div>
+                    </div>
+                </div>
+            </draggable>
+        </div>
+    </Card>
 
 
     <!--
@@ -110,7 +171,7 @@
   import { ModelSelect } from 'vue-search-select'
   export default {
     name: 'archive',
-    props: ['selectedExperimentType','samplesNum'],
+    props: ['selectedExperimentType','samplesNum','fractionsNum'],
     data(){
       return {
           getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
@@ -306,6 +367,7 @@
               required:false,
             }
           ],
+          fileCol:[],
           sampleData:[
               {
                   key1:{
@@ -335,6 +397,7 @@
                   },
               },
           ],
+          fileData:[],
           options1:[
             {
               cvLabel:'',
@@ -354,6 +417,7 @@
           ],
           experimentType:this.selectedExperimentType,
           sampleNumber:this.samplesNum,
+          fractionNumber:this.fractionsNum
       }
     },
     components: {
@@ -370,10 +434,16 @@
                         required:true,
                     },
                 ];
+                this.fileCol=[{
+                  name:'Fraction ID',
+                  key:'fractionid',
+                  required:true,
+                }];
                 this.$http
                       .get(this.getSampleAttributesApi)
                       .then((res)=>{
                           let sampleDataItem={};
+                          let fileDataItem={};
                           for(let i=0; i<res.body.length; i++){
                               if(res.body[i].first == this.experimentType){
                                   //console.log('res.body[i]',res.body[i]);
@@ -389,8 +459,21 @@
                                   //console.log('item',item);
                                   this.sampleCol.push(item);
                                   this.newData.push(item);
-                                  sampleDataItem.accession=""
+                                  sampleDataItem.accession="";
                                   sampleDataItem[item.key]={
+                                      value:'',
+                                      dropdown:false,
+                                      accession:'null',
+                                      cvLabel:'null',
+                                      col:item,
+                                      icon:'',
+                                      checked:true,
+                                  }
+
+
+                                  this.fileCol.push(item);
+                                  fileDataItem.fractionid="";
+                                  fileDataItem[item.key]={
                                       value:'',
                                       dropdown:false,
                                       accession:'null',
@@ -407,9 +490,17 @@
 
                               let item = JSON.parse(JSON.stringify(sampleDataItem))
                               item.accession="PXD_S"+(k+1);
-                              //Object.assign({},sampleDataItem)
                               this.sampleData.push(item)
+
+                              for(let j=0; j<this.fractionNumber; j++){
+                                  let item = JSON.parse(JSON.stringify(fileDataItem));
+                                  item.fractionid = "PXD_S"+(k+1)+'_F'+(j+1);
+                                  this.fileData.push(item);
+                              }
                           }     
+
+                         
+                          console.log('this.fileData',this.fileData);
                           console.log('this.sampleData',this.sampleData);
                       },function(err){
 
@@ -594,12 +685,19 @@
           },
           deleteRow(itemRow, index){
               console.log('index',index);
+              console.log('itemRow',itemRow);
               this.sampleData.splice(index,1);
 
               for(let i=0; i<this.sampleData.length; i++){
                 this.sampleData[i].accession = "PXD_S"+(i+1);
-                
-            }
+              }
+              for(let i=0; i<this.fileData.length; i++){
+                console.log('itemRow.accession',itemRow.accession);
+                if(!this.fileData[i].fractionid.indexOf(itemRow.accession)){
+                    this.fileData.splice(i,1);
+                    i--;
+                }
+              }
           },
           dropdownClick(e,itemRow,itemCol){
             //console.log('dropdownClick',e,itemRow,itemCol);
@@ -772,7 +870,9 @@
   .add-row-icon{
       margin-top: 5px;
   }
-
+  .card{
+    margin-bottom: 20px;
+  }
 </style>
 
 <style>
