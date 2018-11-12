@@ -100,8 +100,7 @@
               <Card>
                   <p slot="title" class="resource-list-title-container">
                     <span>Resources List</span>
-                    <!--new api has no sort function
-                    <span>
+                    <span class="sort-wrapper">
                         <span>Sort by: </span>
                         <div class="sortOption">
                             <Select v-model="sortType" size="small" style="width:95px" @on-change="sortChange">
@@ -109,7 +108,6 @@
                             </Select>
                         </div>
                     </span>
-                    -->
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
@@ -215,9 +213,13 @@
                 label: 'Relevance'
             },
             {
-                value: 'Date',
-                label: 'Date'
-            }
+                value: 'Submission Date',
+                label: 'Submission Date'
+            },
+            {
+                value: 'Publication Date',
+                label: 'Publication Date'
+            },
           ],
           page:0,
           pageSize:20,
@@ -665,7 +667,7 @@
           this.setFilter();
           this.$router.push({name: 'archive', query: this.query});
       },
-      /*new api has no sort funtions
+
       sortChange(type){
         console.log(type);
         if(type == 'Title')
@@ -674,12 +676,14 @@
           this.sort = 'id'
         else if(type == 'Relevance')
           this.sort = 'score'
-        else if(type == 'Date')
+        else if(type == 'Submission Date')
+          this.sort = 'submission_date';
+        else if(type == 'Publication Date')
           this.sort = 'publication_date';
-
-        this.setFilter();
-        this.queryArchiveProjectList();
-      },*/
+       
+        //this.setFilter();
+        //this.queryArchiveProjectList();
+      },
       updateCondition(q){
           let query = q || this.$route.query;
           for(let i in query){
@@ -1028,7 +1032,7 @@
       margin: 0 5px;
     }
     .sortOption{
-      display: inline-block;
+      display: flex;
       margin-left: 5px;
     }
     .matched-items{
@@ -1036,6 +1040,10 @@
     }
     .readMore{
       display: inline;
+    }
+    .sort-wrapper{
+      display:flex;
+      align-items: center;
     }
 </style>
 
@@ -1124,6 +1132,9 @@
     .sortOption .ivu-select-selection .ivu-select-selected-value{
       font-weight: normal !important;
 
+    }
+    .sortOption .ivu-select-dropdown{
+      width:120px!important;
     }
     .sortOption .ivu-select-dropdown .ivu-select-item{
       font-weight: normal !important;
