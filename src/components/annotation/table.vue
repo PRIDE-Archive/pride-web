@@ -176,6 +176,7 @@
       return {
           getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
           getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
+          msRunApi:'',
           visible:true,
           loading1:false,
           addColumnBool:false,
@@ -484,7 +485,47 @@
                                   }
                               }
                           }
-                         console.log('this.sampleCol',this.sampleCol);
+
+                          //add extra two cols for fileCol
+                          let extraItem1 = {
+                              experimentType:this.experimentType,
+                              required: true,
+                              cvLabel:'null',
+                              accession:'null',
+                              name:'Label',
+                              orignal_name:'Label',
+                              key: 'label'
+                          }
+                          fileDataItem.label={
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              cvLabel:'null',
+                              col:extraItem1,
+                              icon:'',
+                              checked:true,
+                          }
+                          let extraItem2 = {
+                              experimentType:this.experimentType,
+                              required: true,
+                              cvLabel:'null',
+                              accession:'null',
+                              name:'MSRun',
+                              orignal_name:'MSRun',
+                              key: 'msrun'
+                          }
+                          fileDataItem.msrun={
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              cvLabel:'null',
+                              col:extraItem2,
+                              icon:'',
+                              checked:true,
+                          }
+                          this.fileCol.push(extraItem1);
+                          this.fileCol.push(extraItem2);
+                          //console.log('this.sampleCol',this.sampleCol);
                           //console.log('tempSampleData',tempSampleData);
                           for(let k=0; k<this.sampleNumber; k++){
 
@@ -625,7 +666,8 @@
                   }
                   console.log('item',item);
                   keyArray.push(item.key);
-                  this.sampleCol.push(item)
+                  this.sampleCol.push(item);
+                  this.fileCol.push(item);
               }
               console.log('keyArray', keyArray);
 
@@ -639,15 +681,26 @@
                           col:item,
                           icon:'',
                           checked:true,
+                      };
+                  }
+              }
+              for(let i=0; i<this.fileData.length; i++){
+                  for(let j=0; j<keyArray.length; j++){
+                      this.fileData[i][keyArray[j]]= {
+                          value:'',
+                          dropdown:false,
+                          accession:'null',
+                          cvLabel:'null',
+                          col:item,
+                          icon:'',
+                          checked:true,
                       }
                   }
               }
-              console.log(' this.sampleCol', this.sampleCol);
-
               for(let i=0; i<this.newData.length;i++){
                   //this.newData[i]._checked=false;
               }
-              console.log(this.newData);
+            
           },
           addRow(){
             let item={};
