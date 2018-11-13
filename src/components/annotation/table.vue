@@ -43,7 +43,7 @@
                          
                             
                           <div v-if="itemCol.key!='accession'">
-                                <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key])">
+                                <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)">
                                 </Input>
                                 <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                     <DropdownMenu class="dropdown-remote111"  slot="list">
@@ -70,14 +70,9 @@
         <p slot="title" class="resource-list-title-container">
           <span>File</span>
         </p>
-        <!--
-        <p slot="extra">
-          <Icon type="plus-round" @click="showModal" size="20"></Icon>
-        </p>
-        -->
         <div class="card-content">
-            <draggable class="draggable-class" v-model="fileCol">
-                <div class="table-col" v-for="(itemCol,i) in fileCol" :key="itemCol.key">
+            <div class="draggable-class">
+                <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
                     <div class="table-row first">{{itemCol.name}}<!--<Icon class="icon-in-th" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon>--></div>
 
                     <div class="table-row" v-for="(itemRow,j) in fileData">
@@ -108,27 +103,28 @@
                           -->
                          
                             
-                          <div v-if="itemCol.key!='fractionid'">
-                                <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key])">
+                          <div v-if="itemCol.key!='accession'">
+                                <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"  >
                                 </Input>
+                                <!--
                                 <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                     <DropdownMenu class="dropdown-remote111"  slot="list">
                                         <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
                                         <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
-                                            <!--<Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>-->
+                                            <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>
                                         </DropdownItem>
                                     </DropdownMenu>
                                 </Dropdown>
+                              -->
                           </div>
                           <div v-else>
-                              <div class="accession-col"><!--<Icon v-if="fileData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>--><span>{{itemRow.fractionid}}</span></div>
+                              <div class="accession-col"><!--<Icon v-if="fileData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>--><span>{{itemRow.accession}}</span></div>
                           </div>
                     </div>
                 </div>
-            </draggable>
+            </div>
         </div>
     </Card>
-
 
     <!--
        <table style="width:100%">
@@ -398,7 +394,7 @@
                   },
               },
           ],
-          fileData:[],
+          //fileData:[],
           options1:[
             {
               cvLabel:'',
@@ -472,59 +468,11 @@
                                   }
 
 
-                                  this.fileCol.push(item);
-                                  fileDataItem.fractionid="";
-                                  fileDataItem[item.key]={
-                                      value:'',
-                                      dropdown:false,
-                                      accession:'null',
-                                      cvLabel:'null',
-                                      col:item,
-                                      icon:'',
-                                      checked:true,
-                                  }
                               }
                           }
 
                           //add extra two cols for fileCol
-                          let extraItem1 = {
-                              experimentType:this.experimentType,
-                              required: true,
-                              cvLabel:'null',
-                              accession:'null',
-                              name:'Label',
-                              orignal_name:'Label',
-                              key: 'label'
-                          }
-                          fileDataItem.label={
-                              value:'',
-                              dropdown:false,
-                              accession:'null',
-                              cvLabel:'null',
-                              col:extraItem1,
-                              icon:'',
-                              checked:true,
-                          }
-                          let extraItem2 = {
-                              experimentType:this.experimentType,
-                              required: true,
-                              cvLabel:'null',
-                              accession:'null',
-                              name:'MSRun',
-                              orignal_name:'MSRun',
-                              key: 'msrun'
-                          }
-                          fileDataItem.msrun={
-                              value:'',
-                              dropdown:false,
-                              accession:'null',
-                              cvLabel:'null',
-                              col:extraItem2,
-                              icon:'',
-                              checked:true,
-                          }
-                          this.fileCol.push(extraItem1);
-                          this.fileCol.push(extraItem2);
+                          
                           //console.log('this.sampleCol',this.sampleCol);
                           //console.log('tempSampleData',tempSampleData);
                           for(let k=0; k<this.sampleNumber; k++){
@@ -533,11 +481,6 @@
                               item.accession="PXD_S"+(k+1);
                               this.sampleData.push(item)
 
-                              for(let j=0; j<this.fractionNumber; j++){
-                                  let item = JSON.parse(JSON.stringify(fileDataItem));
-                                  item.fractionid = "PXD_S"+(k+1)+'_F'+(j+1);
-                                  this.fileData.push(item);
-                              }
                           }     
 
                          
@@ -610,14 +553,15 @@
                   },
               ];
           },
-          blur(item){
+          blur(item,key){
+            console.log('blur',item,key);
             item.dropdown = false;
             if(item.value)
               item.checked=true;
             //console.log
           },
           removeInputContent(item){
-              console.log('item',item);
+              console.log('removeInputContent',item);
               item.dropdown = false;
               item.value="";
               item.icon="";
@@ -629,61 +573,34 @@
           },
           addCol(){
               let keyArray = [];
-              let item;
-              let d = new Date();
-              let time = d.getTime();
-              let found;
-              console.log('item',this.newColumnNameSelectedArray);
-              
               for(let i=0; i<this.newColumnNameSelectedArray.length; i++){
-                  found = false;
-                  for(let j=0; j<this.sampleCol.length; j++){
-                      if(this.sampleCol[j].name == this.newColumnNameSelectedArray[i].name){
-                          found=true;
-                          item = {
-                            experimentType:this.sampleCol[j].experimentType,
-                            required: false,
-                            cvLabel:this.sampleCol[j].cvLabel,
-                            accession:this.sampleCol[j].accession,
-                            name:this.sampleCol[j].name,
-                            orignal_name:this.sampleCol[j].orignal_name,
-                            key: this.sampleCol[j].key + time
-                          }
-                          console.log('found true', item);
-                          break;
-                      }
+                  let item = {
+                    experimentType:this.experimentType,
+                    required: false,
+                    cvLabel:this.newColumnNameSelectedArray[i].cvLabel,
+                    accession:this.newColumnNameSelectedArray[i].accession,
+                    name:this.newColumnNameSelectedArray[i].name,
+                    orignal_name:this.newColumnNameSelectedArray[i].orignal_name,
+                    key: this.newColumnNameSelectedArray[i].key + Date.now()
                   }
-                  if(!found){
-                      item = {
-                        experimentType:this.experimentType,
-                        required: false,
-                        cvLabel:this.newColumnNameSelectedArray[i].cvLabel,
-                        accession:this.newColumnNameSelectedArray[i].accession,
-                        name:this.newColumnNameSelectedArray[i].name,
-                        orignal_name:this.newColumnNameSelectedArray[i].orignal_name,
-                        key: this.newColumnNameSelectedArray[i].key
-                      }
-                  }
-                  console.log('item',item);
-                  keyArray.push(item.key);
+                  keyArray.push(item);
                   this.sampleCol.push(item);
-                  this.fileCol.push(item);
               }
               console.log('keyArray', keyArray);
-
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j=0; j<keyArray.length; j++){
-                      this.sampleData[i][keyArray[j]]= {
+                      this.$set(this.sampleData[i], keyArray[j].key,{
                           value:'',
                           dropdown:false,
                           accession:'null',
                           cvLabel:'null',
-                          col:item,
+                          col:keyArray[j],
                           icon:'',
                           checked:true,
-                      };
+                      })
                   }
               }
+              /*
               for(let i=0; i<this.fileData.length; i++){
                   for(let j=0; j<keyArray.length; j++){
                       this.fileData[i][keyArray[j]]= {
@@ -696,10 +613,7 @@
                           checked:true,
                       }
                   }
-              }
-              for(let i=0; i<this.newData.length;i++){
-                  //this.newData[i]._checked=false;
-              }
+              }*/
             
           },
           addRow(){
@@ -746,16 +660,17 @@
               }*/
               for(let i=0; i<this.fileData.length; i++){
                 console.log('itemRow.accession',itemRow.accession);
-                if(!this.fileData[i].fractionid.indexOf(itemRow.accession)){
+                if(!this.fileData[i].accession.indexOf(itemRow.accession)){
                     this.fileData.splice(i,1);
                     i--;
                 }
               }
           },
           dropdownClick(e,itemRow,itemCol){
-            //console.log('dropdownClick',e,itemRow,itemCol);
+            console.log('dropdownClick',e,itemRow,itemCol);
             itemRow.dropdown=false;
             if(e == "nodata" && !itemRow.value){
+              console.log(222);
                 itemRow.icon="";
                 return;
             }
@@ -763,13 +678,16 @@
             itemRow.checked=true;
             
             for(let i=0; i<this.options1.length;i++){
+              console.log(111);
                 if(this.options1[i].name==e){
+                  console.log(333);
                     itemRow.accession = this.options1[i].accession;
                     itemRow.cvLabel = this.options1[i].cvLabel;
                     //itemRow.col=itemCol;
                     break;
                 }
             }
+            console.log(444);
             //console.log('itemRow',itemRow);
             //console.log('itemCol',itemCol);
             //console.log('dropdownClick',this.sampleData);
@@ -780,11 +698,14 @@
               //console.log('newColSelectChange',selection);
           },
           applyAll(name,row,col){
+              //console.log(name,row,col);
+              
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
+                  
                   for(let i=0;i<this.sampleData.length; i++){
-                      let item = JSON.parse(JSON.stringify(row))
+                      let item =  JSON.parse(JSON.stringify(row[col.key]));
                       console.log('item',item);
-                      this.sampleData[i][col.key] = item[col.key]
+                      this.sampleData[i][col.key] = item;
                   }
               });
           },
@@ -842,6 +763,74 @@
      
     },
     computed:{
+      fileData:function(){
+           let fileDataArray=[];
+           for(let k=0; k<this.sampleData.length; k++){
+              for(let j=0; j<this.fractionNumber; j++){
+                  fileDataArray.push(this.sampleData[k]);
+              }
+          }     
+       return fileDataArray;   
+
+          let item = JSON.parse(JSON.stringify(fileDataItem));
+          item.fractionid = "PXD_S"+(k+1)+'_F'+(j+1);
+          this.fileData.push(item);
+
+          let extraItem1 = {
+                              experimentType:this.experimentType,
+                              required: true,
+                              cvLabel:'null',
+                              accession:'null',
+                              name:'Label',
+                              orignal_name:'Label',
+                              key: 'label'
+                          }
+                          fileDataItem.label={
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              cvLabel:'null',
+                              col:extraItem1,
+                              icon:'',
+                              checked:true,
+                          }
+                          let extraItem2 = {
+                              experimentType:this.experimentType,
+                              required: true,
+                              cvLabel:'null',
+                              accession:'null',
+                              name:'MSRun',
+                              orignal_name:'MSRun',
+                              key: 'msrun'
+                          }
+                          fileDataItem.msrun={
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              cvLabel:'null',
+                              col:extraItem2,
+                              icon:'',
+                              checked:true,
+                          }
+                          this.fileCol.push(extraItem1);
+                          this.fileCol.push(extraItem2);
+
+
+          this.fileCol.push(item);
+          fileDataItem.fractionid="";
+          fileDataItem[item.key]={
+              value:'',
+              dropdown:false,
+              accession:'null',
+              cvLabel:'null',
+              col:item,
+              icon:'',
+              checked:true,
+          }
+
+
+          
+      }
       /*
       experimentType:function(){
           console.log(1231231231);
@@ -950,10 +939,13 @@
 .dropdown-remote .ivu-select-dropdown .ivu-dropdown-item{
     position: relative;
 }
-
 .apply-all-button{
   position: absolute;
   left:2px;
+  display: none;
+}
+.dropdown-remote .ivu-select-dropdown .ivu-dropdown-item:hover > .apply-all-button{
+    display: inline-block;
 }
 .inputError .ivu-input{
     border: 1px solid red !important;
