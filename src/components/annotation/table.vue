@@ -31,9 +31,6 @@
                   </div>
               </draggable>
               <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon>
-              <button @click="check">123</button>
-              <button @click="confirm">2222</button>
-         
           </div>
       </Card>
       <Card class="card">
@@ -59,13 +56,12 @@
                       <div class="table-row first msrun">{{itemCol.name}}</div>
                       <div class="table-row" v-for="(itemRow,j) in msRunArray">
                             <div v-if="itemCol.key!='fractionid'">
-                                  <Input size="small" type="text" v-model="itemRow[itemCol.key].value"  >
-                                  </Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                       <DropdownMenu class="dropdown-remote111"  slot="list">
                                           <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
                                           <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAllFile(item.name,itemRow,itemCol)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
@@ -94,16 +90,16 @@
   import { ModelSelect } from 'vue-search-select'
   export default {
     name: 'archive',
-    props: ['selectedExperimentType','samplesNum','fractionsNum'],
+    props: ['selectedExperimentType','samplesNum','fractionsNum','projectAccession'],
     data(){
       return {
           getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
           getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
-          msRunApi:'',
+          labelQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getLabelingValues',
+          msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           visible:true,
           loading1:false,
           addColumnBool:false,
-          model13:'',
           newColumnNameSelectedArray:[],
           inputDeleteAllIcon:'',
           newCol:[
@@ -222,6 +218,7 @@
           experimentType:this.selectedExperimentType,
           sampleNumber:this.samplesNum,
           fractionNumber:this.fractionsNum,
+          projectAccessionMsRun:this.projectAccession,
           msRunCol:[
               {
                 //experimentType:res.body[i].first,
@@ -277,7 +274,6 @@
                       .get(this.getSampleAttributesApi)
                       .then((res)=>{
                           let sampleDataItem={};
-                          let fileDataItem={};
                           for(let i=0; i<res.body.length; i++){
                               if(res.body[i].first == this.experimentType){
                                   let item = {
@@ -302,8 +298,6 @@
                                       icon:'',
                                       checked:true,
                                   }
-
-
                               }
                           }
                           for(let k=0; k<this.sampleNumber; k++){
@@ -347,7 +341,61 @@
                   },function(err){
 
                   });
-            },
+          },
+          labelQuery(itemCol,item){
+              let searchValue = item[itemCol.key].value;
+              if(searchValue)
+                  item[itemCol.key].icon = 'close-circled'
+              else{
+                  item[itemCol.key].icon= '';
+                  item[itemCol.key].dropdown=false;
+                  return;
+              }
+              this.options1=[];
+              /*
+              let query={
+                attributeAccession: itemCol.accession,
+                ontologyAccession: itemCol.cvLabel,
+                keyword:searchValue
+              }*/
+              console.log('itemCol',itemCol);
+               if(itemCol.key=='label'){
+                  this.$http
+                      .get(this.labelQueryApi)
+                      //.get(this.labelQueryApi,{params: query})
+                      .then(function(res){
+                        if(res.body.length>0 || searchValue)
+                          item[itemCol.key].dropdown=true;
+
+                        this.options1=res.body;
+                        if(this.options1.length == 0){
+                            item[itemCol.key].value==searchValue;
+                        }
+                      },function(err){
+
+                      });
+              }
+              else if(itemCol.key=='msrun'){
+                  let query={
+                      accession: this.projectAccessionMsRun,
+                  }
+                  console.log('msrun',query);
+                  this.$http
+                      .get(this.msRunApi,{params: query})
+                      //.get(this.labelQueryApi,{params: query})
+                      .then(function(res){
+                        if(res.body.length>0 || searchValue)
+                          item[itemCol.key].dropdown=true;
+
+                        this.options1=res.body;
+                        if(this.options1.length == 0){
+                            item[itemCol.key].value==searchValue;
+                        }
+                      },function(err){
+
+                      });
+              }
+          },
           titleCase(str) {
             str=str.toLowerCase().split(" ");
             for(var i=0;i<str.length;i++){
@@ -360,11 +408,6 @@
           remoteMethod1(){
 
           },
-          check(){
-            console.log('this.sampleData',this.sampleData);
-            console.log('this.sampleCol',this.sampleCol);
-          },
-          
           focus(item){
               if(!item.value)
                 return;
@@ -394,7 +437,6 @@
             this.addColumnBool=true;
           },
           addCol(){
-
               let keyArray = [];
               for(let i=0; i<this.newColumnNameSelectedArray.length; i++){
                   let item = {
@@ -495,23 +537,41 @@
                   }
               });
           },
+          applyAllFile(name,row,col){
+              this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
+                  for(let i=0;i<this.msRunArray.length; i++){
+                      let item =  JSON.parse(JSON.stringify(row[col.key]));
+                      this.msRunArray[i][col.key] = item;
+                  }
+              });
+          },
           confirm(){
               let results = [];
               let tempAccession='';
-              let checkPass=true;
+              let sampleDataCheckPass=true;
+              let msRunCheckPass= true;
+              console.log('this.sampleData',this.sampleData);
+              console.log('this.sampleCol',this.sampleCol);
+              console.log('this.fileData',this.fileData)
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j in this.sampleData[i]){
                         if(j=='accession'){
                             tempAccession = this.sampleData[i][j];
                             continue;
                         }
+                        else if(j=="accessionKey"){
+                          continue;
+                        }
                         else{
+                          console.log('j',j);
+                            console.log('this.sampleData[i][j]',this.sampleData[i][j]);
                             if(!this.sampleData[i][j].value && this.sampleData[i][j].col.required){
-                                checkPass=false;
+                                sampleDataCheckPass=false;
                                 this.sampleData[i][j].checked=false;
                             }
                             else{
                                  this.sampleData[i][j].checked=true;
+                                 /*
                                 let item={
                                     accession:tempAccession,
                                     key:{
@@ -524,12 +584,32 @@
                                       value:this.sampleData[i][j].value
                                     }
                                 }
-                                results.push(item);
+                                results.push(item);*/
                             }
                         }
                   }
               }
-              if(checkPass){
+              for(let i=0; i<this.msRunArray.length; i++){
+                   for(let j in this.msRunArray[i]){
+                          if(j=='fractionid'){
+                              continue;
+                          }
+                          else if(j=="accessionKey"){
+                            continue;
+                          }
+                          else{
+                              if(!this.msRunArray[i][j].value && this.msRunArray[i][j].col.required){
+                                  msRunCheckPass=false;
+                                  this.msRunArray[i][j].checked=false;
+                              }
+                              else{
+                                  this.msRunArray[i][j].checked=true;
+
+                              }
+                          }
+                    }
+              }
+              if(sampleDataCheckPass&&msRunCheckPass){
                 console.log('results',results);
               }
               else{
@@ -566,8 +646,11 @@
                                   accession:'null',
                                   //accessionKey:this.fileData[i].accessionKey,
                                   cvLabel:'null',
-                                  col:{},
+                                  col:{
+                                    required:true
+                                  },
                                   icon:'',
+                                  checked:true,
                             },
                             msrun:{
                                   value:'',
@@ -575,8 +658,11 @@
                                   accession:'null',
                                   //accessionKey:this.fileData[i].accessionKey,
                                   cvLabel:'null',
-                                  col:{},
+                                  col:{
+                                    required:true
+                                  },
                                   icon:'',
+                                  checked:true,
                             },
                             fractionid:{
                                   value:this.fileData[i].accession+'_F'+lastIndex,
@@ -663,10 +749,10 @@
 
     },
     created(){
-      
+      this.$bus.$on('annotation-confirm', this.confirm);
     },
-    beforeDestroy(){
-          
+    beforeCreate:function(){
+      this.$bus.$off('annotation-confirm');
     },
     beforeRouteEnter(to,from,next){
      
