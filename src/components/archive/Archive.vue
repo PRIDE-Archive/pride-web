@@ -224,7 +224,7 @@
           page:0,
           pageSize:20,
           filter:'',
-          sort:'publication_date',
+          sort:'',
           total:0,
           facetsConfigRes:'',
           projectItemsConfigRes:'',
@@ -671,18 +671,18 @@
       sortChange(type){
         console.log(type);
         if(type == 'Title')
-          this.sort = 'project_title'
+          this.sort = 'title'
         else if(type == 'Accession')
-          this.sort = 'id'
+          this.sort = 'accession'
         else if(type == 'Relevance')
           this.sort = 'score'
         else if(type == 'Submission Date')
-          this.sort = 'submission_date';
+          this.sort = 'submissionDate';
         else if(type == 'Publication Date')
-          this.sort = 'publication_date';
+          this.sort = 'publicationDate';
        
-        //this.setFilter();
-        //this.queryArchiveProjectList();
+        this.setFilter();
+        this.$router.push({name: 'archive', query: this.query});
       },
       updateCondition(q){
           let query = q || this.$route.query;
@@ -803,6 +803,8 @@
             normalQuery.keyword = this.keyword;
           if(this.filter)
             normalQuery.filter = this.filter;
+          if(this.sort)
+            normalQuery.sortConditions = this.sort;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
           //console.log('this.normalQuery',this.normalQuery);
