@@ -457,7 +457,7 @@
           <div v-if="annotationStep == 3" class="stepFour">
               <Spin size="large" fix v-if="loading"></Spin>
               <Row>
-                <selfTable class="sample-class-table" :selectedExperimentType="selectedExperimentType" :samplesNum="samplesNum" :fractionsNum="fractionsNum"></selfTable>
+                <selfTable class="sample-class-table" :selectedExperimentType="selectedExperimentType" :samplesNum="samplesNum" :fractionsNum="fractionsNum" :projectAccession="projectAccession"></selfTable>
                 <!--
                 <Card>
                     <p slot="title" class="resource-list-title-container">
@@ -1476,6 +1476,8 @@
                 this.annotationStep++;
                 this.loading = false;
                 this.accession = res.body.accession;
+                //for self table
+                this.projectAccession=res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
                 this.publicationDate = res.body.publicationDate.split('-')[2] +'/'+ res.body.publicationDate.split('-')[1] +'/'+ res.body.publicationDate.split('-')[0];
@@ -1483,6 +1485,7 @@
                 
                 this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
                 this.dataProcessingProtocol = res.body.dataProcessingProtocol;
+
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -1550,7 +1553,7 @@
        
       },
       annotationConfirm(){
-        console.log('annotationConfirm');
+          this.$bus.$emit('annotation-confirm');
       },
       editProject(){
         this.editProjectBool=true;
