@@ -792,7 +792,7 @@
   }
   .table-row:first-child.msrun{
       
-      background-color: #6eb9b8d9;
+      background-color: #75bfbecf;
   
   }
   .table-row{
