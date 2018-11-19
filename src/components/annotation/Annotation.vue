@@ -457,17 +457,18 @@
           <div v-if="annotationStep == 3" class="stepFour">
               <Spin size="large" fix v-if="loading"></Spin>
               <Row>
+                <selfTable class="sample-class-table" :selectedExperimentType="selectedExperimentType" :samplesNum="samplesNum" :fractionsNum="fractionsNum"></selfTable>
+                <!--
                 <Card>
                     <p slot="title" class="resource-list-title-container">
-                      <span>Sample</span>
+                      <span>File</span>
                       <Icon type="plus-round" @click="showAddColumnModal" size="20"></Icon>
                     </p>
                     <div class="card-content">
                         <Table height="295" class="sample-table" border :columns="sampleCol" :data="sampleData" size="small" :disabled-hover="true"></Table>
                     </div>
                 </Card>
-                <selfTable :selectedExperimentType="selectedExperimentType" :samplesNum="samplesNum"></selfTable>
-                
+                -->
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
@@ -2324,6 +2325,9 @@
     }
     .checkbox-item-wrapper{
       display: flex;
+    }
+    .sample-class-table{
+      margin-bottom: 20px;
     }
     @font-face {
         font-family: 'EBI-Generic';
