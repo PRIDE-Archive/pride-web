@@ -292,7 +292,7 @@
                                       value:'',
                                       dropdown:false,
                                       accession:'null',
-                                      accessionKey:'null',
+                                      accessionKey:this.accessionKey,
                                       cvLabel:'null',
                                       col:item,
                                       icon:'',
@@ -477,7 +477,7 @@
                     value:'',
                     dropdown:false,
                     accession:'null',
-                    accessionKey:'null',
+                    accessionKey:this.accessionKey,
                     cvLabel:'null',
                     col:this.sampleCol[i],
                     icon:'',
@@ -610,6 +610,9 @@
                     }
               }
               if(sampleDataCheckPass&&msRunCheckPass){
+                console.log('this.fileData',this.fileData);
+                console.log('this.sampleData',this.sampleData);
+                console.log('msRunArray',this.msRunArray);
                 console.log('results',results);
               }
               else{
