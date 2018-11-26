@@ -833,35 +833,33 @@
 
 <style>
     .add-col-table .new-col-table{
-      display: none;
+        display: none;
     }
     .add-col-table table{
-      margin-bottom:0 !important;
+        margin-bottom:0 !important;
     }
     .add-col-table tbody th, table tbody td, table thead th, table thead td, table tfoot th, table tfoot td{
-      padding: 0 !important;
+        padding: 0 !important;
     }
-    
-.dropdown-remote .ivu-select-dropdown{
-    top: 30px !important;
-    left: 0 !important;
-    width: 300px;    
-    max-height: 400px;
-    overflow: scroll;
-}
-
-.dropdown-remote .ivu-select-dropdown .ivu-dropdown-item{
-    position: relative;
-}
-.apply-all-button{
-  position: absolute;
-  left:2px;
-  display: none;
-}
-.dropdown-remote .ivu-select-dropdown .ivu-dropdown-item:hover > .apply-all-button{
-    display: inline-block;
-}
-.inputError .ivu-input{
-    border: 1px solid red !important;
-}
+    .dropdown-remote .ivu-select-dropdown{
+        top: 30px !important;
+        left: 0 !important;
+        width: 300px;    
+        max-height: 400px;
+        overflow: scroll;
+    }
+    .dropdown-remote .ivu-select-dropdown .ivu-dropdown-item{
+        position: relative;
+    }
+    .apply-all-button{
+        position: absolute;
+        left:2px;
+        display: none;
+    }
+    .dropdown-remote .ivu-select-dropdown .ivu-dropdown-item:hover > .apply-all-button{
+        display: inline-block;
+    }
+    .inputError .ivu-input{
+        border: 1px solid red !important;
+    }
 </style>
