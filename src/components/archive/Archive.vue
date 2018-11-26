@@ -99,7 +99,7 @@
           <Row>
               <Card>
                   <p slot="title" class="resource-list-title-container">
-                    <span>Resources List</span>
+                    <span>Resources List ({{total}})</span>
                     <span class="sort-wrapper">
                         <span>Sort by: </span>
                         <div class="sortOption">
