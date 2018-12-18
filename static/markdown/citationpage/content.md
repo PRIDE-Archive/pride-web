@@ -19,7 +19,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
   [1] Vizcaino JA, et al. 2016 update of the PRIDE database and related tools. Nucleic Acids Res. 2016 Jan 1;44(D1):D447-D456.
 
-  See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission](https://www.frontiersin.org/articles/10.3389/fmicb.2018.00680/full)
+  See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission](https://www.frontiersin.org/articles/10.3389/fmicb.2018.00680/full).
 
 Citing Peptidome and PRIDE Cluster resources:
 
@@ -33,4 +33,3 @@ Citing PRIDE Tools:
 
 
 Previous manuscripts of PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
-
