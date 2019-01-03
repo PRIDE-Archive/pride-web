@@ -473,7 +473,8 @@
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
                     </div>
-                    <div class="search-button">
+                    <div class="search-button right">
+                        <a class="button search-button" @click="annotationSave">Save</a>
                         <a class="button search-button" @click="annotationConfirm">Confirm</a>
                     </div>
                 </div>
@@ -1462,7 +1463,7 @@
                       this.updateCondition();
                       this.queryArchiveProjectList();
                   },function(err){
-
+                    console.log('errerr',err)
                   });
             },function(err){
 
@@ -1554,6 +1555,18 @@
       },
       annotationConfirm(){
           this.$bus.$emit('annotation-confirm');
+      },
+      localStorageItemAdd(key,data){
+          localStorage.setItem(key,data);
+      },
+      localStorageItemRemove(key){
+          localStorage.removeItem("key");
+      },
+      annotationSave(){
+          let tempTableData = [{aaa:111},{bbb:222}];
+          localStorage.removeItem("key");
+          localStorage.setItem("key", JSON.stringify(tempTableData));
+          console.log('localStorage saved');
       },
       editProject(){
         this.editProjectBool=true;
@@ -1844,6 +1857,22 @@
           console.log('this.test',this.test);
           
       },
+      localStorageCheck(){
+          if (typeof(Storage) !== "undefined") {
+            let tempTableData = JSON.parse(localStorage.getItem("key"));
+            console.log('tempTableData',tempTableData);
+            //let tempTableResult = [];
+            if(tempTableData){
+              console.log('tempTableData aaa is ',tempTableData[0].aaa);
+              //tempTableResult = JSON.parse(tempTableData);
+            }
+            else{
+              
+            }
+          } else {
+            this.$Message.error({content:'localStorage Not Supported', duration:1});
+          }
+      }
     },
 
     watch: {
@@ -1880,6 +1909,7 @@
       //this.updateCondition();//move into queryConfig function
       //this.queryArchiveProjectList();//move into queryConfig function
       //this.setFilter();//move into queryConfig function
+      this.localStorageCheck();
       this.searchInputListener();
 
      
@@ -1929,6 +1959,9 @@
   }
   .button-wrapper .search-button{
     width: 70px;
+  }
+  .button-wrapper .search-button.right{
+    width: auto;
   }
   .browse-data-container{
     width: 80%;
