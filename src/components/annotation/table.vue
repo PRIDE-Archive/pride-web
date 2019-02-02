@@ -55,7 +55,7 @@
                   <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
                       <div class="table-row first msrun">{{itemCol.name}}</div>
                       <div class="table-row" v-for="(itemRow,j) in msRunArray">
-                            <div v-if="itemCol.key!='fractionid'">
+                            <div v-if="itemCol.key=='label'">
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
                                       <DropdownMenu class="dropdown-remote111"  slot="list">
@@ -65,6 +65,9 @@
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
+                            </div>
+                            <div v-else-if="itemCol.key=='msrun'">
+                              <a class="button search-button" @click="">Show</a>
                             </div>
                             <div v-else>
                                 <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
@@ -90,7 +93,6 @@
   import { ModelSelect } from 'vue-search-select'
   export default {
     name: 'archive',
-    props: ['selectedExperimentType','samplesNum','fractionsNum','projectAccession'],
     data(){
       return {
           getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
@@ -215,10 +217,10 @@
               name:'333',
             }
           ],
-          experimentType:this.selectedExperimentType,
-          sampleNumber:this.samplesNum,
-          fractionNumber:this.fractionsNum,
-          projectAccessionMsRun:this.projectAccession,
+          experimentType:'',
+          sampleNumber:0,
+          fractionNumber:0,
+          projectAccessionMsRun:'',
           msRunCol:[
               {
                 //experimentType:res.body[i].first,
@@ -248,7 +250,8 @@
               }
           ],
           msRunArray:[],
-          accessionKey:0
+          accessionKey:0,
+          firstLoad:true,
       }
     },
     components: {
@@ -285,6 +288,7 @@
                                     orignal_name:res.body[i].third.name,
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
+                                  console.log('item',item);
                                   this.sampleCol.push(item);
                                   this.newData.push(item);
                                   sampleDataItem.accession="";
@@ -300,14 +304,18 @@
                                   }
                               }
                           }
-                          for(let k=0; k<this.sampleNumber; k++){
-                              let item = JSON.parse(JSON.stringify(sampleDataItem))
-                              item.accession="PXD_S"+(k+1);
-                              item.accessionKey=this.accessionKey++;
-                              this.sampleData.push(item)
-                          }     
-                          console.log('this.fileData',this.fileData);
-                          console.log('this.sampleData',this.sampleData);
+                          let projectAccession = localStorage.getItem("projectAccession")
+                          if(!projectAccession){
+                              for(let k=0; k<this.sampleNumber; k++){
+                                    let item = JSON.parse(JSON.stringify(sampleDataItem))
+                                    item.accession="PXD_S"+(k+1);
+                                    item.accessionKey=this.accessionKey++;
+                                    this.sampleData.push(item)
+                              }    
+                          }
+                           
+                          //console.log('this.fileData',this.fileData);
+                          //console.log('this.sampleData',this.sampleData);
                       },function(err){
 
                       });
@@ -545,14 +553,43 @@
                   }
               });
           },
+          init(){
+            let tempSampleData = JSON.parse(localStorage.getItem("sampleData"));
+            let tempFileData = JSON.parse(localStorage.getItem("fileData"));
+            let tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
+            if(tempSampleData)
+              this.sampleData = tempSampleData;
+            if(tempFileData)
+              this.fileData = tempFileData;
+            if(tempMSRunArray)
+              this.msRunArray = tempMSRunArray;
+
+            console.log('this.sampleData',this.sampleData);
+            console.log('this.fileData',this.fileData);
+
+            this.firstLoad=false;
+
+            this.projectAccessionMsRun = localStorage.getItem("projectAccession")
+            this.experimentType = localStorage.getItem('selectedExperimentType')
+            this.sampleNumber  = +localStorage.getItem("samplesNum")
+            this.fractionNumber = +localStorage.getItem("fractionsNum")
+            console.log('init this.projectAccessionMsRun ',this.projectAccessionMsRun );
+            
+
+            //console.log('samplesNum',this.sampleNumber);
+            //console.log('fractionsNum',this.fractionNumber);
+            //console.log('projectAccession',this.projectAccessionMsRun);
+            //console.log('selectedExperimentType',this.experimentType);
+          },
           confirm(){
               let results = [];
               let tempAccession='';
               let sampleDataCheckPass=true;
               let msRunCheckPass= true;
-              console.log('this.sampleData',this.sampleData);
-              console.log('this.sampleCol',this.sampleCol);
-              console.log('this.fileData',this.fileData)
+              //console.log('this.sampleData',this.sampleData);
+              //console.log('this.sampleCol',this.sampleCol);
+              console.log('aaaaaaathis.fileData',this.fileData)
+              //check for sample data completed
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j in this.sampleData[i]){
                         if(j=='accession'){
@@ -563,8 +600,8 @@
                           continue;
                         }
                         else{
-                          console.log('j',j);
-                            console.log('this.sampleData[i][j]',this.sampleData[i][j]);
+                          //console.log('j',j);
+                           // console.log('this.sampleData[i][j]',this.sampleData[i][j]);
                             if(!this.sampleData[i][j].value && this.sampleData[i][j].col.required){
                                 sampleDataCheckPass=false;
                                 this.sampleData[i][j].checked=false;
@@ -589,6 +626,7 @@
                         }
                   }
               }
+              //check for msruntable data completed
               for(let i=0; i<this.msRunArray.length; i++){
                    for(let j in this.msRunArray[i]){
                           if(j=='fractionid'){
@@ -597,8 +635,13 @@
                           else if(j=="accessionKey"){
                             continue;
                           }
-                          else{
+                          else if(j=="msrun"){
+                            //we should change this code when msrun table is ready.
+                            continue;
+                          }
+                          else if(j=="label"){
                               if(!this.msRunArray[i][j].value && this.msRunArray[i][j].col.required){
+                                  console.log('this.msRunArray[i][j]',this.msRunArray);
                                   msRunCheckPass=false;
                                   this.msRunArray[i][j].checked=false;
                               }
@@ -609,16 +652,75 @@
                           }
                     }
               }
+              console.log('sampleDataCheckPass',sampleDataCheckPass);
+              console.log('msRunCheckPass',msRunCheckPass);
               if(sampleDataCheckPass&&msRunCheckPass){
-                console.log('this.fileData',this.fileData);
-                console.log('this.sampleData',this.sampleData);
-                console.log('msRunArray',this.msRunArray);
-                console.log('results',results);
+                  console.log('pass');
+                  let submitData = [];
+                  for(let i of this.fileData){
+                      console.log('i',i);
+                      let item = {};
+                      item.projectAccession = this.$route.params.id;
+                      item.sampleAccession = i.accession;
+                      item.sampleProperties = [];
+                      for(let j in i){
+                          console.log('j',j);
+                          console.log('i.j',i[j]);
+                          let sampleItem = {};
+                          if(j == 'accession' || j == 'accessionKey')
+                            continue;
+                          else{
+                              sampleItem.key={};
+                              sampleItem.key.accession=i[j].col.accession;
+                              sampleItem.key.cvLabel=i[j].col.cvLabel;
+                              sampleItem.key.name=i[j].col.name;
+                              sampleItem.key.value=i[j].col.orignal_name;
+
+                              sampleItem.value={};
+                              sampleItem.value.accession=i[j].accession;
+                              sampleItem.value.cvLabel=i[j].cvLabel;
+                              sampleItem.value.name=i[j].col.name;
+                              sampleItem.value.value=i[j].value;
+                              item.sampleProperties.push(sampleItem);
+                          }  
+                      }
+                      submitData.push(item);
+                  }
+                  console.log('submitData',submitData);
+                //console.log('this.fileData',this.fileData);
+                //console.log('this.sampleData',this.sampleData);
+                //console.log('msRunArray',this.msRunArray);
+                //console.log('results',results);
               }
               else{
                 this.$Message.error({content:'Fill required content', duration:1});
               }
-          }
+          },
+          save(){
+              this.$Message.success({content:'Save Successfully', duration:1});
+              if(this.sampleData.length>0)
+                this.localStorageItemAdd('sampleData', JSON.stringify(this.sampleData));
+              if(this.fileData.length>0)
+                this.localStorageItemAdd('fileData', JSON.stringify(this.fileData));
+              if(this.msRunArray.length>0)
+                this.localStorageItemAdd('msRunArray', JSON.stringify(this.msRunArray));
+
+
+              localStorage.setItem('projectAccession',this.$route.params.id);
+              localStorage.setItem('selectedExperimentType',this.experimentType);
+              localStorage.setItem('samplesNum',this.sampleNumber);
+              localStorage.setItem('fractionsNum',this.fractionNumber);
+
+              console.log('save projectAccession',this.projectAccessionMsRun);
+
+
+          },
+          localStorageItemAdd(key,data){
+              localStorage.setItem(key,data);
+          },
+          localStorageItemRemove(key){
+              localStorage.removeItem(key);
+          },
     },
     watch: {
         sampleData:function(){
@@ -714,8 +816,11 @@
                                         accession:'null',
                                         //accessionKey:this.sampleData[i].accessionKey,
                                         cvLabel:'null',
-                                        col:{},
+                                        col:{
+                                          required:true
+                                        },
                                         icon:'',
+                                        checked:true,
                                   },
                                   msrun:{
                                         value:'',
@@ -723,8 +828,11 @@
                                         accession:'null',
                                         //accessionKey:this.sampleData[i].accessionKey,
                                         cvLabel:'null',
-                                        col:{},
+                                        col:{
+                                          required:true
+                                        },
                                         icon:'',
+                                        checked:true,
                                   },
                                   fractionid:{
                                         value:this.sampleData[i].accession+'_F'+(k+1),
@@ -747,15 +855,18 @@
     
     mounted: function(){
       this.getSampleAttributes();
+      this.init();
     },
     computed:{
 
     },
     created(){
       this.$bus.$on('annotation-confirm', this.confirm);
+      this.$bus.$on('annotation-save', this.save);
     },
     beforeCreate:function(){
       this.$bus.$off('annotation-confirm');
+      this.$bus.$off('annotation-save');
     },
     beforeRouteEnter(to,from,next){
      
@@ -829,6 +940,17 @@
   .card{
     margin-bottom: 20px;
   }
+   .search-button{
+        padding: 5px;
+        font-size: 12px;
+        width: 100%;
+        margin-bottom: 0;
+        /*padding: 20px 85px;
+        font-size: 24px;*/
+        font-weight: 700;
+        background-color: #5bc0be;
+        border-radius: 3px;
+    }
 </style>
 
 <style>
