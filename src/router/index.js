@@ -18,7 +18,10 @@ const ClusterProjects = resolve => require(['@/components/peptidome/ClusterProje
 const Assay = resolve => require(['@/components/peptidome/Assay'], resolve);
 const StatisticsDetails = resolve => require(['@/components/landingpage/StatisticsDetails'], resolve);
 const Annotation = resolve => require(['@/components/annotation/Annotation'], resolve);
-
+const AnnotationID = resolve => require(['@/components/annotation/AnnotationID'], resolve);
+const Check = resolve => require(['@/components/annotation/Check'], resolve);
+const Sample = resolve => require(['@/components/annotation/Sample'], resolve);
+const Annotate = resolve => require(['@/components/annotation/Annotate'], resolve);
 
 Vue.use(Router)
 
@@ -118,7 +121,24 @@ export default new Router({
     {
       path:'/annotation',
       name: 'annotation',
-      component: Annotation
+      component: Annotation,
+      
+    },
+    {
+      path:'/annotation/:id/check',
+      name: 'check',
+      component: Check,
+    },
+    {
+      path:'/annotation/:id/sample',
+      name: 'sample',
+      component: Sample,
+      
+    },
+    {
+      path:'/annotation/:id/annotate',
+      name: 'annotate',
+      component: Annotate,
     },
     {
       path:'/404',
