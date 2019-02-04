@@ -112,133 +112,19 @@
 
 <script>
   import NavBar from '@/components/archive/Nav'
-  var paramsFromLandingPage='';
   export default {
-    name: 'archive',
+    name: 'sample',
     data(){
       return {
-            addColumnBool:false,
-            newColumnNameSelectedArray:[],
-            newColumnNameArray:[],
-            columns: [
-              {title: 'Name', key: 'name', sortable: false},
-              {title: 'Email', key: 'email', editable: true},
-              {title: 'Create-Time', key: 'createTime'},
-              {
-                title: 'Handle',
-                key: 'handle',
-                options: ['delete'],
-                button: [
-                  (h, params, vm) => {
-                    return h('Poptip', {
-                      props: {
-                        confirm: true,
-                        title: '你确定要删除吗?'
-                      },
-                      on: {
-                        'on-ok': () => {
-                          vm.$emit('on-delete', params)
-                          vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
-                        }
-                      }
-                    }, [
-                      h('Button', '自定义删除')
-                    ])
-                  }
-                ]
-              }
-            ],
-            tableData:[],
-            organismSample:'',
-            strainbreed:'',
-            organismTest:[],
-            organismSampleLoading:false,
             annotationStep:2,
             accession:'',
             title:'',
-            projectDescription:'',
             species:[],
-            diseases:[],
-            tissues:[],
-            instrumentNames:[],
-            quantificationMethods:[],
-            experimentTypes:[],
-            softwares:[],
-            modification:[],
             samplesNum:0, 
             trNum:0, 
             fractionsNum:0,
             selectedExperimentType:'',
-            publicationDate:'',
-            submissionDate:'',
-            editProjectBool:false,
-            sampleProcessingProtocol:'',
-            dataProcessingProtocol:'',
-            contactors:[],
-            keyword:'',
-            selectTemp:'',
-            searchInputLoading:false,
-            fieldValue:'',
-            containValue:'',
             loading:true,
-            querySpecificFacetsLoading:false,
-            highlightKeyword:'',
-            HighlightKeywordSensitive:false,
-            facetsURL: this.$store.state.baseApiURL + '/facet/projects',
-            searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
-            projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
-            queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
-            autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
-            queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-            //getSampleAttributesApi: this.$store.state.baseApiURL + '/ws/archive/annotator/getSampleAttributes',
-            getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
-            getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
-            containItemSearch:'',
-            fieldSelectors:[],
-            currentPage:1,
-            containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-                value: '',
-                label: '',
-                check: false,
-                number: ''
-            }],
-            //containSelectors:[],
-            filterCombination:[],
-            sortType:'Date',
-            publicaitionList:[],
-            sortList:[
-              {
-                  value: 'Accession',
-                  label: 'Accession'
-              },
-              {
-                  value: 'Title',
-                  label: 'Title'
-              },
-              {
-                  value: 'Relevance',
-                  label: 'Relevance'
-              },
-              {
-                  value: 'Date',
-                  label: 'Date'
-              }
-            ],
-            page:0,
-            pageSize:20,
-            filter:'',
-            sort:'publication_date',
-            total:0,
-            facetsConfigRes:'',
-            projectItemsConfigRes:'',
-            hightlightMode:false,
-            hightlightItemArray:[],
-            tagArray:[],
-            projectItemsSpecies:'',
-            projectItemsProjectDescription:'',
-            projectItemsPublicationDate:'',
-            normalQuery:{},
-            autoCompleteArray:[],
             annotateExperiment:[
                 {
                   value:'Human',
@@ -271,9 +157,6 @@
                   type:'OTHER'
                 },
             ],   
-            tempParams:{},
-            tempSampleCol:[],
-            test:'',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -284,10 +167,7 @@
         filter.split("=");
       console.log('filter',filter);*/
       console.log('fromaaaaaaa',from);
-      
       console.log('beforeRouteUpdate',to.query);
-
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
       next();
     },
     components: {
@@ -377,8 +257,7 @@
      
     },
     computed:{
-      //this variable is not used anymore and only for updating this.normalQuery;
-    
+     
     },
     mounted: function(){
       //this.init();

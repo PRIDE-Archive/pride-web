@@ -210,51 +210,10 @@
 <script>
   import NavBar from '@/components/archive/Nav'
   import store from "@/store/store.js"
-  import Tables from '@/components/tables'
-  import SelectSampleTable from '@/components/select'
-  import draggable from 'vuedraggable'
-  import selfTable from './table.vue'
-  var paramsFromLandingPage='';
   export default {
-    name: 'archive',
+    name: 'check',
     data(){
       return {
-            addColumnBool:false,
-            newColumnNameSelectedArray:[],
-            newColumnNameArray:[],
-            columns: [
-              {title: 'Name', key: 'name', sortable: false},
-              {title: 'Email', key: 'email', editable: true},
-              {title: 'Create-Time', key: 'createTime'},
-              {
-                title: 'Handle',
-                key: 'handle',
-                options: ['delete'],
-                button: [
-                  (h, params, vm) => {
-                    return h('Poptip', {
-                      props: {
-                        confirm: true,
-                        title: '你确定要删除吗?'
-                      },
-                      on: {
-                        'on-ok': () => {
-                          vm.$emit('on-delete', params)
-                          vm.$emit('input', params.tableData.filter((item, index) => index !== params.row.initRowIndex))
-                        }
-                      }
-                    }, [
-                      h('Button', '自定义删除')
-                    ])
-                  }
-                ]
-              }
-            ],
-            tableData:[],
-            organismSample:'',
-            strainbreed:'',
-            organismTest:[],
-            organismSampleLoading:false,
             annotationStep:1,
             accession:'',
             title:'',
@@ -267,361 +226,19 @@
             experimentTypes:[],
             softwares:[],
             modification:[],
-            samplesNum:0, 
-            trNum:0, 
-            fractionsNum:0,
-            selectedExperimentType:'',
             publicationDate:'',
             submissionDate:'',
             editProjectBool:false,
             sampleProcessingProtocol:'',
             dataProcessingProtocol:'',
             contactors:[],
-            keyword:'',
-            selectTemp:'',
-            searchInputLoading:false,
-            fieldValue:'',
-            containValue:'',
             loading:true,
-            sampleCol: [/*
-                {type: 'selection',
-                          width: 60,
-                          align: 'center'},
-                {title: 'Organism',key: 'organism',align:'center',
-                    renderHeader (h, params) {
-                      return h('div', [
-                          h('span',{
-
-                          },'Organism'),
-                          h('Icon', {
-                              props: {
-                                  type: 'checkmark-round',
-                              },
-                              style: {
-                                  marginLeft: '5px'
-                              },
-                              on: {
-                                  click: () => {
-                                      
-                                  }
-                              }
-                          }),
-                      ])
-                    },
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Select', {
-                                props:{
-                                  'v-model':this.organismSample,
-                                  filterable:true,
-                                  remote:true,
-                                  loading:this.organismSampleLoading,
-                                  'remote-method':this.organismSampleQuery,
-                                  size:'small',
-                                  placeholder:''
-                                },
-                                on: {
-                                
-                                  'on-query-change': ()=>{
-                                      //console.log('on-query-change',this.organismSample)
-                                  },
-                                  
-                                    'on-change': () => {
-                                        //console.log('change');
-                                    },
-                                    
-                                }
-                            }, [
-                                this.organismTest.map(function (item) {
-                                    return h('Option', {
-                                        props: {
-                                            value: item.value
-                                        }
-                                    })
-                                })
-
-                            ]),
-                        ]);
-                    }
-                },
-                {title: 'Strain/breed',key: 'strainbreed',align:'center',
-                    renderHeader (h, params) {
-                      return h('div', [
-                          h('span',{
-
-                          },'Organism'),
-                          h('Icon', {
-                              props: {
-                                  type: 'checkmark-round',
-                              },
-                              style: {
-                                  marginLeft: '5px'
-                              },
-                              on: {
-                                  click: () => {
-                                      
-                                  }
-                              }
-                          }),
-                      ])
-                    },
-                    render: (h, params) => {
-                        return h('div', [
-                            h('Input', {
-                                props:{
-                                  'v-model': this.strainbreed,
-                                  size:'small'
-                                },
-                                on: {
-                                    'on-blur': ()=>{
-                                        console.log('this.strainbreed',this.strainbreed);
-                                    }
-                                    
-                                }
-                            }),
-                        ]);
-                    }
-                },
-                {title: 'Age',key: 'age',sortable: false,align:'center',
-                    render: (h, params) => {
-                        return h('InputNumber', {
-                           props:{
-                              min: 0,
-                              step: 1,
-                              value:18,
-                              size:'small'
-                           },
-                           style:{
-                              width: '50px'
-                           }
-                        });
-                    }
-                },
-                {title: 'Developmental stage',key: 'developmentalstage',sortable: false,align:'center',editable: true},
-                {title: 'Sex',key: 'sex',sortable: false,align:'center',editable: true},
-                {title: 'Disease',key: 'disease',align:'center',
-                   
-                    children: [
-                        {
-                            title: 'Age',
-                            key: 'age',
-                            align: 'center',
-                            width: 200,
-                            sortable: false,
-                            render: (h, params) => {
-                                return h('div', [
-                                    h('Select', {
-                                        props:{
-                                          'v-model':this.organismSample,
-                                          filterable:true,
-                                          remote:true,
-                                          loading:this.organismSampleLoading,
-                                          'remote-method':this.organismSampleQuery,
-                                          size:'small',
-                                          placeholder:''
-                                        },
-                                        on: {
-                                        
-                                          'on-query-change': ()=>{
-                                              //console.log('on-query-change',this.organismSample)
-                                          },
-                                          
-                                            'on-change': () => {
-                                                //console.log('change');
-                                            },
-                                            
-                                        }
-                                    }, [
-                                        this.organismTest.map(function (item) {
-                                            return h('Option', {
-                                                props: {
-                                                    value: item.value
-                                                }
-                                            })
-                                        })
-
-                                    ]),
-                                ]);
-                            }
-                        },
-                        {
-                            title: 'Age',
-                            key: 'age',
-                            align: 'center',
-                            width: 200,
-                            sortable: false,
-                            render: (h, params) => {
-                                return h('div', [
-                                    h('Select', {
-                                        props:{
-                                          'v-model':this.organismSample,
-                                          filterable:true,
-                                          remote:true,
-                                          loading:this.organismSampleLoading,
-                                          'remote-method':this.organismSampleQuery,
-                                          size:'small',
-                                          placeholder:''
-                                        },
-                                        on: {
-                                        
-                                          'on-query-change': ()=>{
-                                              //console.log('on-query-change',this.organismSample)
-                                          },
-                                          
-                                            'on-change': () => {
-                                                //console.log('change');
-                                            },
-                                            
-                                        }
-                                    }, [
-                                        this.organismTest.map(function (item) {
-                                            return h('Option', {
-                                                props: {
-                                                    value: item.value
-                                                }
-                                            })
-                                        })
-
-                                    ]),
-                                ]);
-                            }
-                        }
-                    ],
-                    renderHeader:(h, params)=> {
-                      return h('div', [
-                          h('span',{
-
-                          },'Disease'),
-                          h('Icon', {
-                              props: {
-                                  type: 'close-round',
-                              },
-                              style: {
-                                  marginLeft: '5px',
-                                 
-                                  display:'inline-block'
-                              },
-                              on: {
-                                  click: () => {
-                                      this.deleteColumn(params);
-                                  }
-                              }
-                          }),
-                      ])
-                    },
-                },
-                {title: 'Cell type',key: 'celltype',sortable: false,align:'center',editable: true},
-                {title: 'Individual',key: 'individual',sortable: false,align:'center',editable: true},
-                {title: 'Cell line Code',key: 'celllinecode',sortable: false,align:'center',editable: true},*/
-            ],
-            sampleData:[],
-            querySpecificFacetsLoading:false,
-            highlightKeyword:'',
-            HighlightKeywordSensitive:false,
-            facetsURL: this.$store.state.baseApiURL + '/facet/projects',
-            searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
-            projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
-            queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
-            autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
             queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-            //getSampleAttributesApi: this.$store.state.baseApiURL + '/ws/archive/annotator/getSampleAttributes',
-            getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
-            getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
-            containItemSearch:'',
-            fieldSelectors:[],
-            currentPage:1,
-            containSelectors:[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-                value: '',
-                label: '',
-                check: false,
-                number: ''
-            }],
-            //containSelectors:[],
-            filterCombination:[],
-            sortType:'Date',
-            publicaitionList:[],
-            sortList:[
-              {
-                  value: 'Accession',
-                  label: 'Accession'
-              },
-              {
-                  value: 'Title',
-                  label: 'Title'
-              },
-              {
-                  value: 'Relevance',
-                  label: 'Relevance'
-              },
-              {
-                  value: 'Date',
-                  label: 'Date'
-              }
-            ],
-            page:0,
-            pageSize:20,
-            filter:'',
-            sort:'publication_date',
-            total:0,
-            facetsConfigRes:'',
-            projectItemsConfigRes:'',
-            hightlightMode:false,
-            hightlightItemArray:[],
-            tagArray:[],
-            projectItemsSpecies:'',
-            projectItemsProjectDescription:'',
-            projectItemsPublicationDate:'',
-            normalQuery:{},
-            autoCompleteArray:[],
-            annotateExperiment:[
-                {
-                  value:'Human',
-                  class:'human',
-                  check:false,
-                  type:'HUMAN',
-                },
-                {
-                  value:'Vertebrates',
-                  class:'vertebrates',
-                  check:false,
-                  type:'VERTEBRATES'
-                },
-                {
-                  value:'Cell Line',
-                  class:'cellline',
-                  check:false,
-                  type:'CELL_LINES'
-                },
-                {
-                  value:'Plant',
-                  class:'plant',
-                  check:false,
-                  type:'PLANTS'
-                },
-                {
-                  value:'Other',
-                  class:'questionmark',
-                  check:false,
-                  type:'OTHER'
-                },
-            ],   
-            tempParams:{},
-            tempSampleCol:[],
-            test:'',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      //console.log('to query',to.query);
-      /*
-      let filter = to.query.split('?')[1].split('filter');
-      if(filter.length>1)
-        filter.split("=");
-      console.log('filter',filter);*/
-      console.log('to.params',to.params);
-     
-      console.log('beforeRouteUpdate',to.query);
-      
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
+      //console.log('to.params',to.params);
+      //console.log('beforeRouteUpdate',to.query);
       next();
     },
     components: {
@@ -701,41 +318,6 @@
       handleDelete (params) {
         console.log(params)
       },
-
-     
-      titleCase(str) {
-        str=str.toLowerCase().split(" ");
-        for(var i=0;i<str.length;i++){
-          var char=str[i].charAt(0);
-          str[i]=str[i].replace(char,function(s){return s.toUpperCase();});
-        }
-        str=str.join(" ");
-        return str;
-      },
-      pushData(){
-          //console.log('this.tempSampleCol',this.tempSampleCol);
-          //console.log('this.tempParams.column.key',this.tempParams.column.key);
-
-          for(let i=0; i<this.tempSampleCol.length;i++){
-              if(this.tempSampleCol[i].key == this.tempParams.column.key){
-                  let item ={
-                      cvLable:this.tempSampleCol[i].cvLable,
-                      accession:this.tempSampleCol[i].accession,
-                      name:this.tempSampleCol[i].orignal_name
-                  };
-                  {
-                    key:{columnPrp}
-                    value:{item}
-                  }
-                  this.ad[index].push(item);
-                  console.log('item',item);
-                  break;
-              }
-             
-          }
-          console.log('this.test',this.test);
-          
-      },
       localStorageCheck(){
           var projectAccession = localStorage.getItem("projectAccession");
           console.log('projectAccession',projectAccession);
@@ -753,15 +335,9 @@
               });
       },
     },
-
-  
     mounted: function(){
       this.localStorageCheck();
       this.showDataset(this.$route.params.id);
-      //this.updateCondition();//move into queryConfig function
-      //this.queryArchiveProjectList();//move into queryConfig function
-      //this.setFilter();//move into queryConfig function
-     
     },
     created(){
       
