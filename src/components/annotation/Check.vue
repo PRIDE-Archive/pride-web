@@ -1,5 +1,5 @@
 <template>
-  <div class="archive-container">
+  <div class="check-container">
       <div class="panel nav"><NavBar/></div>
       <div class="browse-data-container">
           <Row>
@@ -315,9 +315,6 @@
       saveProject(){
         this.editProjectBool=false;
       },
-      handleDelete (params) {
-        console.log(params)
-      },
       localStorageCheck(){
           var projectAccession = localStorage.getItem("projectAccession");
           console.log('projectAccession',projectAccession);
@@ -345,62 +342,12 @@
     beforeDestroy(){
           
     },
-    /*
-    beforeRouteEnter(to,from,next){
-      var projectAccession = localStorage.getItem("projectAccession")
-      if(from.name == 'landingpage' && from.params.keyword)
-        paramsFromLandingPage = from.params.keyword;
-      if(projectAccession){
-          next(vm=>{
-              vm.$Modal.confirm({
-                  title: 'Uncompleted Annotaion',
-                  content: '<p>Do you want to delete the uncompleted annotation?</p>',
-                  onOk: () => {
-                      console.log('ok',vm.$router.push);
-                      //localStorage.clear();
-                      vm.$router.push({path:'/annotation'});
-                      //this.$bus.$emit('annotation-confirm');
-                      //next();
-                  },
-                  onCancel: () => {
-                      console.log('cancel');
-                      vm.$router.push({path:'/annotation/'+projectAccession+'/annotate'});
-                      //next();
-                  }
-              });
-          });
-      }
-      else
-        next();
-    },*/
-    /*
-    beforeRouteLeave (to, from, next) {
-      let projectAccession = localStorage.getItem("projectAccession")
-      if(to.name!='sample' && projectAccession)
-          this.$Modal.confirm({
-              title: 'Uncompleted Annotaion',
-              content: '<p>Do you want to delete the uncompleted annotation?</p>',
-              onOk: () => {
-                  console.log('ok');
-                  localStorage.clear();
-                  this.$router.push({path:'/annotation'});
-                  //this.$bus.$emit('annotation-confirm');
-                  next();
-              },
-              onCancel: () => {
-                  this.$router.push({path:'/annotation/'+projectAccession+'/annotate'});
-                  next();
-              }
-          });
-      else
-        next();
-    }*/
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
-  .archive-container{
+  .check-container{
     width: 100%;
   }
   .title{
@@ -435,19 +382,6 @@
     margin:0 auto;
     padding: 90px 0;
   }
-  .refine-name{
-    font-size: 12px;
-  }
-  .tag-container{
-    display: inline-block;
-  }
-  .page-container{
-    text-align: center;
-  }
-  .filter-condition{
-    display: inline-block;
-    margin-top: 5px; 
-  }
   .resource-list-title-container{
     display: flex;
     justify-content: space-between;
@@ -463,23 +397,6 @@
         font-weight: 700;
         background-color: #5bc0be;
         border-radius: 3px;
-    }
-    .dataset-wrapper{
-      margin-right: 5px;
-    }
-    .search-item-input-wrapper{
-      position: absolute;
-      top:5px;
-      width: 100%;
-      text-align: center;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgb(200,200,200,0.5);
-    }
-    .dropdown-action{
-      width: 50px;
-    }
-    .separator{
-      margin: 0 5px;
     }
     .readMore{
       display: inline;
@@ -502,239 +419,9 @@
     .property-row{
       margin-top: 10px;
     }
-    .experiment-type-wrapper{
-      display: flex;
-    }
-    .experiment-type-wrapper div{
-      position: relative;
-      width: 135px;
-      height: 135px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid;
-      border-color: #5bc0be;
-      border-radius: 6px;
-      /*background-color: #207a79;*/
-      margin: 15px;
-    }
-    .experiment-type-wrapper div span{
-        position: absolute;
-        bottom: 8px;
-    }
-    .step-title-tooltip{
-      margin-left: 5px;
-    }
-    .human:before{
-      content: "H";
-      font-family: "EBI-Species";
-      display: block;
-      font-size: 44pt;
-      margin: 7px;
-      background: none;
-      color: #aaa;
-      margin-bottom: 15px;
-    }
-    .human-check{
-      background-color: #5bc0be;
-    }
-    .human-check:before{
-      content: "H";
-      font-family: "EBI-Species";
-      display: block;
-      font-size: 44pt;
-      margin: 7px;
-      color: white;
-      margin-bottom: 15px;
-    }
-    .vertebrates:before{
-      content: "M";
-      font-family: "EBI-Species";
-      display: block;
-      font-size: 44pt;
-      margin: 7px;
-      background: none;
-      color: #aaa;
-      margin-bottom: 15px;
-    }
-    .vertebrates-check{
-      background-color: #5bc0be;
-    }
-    .vertebrates-check:before{
-      content: "M";
-      font-family: "EBI-Species";
-      display: block;
-      font-size: 44pt;
-      margin: 7px;
-      color: white;
-      margin-bottom: 15px;
-    }
-    /*
-    .animal:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: 0 -256px;
-        margin-bottom: 15px;
-    }
-    .animal-check{
-      background-color: #5bc0be;
-    }
-    .animal-check:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: -64px -256px;
-        margin-bottom: 15px;
-    }*/
-    .cellline:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: 0 -311px;
-        margin-bottom: 15px;
-    }
-    .cellline-check{
-      background-color: #5bc0be;
-    }
-    .cellline-check:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: -64px -311px;
-        margin-bottom: 15px;
-    }
-    .plant:before{
-        content: "P";
-        font-family: "EBI-Species";
-        display: block;
-        color: #aaa;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    } 
-    .plant-check{
-        background-color: #5bc0be;
-    }
-    .plant-check:before{
-        content: "P";
-        font-family: "EBI-Species";
-        display: block;
-        color: white;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
-    .selectedExperimentText{
-      color: white
-    }
-    .new-column-checkbox{
-          display: flex;
-          flex-direction: column;
-    }
-    .checkbox-item-wrapper{
-      display: flex;
-    }
-    .sample-class-table{
-      margin-bottom: 20px;
-    }
-    @font-face {
-        font-family: 'EBI-Generic';
-        src:url('../../../static/font/EBI-Generic.eot');
-        src:url('../../../static/font/EBI-Generic.eot?#iefix') format('embedded-opentype'),
-          url('../../../static/font/EBI-Generic.woff2') format('woff2'),
-          url('../../../static/font/EBI-Generic.woff') format('woff'),
-          url('../../../static/font/EBI-Generic.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-      /* Icons for commonly referenced species and orgamisms */
-      @font-face {
-        font-family: 'EBI-Species';
-        src:url('../../../static/font/EBI-Species.eot');
-        src:url('../../../static/font/EBI-Species.eot?#iefix') format('embedded-opentype'),
-          url('../../../static/font/EBI-Species.woff2') format('woff2'),
-          url('../../../static/font/EBI-Species.woff') format('woff'),
-          url('../../../static/font/EBI-Species.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
 </style>
 
 <style>
-    .page .ivu-select-dropdown-list{
-      margin-left: 0 !important;
-    }
-    .search-item-input input{
-      margin-bottom: 0 !important;
-    }
-    .filter-selector .ivu-select-item-selected{
-      color: rgba(91, 192, 190, 0.9) !important;
-      background: inherit !important;
-    }
-    .filter-selector .ivu-checkbox-wrapper{
-      width: 100% !important;
-      margin: 0 auto !important;
-    }
-    .filter-selector .ivu-select-input{
-      margin-bottom: 0;
-      box-shadow: none;
-    }
-    .filter-selector .ivu-select-input:focus{
-          border: none;
-          background:none !important;
-    }
-    .filter-selector .ivu-tag{
-      background: none ;
-    }
-    .filter-selector .ivu-select-item-selected::after{
-      line-height: 0.8 !important;
-      font-size: 22px;
-      margin-right: 5px;
-      float:left;
-      display: none !important; 
-    }
-    .tag-container .ivu-tag-border.ivu-tag-closable:after{
-        /*display: none !important;*/
-    }
-    .filter-selector .ivu-select-input{
-      height: 30px;
-      line-height: 30px;
-    }
-    .filter-selector .ivu-tag{
-      display: none;
-      margin:2px 4px 2px 0;
-    }
-    .filter-selector .ivu-select-selection{
-      border-radius: 3px;
-    }
-    .filter-selector.input-search-needed .ivu-select-dropdown{
-      width: 200px !important;
-      left:243px !important;
-    }
-    .filter-selector .ivu-icon-ios-close-empty{
-      display: none;
-    }
-    .filter-selector .ivu-select-selection{
-      height: 30px !important;
-      line-height: 30px !important;
-    }
     .readMore a{
         color: #495060;
         border-bottom-style: dotted;
