@@ -1,5 +1,5 @@
 <template>
-  <div class="archive-container">
+  <div class="sample-container">
       <div class="panel nav"><NavBar/></div>
       <div class="browse-data-container">
           <Row>
@@ -256,9 +256,8 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
-  .archive-container{
+  .sample-container{
     width: 100%;
-   
   }
   .title{
     font-size: 35px;
@@ -267,11 +266,6 @@
   }
   .step-wrapper{
     margin-bottom: 50px;
-  }
-  .summary-content-header{
-    font-size: 14px;
-    color: #5bc0be;
-    font-weight: bold;
   }
   .button-wrapper{
     margin-top: 20px;
@@ -299,27 +293,6 @@
   .input-number{
     width: 60px;
   }
-  .search-row{
-    margin-bottom: 20px;
-  }
-  .search-condition:not(.first){
-    display: inline-block;
-    padding-left: 8px;
-    border-left: 1px solid #e9eaec;
-  }
-  .refine-name{
-    font-size: 12px;
-  }
-  .tag-container{
-    display: inline-block;
-  }
-  .page-container{
-    text-align: center;
-  }
-  .filter-condition{
-    display: inline-block;
-    margin-top: 5px; 
-  }
   .resource-list-title-container{
     display: flex;
     justify-content: space-between;
@@ -336,178 +309,171 @@
         background-color: #5bc0be;
         border-radius: 3px;
     }
-    .card-content .step-title{
-      font-size: 14px;
-      color: #5bc0be;
-      font-weight: bold;
-      margin:15px 0 0 0;
-    }
-    .card{
-      margin-top: 20px;
-    }
-    .experiment-type-wrapper{
-      display: flex;
-    }
-    .experiment-type-wrapper div{
-      position: relative;
-      width: 135px;
-      height: 135px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: 1px solid;
-      border-color: #5bc0be;
-      border-radius: 6px;
-      /*background-color: #207a79;*/
-      margin: 15px;
-    }
-    .experiment-type-wrapper div span{
-        position: absolute;
-        bottom: 8px;
-    }
-    .step-title-tooltip{
-      margin-left: 5px;
-    }
-    .human:before{
-      content: "H";
+  .card-content .step-title{
+    font-size: 14px;
+    color: #5bc0be;
+    font-weight: bold;
+    margin:15px 0 0 0;
+  }
+  .card{
+    margin-top: 20px;
+  }
+  .experiment-type-wrapper{
+    display: flex;
+  }
+  .experiment-type-wrapper div{
+    position: relative;
+    width: 135px;
+    height: 135px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    border-color: #5bc0be;
+    border-radius: 6px;
+    /*background-color: #207a79;*/
+    margin: 15px;
+  }
+  .experiment-type-wrapper div span{
+      position: absolute;
+      bottom: 8px;
+  }
+  .step-title-tooltip{
+    margin-left: 5px;
+  }
+  .human:before{
+    content: "H";
+    font-family: "EBI-Species";
+    display: block;
+    font-size: 44pt;
+    margin: 7px;
+    background: none;
+    color: #aaa;
+    margin-bottom: 15px;
+  }
+  .human-check{
+    background-color: #5bc0be;
+  }
+  .human-check:before{
+    content: "H";
+    font-family: "EBI-Species";
+    display: block;
+    font-size: 44pt;
+    margin: 7px;
+    color: white;
+    margin-bottom: 15px;
+  }
+  .vertebrates:before{
+    content: "M";
+    font-family: "EBI-Species";
+    display: block;
+    font-size: 44pt;
+    margin: 7px;
+    background: none;
+    color: #aaa;
+    margin-bottom: 15px;
+  }
+  .vertebrates-check{
+    background-color: #5bc0be;
+  }
+  .vertebrates-check:before{
+    content: "M";
+    font-family: "EBI-Species";
+    display: block;
+    font-size: 44pt;
+    margin: 7px;
+    color: white;
+    margin-bottom: 15px;
+  }
+  .cellline:before{
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      background: url(../../../static/font/expsprite.png);
+      background-size: 128px !important;
+      background-color: transparent;
+      background-position: 0 -311px;
+      margin-bottom: 15px;
+  }
+  .cellline-check{
+    background-color: #5bc0be;
+  }
+  .cellline-check:before{
+      content: " ";
+      display: block;
+      width: 64px;
+      height: 64px;
+      background: url(../../../static/font/expsprite.png);
+      background-size: 128px !important;
+      background-color: transparent;
+      background-position: -64px -311px;
+      margin-bottom: 15px;
+  }
+  .plant:before{
+      content: "P";
       font-family: "EBI-Species";
       display: block;
-      font-size: 44pt;
-      margin: 7px;
-      background: none;
       color: #aaa;
-      margin-bottom: 15px;
-    }
-    .human-check{
-      background-color: #5bc0be;
-    }
-    .human-check:before{
-      content: "H";
-      font-family: "EBI-Species";
-      display: block;
       font-size: 44pt;
-      margin: 7px;
-      color: white;
-      margin-bottom: 15px;
-    }
-    .vertebrates:before{
-      content: "M";
-      font-family: "EBI-Species";
-      display: block;
-      font-size: 44pt;
-      margin: 7px;
       background: none;
-      color: #aaa;
       margin-bottom: 15px;
-    }
-    .vertebrates-check{
+  } 
+  .plant-check{
       background-color: #5bc0be;
-    }
-    .vertebrates-check:before{
-      content: "M";
+  }
+  .plant-check:before{
+      content: "P";
       font-family: "EBI-Species";
       display: block;
-      font-size: 44pt;
-      margin: 7px;
       color: white;
+      font-size: 44pt;
+      background: none;
       margin-bottom: 15px;
-    }
-    .cellline:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: 0 -311px;
-        margin-bottom: 15px;
-    }
-    .cellline-check{
+  }
+  .questionmark:before{
+      content: "?";
+      font-family: "EBI-Generic";
+      display: block;
+      color: #aaa;
+      font-size: 44pt;
+      background: none;
+      margin-bottom: 15px;
+  }
+  .questionmark-check{
       background-color: #5bc0be;
-    }
-    .cellline-check:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: -64px -311px;
-        margin-bottom: 15px;
-    }
-    .plant:before{
-        content: "P";
-        font-family: "EBI-Species";
-        display: block;
-        color: #aaa;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    } 
-    .plant-check{
-        background-color: #5bc0be;
-    }
-    .plant-check:before{
-        content: "P";
-        font-family: "EBI-Species";
-        display: block;
-        color: white;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
-    .questionmark:before{
-        content: "?";
-        font-family: "EBI-Generic";
-        display: block;
-        color: #aaa;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
-    .questionmark-check{
-        background-color: #5bc0be;
-    }
-    .questionmark-check:before{
-        content: "?";
-        font-family: "EBI-Generic";
-        display: block;
-        color: white;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
-    .selectedExperimentText{
-      color: white
-    }
-    @font-face {
-        font-family: 'EBI-Generic';
-        src:url('../../../static/font/EBI-Generic.eot');
-        src:url('../../../static/font/EBI-Generic.eot?#iefix') format('embedded-opentype'),
+  }
+  .questionmark-check:before{
+      content: "?";
+      font-family: "EBI-Generic";
+      display: block;
+      color: white;
+      font-size: 44pt;
+      background: none;
+      margin-bottom: 15px;
+  }
+  .selectedExperimentText{
+    color: white
+  }
+  @font-face {
+      font-family: 'EBI-Generic';
+      src:url('../../../static/font/EBI-Generic.eot');
+      src:url('../../../static/font/EBI-Generic.eot?#iefix') format('embedded-opentype'),
           url('../../../static/font/EBI-Generic.woff2') format('woff2'),
           url('../../../static/font/EBI-Generic.woff') format('woff'),
           url('../../../static/font/EBI-Generic.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-      /* Icons for commonly referenced species and orgamisms */
-      @font-face {
-        font-family: 'EBI-Species';
-        src:url('../../../static/font/EBI-Species.eot');
-        src:url('../../../static/font/EBI-Species.eot?#iefix') format('embedded-opentype'),
+      font-weight: normal;
+      font-style: normal;
+    }
+    /* Icons for commonly referenced species and orgamisms */
+    @font-face {
+      font-family: 'EBI-Species';
+      src:url('../../../static/font/EBI-Species.eot');
+      src:url('../../../static/font/EBI-Species.eot?#iefix') format('embedded-opentype'),
           url('../../../static/font/EBI-Species.woff2') format('woff2'),
           url('../../../static/font/EBI-Species.woff') format('woff'),
           url('../../../static/font/EBI-Species.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
-</style>
-
-<style>
-   
-    .tag-container .ivu-tag-border.ivu-tag-closable:after{
-        /*display: none !important;*/
+      font-weight: normal;
+      font-style: normal;
     }
 </style>
