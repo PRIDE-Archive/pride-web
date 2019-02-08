@@ -413,9 +413,6 @@
             str=str.join(" ");
             return str;
           },
-          remoteMethod1(){
-
-          },
           focus(item){
               if(!item.value)
                 return;
@@ -712,8 +709,6 @@
               localStorage.setItem('fractionsNum',this.fractionNumber);
 
               console.log('save projectAccession',this.projectAccessionMsRun);
-
-
           },
           localStorageItemAdd(key,data){
               localStorage.setItem(key,data);
