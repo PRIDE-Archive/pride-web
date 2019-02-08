@@ -1795,26 +1795,4 @@
         display: block;
         margin-top: 15px;
     }
-    .sample-table table{
-        margin-bottom: 0 !important;
-    }
-    .sample-table table thead th{
-        padding: 0 !important;
-    }
-    .sample-table table tbody td{
-        padding: 0 !important;
-    }
-    .sample-table .ivu-table-body{
-        height: 263px !important;
-    }
-    .sample-table a{
-        color:#495060;
-    }
-    .sample-table a:hover{
-        color:#5bc0be;
-        border-bottom-style:dotted;
-    }
-    .sample-table .ivu-tooltip-inner{
-        white-space:normal;
-    }
 </style>
