@@ -542,39 +542,7 @@
             projectItemsProjectDescription:'',
             projectItemsPublicationDate:'',
             normalQuery:{},
-            autoCompleteArray:[],
-            annotateExperiment:[
-                {
-                  value:'Human',
-                  class:'human',
-                  check:false,
-                  type:'HUMAN',
-                },
-                {
-                  value:'Vertebrates',
-                  class:'vertebrates',
-                  check:false,
-                  type:'VERTEBRATES'
-                },
-                {
-                  value:'Cell Line',
-                  class:'cellline',
-                  check:false,
-                  type:'CELL_LINES'
-                },
-                {
-                  value:'Plant',
-                  class:'plant',
-                  check:false,
-                  type:'PLANTS'
-                },
-                {
-                  value:'Other',
-                  class:'questionmark',
-                  check:false,
-                  type:'OTHER'
-                },
-            ],   
+            autoCompleteArray:[],  
             tempParams:{},
             tempSampleCol:[],
             test:'',
@@ -1233,9 +1201,6 @@
   .step-wrapper{
     margin-bottom: 50px;
   }
-  .card-item-wrapper{
-    margin-bottom: 10px;
-  }
   .summary-content-header{
     font-size: 14px;
     color: #5bc0be;
@@ -1383,9 +1348,6 @@
     }
     .resource-title{
       font-weight: bold;
-    }
-    .detailed-resouce{
-      margin-left: 5px;
     }
     .biological-dataset-button{
         padding: 2px 3px;
