@@ -336,47 +336,14 @@
         background-color: #5bc0be;
         border-radius: 3px;
     }
-    .dataset-wrapper{
-      margin-right: 5px;
-    }
-    .search-item-input-wrapper{
-      position: absolute;
-      top:5px;
-      width: 100%;
-      text-align: center;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgb(200,200,200,0.5);
-    }
-    .dropdown-action{
-      width: 50px;
-    }
-    .separator{
-      margin: 0 5px;
-    }
-    .sortOption{
-      display: inline-block;
-      margin-left: 5px;
-    }
-    .matched-items{
-      color: #948d8d;
-    }
     .card-content .step-title{
       font-size: 14px;
       color: #5bc0be;
       font-weight: bold;
       margin:15px 0 0 0;
     }
-    .modal-column-name{
-      font-size: 14px;
-      color: #5bc0be;
-      font-weight: bold;
-      margin-bottom: 15px;
-    }
     .card{
       margin-top: 20px;
-    }
-    .property-row{
-      margin-top: 10px;
     }
     .experiment-type-wrapper{
       display: flex;
@@ -445,32 +412,6 @@
       color: white;
       margin-bottom: 15px;
     }
-    /*
-    .animal:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: 0 -256px;
-        margin-bottom: 15px;
-    }
-    .animal-check{
-      background-color: #5bc0be;
-    }
-    .animal-check:before{
-        content: " ";
-        display: block;
-        width: 64px;
-        height: 64px;
-        background: url(../../../static/font/expsprite.png);
-        background-size: 128px !important;
-        background-color: transparent;
-        background-position: -64px -256px;
-        margin-bottom: 15px;
-    }*/
     .cellline:before{
         content: " ";
         display: block;
@@ -541,16 +482,6 @@
     .selectedExperimentText{
       color: white
     }
-    .new-column-checkbox{
-          display: flex;
-          flex-direction: column;
-    }
-    .checkbox-item-wrapper{
-      display: flex;
-    }
-    .sample-class-table{
-      margin-bottom: 20px;
-    }
     @font-face {
         font-family: 'EBI-Generic';
         src:url('../../../static/font/EBI-Generic.eot');
@@ -575,82 +506,9 @@
 </style>
 
 <style>
-    .page .ivu-select-dropdown-list{
-      margin-left: 0 !important;
-    }
-    .search-item-input input{
-      margin-bottom: 0 !important;
-    }
-    .filter-selector .ivu-select-item-selected{
-      color: rgba(91, 192, 190, 0.9) !important;
-      background: inherit !important;
-    }
-    .filter-selector .ivu-checkbox-wrapper{
-      width: 100% !important;
-      margin: 0 auto !important;
-    }
-    .filter-selector .ivu-select-input{
-      margin-bottom: 0;
-      box-shadow: none;
-    }
-    .filter-selector .ivu-select-input:focus{
-          border: none;
-          background:none !important;
-    }
-    .filter-selector .ivu-tag{
-      background: none ;
-    }
-    .filter-selector .ivu-select-item-selected::after{
-      line-height: 0.8 !important;
-      font-size: 22px;
-      margin-right: 5px;
-      float:left;
-      display: none !important; 
-    }
+   
     .tag-container .ivu-tag-border.ivu-tag-closable:after{
         /*display: none !important;*/
-    }
-    .filter-selector .ivu-select-input{
-      height: 30px;
-      line-height: 30px;
-    }
-    .filter-selector .ivu-tag{
-      display: none;
-      margin:2px 4px 2px 0;
-    }
-    .filter-selector .ivu-select-selection{
-      border-radius: 3px;
-    }
-    .filter-selector.input-search-needed .ivu-select-dropdown{
-      width: 200px !important;
-      left:243px !important;
-    }
-    .filter-selector .ivu-icon-ios-close-empty{
-      display: none;
-    }
-    .filter-selector .ivu-select-selection{
-      height: 30px !important;
-      line-height: 30px !important;
-    }
-    .sortOption .ivu-select-selection{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
-      height: 17px !important;
-      line-height: 17px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-selection .ivu-select-selected-value{
-      font-weight: normal !important;
-
-    }
-    .sortOption .ivu-select-dropdown .ivu-select-item{
-      font-weight: normal !important;
-
     }
     .sample-table table{
         margin-bottom: 0 !important;
