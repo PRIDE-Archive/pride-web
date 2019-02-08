@@ -402,7 +402,6 @@
 <style scoped>  
   .archive-container{
     width: 100%;
-   
   }
   .title{
     font-size: 35px;
@@ -436,69 +435,6 @@
     margin:0 auto;
     padding: 90px 0;
   }
-  .number-wrapper{
-    font-size: 20px;
-    margin: 15px;
-    display: flex;
-    width: 300px;
-    justify-content: space-between;
-  }
-  .input-number{
-    width: 60px;
-  }
-  .search-filter{
-    display: flex;
-    margin-bottom: 2rem;
-    justify-content: space-between;
-  }
-  .search-row{
-    margin-bottom: 20px;
-  }
-  .search-condition:not(.first){
-    display: inline-block;
-    padding-left: 8px;
-    border-left: 1px solid #e9eaec;
-  }
-  .search-input{
-    text-align: center;
-    margin-bottom: 10px;
-  }
-  .search-input-wrapper{
-    position: relative;
-  }
-  .search-input-wrapper .fake-input{
-    padding-right: 32px;
-    border-radius: 3px !important;
-        font-size: 14px;
-    padding: 6px 7px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    line-height: 1.5;
-        border: 1px solid #5bc0be;
-            color: #495060;
-                background-color: #fcfcfc;
-    background-image: none;
-    cursor: text;
-    text-align:left;
-  }
-  .search-input-wrapper .tag-wrapper{
-    display: inline-block;
-    width: 100%
-   /* position: absolute;*/
-  }
-
-  .search-input-wrapper .tag-wrapper .tag-in-search-input:hover{
-      opacity: 1 !important;
-  }
-  .search-input-wrapper .tag-wrapper .tag-in-search-input{
-      background: none !important;
-  }
-  .search-input-wrapper .tag-wrapper .ivu-select{
-      width: auto
-  }
-
   .refine-name{
     font-size: 12px;
   }
@@ -512,31 +448,9 @@
     display: inline-block;
     margin-top: 5px; 
   }
-  .search-condition-container{
-    display: inline-block;
-  }
-  .search-condition-container .ivu-tag{
-    overflow: visible !important;
-    z-index: 2 !important;
-    opacity: 1 !important;
-    height: 30px;
-    line-height: 30px;
-  }
-  .search-condition-container a{
-    border:none;
-  }
-  .search-condition-container .ivu-select-dropdown .ivu-dropdown-menu{
-    min-width: 50px;
-  }
   .resource-list-title-container{
     display: flex;
     justify-content: space-between;
-  }
-  .sort-action{
-    font-size: 12px;
-    font-weight: normal;
-    color: #495060;
-    border:none;
   }
   .search-button a{
         padding: 8px 10px;
@@ -550,67 +464,6 @@
         background-color: #5bc0be;
         border-radius: 3px;
     }
-    .resource-item{
-      margin-bottom: 20px;
-    }
-    .resource-item .project-info{
-      font-weight: 400;
-    }
-    .resource-id{
-      font-size: 14px;
-      margin-right: 2px;
-    }
-    .resource-title{
-      font-weight: bold;
-    }
-    .detailed-resouce{
-      margin-left: 5px;
-    }
-    .biological-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #5bc0be;
-        border-radius: 3px;
-    }
-    .biomedical-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #bd7edc;
-        border-radius: 3px;
-    }
-    .highlighted-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #e2c94c;
-        border-radius: 3px;
-    }
-    .technical-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #6acaef;
-        border-radius: 3px;
-    }
-    .gray-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #999c9c;
-        border-radius: 3px;
-    }
     .dataset-wrapper{
       margin-right: 5px;
     }
@@ -622,22 +475,11 @@
       padding-bottom: 5px;
       border-bottom: 1px solid rgb(200,200,200,0.5);
     }
-    /*
-    .archive-search-input{
-      margin-bottom: 10px;
-    }*/
     .dropdown-action{
       width: 50px;
     }
     .separator{
       margin: 0 5px;
-    }
-    .sortOption{
-      display: inline-block;
-      margin-left: 5px;
-    }
-    .matched-items{
-      color: #948d8d;
     }
     .readMore{
       display: inline;
@@ -799,27 +641,6 @@
         background: none;
         margin-bottom: 15px;
     }
-    .questionmark:before{
-        content: "?";
-        font-family: "EBI-Generic";
-        display: block;
-        color: #aaa;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
-    .questionmark-check{
-        background-color: #5bc0be;
-    }
-    .questionmark-check:before{
-        content: "?";
-        font-family: "EBI-Generic";
-        display: block;
-        color: white;
-        font-size: 44pt;
-        background: none;
-        margin-bottom: 15px;
-    }
     .selectedExperimentText{
       color: white
     }
@@ -860,18 +681,6 @@
     .page .ivu-select-dropdown-list{
       margin-left: 0 !important;
     }
-    /*
-    .archive-search-input input{
-      border-radius: 3px !important;
-      margin-bottom: 0 !important;
-    }
-    .archive-search-input input:focus{
-      border:none !important;
-      box-shadow: none !important;
-    }
-    .archive-search-input .ivu-select-dropdown{
-      text-align: left;
-    }*/
     .search-item-input input{
       margin-bottom: 0 !important;
     }
@@ -925,81 +734,6 @@
     .filter-selector .ivu-select-selection{
       height: 30px !important;
       line-height: 30px !important;
-    }
-    .sortOption .ivu-select-selection{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
-      height: 17px !important;
-      line-height: 17px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-selection .ivu-select-selected-value{
-      font-weight: normal !important;
-
-    }
-    .sortOption .ivu-select-dropdown .ivu-select-item{
-      font-weight: normal !important;
-
-    }
-    .resource-item .readMore p{
-      display: inline !important;
-    }
-    .resource-item .readMore span{
-      display: inline !important;
-    }
-    .resource-item .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header{
-      padding-left: 0px;
-      height: 20px;
-      line-height: 20px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-    }
-    .resource-item .ivu-collapse{
-      border:none;
-      background: none;
-    }
-    .resource-item .ivu-collapse-content > .ivu-collapse-content-box{
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-    .search-input .tag-input .ivu-input{
-      width: 100%;
-      height: 29px;
-      line-height: 32px;
-      padding: 0 0 0 4px;
-      display: inline-block;
-      font-size: 14px;
-      outline: 0;
-      border: none !important;
-      box-sizing: border-box;
-      color: #495060;
-      background-color: transparent;
-      position: relative;
-      margin:0 !important;
-      box-shadow:none !important;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection{
-      border:none !important;
-      box-shadow:none !important;
-      background: none;
-      padding:0;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input:focus{
-      border:none !important;
-      box-shadow:none !important;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input{
-      border:none !important;
-      box-shadow:none !important;
-      background: none;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
-      /*display: none;*//******this will be removed when autocomplete function needed********/
     }
     .readMore a{
         color: #495060;
