@@ -16,10 +16,10 @@
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)">
                                   </Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
-                                      <DropdownMenu class="dropdown-remote111"  slot="list">
-                                          <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
-                                          <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAll(item.name,itemRow,itemCol)"></Icon>
+                                      <DropdownMenu slot="list">
+                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
+                                          <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemRow,itemCol)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
@@ -58,10 +58,10 @@
                             <div v-if="itemCol.key=='label'">
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
-                                      <DropdownMenu class="dropdown-remote111"  slot="list">
-                                          <DropdownItem v-if="options1.length == 0" name="nodata">No data</DropdownItem>
-                                          <DropdownItem v-for="item in options1" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click="applyAllFile(item.name,itemRow,itemCol)"></Icon>
+                                      <DropdownMenu slot="list">
+                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
+                                          <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name,itemRow,itemCol)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
@@ -200,7 +200,7 @@
               },
           ],
           fileData:[],
-          options1:[
+          dropdownOptions:[
             {
               cvLabel:'',
               accession:'',
@@ -329,7 +329,7 @@
                   item[itemCol.key].dropdown=false;
                   return;
               }
-              this.options1=[];
+              this.dropdownOptions=[];
               let query={
                 attributeAccession: itemCol.accession,
                 ontologyAccession: itemCol.cvLabel,
@@ -344,9 +344,9 @@
                     if(res.body.length>0 || searchValue)
                       item[itemCol.key].dropdown=true;
 
-                    this.options1=res.body;
-                    //console.log('this.options1',this.options1);
-                    if(this.options1.length == 0){
+                    this.dropdownOptions=res.body;
+                    //console.log('this.dropdownOptions',this.dropdownOptions);
+                    if(this.dropdownOptions.length == 0){
                         item[itemCol.key].value==searchValue;
                     }
                   },function(err){
@@ -362,7 +362,7 @@
                   item[itemCol.key].dropdown=false;
                   return;
               }
-              this.options1=[];
+              this.dropdownOptions=[];
               /*
               let query={
                 attributeAccession: itemCol.accession,
@@ -380,8 +380,8 @@
                         if(res.body.length>0 || searchValue)
                           item[itemCol.key].dropdown=true;
 
-                        this.options1=res.body;
-                        if(this.options1.length == 0){
+                        this.dropdownOptions=res.body;
+                        if(this.dropdownOptions.length == 0){
                             item[itemCol.key].value==searchValue;
                         }
                       },function(err){
@@ -402,8 +402,8 @@
                         if(res.body.length>0 || searchValue)
                           item[itemCol.key].dropdown=true;
 
-                        this.options1=res.body;
-                        if(this.options1.length == 0){
+                        this.dropdownOptions=res.body;
+                        if(this.dropdownOptions.length == 0){
                             item[itemCol.key].value==searchValue;
                         }
                       },function(err){
@@ -425,7 +425,7 @@
               if(!item.value)
                 return;
               item.dropdown = true;
-              this.options1 = [
+              this.dropdownOptions = [
                   {
                     cvLabel:item.cvLabel,
                     accession:item.accession,
@@ -523,6 +523,7 @@
               }
           },
           dropdownClick(e,itemRow,itemCol){
+            console.log('dropdownClick');
             itemRow.dropdown=false;
             if(e == "nodata" && !itemRow.value){
                 itemRow.icon="";
@@ -531,10 +532,10 @@
             itemRow.value=e;
             itemRow.checked=true;
             
-            for(let i=0; i<this.options1.length;i++){
-                if(this.options1[i].name==e){
-                    itemRow.accession = this.options1[i].accession;
-                    itemRow.cvLabel = this.options1[i].cvLabel;
+            for(let i=0; i<this.dropdownOptions.length;i++){
+                if(this.dropdownOptions[i].name==e){
+                    itemRow.accession = this.dropdownOptions[i].accession;
+                    itemRow.cvLabel = this.dropdownOptions[i].cvLabel;
                     break;
                 }
             }
@@ -543,6 +544,7 @@
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,row,col){
+              console.log('applyAll clicked');
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.sampleData.length; i++){
                       let item =  JSON.parse(JSON.stringify(row[col.key]));
@@ -552,6 +554,7 @@
               });
           },
           applyAllFile(name,row,col){
+              console.log('applyAllFile clicked');
               this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.msRunArray.length; i++){
                       let item =  JSON.parse(JSON.stringify(row[col.key]));
