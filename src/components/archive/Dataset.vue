@@ -818,7 +818,7 @@
                 }
 
             },function(err){
-                //this.$router.replace({name:'404'});
+                this.$router.replace({name:'404'});
             });
       },
       queryArchiveProjectFiles(id){

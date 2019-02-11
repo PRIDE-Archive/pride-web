@@ -288,6 +288,10 @@
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
+
+                //for id checking
+                localStorage.setItem('tempProjectAccession',this.$route.params.id);
+                console.log('tempProjectAccession',localStorage.getItem('tempProjectAccession'));
                 /*
                 //for publications
                 //console.log('res.body',res.body);
@@ -300,7 +304,8 @@
                 }*/
 
             },function(err){
-                //this.$router.replace({name:'404'});
+                  this.$Message.error({content:'Project Query Error', duration:1});
+                  this.back();
             });
       },
       back(){

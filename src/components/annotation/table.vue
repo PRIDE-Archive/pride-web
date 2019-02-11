@@ -338,11 +338,14 @@
               this.$http
                   .get(this.getValuesByAttributeApi,{params: query})
                   .then(function(res){
+                    console.log(item[itemCol.key].active);
+                    if(!item[itemCol.key].active)
+                      return;
                     if(res.body.length>0 || searchValue)
                       item[itemCol.key].dropdown=true;
 
                     this.options1=res.body;
-                    console.log('this.options1',this.options1);
+                    //console.log('this.options1',this.options1);
                     if(this.options1.length == 0){
                         item[itemCol.key].value==searchValue;
                     }
@@ -372,6 +375,8 @@
                       .get(this.labelQueryApi)
                       //.get(this.labelQueryApi,{params: query})
                       .then(function(res){
+                        if(!item[itemCol.key].active)
+                          return;
                         if(res.body.length>0 || searchValue)
                           item[itemCol.key].dropdown=true;
 
@@ -392,6 +397,8 @@
                       .get(this.msRunApi,{params: query})
                       //.get(this.labelQueryApi,{params: query})
                       .then(function(res){
+                        if(!item[itemCol.key].active)
+                          return;
                         if(res.body.length>0 || searchValue)
                           item[itemCol.key].dropdown=true;
 
@@ -414,6 +421,7 @@
             return str;
           },
           focus(item){
+              item.active=true;
               if(!item.value)
                 return;
               item.dropdown = true;
@@ -426,10 +434,11 @@
               ];
           },
           blur(item,key){
-            //console.log('blur',item,key);
+            item.active=false;
             item.dropdown = false;
             if(item.value)
               item.checked=true;
+            console.log('blurblurblurblurblurblurblurblur',item.dropdown);
           },
           removeInputContent(item){
               //console.log('removeInputContent',item);

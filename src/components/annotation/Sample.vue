@@ -210,6 +210,12 @@
             this.fractionsNum = +localStorage.getItem("fractionsNum") || 0
       },
       localStorageCheck(){
+          var tempProjectAccession = localStorage.getItem("tempProjectAccession");
+          if(tempProjectAccession &&  tempProjectAccession!= this.$route.params.id){
+              this.$Message.error({content:'Wrong Project Accession', duration:1});
+              this.$router.push({path:'/annotation'});
+          }
+
           var projectAccession = localStorage.getItem("projectAccession");
           console.log('projectAccession',projectAccession);
           if(projectAccession)
@@ -246,6 +252,7 @@
       console.log('from',from);
       if(from.name != 'check')
         next(vm=>{
+          console.log(123123);
           vm.init();
         });
       else

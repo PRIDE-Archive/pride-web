@@ -95,6 +95,13 @@
       annotationSave(){
           this.$bus.$emit('annotation-save');
       },
+      localStorageCheck(){
+          var tempProjectAccession = localStorage.getItem("tempProjectAccession");
+          if(tempProjectAccession &&  tempProjectAccession!= this.$route.params.id){
+            this.$Message.error({content:'Wrong Project Accession', duration:1});
+            this.$router.push({path:'/annotation'});
+          }
+      },
     },
     watch: {
 
@@ -103,6 +110,7 @@
   
     },
     mounted: function(){
+      this.localStorageCheck();
       //this.queryConfig();
       //this.updateCondition();//move into queryConfig function
       //this.queryArchiveProjectList();//move into queryConfig function
