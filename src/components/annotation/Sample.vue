@@ -49,7 +49,7 @@
                          </div>
                          <div class="number-wrapper">
                              <!--<span>Samples</span>-->
-                             <InputNumber class="input-number" v-model="samplesNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number" v-model="samplesNum" size="small" :min='1'></InputNumber>
                          </div>
                          <div class="step-title">3. Input Techinical Number 
                             <Tooltip class="step-title-tooltip" placement="right">
@@ -62,7 +62,7 @@
                          </div>
                          <div class="number-wrapper">
                              <!--<span>Techinical Replicate</span>-->
-                             <InputNumber class="input-number"  v-model="trNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number"  v-model="trNum" size="small" :min='1'></InputNumber>
                          </div>
                          <div class="step-title">3. Input Fractions Number 
                               <Tooltip class="step-title-tooltip" placement="right">
@@ -75,7 +75,7 @@
                           </div>
                          <div  class="number-wrapper">
                               <!--<span>Fractions</span>-->
-                             <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='1'></InputNumber>
                          </div>
                     </div>
                 </Card>
@@ -104,9 +104,9 @@
             accession:'',
             title:'',
             species:[],
-            samplesNum:0, 
-            trNum:0, 
-            fractionsNum:0,
+            samplesNum:1, 
+            trNum:1, 
+            fractionsNum:1,
             selectedExperimentType:'',
             loading:true,
             annotateExperiment:[
@@ -162,8 +162,8 @@
         this.$router.push({path:'/annotation/'+this.$route.params.id+'/check'});
       },
       next(){
-        this.$router.push({path:'/annotation/'+this.$route.params.id+'/annotate'});
         this.saveSampleInfo();
+        this.$router.push({path:'/annotation/'+this.$route.params.id+'/annotate'});
       },
       handleDelete (params) {
         console.log(params)
@@ -206,8 +206,8 @@
                 break;
               }
             }
-            this.samplesNum  = +localStorage.getItem("samplesNum") || 0
-            this.fractionsNum = +localStorage.getItem("fractionsNum") || 0
+            this.samplesNum  = +localStorage.getItem("samplesNum") || 1
+            this.fractionsNum = +localStorage.getItem("fractionsNum") || 1
       },
       localStorageCheck(){
           var tempProjectAccession = localStorage.getItem("tempProjectAccession");
