@@ -13,13 +13,13 @@
                       <div class="table-row first">{{itemCol.name}}<Icon class="icon-in-th" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])">
                                   </Input>
-                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
+                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemRow,itemCol)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
@@ -56,18 +56,18 @@
                       <div class="table-row first msrun">{{itemCol.name}}</div>
                       <div class="table-row" v-for="(itemRow,j) in msRunArray">
                             <div v-if="itemCol.key=='label'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="blur(itemRow[itemCol.key],itemCol.key)"></Input>
-                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key],itemCol)">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
+                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name,itemRow,itemCol)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
-                              <a class="button search-button" @click="">Show</a>
+                              <a class="button search-button" @click="drawerShowBool=true">Show</a>
                             </div>
                             <div v-else>
                                 <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
@@ -85,6 +85,21 @@
           @on-visible-change="modalVisibleChange">
           <Table border ref="selection" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
       </Modal>
+      <div v-if="drawerShowBool" class="annotate-drawer-container" v-on:scroll.prevent="onScroll">
+          <div class="mask"></div>
+          <div class="annotate-drawer-wrapper">
+            <div class="annotate-drawer" :class="{ active: drawerShowBool }">
+                <div class="header"><span>MsRUN Table</span><a @click="drawerShowBool=false"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
+                <div class="content">
+                  <Table border ref="selection" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange" height="400"></Table>
+                </div>
+                <div class="footer">
+                    <a class="button search-button" @click="msRunAnnotate">OK</a>
+                    <a class="button search-button" @click="drawerShowBool=false">Cancel</a>
+                </div>
+            </div>
+          </div>
+      </div>
   </div>
 </template>
 
@@ -102,6 +117,7 @@
           visible:true,
           loading1:false,
           addColumnBool:false,
+          drawerShowBool:false,
           newColumnNameSelectedArray:[],
           inputDeleteAllIcon:'',
           newCol:[
@@ -338,7 +354,7 @@
               this.$http
                   .get(this.getValuesByAttributeApi,{params: query})
                   .then(function(res){
-                    console.log(item[itemCol.key].active);
+                    //console.log(item[itemCol.key].active);
                     if(!item[itemCol.key].active)
                       return;
                     if(res.body.length>0 || searchValue)
@@ -421,24 +437,26 @@
             return str;
           },
           focus(item){
+              console.log('focusfocusfocusfocusfocusfocus');
               item.active=true;
               if(!item.value)
                 return;
-              item.dropdown = true;
+              item.dropdown = false;
+              /*
               this.dropdownOptions = [
                   {
                     cvLabel:item.cvLabel,
                     accession:item.accession,
                     name:item.value,
                   },
-              ];
+              ];*/
           },
-          blur(item,key){
-            item.active=false;
-            item.dropdown = false;
-            if(item.value)
-              item.checked=true;
-            console.log('blurblurblurblurblurblurblurblur',item.dropdown);
+          blur(item){
+              item.active=false;
+              item.dropdown = false;
+              if(item.value)
+                item.checked=true;
+              console.log('blurblurblurblurblurblurblurblur',item.dropdown);
           },
           removeInputContent(item){
               //console.log('removeInputContent',item);
@@ -522,43 +540,46 @@
                 this.sampleData[i].accession = "PXD_S"+(i+1);
               }
           },
-          dropdownClick(e,itemRow,itemCol){
-            console.log('dropdownClick');
-            itemRow.dropdown=false;
-            if(e == "nodata" && !itemRow.value){
-                itemRow.icon="";
+          dropdownClick(e,item){
+            console.log('dropdownClick',item);
+            item.dropdown=false;
+            if(e == "nodata" && !item.value){
+                item.icon="";
                 return;
             }
-            itemRow.value=e;
-            itemRow.checked=true;
+            item.value=e;
+            item.checked=true;
             
             for(let i=0; i<this.dropdownOptions.length;i++){
                 if(this.dropdownOptions[i].name==e){
-                    itemRow.accession = this.dropdownOptions[i].accession;
-                    itemRow.cvLabel = this.dropdownOptions[i].cvLabel;
+                    item.accession = this.dropdownOptions[i].accession;
+                    item.cvLabel = this.dropdownOptions[i].cvLabel;
                     break;
                 }
             }
+            this.blur(item)
           },
           newColSelectChange(selection){
               this.newColumnNameSelectedArray=selection;
           },
-          applyAll(name,row,col){
-              console.log('applyAll clicked');
+          applyAll(name,item,key){
+              console.log('applyAll clicked',item);
+               this.dropdownClick(name,item);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.sampleData.length; i++){
-                      let item =  JSON.parse(JSON.stringify(row[col.key]));
-                      //console.log('item',item);
-                      this.sampleData[i][col.key] = item;
+                      let newItem =  JSON.parse(JSON.stringify(item));
+                      this.sampleData[i][key] = newItem;
                   }
+                  this.blur(item);
               });
           },
-          applyAllFile(name,row,col){
+          applyAllFile(name,item,key){
               console.log('applyAllFile clicked');
+              this.dropdownClick(name,item);
               this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.msRunArray.length; i++){
-                      let item =  JSON.parse(JSON.stringify(row[col.key]));
-                      this.msRunArray[i][col.key] = item;
+                      let newItem =  JSON.parse(JSON.stringify(item));
+                      this.msRunArray[i][key] = newItem;
                   }
               });
           },
@@ -728,6 +749,12 @@
           localStorageItemRemove(key){
               localStorage.removeItem(key);
           },
+          msRunAnnotate(){
+
+          },
+          dropdownClickOutside(e,item){
+            console.log(e,item);
+          }
     },
     watch: {
         sampleData:function(){
@@ -858,6 +885,9 @@
                 }
             }
         },
+        onScroll(){
+
+        }
     },
     
     mounted: function(){
@@ -947,17 +977,84 @@
   .card{
     margin-bottom: 20px;
   }
-   .search-button{
-        padding: 5px;
-        font-size: 12px;
-        width: 100%;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        font-weight: 700;
-        background-color: #5bc0be;
-        border-radius: 3px;
-    }
+  .search-button{
+      padding: 5px;
+      font-size: 12px;
+      width: 100%;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      font-weight: 700;
+      background-color: #5bc0be;
+      border-radius: 3px;
+  }
+  .annotate-drawer-container{
+    display:flex;
+  }
+  .annotate-drawer-container .mask{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(55,55,55,.6);
+    height: 100%;
+    z-index: 1000;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper{
+    position: fixed;
+    overflow: auto;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1000;
+    -webkit-overflow-scrolling: touch;
+    outline: 0;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer{
+    display:flex;
+    flex-direction:column;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left:100%;
+    bottom: 0;
+    width:256px;
+    background-color: #fff;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer.active{
+    transform: translateX(-100%);
+    transition: 0.5s transform;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .header{
+    display:flex;
+    justify-content:space-between;
+    padding: 10px;
+    border-bottom: 1px solid #00000026;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .content{
+    
+    padding: 10px;
+  } 
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer{
+    display:flex;
+    position:absolute;
+    bottom:10px;
+    right:10px;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer a{
+    padding: 8px 10px;
+    margin-left: 10px;
+    width:70px;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer span{
+    font-size: 14px;
+    font-weight: bold;
+  }
+  .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .header a{
+    border-bottom-style: none;
+  } 
 </style>
 
 <style>
@@ -982,8 +1079,11 @@
     }
     .apply-all-button{
         position: absolute;
-        left:2px;
+        left: 0;
+        top: 0;
+        padding: 7px 3px;
         display: none;
+        z-index: 2000;
     }
     .dropdown-remote .ivu-select-dropdown .ivu-dropdown-item:hover > .apply-all-button{
         display: inline-block;
