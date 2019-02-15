@@ -49,9 +49,9 @@
                          </div>
                          <div class="number-wrapper">
                              <!--<span>Samples</span>-->
-                             <InputNumber class="input-number" v-model="samplesNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number" v-model="samplesNum" size="small" :min='1'></InputNumber>
                          </div>
-                         <div class="step-title">3. Input Techinical Number 
+                         <div class="step-title">3. Input Technical Number 
                             <Tooltip class="step-title-tooltip" placement="right">
                                 <Icon type="help-circled"></Icon>
                                 <div slot="content">
@@ -60,9 +60,9 @@
                                 </div>
                             </Tooltip>
                          </div>
+                         <!--
                          <div class="number-wrapper">
-                             <!--<span>Techinical Replicate</span>-->
-                             <InputNumber class="input-number"  v-model="trNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number"  v-model="trNum" size="small" :min='1'></InputNumber>
                          </div>
                          <div class="step-title">3. Input Fractions Number 
                               <Tooltip class="step-title-tooltip" placement="right">
@@ -72,10 +72,11 @@
                                     <p><i>Can customize the style</i></p>
                                 </div>
                             </Tooltip>
-                          </div>
+                         </div>
+                         -->
                          <div  class="number-wrapper">
                               <!--<span>Fractions</span>-->
-                             <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='0'></InputNumber>
+                             <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='1'></InputNumber>
                          </div>
                     </div>
                 </Card>
@@ -104,9 +105,9 @@
             accession:'',
             title:'',
             species:[],
-            samplesNum:0, 
-            trNum:0, 
-            fractionsNum:0,
+            samplesNum:1, 
+            trNum:1, 
+            fractionsNum:1,
             selectedExperimentType:'',
             loading:true,
             annotateExperiment:[
@@ -162,8 +163,8 @@
         this.$router.push({path:'/annotation/'+this.$route.params.id+'/check'});
       },
       next(){
-        this.$router.push({path:'/annotation/'+this.$route.params.id+'/annotate'});
         this.saveSampleInfo();
+        this.$router.push({path:'/annotation/'+this.$route.params.id+'/annotate'});
       },
       handleDelete (params) {
         console.log(params)
@@ -194,6 +195,8 @@
               localStorage.setItem('selectedExperimentType',this.selectedExperimentType);
               localStorage.setItem('samplesNum',this.samplesNum);
               localStorage.setItem('fractionsNum',this.fractionsNum);
+              localStorage.setItem('trNum',this.trNum);
+              
           } else {
             this.$Message.error({content:'localStorage Not Supported', duration:1});
           }
@@ -206,9 +209,10 @@
                 break;
               }
             }
-            this.samplesNum  = +localStorage.getItem("samplesNum") || 0
-            this.fractionsNum = +localStorage.getItem("fractionsNum") || 0
-      },
+            this.samplesNum  = +localStorage.getItem("samplesNum") || 1
+            this.fractionsNum = +localStorage.getItem("fractionsNum") || 1
+            this.trNum = +localStorage.getItem("trNum") || 1
+      }, 
       localStorageCheck(){
           var tempProjectAccession = localStorage.getItem("tempProjectAccession");
           if(tempProjectAccession &&  tempProjectAccession!= this.$route.params.id){
