@@ -4,7 +4,7 @@
       <div class="browse-data-container">
           <Row>
               <div class="title">
-                  Wellcome to Pride Annotation System
+                  Welcome to Pride Annotation System
               </div>
               <div class="step-wrapper">
                   <Steps :current="annotationStep">
