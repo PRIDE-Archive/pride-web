@@ -4,8 +4,8 @@
           <p slot="title" class="resource-list-title-container">
             <span>Sample</span>
           </p>
-          <p slot="extra">
-            <Icon type="plus-round" @click="showModal" size="20"></Icon>
+          <p slot="extra" class="sample-table-extra">
+            <span class="icon-hint-text">Add Property</span><Icon type="plus-round" @click="showModal" size="20"></Icon>
           </p>
           <div class="card-content">
               <draggable class="draggable-class" v-model="sampleCol">
@@ -30,7 +30,9 @@
                       </div>
                   </div>
               </draggable>
-              <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon>
+              <div class="sample-table-extra add-row-icon">
+                 <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon><span>Add Sample</span>
+              </div>
           </div>
       </Card>
       <Card class="card">
@@ -41,7 +43,6 @@
               <div class="draggable-class">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
                       <div class="table-row first">{{itemCol.name}}</div>
-
                       <div class="table-row" v-for="(itemRow,j) in fileData">
                             <div v-if="itemCol.key!='accession'">
                                   <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"  >
@@ -67,7 +68,15 @@
                                   </Dropdown>
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
-                              <a class="button search-button" @click="drawerShowBool=true">Show</a>
+                              <div v-if="itemRow[itemCol.key].file">
+                                  <Tooltip class="show-button-tooltip" :content="itemRow[itemCol.key].file" placement="right">
+                                      <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
+                                  </Tooltip>
+                              </div>
+                              <div v-else>
+                                    <a class="button search-button" @click="showMsRunTable(itemRow,j)">Edit</a> 
+                              </div>
+                              
                             </div>
                             <div v-else>
                                 <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
@@ -89,13 +98,13 @@
           <div class="mask"></div>
           <div class="annotate-drawer-wrapper">
             <div class="annotate-drawer" :class="{ active: drawerShowBool }">
-                <div class="header"><span>MsRUN Table</span><a @click="drawerShowBool=false"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
+                <div class="header"><span>MsRUN Table</span><a @click="hideMsRunTable"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
                 <div class="content">
-                  <Table border ref="selection" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange" height="400"></Table>
+                  <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData" height="800"></Table>
                 </div>
                 <div class="footer">
                     <a class="button search-button" @click="msRunAnnotate">OK</a>
-                    <a class="button search-button" @click="drawerShowBool=false">Cancel</a>
+                    <a class="button search-button" @click="hideMsRunTable">Cancel</a>
                 </div>
             </div>
           </div>
@@ -168,6 +177,47 @@
               }
           ],
           newData:[],
+          msRunModalTableCol:[
+              {
+                  width: 40,
+                  align: 'center',
+                  render: (h, params) => {
+                      return h('Checkbox', {
+                          props: {
+                              value: params.row.select
+                          },
+                          on: {
+                              'on-change': (val) => {
+                                  this.msRunModalTableData.map(x => {
+                                      x.select= false;
+                                      return x;
+                                  });
+                                  this.msRunModalTableData[params.index].select= val;
+                                  console.log('params',params);
+                              }
+                          }
+                      });
+                  }
+              },
+              {
+                  title: 'Accession',
+                  width: 110,
+                  key: 'accession',
+                  align: 'center'
+              },
+              {
+                  title: 'Name',
+                  key: 'name',
+                  align: 'center'
+              },
+              {
+                  title: 'Size',
+                  key: 'size',
+                  width: 70,
+                  align: 'center'
+              },
+          ],
+          msRunModalTableData:[],
           sampleCol:[
             {
               name:'111',
@@ -236,7 +286,6 @@
           experimentType:'',
           sampleNumber:0,
           fractionNumber:0,
-          projectAccessionMsRun:'',
           msRunCol:[
               {
                 //experimentType:res.body[i].first,
@@ -267,7 +316,7 @@
           ],
           msRunArray:[],
           accessionKey:0,
-          firstLoad:true,
+          fractionidValue:''
       }
     },
     components: {
@@ -304,7 +353,6 @@
                                     orignal_name:res.body[i].third.name,
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
-                                  console.log('item',item);
                                   this.sampleCol.push(item);
                                   this.newData.push(item);
                                   sampleDataItem.accession="";
@@ -406,7 +454,7 @@
               }
               else if(itemCol.key=='msrun'){
                   let query={
-                      accession: this.projectAccessionMsRun,
+                      accession: this.$route.params.id,
                   }
                   console.log('msrun',query);
                   this.$http
@@ -437,7 +485,6 @@
             return str;
           },
           focus(item){
-              console.log('focusfocusfocusfocusfocusfocus');
               item.active=true;
               if(!item.value)
                 return;
@@ -456,7 +503,6 @@
               item.dropdown = false;
               if(item.value)
                 item.checked=true;
-              console.log('blurblurblurblurblurblurblurblur',item.dropdown);
           },
           removeInputContent(item){
               //console.log('removeInputContent',item);
@@ -594,21 +640,16 @@
             if(tempMSRunArray)
               this.msRunArray = tempMSRunArray;
 
-            console.log('this.sampleData',this.sampleData);
-            console.log('this.fileData',this.fileData);
+            //console.log('this.sampleData',this.sampleData);
+            //console.log('this.fileData',this.fileData);
 
-            this.firstLoad=false;
-
-            this.projectAccessionMsRun = localStorage.getItem("projectAccession")
             this.experimentType = localStorage.getItem('selectedExperimentType')
             this.sampleNumber  = +localStorage.getItem("samplesNum")
             this.fractionNumber = +localStorage.getItem("fractionsNum")
-            console.log('init this.projectAccessionMsRun ',this.projectAccessionMsRun );
             
 
             //console.log('samplesNum',this.sampleNumber);
             //console.log('fractionsNum',this.fractionNumber);
-            //console.log('projectAccession',this.projectAccessionMsRun);
             //console.log('selectedExperimentType',this.experimentType);
           },
           confirm(){
@@ -741,7 +782,6 @@
               localStorage.setItem('samplesNum',this.sampleNumber);
               localStorage.setItem('fractionsNum',this.fractionNumber);
 
-              console.log('save projectAccession',this.projectAccessionMsRun);
           },
           localStorageItemAdd(key,data){
               localStorage.setItem(key,data);
@@ -750,10 +790,49 @@
               localStorage.removeItem(key);
           },
           msRunAnnotate(){
-
+            if(this.msRunModalTableData.length == 0){
+              this.$Message.error({content:'Choose one file at least', duration:1});
+              return;
+            }
+            /*
+            for(let i of this.msRunArray){
+                if()
+            }*/
+ 
+            console.log('msRunAnnotate');
           },
           dropdownClickOutside(e,item){
             console.log(e,item);
+          },
+          showMsRunTable(itemRow,index){
+            console.log('itemRow',itemRow);
+            console.log('index',index);
+            this.drawerShowBool=true;
+            this.fractionidValue = itemRow.fractionid.id;
+            this.msRunModalTableData=[];
+            let query={
+                accession: this.$route.params.id,
+            }
+            this.$http
+                .get(this.msRunApi,{params: query})
+                .then(function(res){
+                    console.log(res.body);
+                    for(let i of res.body){
+                        let item = {
+                          accession:i.accession,
+                          name:i.fileName,
+                          size:i.fileSizeBytes,
+                          select:false,
+                        }
+                        this.msRunModalTableData.push(item);
+                    }
+                },function(err){
+
+                });
+          },
+          hideMsRunTable(){
+            this.drawerShowBool=false;
+            this.fractionid = '';
           }
     },
     watch: {
@@ -802,9 +881,11 @@
                                   },
                                   icon:'',
                                   checked:true,
+                                  file:'',
                             },
                             fractionid:{
-                                  value:this.fileData[i].accession+'_F'+lastIndex,
+                                  id:this.fileData[i].accession+'_F'+lastIndex,
+                                  value:'F'+lastIndex,
                                   dropdown:false,
                                   accession:'null',
                                   //accessionKey:this.fileData[i].accessionKey,
@@ -867,9 +948,11 @@
                                         },
                                         icon:'',
                                         checked:true,
+                                        file:'',
                                   },
                                   fractionid:{
-                                        value:this.sampleData[i].accession+'_F'+(k+1),
+                                        id:this.sampleData[i].accession+'_F'+(k+1),
+                                        value:'F'+(k+1),
                                         dropdown:false,
                                         accession:'null',
                                         //accessionKey:this.sampleData[i].accessionKey,
@@ -971,9 +1054,6 @@
     position: relative;
     min-width: 80px;
   }
-  .add-row-icon{
-      margin-top: 5px;
-  }
   .card{
     margin-bottom: 20px;
   }
@@ -987,6 +1067,9 @@
       font-weight: 700;
       background-color: #5bc0be;
       border-radius: 3px;
+  }
+  .search-button.finish{
+      background-color: #73d66d;
   }
   .annotate-drawer-container{
     display:flex;
@@ -1020,7 +1103,7 @@
     top: 0;
     left:100%;
     bottom: 0;
-    width:256px;
+    width:456px;
     background-color: #fff;
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer.active{
@@ -1034,14 +1117,13 @@
     border-bottom: 1px solid #00000026;
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .content{
-    
-    padding: 10px;
+    flex:1;
+    padding: 30px 10px 0 10px;
   } 
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer{
     display:flex;
-    position:absolute;
-    bottom:10px;
-    right:10px;
+    justify-content: flex-end;
+    padding: 10px;
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer a{
     padding: 8px 10px;
@@ -1055,6 +1137,22 @@
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .header a{
     border-bottom-style: none;
   } 
+  .sample-table-extra{
+      display: flex;
+      align-items: center;
+  }
+  .sample-table-extra span{
+      font-size: 12px;
+      color: #999;
+      margin:0 10px;
+  }
+  .sample-table-extra.add-row-icon{
+      margin-top: 10px;
+  }
+  .sample-table-extra i:hover{
+    cursor: pointer;
+    opacity:0.6;
+  }
 </style>
 
 <style>
@@ -1090,5 +1188,27 @@
     }
     .inputError .ivu-input{
         border: 1px solid red !important;
+    }
+    .msrun-modal-table{
+      max-height:800px;
+    }
+    .msrun-modal-table .ivu-table-cell{
+        padding-left: 0; 
+        padding-right: 0; 
+    }
+    .msrun-modal-table .ivu-table-cell .ivu-checkbox-wrapper{
+      margin-right:0;
+    }
+    .msrun-modal-table .ivu-table-header table{
+      margin-bottom:0 !important;
+    }
+    .msrun-modal-table .ivu-table-body table{
+      margin-bottom:0 !important;
+    }
+    .show-button-tooltip{
+      width:100%;
+    }
+    .show-button-tooltip .ivu-tooltip-rel{
+      width:100%;
     }
 </style>
