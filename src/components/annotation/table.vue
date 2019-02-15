@@ -68,10 +68,14 @@
                                   </Dropdown>
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
-                              <div v-if="itemRow[itemCol.key].file">
-                                  <Tooltip class="show-button-tooltip" :content="itemRow[itemCol.key].file" placement="right">
+                              <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].file">
+                                  <Tooltip max-width="200" class="show-button-tooltip" placement="right">
                                       <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
+                                      <div class="tooltip-content" slot="content">
+                                          {{itemRow[itemCol.key].file}}
+                                      </div>
                                   </Tooltip>
+                                  <Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="16" style="margin-left:5px" @click="itemRow[itemCol.key].file=''"/>
                               </div>
                               <div v-else>
                                     <a class="button search-button" @click="showMsRunTable(itemRow,j)">Edit</a> 
@@ -193,18 +197,19 @@
                                       return x;
                                   });
                                   this.msRunModalTableData[params.index].select= val;
-                                  console.log('params',params);
+                                  this.selectedFileItem = params;
                               }
                           }
                       });
                   }
               },
+              /*
               {
                   title: 'Accession',
                   width: 110,
                   key: 'accession',
                   align: 'center'
-              },
+              },*/
               {
                   title: 'Name',
                   key: 'name',
@@ -316,7 +321,8 @@
           ],
           msRunArray:[],
           accessionKey:0,
-          fractionidValue:''
+          msRunTableRowID:'',
+          selectedFileItem:{}
       }
     },
     components: {
@@ -377,9 +383,6 @@
                                     this.sampleData.push(item)
                               }    
                           }
-                           
-                          //console.log('this.fileData',this.fileData);
-                          //console.log('this.sampleData',this.sampleData);
                       },function(err){
 
                       });
@@ -402,14 +405,12 @@
               this.$http
                   .get(this.getValuesByAttributeApi,{params: query})
                   .then(function(res){
-                    //console.log(item[itemCol.key].active);
                     if(!item[itemCol.key].active)
                       return;
                     if(res.body.length>0 || searchValue)
                       item[itemCol.key].dropdown=true;
 
                     this.dropdownOptions=res.body;
-                    //console.log('this.dropdownOptions',this.dropdownOptions);
                     if(this.dropdownOptions.length == 0){
                         item[itemCol.key].value==searchValue;
                     }
@@ -433,11 +434,16 @@
                 ontologyAccession: itemCol.cvLabel,
                 keyword:searchValue
               }*/
-              console.log('itemCol',itemCol);
                if(itemCol.key=='label'){
+                  /*
+                  let query={
+                    attributeAccession: itemCol.accession,
+                    ontologyAccession: itemCol.cvLabel,
+                    keyword:searchValue
+                  }*/
                   this.$http
-                      .get(this.labelQueryApi)
                       //.get(this.labelQueryApi,{params: query})
+                      .get(this.labelQueryApi)
                       .then(function(res){
                         if(!item[itemCol.key].active)
                           return;
@@ -456,7 +462,6 @@
                   let query={
                       accession: this.$route.params.id,
                   }
-                  console.log('msrun',query);
                   this.$http
                       .get(this.msRunApi,{params: query})
                       //.get(this.labelQueryApi,{params: query})
@@ -587,7 +592,6 @@
               }
           },
           dropdownClick(e,item){
-            console.log('dropdownClick',item);
             item.dropdown=false;
             if(e == "nodata" && !item.value){
                 item.icon="";
@@ -609,7 +613,6 @@
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,item,key){
-              console.log('applyAll clicked',item);
                this.dropdownClick(name,item);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.sampleData.length; i++){
@@ -620,7 +623,6 @@
               });
           },
           applyAllFile(name,item,key){
-              console.log('applyAllFile clicked');
               this.dropdownClick(name,item);
               this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.msRunArray.length; i++){
@@ -712,7 +714,6 @@
                           }
                           else if(j=="label"){
                               if(!this.msRunArray[i][j].value && this.msRunArray[i][j].col.required){
-                                  console.log('this.msRunArray[i][j]',this.msRunArray);
                                   msRunCheckPass=false;
                                   this.msRunArray[i][j].checked=false;
                               }
@@ -794,21 +795,17 @@
               this.$Message.error({content:'Choose one file at least', duration:1});
               return;
             }
-            /*
             for(let i of this.msRunArray){
-                if()
-            }*/
- 
-            console.log('msRunAnnotate');
-          },
-          dropdownClickOutside(e,item){
-            console.log(e,item);
+                if(i.fractionid.id == this.msRunTableRowID){
+                    i.msrun.file = this.selectedFileItem.row.name;
+                    break;
+                }
+            }
+            this.hideMsRunTable();
           },
           showMsRunTable(itemRow,index){
-            console.log('itemRow',itemRow);
-            console.log('index',index);
             this.drawerShowBool=true;
-            this.fractionidValue = itemRow.fractionid.id;
+            this.msRunTableRowID = itemRow.fractionid.id;
             this.msRunModalTableData=[];
             let query={
                 accession: this.$route.params.id,
@@ -819,7 +816,7 @@
                     console.log(res.body);
                     for(let i of res.body){
                         let item = {
-                          accession:i.accession,
+                          //accession:i.accession,
                           name:i.fileName,
                           size:i.fileSizeBytes,
                           select:false,
@@ -832,7 +829,11 @@
           },
           hideMsRunTable(){
             this.drawerShowBool=false;
-            this.fractionid = '';
+            this.msRunTableRowID = '';
+            this.selectedFileItem={};
+          },
+          removeAnnotationFile(){
+
           }
     },
     watch: {
@@ -1103,7 +1104,7 @@
     top: 0;
     left:100%;
     bottom: 0;
-    width:456px;
+    width:500px;
     background-color: #fff;
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer.active{
@@ -1153,6 +1154,17 @@
     cursor: pointer;
     opacity:0.6;
   }
+  .tooltip-content{
+      white-space: normal
+  }
+  .msRun-button-wrapper{
+      display: flex;
+      align-items: center;
+  }
+  .msRun-button-wrapper i:hover{
+    cursor: pointer;
+    opacity:0.6;
+  }
 </style>
 
 <style>
@@ -1190,7 +1202,7 @@
         border: 1px solid red !important;
     }
     .msrun-modal-table{
-      max-height:800px;
+      max-height:70vh;
     }
     .msrun-modal-table .ivu-table-cell{
         padding-left: 0; 
@@ -1210,5 +1222,10 @@
     }
     .show-button-tooltip .ivu-tooltip-rel{
       width:100%;
+      display: flex;
+      align-items: center;
+    }
+    .show-button-tooltip .ivu-tooltip-inner{
+      max-width:600px;
     }
 </style>
