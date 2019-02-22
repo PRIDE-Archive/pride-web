@@ -815,9 +815,11 @@
                                   }
                                 })
                                 .then(function(res){
-                                  console.log('update success',res.body)
+                                  this.$Message.success({content:'Annotation Success', duration:1});
+                                  localStorage.clear();
+                                  this.$router.push({name:'annotation'});
                                 },function(err){
-                                  console.log('update fail',err)
+                                  this.$Message.error({content:'Annotation Error', duration:1});
                                 });
                       },function(err){
 
