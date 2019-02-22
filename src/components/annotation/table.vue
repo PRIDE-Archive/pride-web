@@ -791,7 +791,7 @@
                           value: ''
                       }
                       item.fractionAccession = this.msRunArray[i].fractionid.value;
-                      item.msrunAccession = this.msRunArray[i].msrun.accession;
+                      item.msRunAccession = this.msRunArray[i].msrun.accession;
                       item.sampleLabel = sampleLable;
                       submitData.push(item);
                   }
