@@ -60,7 +60,7 @@
                                 </div>
                             </Tooltip>
                          </div>
-                         <!--
+                         
                          <div class="number-wrapper">
                              <InputNumber class="input-number"  v-model="trNum" size="small" :min='1'></InputNumber>
                          </div>
@@ -73,7 +73,7 @@
                                 </div>
                             </Tooltip>
                          </div>
-                         -->
+                         
                          <div  class="number-wrapper">
                               <!--<span>Fractions</span>-->
                              <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='1'></InputNumber>

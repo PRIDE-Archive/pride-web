@@ -49,7 +49,7 @@
                                   </Input>
                             </div>
                             <div v-else>
-                                <div class="accession-col"><span>{{itemRow.accession}}</span></div>
+                                <div class="accession-col"><Icon v-if="fileData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteFileDataRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
                             </div>
                       </div>
                   </div>
@@ -123,10 +123,12 @@
     name: 'archive',
     data(){
       return {
-          getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getSampleAttributes',
-          getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getValuesByAttribute',
-          labelQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/getLabelingValues',
+          getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/sampleAttributes',
+          getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/valuesByAttribute',
+          labelQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/labelingValues',
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
+          tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
+          updateSampleApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/'+this.$route.params.id+'/updateSampleMsRuns',
           visible:true,
           loading1:false,
           addColumnBool:false,
@@ -203,16 +205,18 @@
                       });
                   }
               },
-              /*
+              
               {
                   title: 'Accession',
-                  width: 110,
+                  
                   key: 'accession',
-                  align: 'center'
-              },*/
+                  align: 'center',
+                  className:'msrun-modal-table-accession'
+              },
               {
                   title: 'Name',
                   key: 'name',
+                  width: 250,
                   align: 'center'
               },
               {
@@ -322,7 +326,8 @@
           msRunArray:[],
           accessionKey:0,
           msRunTableRowID:'',
-          selectedFileItem:{}
+          selectedFileItem:{},
+          token:'eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4cGxvcmUuYWFpLmViaS5hYy51ay9zcCIsImp0aSI6IlNrRC16SEFEWDljbDlTbEhJdktNSmciLCJpYXQiOjE1NTA3NjMxNjUsInN1YiI6InVzci01YWMzY2Q1Yy1jOGZhLTQ4NjgtOTc4OC1kYTdhOGFiODA5NGUiLCJlbWFpbCI6ImpiYWlAZWJpLmFjLnVrIiwibmlja25hbWUiOiJ0ZXN0YmFpIiwibmFtZSI6Ikppbmd3ZW4gQmFpIiwiZG9tYWlucyI6WyJzZWxmLnByaWRlIl0sImV4cCI6MTU1MDc2Njc2NX0.d98I73jaG-3XEXa_rC1JqyM9YVwpLAafyqneMWFFbdDjIZzRq2P6prehpexKXE6ja22V96MGIFTztSKBPj0aQhV5eOufdWmfhHko3eM6q0gkWV3okVsgAlfdtJdrxL56y5Xnx8f8iHk59p1vHKixDtH-Frdjr4BnxOcFeclsEQP9rrnL5wmlAEdUYiRJVjX3LPl25Rdhwx70BSQ29Myk9Q9OzeSSSQhe5N0J6VOFG-boOFs1mk6s_AftZ_5-y-8yBWhbHpf0ESZ1wMvuOMJsS12Sup8HOSFptVjmgo2MI32EDM3LclG5iPNHxacAmZ9T06Ijn2180xowg-XsQ1kBIw'
       }
     },
     components: {
@@ -435,15 +440,12 @@
                 keyword:searchValue
               }*/
                if(itemCol.key=='label'){
-                  /*
+                  
                   let query={
-                    attributeAccession: itemCol.accession,
-                    ontologyAccession: itemCol.cvLabel,
                     keyword:searchValue
-                  }*/
+                  }
                   this.$http
-                      //.get(this.labelQueryApi,{params: query})
-                      .get(this.labelQueryApi)
+                      .get(this.labelQueryApi,{params: query})
                       .then(function(res){
                         if(!item[itemCol.key].active)
                           return;
@@ -591,6 +593,29 @@
                 this.sampleData[i].accession = "PXD_S"+(i+1);
               }
           },
+          deleteFileDataRow(itemRow, index){
+              /*
+              let foundNum = 0;
+              for(let i in this.fileData){
+                  if(this.fileData[i].accession == this.fileData[index].accession)
+                    foundNum++;
+              }
+              if(foundNum == 1){
+                  for(let i in this.sampleData){
+                      if(this.sampleData[i].accession == this.fileData[index].accession){
+                        this.sampleData.splice(i,1);
+                        break;
+                      }
+                  }
+              }
+              else{
+                  this.fileData.splice(index,1);
+                  this.msRunArray.splice(index,1);
+              }*/
+              console.log(this.fileData)
+              console.log(this.sampleData)
+              
+          },
           dropdownClick(e,item){
             item.dropdown=false;
             if(e == "nodata" && !item.value){
@@ -608,6 +633,7 @@
                 }
             }
             this.blur(item)
+            console.log(this.msRunArray)
           },
           newColSelectChange(selection){
               this.newColumnNameSelectedArray=selection;
@@ -726,43 +752,77 @@
               }
               console.log('sampleDataCheckPass',sampleDataCheckPass);
               console.log('msRunCheckPass',msRunCheckPass);
-              if(sampleDataCheckPass&&msRunCheckPass){
+              //if(sampleDataCheckPass&&msRunCheckPass){
+              if(true){
                   console.log('pass');
                   let submitData = [];
-                  for(let i of this.fileData){
-                      console.log('i',i);
+                  
+                  for(let i=0; i<this.fileData.length; i++){
                       let item = {};
                       item.projectAccession = this.$route.params.id;
-                      item.sampleAccession = i.accession;
+                      item.sampleAccession = this.fileData[i].accession;
                       item.sampleProperties = [];
-                      for(let j in i){
-                          console.log('j',j);
-                          console.log('i.j',i[j]);
+                      item.msrunProperties = [];//TODO 
+                      item.labelReagent = {};
+                      for(let j in this.fileData[i]){
                           let sampleItem = {};
                           if(j == 'accession' || j == 'accessionKey')
                             continue;
                           else{
                               sampleItem.key={};
-                              sampleItem.key.accession=i[j].col.accession;
-                              sampleItem.key.cvLabel=i[j].col.cvLabel;
-                              sampleItem.key.name=i[j].col.name;
-                              sampleItem.key.value=i[j].col.orignal_name;
+                              sampleItem.key.accession=this.fileData[i][j].col.accession;
+                              sampleItem.key.cvLabel=this.fileData[i][j].col.cvLabel;
+                              sampleItem.key.name=this.fileData[i][j].col.name;
+                              sampleItem.key.value=this.fileData[i][j].col.orignal_name;
 
                               sampleItem.value={};
-                              sampleItem.value.accession=i[j].accession;
-                              sampleItem.value.cvLabel=i[j].cvLabel;
-                              sampleItem.value.name=i[j].col.name;
-                              sampleItem.value.value=i[j].value;
+                              sampleItem.value.accession=this.fileData[i][j].accession;
+                              sampleItem.value.cvLabel=this.fileData[i][j].cvLabel;
+                              sampleItem.value.name=this.fileData[i][j].col.name;
+                              sampleItem.value.value=this.fileData[i][j].value;
                               item.sampleProperties.push(sampleItem);
                           }  
                       }
+                      console.log(this.msRunArray[i].label);
+                      let sampleLable={
+                          accession: this.msRunArray[i].label.accession,
+                          cvLabel: this.msRunArray[i].label.cvLabel,
+                          name: this.msRunArray[i].label.value,
+                          value: ''
+                      }
+                      item.fractionAccession = this.msRunArray[i].fractionid.value;
+                      item.msrunAccession = this.msRunArray[i].msrun.accession;
+                      item.sampleLabel = sampleLable;
                       submitData.push(item);
                   }
                   console.log('submitData',submitData);
-                //console.log('this.fileData',this.fileData);
-                //console.log('this.sampleData',this.sampleData);
-                //console.log('msRunArray',this.msRunArray);
-                //console.log('results',results);
+
+                  let query = {
+                    username:'testbai',
+                    password:'testbai'
+                  }
+                  this.$http
+                      .post(this.tokenApi + '?username=testbai&password=testbai')
+                      .then(function(res){
+                            let sendData = {};
+                            sendData.SampleMSRunTable = {};
+                            sendData.SampleMSRunTable.sampleMSRunRows = submitData;
+                            console.log('sendData',sendData)
+                           this.$http
+                                .put(this.updateSampleApi,sendData,{
+                                  headers: {
+                                    'Authorization':'Bearer '+res.bodyText
+                                  }
+                                })
+                                .then(function(res){
+                                  console.log('update success',res.body)
+                                },function(err){
+                                  console.log('update fail',err)
+                                });
+                      },function(err){
+
+                      });
+
               }
               else{
                 this.$Message.error({content:'Fill required content', duration:1});
@@ -798,6 +858,7 @@
             for(let i of this.msRunArray){
                 if(i.fractionid.id == this.msRunTableRowID){
                     i.msrun.file = this.selectedFileItem.row.name;
+                    i.msrun.accession = this.selectedFileItem.row.accession;
                     break;
                 }
             }
@@ -816,7 +877,7 @@
                     console.log(res.body);
                     for(let i of res.body){
                         let item = {
-                          //accession:i.accession,
+                          accession:i.accession,
                           name:i.fileName,
                           size:i.fileSizeBytes,
                           select:false,
@@ -1227,5 +1288,8 @@
     }
     .show-button-tooltip .ivu-tooltip-inner{
       max-width:600px;
+    }
+    .msrun-modal-table-accession{
+      display: none;
     }
 </style>
