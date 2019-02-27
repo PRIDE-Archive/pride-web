@@ -64,6 +64,7 @@
                          <div class="number-wrapper">
                              <InputNumber class="input-number"  v-model="trNum" size="small" :min='1'></InputNumber>
                          </div>
+                         <!--
                          <div class="step-title">3. Input Fractions Number 
                               <Tooltip class="step-title-tooltip" placement="right">
                                 <Icon type="help-circled"></Icon>
@@ -75,9 +76,9 @@
                          </div>
                          
                          <div  class="number-wrapper">
-                              <!--<span>Fractions</span>-->
                              <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='1'></InputNumber>
                          </div>
+                          -->
                     </div>
                 </Card>
                 <div class="button-wrapper">
