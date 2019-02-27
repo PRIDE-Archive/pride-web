@@ -112,9 +112,37 @@
                 </Dropdown>
               </li>
             </ul>
+            <span class="user-action">
+              <a v-if="!username" @click="showLogin">Log in</a>
+              <a v-else>{{username}}</a>
+              <a v-if="username" @click="logout">Log out</a>
+            </span>
           </nav>
           <!-- /local-nav -->
         </div>
+        <Modal
+            v-model="loginModalBool"
+            title="Log In"
+            :mask-closable="true"
+            :footer-hide="true"
+            :closable="false"
+            scrollable>
+            <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+              <FormItem prop="user">
+                <Input type="text" v-model="formInline.user" placeholder="Username">
+                <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem prop="password">
+                <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem>
+                <Button type="primary" @click="login('formInline')" long>Log in</Button>
+              </FormItem>
+            </Form>
+        </Modal>
       </header>
     </div>
   </div>
@@ -130,7 +158,28 @@
         subnav:[],
         landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
         logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo.png',
+        loginModalBool:false,
+        formInline: {
+          user: '',
+          password: ''
+        },
+        ruleInline: {
+          user: [
+            { required: true, message: 'Please input username', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: 'Please input password', trigger: 'blur' },
+            { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
+          ]
+        },
+        tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
       }
+    },
+    computed:{
+      username(){
+        var username = this.$store.state.username || '';
+        return username;
+      },
     },
     methods:{
       submit(){
@@ -182,10 +231,50 @@
         }
       },
       gotoAbout(){
-              this.$router.push({path:'/markdownpage/citationpage'});
-            },
-            gotoDocs(){
-              this.$router.push({path:'/markdownpage/documentationpage'});
+        this.$router.push({path:'/markdownpage/citationpage'});
+      },
+      gotoDocs(){
+        this.$router.push({path:'/markdownpage/documentationpage'});
+      },
+      showLogin(){
+        this.loginModalBool=true;
+      },
+      login(name) {
+        this.$refs[name].validate((valid) => {
+            if (!valid) {
+              this.$Message.error({ content: 'Format Invalid' });
+              return
+            }
+            this.$Spin.show({
+              render: (h) => {
+                return h('div', [
+                  h('Icon', {
+                    'class': 'demo-spin-icon-load',
+                    props: {
+                      type: 'ios-loading',
+                      size: 18
+                    }
+                  }),
+                  h('div', 'Loading')
+                ])
+              }
+            });
+            this.$http
+                  .post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
+                  .then(function(res){
+                        this.loginModalBool=false;
+                        this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                        this.$Message.success({ content: 'Login Success' })
+                        this.$Spin.hide()
+                        this.$refs[name].resetFields();
+                  },function(err){
+                    this.$Spin.hide()
+                    this.$Message.error({ content: 'Invalid Username or Password'});
+                  });
+        })
+      },
+      logout(){
+        this.$store.commit('setUser',{username: '', token:''});    
       }
     },
 
@@ -252,6 +341,13 @@
     max-width: 150rem !important;
   }
   #local-nav{
+    margin-left: 10px;
+  }
+  .user-action{
+    float: right;
+    margin-right: 10px;
+  }
+  .user-action a{
     margin-left: 10px;
   }
 </style>

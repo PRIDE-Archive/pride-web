@@ -9,5 +9,14 @@ export default new Vuex.Store({
 		baseURL: location.hostname.match(/localhost/)?'':'/pride',
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',  
 		baseApiURL: location.hostname.match(/localhost/)?'//wwwdev.ebi.ac.uk/pride/ws/archive':'//wwwdev.ebi.ac.uk/pride/ws/archive',  
+		username: '',
+		token:''
 	},
+	mutations:{
+		setUser(state,payload){
+			for(let i in payload){
+				state[i] = payload[i];
+			}
+		}
+	}
 });
