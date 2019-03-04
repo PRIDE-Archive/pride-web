@@ -262,6 +262,7 @@
                         .then(function(res){
                               this.loginModalBool=false;
                               sessionStorage.setItem('username',this.formInline.user);
+                              sessionStorage.setItem('token',res.bodyText);
                               this.username = this.formInline.user;
                               //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
@@ -276,6 +277,7 @@
             logout(){
               //this.$store.commit('setUser',{username: '', token:''}); 
               sessionStorage.setItem('username','');
+              sessionStorage.setItem('token','');
               this.username = '';
               this.$router.push({name:'annotation'})   
             },
