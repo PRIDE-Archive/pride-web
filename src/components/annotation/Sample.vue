@@ -257,7 +257,10 @@
       console.log('from',from);
       if(from.name != 'check')
         next(vm=>{
-          console.log(123123);
+          if(!vm.$store.state.username){
+            vm.$Message.error({content:'Please Login', duration:2})
+            vm.$router.push({name:'annotation'})
+          }
           vm.init();
         });
       else
