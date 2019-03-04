@@ -173,13 +173,8 @@
                   ]
                 },
                 tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
+                username:''
             }
-        },
-        computed:{
-          username(){
-            var username = this.$store.state.username || '';
-            return username;
-          },
         },
         methods:{
             submit(){
@@ -266,7 +261,9 @@
                         .post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
                         .then(function(res){
                               this.loginModalBool=false;
-                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                              sessionStorage.setItem('username',this.formInline.user);
+                              this.username = this.formInline.user;
+                              //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
@@ -277,8 +274,17 @@
               })
             },
             logout(){
-              this.$store.commit('setUser',{username: '', token:''});    
+              //this.$store.commit('setUser',{username: '', token:''}); 
+              sessionStorage.setItem('username','');
+              this.username = '';
+              this.$router.push({name:'annotation'})   
+            },
+            init(){
+                this.username = sessionStorage.getItem('username') || '';
             }
+        },
+        mounted() {
+          this.init();
         },
     }
 </script>

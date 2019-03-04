@@ -173,13 +173,8 @@
                   ]
                 },
                 tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
+                username:''
             }
-        },
-        computed:{
-          username(){
-            var username = this.$store.state.username || '';
-            return username;
-          },
         },
         methods:{
             submit(){
@@ -217,21 +212,21 @@
                 else if(name=='goToSpectraClustering'){
                     this.$router.push({path:'/markdownpage/spectraclustering'});
                 }
-        else if(name=='goToPrideSubmission'){
-          this.$router.push({path:'/markdownpage/pridesubmissiontool'});
-        }
-                else if(name=='goToPrideInspector'){
-                    this.$router.push({path:'/markdownpage/prideinspector'});
+                else if(name=='goToPrideSubmission'){
+                  this.$router.push({path:'/markdownpage/pridesubmissiontool'});
                 }
-                else if(name=='goToPrideUtilities'){
-                    this.$router.push({path:'/markdownpage/prideutilities'});
-                }
-                else if(name=='goToPrideArchiveWS'){
-                    this.$router.push({path:'/markdownpage/pridearchivews'});
-                }
-                else if(name=='goToPridePeptidomeWS'){
-                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
-                }
+                        else if(name=='goToPrideInspector'){
+                            this.$router.push({path:'/markdownpage/prideinspector'});
+                        }
+                        else if(name=='goToPrideUtilities'){
+                            this.$router.push({path:'/markdownpage/prideutilities'});
+                        }
+                        else if(name=='goToPrideArchiveWS'){
+                            this.$router.push({path:'/markdownpage/pridearchivews'});
+                        }
+                        else if(name=='goToPridePeptidomeWS'){
+                            this.$router.push({path:'/markdownpage/pridepeptidomews'});
+                        }
             },
             gotoAbout(){
               this.$router.push({path:'/markdownpage/citationpage'});
@@ -266,7 +261,9 @@
                         .post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
                         .then(function(res){
                               this.loginModalBool=false;
-                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                              sessionStorage.setItem('username',this.formInline.user);
+                              this.username = this.formInline.user;
+                              //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
@@ -277,8 +274,17 @@
               })
             },
             logout(){
-              this.$store.commit('setUser',{username: '', token:''});    
+              //this.$store.commit('setUser',{username: '', token:''});  
+              sessionStorage.setItem('username','');
+              this.username = '';
+              this.$router.push({name:'annotation'})
+            },
+            init(){
+                this.username = sessionStorage.getItem('username') || '';
             }
+        },
+        mounted() {
+          this.init();
         },
 
     }
