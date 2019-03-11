@@ -132,6 +132,7 @@
           getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/sampleAttributes',
           getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/valuesByAttribute',
           labelQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/labelingValues',
+          labelReagentQueryApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/annotator/reagentValues',
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken', 
           updateSampleApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/annotator/'+this.$route.params.id+'/updateSampleMsRuns',
@@ -478,6 +479,28 @@
 
                       });
               }
+              else if(itemCol.key=='labelReagent'){
+                let query={
+                    keyword: searchValue,
+                }
+                this.$http
+                    .get(this.labelReagentQueryApi,{params: query})
+                    //.get(this.labelQueryApi,{params: query})
+                    .then(function(res){
+                      console.log(res.body)
+                      if(!item[itemCol.key].active)
+                        return;
+                      if(res.body.length>0 || searchValue)
+                        item[itemCol.key].dropdown=true;
+
+                      this.dropdownOptions=res.body;
+                      if(this.dropdownOptions.length == 0){
+                          item[itemCol.key].value==searchValue;
+                      }
+                    },function(err){
+
+                    });
+              }
               else if(itemCol.key=='msrun'){
                   let query={
                       accession: this.$route.params.id,
@@ -706,7 +729,6 @@
               let sampleDataCheckPass=true;
               let msRunCheckPass= true;
               console.log('this.sampleData',this.sampleData);
-              //console.log('this.sampleCol',this.sampleCol);
               console.log('this.fileData',this.fileData)
               console.log('this.msRunArray',this.msRunArray)
               //check for sample data completed
@@ -720,28 +742,12 @@
                           continue;
                         }
                         else{
-                          //console.log('j',j);
-                           // console.log('this.sampleData[i][j]',this.sampleData[i][j]);
                             if(!this.sampleData[i][j].value && this.sampleData[i][j].col.required){
                                 sampleDataCheckPass=false;
                                 this.sampleData[i][j].checked=false;
                             }
                             else{
                                  this.sampleData[i][j].checked=true;
-                                 /*
-                                let item={
-                                    accession:tempAccession,
-                                    key:{
-                                      accession:this.sampleData[i][j].col.accession,
-                                      cvLabel:this.sampleData[i][j].col.cvLabel,
-                                    },
-                                    value:{
-                                      accession:this.sampleData[i][j].accession,
-                                      cvLabel:this.sampleData[i][j].cvLabel,
-                                      value:this.sampleData[i][j].value
-                                    }
-                                }
-                                results.push(item);*/
                             }
                         }
                   }
@@ -782,10 +788,9 @@
                       let item = {};
                       item.projectAccession = this.$route.params.id;
                       item.sampleAccession = this.fileData[i].accession;
-                      item.disable = this.fileData[i].disable;
+                      item.fractionAccession = this.msRunArray[i].fractionid.value;
+                      item.msRunAccession = this.msRunArray[i].msrun.accession;
                       item.sampleProperties = [];
-                      item.msrunProperties = [];//TODO 
-                      item.labelReagent = {};
                       for(let j in this.fileData[i]){
                           let sampleItem = {};
                           if(j == 'accession' || j == 'accessionKey' || j == 'disable')
@@ -804,19 +809,23 @@
                               item.sampleProperties.push(sampleItem);
                           }  
                       }
-                      console.log('pass3');
+                      item.msrunProperties = [];//TODO 
                       let sampleLable={
                           accession: this.msRunArray[i].label.accession,
                           cvLabel: this.msRunArray[i].label.cvLabel,
                           name: this.msRunArray[i].label.value,
                           value: ''
                       }
-                      console.log('pass2');
-                      item.fractionAccession = this.msRunArray[i].fractionid.value;
-                      //item.msRunAccession = this.msRunArray[i].msrun.accession;
                       item.sampleLabel = sampleLable;
+                      let labelReagent = {
+                          accession: this.msRunArray[i].labelReagent.accession,
+                          cvLabel: this.msRunArray[i].labelReagent.cvLabel,
+                          name: this.msRunArray[i].labelReagent.value,
+                          value: ''
+                      }
+                      item.labelReagent = labelReagent;
 
-                      if(!item.disable)
+                      if(!this.fileData[i].disable)
                         submitData.push(item);
                   }
                   console.log('submitData',submitData);
@@ -832,9 +841,12 @@
                       })
                       .then(function(res){
                         this.$Message.success({content:'Annotation Success', duration:1});
-                        localStorage.clear();
-                        this.$router.push({name:'annotation'});
+                        //localStorage.clear();
+                        //this.$router.push({name:'annotation'});
                       },function(err){
+                        if(err.body.error == 'TOKEN_EXPIRED'){
+                            this.logout();
+                        }
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
 
@@ -864,6 +876,12 @@
               let sampleDataB64 = Base64.encode(sampleDataStr)
               
               //console.log(Base64.decode(sampleDataB64));
+          },
+          logout(){
+            //this.$store.commit('setUser',{username: '', token:''});  
+            sessionStorage.setItem('username','');
+            sessionStorage.setItem('token','');
+            this.$router.push({name:'annotation'})
           },
           localStorageItemAdd(key,data){
               localStorage.setItem(key,data);
