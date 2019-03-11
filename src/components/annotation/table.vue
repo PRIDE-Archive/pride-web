@@ -25,7 +25,7 @@
                                   </Dropdown>
                             </div>
                             <div v-else>
-                                <div class="accession-col"><Icon v-if="sampleData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
+                                <div class="accession-col"><Icon v-if="sampleData.length>1 && j == sampleData.length-1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
                             </div>
                       </div>
                   </div>
@@ -41,22 +41,27 @@
           </p>
           <div class="card-content">
               <div class="draggable-class">
-                  <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
+                  <div class="table-col" v-for="(itemCol,i) in sampleCol" v-if="itemCol.key!='developmentalstage' && itemCol.key!='sex' && itemCol.key!='individualaccession' " :key="itemCol.key">
                       <div class="table-row first">{{itemCol.name}}</div>
-                      <div class="table-row" v-for="(itemRow,j) in fileData">
+                      <div class="table-row" v-for="(itemRow,j) in fileData" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key!='accession'">
+
                                   <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"  >
                                   </Input>
                             </div>
-                            <div v-else>
-                                <div class="accession-col"><Icon v-if="fileData.length>1" class="icon-in-row" type="ios-close-outline" @click="deleteFileDataRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
+                            <div v-else >
+                                <div class="accession-col">
+                                  <Icon v-if="!itemRow.hideIcon" class="icon-in-row" type="ios-close-outline" @click="disableFileDataRow(itemRow,j)" size="14"></Icon>
+                                  <span>{{itemRow.accession}}</span>
+                                </div>
                             </div>
                       </div>
                   </div>
                   <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
                       <div class="table-row first msrun">{{itemCol.name}}</div>
-                      <div class="table-row" v-for="(itemRow,j) in msRunArray">
-                            <div v-if="itemCol.key=='label'">
+                      <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
+                            <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
+                            <!--<div v-if="itemCol.key=='label'">-->
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
@@ -98,10 +103,9 @@
           @on-visible-change="modalVisibleChange">
           <Table border ref="selection" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
       </Modal>
-      <div v-if="drawerShowBool" class="annotate-drawer-container" v-on:scroll.prevent="onScroll">
-          <div class="mask"></div>
-          <div class="annotate-drawer-wrapper">
-            <div class="annotate-drawer" :class="{ active: drawerShowBool }">
+      <div v-if="drawerShowBool" class="annotate-drawer-container">
+          <div class="annotate-drawer-wrapper" @wheel.stop="wheel" @wheel.prevent="wheel">
+            <div class="annotate-drawer" :class="{ active: drawerShowBool }" @wheel.stop>
                 <div class="header"><span>MsRUN Table</span><a @click="hideMsRunTable"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
                 <div class="content">
                   <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData" height="800"></Table>
@@ -119,6 +123,8 @@
 <script>
   import draggable from 'vuedraggable'
   import { ModelSelect } from 'vue-search-select'
+  import store from "@/store/store.js"
+  import { Base64 } from 'js-base64';
   export default {
     name: 'archive',
     data(){
@@ -295,6 +301,7 @@
           experimentType:'',
           sampleNumber:0,
           fractionNumber:0,
+          trNumber:0,
           msRunCol:[
               {
                 //experimentType:res.body[i].first,
@@ -313,7 +320,19 @@
                 name:'Label',
                 //orignal_name:res.body[i].third.name,
                 key: 'label',
-              },{
+              },
+              
+              {
+                //experimentType:res.body[i].first,
+                //required: res.body[i].second == 'REQUIRED'? true:false,
+                //cvLabel:res.body[i].third.cvLabel.toLowerCase(),
+                //accession:res.body[i].third.accession,
+                name:'LabelReagent',
+                //orignal_name:res.body[i].third.name,
+                key: 'labelReagent',
+              },
+
+              {
                 //experimentType:res.body[i].first,
                 //required: res.body[i].second == 'REQUIRED'? true:false,
                 //cvLabel:res.body[i].third.cvLabel.toLowerCase(),
@@ -327,7 +346,6 @@
           accessionKey:0,
           msRunTableRowID:'',
           selectedFileItem:{},
-          token:'eyJhbGciOiJSUzI1NiJ9.eyJpc3MiOiJodHRwczovL2V4cGxvcmUuYWFpLmViaS5hYy51ay9zcCIsImp0aSI6IlNrRC16SEFEWDljbDlTbEhJdktNSmciLCJpYXQiOjE1NTA3NjMxNjUsInN1YiI6InVzci01YWMzY2Q1Yy1jOGZhLTQ4NjgtOTc4OC1kYTdhOGFiODA5NGUiLCJlbWFpbCI6ImpiYWlAZWJpLmFjLnVrIiwibmlja25hbWUiOiJ0ZXN0YmFpIiwibmFtZSI6Ikppbmd3ZW4gQmFpIiwiZG9tYWlucyI6WyJzZWxmLnByaWRlIl0sImV4cCI6MTU1MDc2Njc2NX0.d98I73jaG-3XEXa_rC1JqyM9YVwpLAafyqneMWFFbdDjIZzRq2P6prehpexKXE6ja22V96MGIFTztSKBPj0aQhV5eOufdWmfhHko3eM6q0gkWV3okVsgAlfdtJdrxL56y5Xnx8f8iHk59p1vHKixDtH-Frdjr4BnxOcFeclsEQP9rrnL5wmlAEdUYiRJVjX3LPl25Rdhwx70BSQ29Myk9Q9OzeSSSQhe5N0J6VOFG-boOFs1mk6s_AftZ_5-y-8yBWhbHpf0ESZ1wMvuOMJsS12Sup8HOSFptVjmgo2MI32EDM3LclG5iPNHxacAmZ9T06Ijn2180xowg-XsQ1kBIw'
       }
     },
     components: {
@@ -439,7 +457,7 @@
                 ontologyAccession: itemCol.cvLabel,
                 keyword:searchValue
               }*/
-               if(itemCol.key=='label'){
+              if(itemCol.key=='label'){
                   
                   let query={
                     keyword:searchValue
@@ -481,6 +499,7 @@
 
                       });
               }
+              this.$forceUpdate();
           },
           titleCase(str) {
             str=str.toLowerCase().split(" ");
@@ -593,28 +612,29 @@
                 this.sampleData[i].accession = "PXD_S"+(i+1);
               }
           },
-          deleteFileDataRow(itemRow, index){
-              /*
+          disableFileDataRow(itemRow, index){
+              itemRow.disable = true;
+  
               let foundNum = 0;
+              let foundIndex;
               for(let i in this.fileData){
-                  if(this.fileData[i].accession == this.fileData[index].accession)
-                    foundNum++;
+                if(!this.fileData[i].disable && this.fileData[i].accession == itemRow.accession){
+                  foundIndex = i;
+                  foundNum ++;
+                }
               }
-              if(foundNum == 1){
-                  for(let i in this.sampleData){
-                      if(this.sampleData[i].accession == this.fileData[index].accession){
-                        this.sampleData.splice(i,1);
-                        break;
-                      }
-                  }
+              if(foundNum==1){
+                this.fileData[foundIndex].hideIcon = true;
               }
-              else{
-                  this.fileData.splice(index,1);
-                  this.msRunArray.splice(index,1);
-              }*/
+
+              this.$forceUpdate();
+              //itemRow.disable = true;
+              //this.msRunArray[index].disable = true;
+              //console.log('itemRow',itemRow)
               console.log(this.fileData)
-              console.log(this.sampleData)
-              
+              console.log(this.msRunArray)
+              console.log(this.msRunArray)
+              return;
           },
           dropdownClick(e,item){
             item.dropdown=false;
@@ -633,12 +653,12 @@
                 }
             }
             this.blur(item)
-            console.log(this.msRunArray)
           },
           newColSelectChange(selection){
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,item,key){
+                console.log(name,item,key);
                this.dropdownClick(name,item);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.sampleData.length; i++){
@@ -659,14 +679,14 @@
           },
           init(){
             let tempSampleData = JSON.parse(localStorage.getItem("sampleData"));
-            let tempFileData = JSON.parse(localStorage.getItem("fileData"));
-            let tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
+            //this.tempFileData = JSON.parse(localStorage.getItem("fileData"));
+            this.tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
             if(tempSampleData)
               this.sampleData = tempSampleData;
-            if(tempFileData)
-              this.fileData = tempFileData;
-            if(tempMSRunArray)
-              this.msRunArray = tempMSRunArray;
+            // if(tempFileData)
+            //   this.fileData = tempFileData;
+            // if(tempMSRunArray)
+            //   this.msRunArray = tempMSRunArray;
 
             //console.log('this.sampleData',this.sampleData);
             //console.log('this.fileData',this.fileData);
@@ -674,7 +694,7 @@
             this.experimentType = localStorage.getItem('selectedExperimentType')
             this.sampleNumber  = +localStorage.getItem("samplesNum")
             this.fractionNumber = +localStorage.getItem("fractionsNum")
-            
+            this.trNumber = +localStorage.getItem("trNum")
 
             //console.log('samplesNum',this.sampleNumber);
             //console.log('fractionsNum',this.fractionNumber);
@@ -685,9 +705,10 @@
               let tempAccession='';
               let sampleDataCheckPass=true;
               let msRunCheckPass= true;
-              //console.log('this.sampleData',this.sampleData);
+              console.log('this.sampleData',this.sampleData);
               //console.log('this.sampleCol',this.sampleCol);
-              console.log('aaaaaaathis.fileData',this.fileData)
+              console.log('this.fileData',this.fileData)
+              console.log('this.msRunArray',this.msRunArray)
               //check for sample data completed
               for(let i=0; i<this.sampleData.length; i++){
                   for(let j in this.sampleData[i]){
@@ -761,20 +782,20 @@
                       let item = {};
                       item.projectAccession = this.$route.params.id;
                       item.sampleAccession = this.fileData[i].accession;
+                      item.disable = this.fileData[i].disable;
                       item.sampleProperties = [];
                       item.msrunProperties = [];//TODO 
                       item.labelReagent = {};
                       for(let j in this.fileData[i]){
                           let sampleItem = {};
-                          if(j == 'accession' || j == 'accessionKey')
+                          if(j == 'accession' || j == 'accessionKey' || j == 'disable')
                             continue;
                           else{
                               sampleItem.key={};
-                              sampleItem.key.accession=this.fileData[i][j].col.accession;
+                              sampleItem.key.accession=this.fileData[i][j].col.accession; 
                               sampleItem.key.cvLabel=this.fileData[i][j].col.cvLabel;
                               sampleItem.key.name=this.fileData[i][j].col.name;
                               sampleItem.key.value=this.fileData[i][j].col.orignal_name;
-
                               sampleItem.value={};
                               sampleItem.value.accession=this.fileData[i][j].accession;
                               sampleItem.value.cvLabel=this.fileData[i][j].cvLabel;
@@ -783,46 +804,38 @@
                               item.sampleProperties.push(sampleItem);
                           }  
                       }
-                      console.log(this.msRunArray[i].label);
+                      console.log('pass3');
                       let sampleLable={
                           accession: this.msRunArray[i].label.accession,
                           cvLabel: this.msRunArray[i].label.cvLabel,
                           name: this.msRunArray[i].label.value,
                           value: ''
                       }
+                      console.log('pass2');
                       item.fractionAccession = this.msRunArray[i].fractionid.value;
-                      item.msRunAccession = this.msRunArray[i].msrun.accession;
+                      //item.msRunAccession = this.msRunArray[i].msrun.accession;
                       item.sampleLabel = sampleLable;
-                      submitData.push(item);
+
+                      if(!item.disable)
+                        submitData.push(item);
                   }
                   console.log('submitData',submitData);
 
-                  let query = {
-                    username:'testbai',
-                    password:'testbai'
-                  }
+                  let sendData = {};
+                  sendData.SampleMSRunTable = {};
+                  sendData.SampleMSRunTable.sampleMSRunRows = submitData;
                   this.$http
-                      .post(this.tokenApi + '?username=testbai&password=testbai')
+                      .put(this.updateSampleApi,sendData,{
+                        headers: {
+                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                        }
+                      })
                       .then(function(res){
-                            let sendData = {};
-                            sendData.SampleMSRunTable = {};
-                            sendData.SampleMSRunTable.sampleMSRunRows = submitData;
-                            console.log('sendData',sendData)
-                           this.$http
-                                .put(this.updateSampleApi,sendData,{
-                                  headers: {
-                                    'Authorization':'Bearer '+res.bodyText
-                                  }
-                                })
-                                .then(function(res){
-                                  this.$Message.success({content:'Annotation Success', duration:1});
-                                  localStorage.clear();
-                                  this.$router.push({name:'annotation'});
-                                },function(err){
-                                  this.$Message.error({content:'Annotation Error', duration:1});
-                                });
+                        this.$Message.success({content:'Annotation Success', duration:1});
+                        localStorage.clear();
+                        this.$router.push({name:'annotation'});
                       },function(err){
-
+                        this.$Message.error({content:'Annotation Error', duration:1});
                       });
 
               }
@@ -832,19 +845,25 @@
           },
           save(){
               this.$Message.success({content:'Save Successfully', duration:1});
+              let sampleDataStr = JSON.stringify(this.sampleData);
+              let msRunArrayStr = JSON.stringify(this.msRunArray);
               if(this.sampleData.length>0)
-                this.localStorageItemAdd('sampleData', JSON.stringify(this.sampleData));
-              if(this.fileData.length>0)
-                this.localStorageItemAdd('fileData', JSON.stringify(this.fileData));
+                this.localStorageItemAdd('sampleData', sampleDataStr);
+              //if(this.fileData.length>0)
+                //this.localStorageItemAdd('fileData', JSON.stringify(this.fileData));
               if(this.msRunArray.length>0)
-                this.localStorageItemAdd('msRunArray', JSON.stringify(this.msRunArray));
+                this.localStorageItemAdd('msRunArray', msRunArrayStr);
 
 
               localStorage.setItem('projectAccession',this.$route.params.id);
               localStorage.setItem('selectedExperimentType',this.experimentType);
               localStorage.setItem('samplesNum',this.sampleNumber);
               localStorage.setItem('fractionsNum',this.fractionNumber);
+              localStorage.setItem('trNum',this.trNumber);
 
+              let sampleDataB64 = Base64.encode(sampleDataStr)
+              
+              //console.log(Base64.decode(sampleDataB64));
           },
           localStorageItemAdd(key,data){
               localStorage.setItem(key,data);
@@ -876,7 +895,7 @@
             this.$http
                 .get(this.msRunApi,{params: query})
                 .then(function(res){
-                    console.log(res.body);
+                    //console.log(res.body);
                     for(let i of res.body){
                         let item = {
                           accession:i.accession,
@@ -897,143 +916,135 @@
           },
           removeAnnotationFile(){
 
+          },
+          wheel(e){
+            //console.log(e)
           }
     },
     watch: {
-        sampleData:function(){
-            this.fileData=[];
-            for(let k=0; k<this.sampleData.length; k++){
-                for(let j=0; j<this.fractionNumber; j++){
-                    this.fileData.push(this.sampleData[k]);
-                }
-            }     
-        },
-        fileData:function(){
-            if(this.msRunArray.length==0){
-                let lastAccesstion='';
-                let lastIndex=1;
-                for(let i=0; i<this.fileData.length;i++){
-                      //label, msrun, fractionid,
-                      if(lastAccesstion!=this.fileData[i].accession){
-                          lastAccesstion=this.fileData[i].accession;
-                          lastIndex=1;
+        sampleData:{
+          handler(){
+              this.fileData=[];
+              let tempFileData = []
+              for(let k=0; k<this.sampleData.length; k++){
+                  for(let j=0; j<this.trNumber; j++){
+                      console.log(this.sampleData[k]);
+                      let item = {};
+                      for(let m in this.sampleData[k]){
+                        //console.log(m)
+                        item[m] = this.sampleData[k][m]
                       }
-                      else
-                        lastIndex++;
-
-                      let item={
-                            label:{
-                                  value:'',
-                                  dropdown:false,
-                                  accession:'null',
-                                  //accessionKey:this.fileData[i].accessionKey,
-                                  cvLabel:'null',
-                                  col:{
-                                    required:true
-                                  },
-                                  icon:'',
-                                  checked:true,
-                            },
-                            msrun:{
-                                  value:'',
-                                  dropdown:false,
-                                  accession:'null',
-                                  //accessionKey:this.fileData[i].accessionKey,
-                                  cvLabel:'null',
-                                  col:{
-                                    required:true
-                                  },
-                                  icon:'',
-                                  checked:true,
-                                  file:'',
-                            },
-                            fractionid:{
-                                  id:this.fileData[i].accession+'_F'+lastIndex,
-                                  value:'F'+lastIndex,
-                                  dropdown:false,
-                                  accession:'null',
-                                  //accessionKey:this.fileData[i].accessionKey,
-                                  cvLabel:'null',
-                                  col:{},
-                                  icon:'',
-                            },
-                            accessionKey:this.fileData[i].accessionKey,
-                      }
-                      this.msRunArray.push(item);
-                }
-            }
-            else{
-                //delete msrun
-                for(let i=0;i<this.msRunArray.length;i++){
-                    let found = false;
-                    for(let j=0;j<this.sampleData.length;j++){
-                        if(this.sampleData[j].accessionKey == this.msRunArray[i].accessionKey){
-                            found=true;
+                      //let item = JSON.parse(JSON.stringify(this.sampleData[k]));
+                      let found = false;
+                      for(let i=0; i<this.msRunArray.length; i++){
+                        if(this.msRunArray[i].fractionid.id == item.accession + '_F'+(j+1)){
+                            item.disable = this.msRunArray[i].disable ? true : false;
+                            found = true;
                             break;
                         }
-                    }
-                    if(!found){
-                        this.msRunArray.splice(i,1);
-                        i--;
-                    }
-                }
-                //add msrun
-                for(let i=0;i<this.sampleData.length;i++){
-                    let found = false;
-                    for(let j=0;j<this.msRunArray.length;j++){
-                        if(this.sampleData[i].accessionKey == this.msRunArray[j].accessionKey){
-                            found=true;
-                            break;
-                        }
-                    }
-                    if(!found){
-                        for(let k=0;k<this.fractionNumber;k++){
-                            let item={
-                                  label:{
-                                        value:'',
-                                        dropdown:false,
-                                        accession:'null',
-                                        //accessionKey:this.sampleData[i].accessionKey,
-                                        cvLabel:'null',
-                                        col:{
-                                          required:true
-                                        },
-                                        icon:'',
-                                        checked:true,
-                                  },
-                                  msrun:{
-                                        value:'',
-                                        dropdown:false,
-                                        accession:'null',
-                                        //accessionKey:this.sampleData[i].accessionKey,
-                                        cvLabel:'null',
-                                        col:{
-                                          required:true
-                                        },
-                                        icon:'',
-                                        checked:true,
-                                        file:'',
-                                  },
-                                  fractionid:{
-                                        id:this.sampleData[i].accession+'_F'+(k+1),
-                                        value:'F'+(k+1),
-                                        dropdown:false,
-                                        accession:'null',
-                                        //accessionKey:this.sampleData[i].accessionKey,
-                                        cvLabel:'null',
-                                        col:{},
-                                        icon:'',
-                                  },
-                                  accessionKey:this.sampleData[i].accessionKey,
-                            }
-                            this.msRunArray.push(item);
-                        }
-                    }
-                }
-            }
-        },
-        onScroll(){
+                      }
+                      if(!found)
+                        item.disable = false;
 
+                      //console.log(item);
+                      this.fileData.push(item);
+                  }
+              }
+              for(let i in this.fileData){
+                  let foundNum = 0;
+                  let foundIndex;
+                  //let pass = false;
+                  for(let j in this.fileData){
+                    if(!this.fileData[j].disable && this.fileData[j].accession == this.fileData[i].accession){
+                      foundIndex = j;
+                      foundNum ++;
+                    }
+                  }
+                  if(foundNum==1){
+                    this.fileData[foundIndex].hideIcon = true;
+                  }
+              } 
+
+            
+          },
+          deep:true
+        },
+        fileData:{
+          handler(){
+              let lastAccesstion='';
+              let lastIndex=1;
+              this.msRunArray=this.fileData.map((fileItem)=>{
+                  if(lastAccesstion!=fileItem.accession){
+                      lastAccesstion=fileItem.accession;
+                      lastIndex=1;
+                  }
+                  else
+                    lastIndex++;
+
+                  let item={
+                        label:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                        },
+                        labelReagent:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                        },
+                        msrun:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                              file:'',
+                        },
+                        fractionid:{
+                              id:fileItem.accession+'_F'+lastIndex,
+                              value:'F'+lastIndex,
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{},
+                              icon:'',
+                        },
+                        accessionKey:fileItem.accessionKey,
+                        disable:fileItem.disable
+                  }
+                  return item;
+              })
+              if(this.tempMSRunArray){
+                for(let i=0; i<this.msRunArray.length; i++){
+                    this.msRunArray[i].label.value = this.tempMSRunArray[i].label.value;
+                    this.msRunArray[i].label.icon = this.tempMSRunArray[i].label.icon;
+                    this.msRunArray[i].labelReagent.value = this.tempMSRunArray[i].labelReagent.value
+                    this.msRunArray[i].labelReagent.icon = this.tempMSRunArray[i].labelReagent.icon
+                    this.msRunArray[i].msrun.file = this.tempMSRunArray[i].msrun.file
+                }
+              }
+          },
+          deep:true
         }
     },
     
@@ -1155,6 +1166,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    background-color: rgba(55,55,55,.6);
     z-index: 1000;
     -webkit-overflow-scrolling: touch;
     outline: 0;
@@ -1227,6 +1239,9 @@
   .msRun-button-wrapper i:hover{
     cursor: pointer;
     opacity:0.6;
+  }
+  .hideRow{
+    display: none;
   }
 </style>
 
