@@ -193,6 +193,29 @@
                           </div>
                      </div>
                 </Card>
+                <Card class="card">
+                   <p slot="title"></i>MsRun Files</p>
+                   <!--
+                   <div class="filter-wrapper">
+                       <div class="summary-content-header">Filter</div>
+                       <Select v-model="model1" size="small" style="width:100px">
+                          <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                       </Select>
+                   </div>
+                    -->
+                   <div class="download-list-wrapper">
+                     <!--<div class="summary-content-header">List</div>-->
+                     <div class="download-list">
+                       <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
+                       <!--
+                       <div class="page-container">
+                          <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
+                       </div>
+                       -->
+                       <!--<Button v-if="selectAllfiles" class= "download-button">Download</Button>-->
+                     </div>
+                   </div>
+                </Card>
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
@@ -233,7 +256,163 @@
             dataProcessingProtocol:'',
             contactors:[],
             loading:true,
+            fileListLoading:false,
+            fileListCol: [
+              /*
+                {
+                    type: 'selection',
+                    width: 40,
+                    align: 'center'
+                },*/
+                {
+                    title: 'Name',
+                    key: 'name',
+                    align:'left',
+                    ellipsis:true
+                },
+                {
+                    title: 'Type',
+                    width: 150,
+                    key: 'type',
+                    align:'center',
+                    sortable: true,
+                    ellipsis:true,
+                    render: (h, params) => {
+                        var className;
+                        var iconColor;
+                        if(params.row.type == 'PEAK'){
+                          className='far fa-chart-bar';
+                          iconColor='#bd7edc'
+                        }
+                        else if (params.row.type == 'RAW'){
+                          className ='far fa-list-alt';
+                          iconColor='#e2c94c'
+                        }
+                        else if (params.row.type == 'RESULT'){
+                          className ='far fa-envelope-open';
+                          iconColor='#6acaef'
+                        }
+                        else if (params.row.type == 'OTHER'){
+                          className ='far fa-file';
+                          iconColor='#999c9c'
+                        }
+                        else if (params.row.type == 'SEARCH'){
+                          className ='fas fa-search';
+                          iconColor='#5bc0be'
+                        }
+                        return h('div', [
+
+                            h('i', {
+                                attrs: { class: className},
+                                style: {
+                                    color:iconColor,
+                                    marginRight: '5px',
+                                    marginLeft: '0px'
+                                },
+                            }),
+                            h('span', {
+                                on: {
+                                    click: () => {
+
+                                    }
+                                }
+                            }, params.row.type),
+
+                            /*
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    display:'inline-block',
+                                    marginRight: '5px',
+                                    paddingLeft: '22px',
+                                    paddingRight: '22px'
+                                },
+                                on: {
+                                    click: () => {
+                                        //window.location.href = params.row.url.ftp;
+                                        window.open(params.row.url.ftp)
+                                        console.log(params.row.url.ftp);
+                                        //this.gotoBlast(params);
+                                    }
+                                }
+                            }, 'FTP'),*/
+
+                        ]);
+                    }
+                },
+                {
+                    title: 'Size (M)',
+                    width: 150,
+                    key: 'size',
+                    sortable: true,
+                    align:'center'
+                },
+                // {
+                //     title: 'Download',
+                //     key: 'download',
+                //     align:'center',
+                //     width:160,
+                //     render: (h, params) => {
+                //         return h('div', [
+                //             /*
+                //             h('Button', {
+
+                //                 on: {
+                //                     click: () => {
+                //                         this.gotoBlast(params);
+                //                     }
+                //                 }
+                //             }, 'Blast'),
+                //             */
+                //             h('Button', {
+                //                 props: {
+                //                     type: 'primary',
+                //                     size: 'small'
+                //                 },
+                //                 style: {
+                //                     display:'inline-block',
+                //                     marginRight: '5px',
+                //                     paddingLeft: '22px',
+                //                     paddingRight: '22px'
+                //                 },
+                //                 on: {
+                //                     click: () => {
+                //                         //window.location.href = params.row.url.ftp;
+                //                         window.open(params.row.url.ftp)
+                //                         console.log(params.row.url.ftp);
+                //                         //this.gotoBlast(params);
+                //                     }
+                //                 }
+                //             }, 'FTP'),
+                //             // h('Button', {
+                //             //     props: {
+                //             //         type: 'primary',
+                //             //         size: 'small'
+                //             //     },
+                //             //     style: {
+                //             //         display:'inline-block',
+                //             //         marginRight: '0px'
+                //             //     },
+                //             //     on: {
+                //             //         click: () => {
+                //             //             //window.location.href = params.row.url.asp;
+                //             //             window.open(params.row.url.asp)
+                //             //             console.log(params.row.url.asp);
+                //             //         }
+                //             //     }
+                //             // }, 'ASPERA'),
+                //         ]);
+                //     }
+                // }
+            ],
+            fileList: [],
+            pageDownLoad:0,
+            pageSizeDownLoad:100,
             queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
+            queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -308,6 +487,48 @@
                   this.back();
             });
       },
+      queryArchiveProjectFiles(id){
+           var id = id || this.$route.params.id;
+           this.fileListLoading = true;
+           this.$http
+            .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
+            .then(function(res){
+                console.log(res.body);
+                this.fileListLoading = false;
+                this.totalDownLoad = res.body.page.totalElements;
+                if(res.body._embedded && res.body._embedded.files){
+                  let filesArray = res.body._embedded.files;
+                  let tempArray = [];
+                  for(let i=0;i<filesArray.length;i++){
+                      let item ={
+                            name: filesArray[i].fileName,
+                            type: filesArray[i].fileCategory.value,
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024),
+                            url: {
+                              ftp: filesArray[i].publicFileLocations[0].value,
+                              asp: filesArray[i].publicFileLocations[1].value
+                            }
+                      }
+                      tempArray.push(item);
+                  }
+
+                  this.fileList=tempArray;
+                }
+                else{
+                    this.$Message.error({content:'No results', duration:1});
+                }
+            },function(err){
+                this.fileListLoading = false;
+            });
+      },
+      downLoadSelect(selection,row){
+          console.log(selection);
+          console.log(row);
+      },
+      filesSelectAll(){
+          this.selectAllfiles =! this.selectAllfiles;
+          this.$refs.selection.selectAll(this.selectAllfiles);
+      },
       back(){
         this.$router.push({path:'/annotation'});
       },
@@ -337,8 +558,21 @@
               });
       },
     },
+    computed:{//TODO for queryAssayApi
+      query:function(){
+          let page='page='+this.page+'&';
+          let size='size='+this.size;
+          return '?'+sequence+project+mod+page+size;
+      },
+      queryDownload:function(){
+          let pageDownLoad='page='+this.pageDownLoad+'&';
+          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
+          return '?'+pageDownLoad+pageSizeDownLoad;
+      }
+    },
     mounted: function(){
       this.localStorageCheck();
+      this.queryArchiveProjectFiles();
       this.showDataset(this.$route.params.id);
     },
     created(){
@@ -436,6 +670,12 @@
 </style>
 
 <style>
+    table{
+      margin-bottom: 0;
+    }
+    table thead th{
+      padding: 0px;
+    }
     .readMore a{
         color: #495060;
         border-bottom-style: dotted;
