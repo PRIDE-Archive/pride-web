@@ -39,6 +39,11 @@
           <p slot="title" class="resource-list-title-container">
             <span>File</span>
           </p>
+          <!--
+          <p slot="extra" class="sample-table-extra">
+            <span class="icon-hint-text">Add MsRun</span><Icon type="plus-round" disable size="20"></Icon>
+          </p>
+           -->
           <div class="card-content">
               <div class="draggable-class">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" v-if="itemCol.key!='developmentalstage' && itemCol.key!='sex' && itemCol.key!='individualaccession' " :key="itemCol.key">
@@ -101,7 +106,7 @@
           :closable="false"
           @on-ok="addCol"
           @on-visible-change="modalVisibleChange">
-          <Table border ref="selection" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
+          <Table border ref="addPropertyTable" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
       </Modal>
       <div v-if="drawerShowBool" class="annotate-drawer-container">
           <div class="annotate-drawer-wrapper" @wheel.stop="wheel" @wheel.prevent="wheel">
@@ -215,7 +220,7 @@
               
               {
                   title: 'Accession',
-                  
+              
                   key: 'accession',
                   align: 'center',
                   className:'msrun-modal-table-accession'
@@ -223,7 +228,6 @@
               {
                   title: 'Name',
                   key: 'name',
-                  width: 250,
                   align: 'center'
               },
               {
@@ -595,7 +599,7 @@
           },
           modalVisibleChange(stat){
               if(!stat)
-                this.$refs.selection.selectAll(false);
+                this.$refs.addPropertyTable.selectAll(false);
           },
           addRow(){
             let item={};
@@ -945,7 +949,7 @@
               this.fileData=[];
               let tempFileData = []
               for(let k=0; k<this.sampleData.length; k++){
-                  for(let j=0; j<this.trNumber; j++){
+                  for(let j=0; j<this.fractionNumber; j++){
                       console.log(this.sampleData[k]);
                       let item = {};
                       for(let m in this.sampleData[k]){
@@ -1313,6 +1317,9 @@
     .msrun-modal-table .ivu-table-body table{
       margin-bottom:0 !important;
     }
+    .msrun-modal-table .msrun-modal-table-accession{
+      display: none;
+    }
     .show-button-tooltip{
       width:100%;
     }
@@ -1324,7 +1331,5 @@
     .show-button-tooltip .ivu-tooltip-inner{
       max-width:600px;
     }
-    .msrun-modal-table-accession{
-      display: none;
-    }
+    
 </style>
