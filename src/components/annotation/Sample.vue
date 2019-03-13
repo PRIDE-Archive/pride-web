@@ -51,6 +51,7 @@
                              <!--<span>Samples</span>-->
                              <InputNumber class="input-number" v-model="samplesNum" size="small" :min='1'></InputNumber>
                          </div>
+                         <!--
                          <div class="step-title">3. Input Technical Number 
                             <Tooltip class="step-title-tooltip" placement="right">
                                 <Icon type="help-circled"></Icon>
@@ -64,7 +65,7 @@
                          <div class="number-wrapper">
                              <InputNumber class="input-number"  v-model="trNum" size="small" :min='1'></InputNumber>
                          </div>
-                         <!--
+                         -->
                          <div class="step-title">3. Input Fractions Number 
                               <Tooltip class="step-title-tooltip" placement="right">
                                 <Icon type="help-circled"></Icon>
@@ -78,7 +79,7 @@
                          <div  class="number-wrapper">
                              <InputNumber class="input-number"  v-model="fractionsNum" size="small" :min='1'></InputNumber>
                          </div>
-                          -->
+                         
                     </div>
                 </Card>
                 <div class="button-wrapper">
@@ -164,6 +165,16 @@
         this.$router.push({path:'/annotation/'+this.$route.params.id+'/check'});
       },
       next(){
+        let found = false;
+        for(let i of this.annotateExperiment){
+          if(i.check){
+            found = true;
+          }
+        }
+        if(!found){
+          this.$Message.error({content:'Please select experiment type', duration:1});
+          return;
+        }
         this.saveSampleInfo();
         this.$router.push({path:'/annotation/'+this.$route.params.id+'/annotate'});
       },
