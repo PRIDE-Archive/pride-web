@@ -231,7 +231,7 @@
                   align: 'center'
               },
               {
-                  title: 'Size',
+                  title: 'Size (M)',
                   key: 'size',
                   width: 70,
                   align: 'center'
@@ -922,7 +922,7 @@
                         let item = {
                           accession:i.accession,
                           name:i.fileName,
-                          size:i.fileSizeBytes,
+                          size:Math.round(i.fileSizeBytes/1024/1024),
                           select:false,
                         }
                         this.msRunModalTableData.push(item);
