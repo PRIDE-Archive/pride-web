@@ -184,7 +184,7 @@
           facetsURL: this.$store.state.baseApiURL + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/static/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/static/config/projectItems/config.json',
-          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
@@ -343,15 +343,19 @@
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
 
+          if(!this.keyword)
+            query.keyword ='*:*';
+
+          console.log(encodeURIComponent('*:*'));
           console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
               this.total = res.body.page.totalElements;
                 this.loading = false;
-                if(res.body._embedded && res.body._embedded.projects){
+                if(res.body._embedded && res.body._embedded.compactprojects){
                     this.setHighlightKeywords();
-                    let projectsList = res.body._embedded.projects;
+                    let projectsList = res.body._embedded.compactprojects;
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -805,6 +809,7 @@
           }
           if(this.keyword)
             normalQuery.keyword = this.keyword;
+
           if(this.filter)
             normalQuery.filter = this.filter;
           if(this.sort)
