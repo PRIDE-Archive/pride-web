@@ -116,6 +116,7 @@
                   <a v-if="!username" @click="showLogin">Log in</a>
                   <a v-else>{{username}}</a>
                   <a v-if="username" @click="logout">Log out</a>
+                  <a @click="showSignup">Register</a>
                 </span>
               </nav>
               <!-- /local-nav -->
@@ -145,6 +146,50 @@
               </FormItem>
             </Form>
         </Modal>
+        <Modal
+            v-model="signUpModalBool"
+            title="Sign Up"
+            :mask-closable="true"
+            :footer-hide="true"
+            :closable="false"
+            class-name="signup-modal"
+            scrollable>
+            <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
+               <FormItem prop="email" label="Email">
+                <Input type="text" v-model="formInlineSignUp.email" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="title" label="Title">
+                <Select v-model="formInlineSignUp.title">
+                    <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
+                </Select>
+              </FormItem>
+              <FormItem prop="firstname" label="First name">
+                <Input type="text" v-model="formInlineSignUp.firstname" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="lastname" label="Last name">
+                <Input type="text" v-model="formInlineSignUp.lastname" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="affiliation" label="Affiliation">
+                <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlineSignUp.affiliation" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="country" label="Country">
+                <Select v-model="formInlineSignUp.country">
+                    <Option v-for="item in countryList" :value="item.value">{{item.label}}</Option>
+                </Select>
+              </FormItem>
+              <FormItem prop="orcid" label="ORCID">
+                <Input type="password" v-model="formInlineSignUp.orcid" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem>
+                <Button class="signupButton" type="primary" @click="login('formInlineSignUp')" long>Sign Up</Button>
+              </FormItem>
+            </Form>
+        </Modal>
     </div>
 </template>
 <script>
@@ -159,6 +204,7 @@
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo_Archive.png',
                 loginModalBool:false,
+                signUpModalBool:false,
                 formInline: {
                   user: '',
                   password: ''
@@ -173,7 +219,71 @@
                   ]
                 },
                 tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
-                username:''
+                username:'',
+                formInlineSignUp:{
+                  email:'',
+                  title:'',
+                  firstname:'',
+                  lastname:'',
+                  affiliation:'',
+                  country:'',
+                  orcid:'',
+                },
+                ruleInlineSignUp:{
+                  email: [
+                    { required: true, message: 'Please input email', trigger: 'blur' }
+                  ],
+                  title: [
+                    { required: true, message: 'Please input username', trigger: 'blur' }
+                  ],
+                  firstname: [
+                    { required: true, message: 'Please input firstname', trigger: 'blur' }
+                  ],
+                  lastname: [
+                    { required: true, message: 'Please input lastname', trigger: 'blur' }
+                  ],
+                  affiliation: [
+                    { required: true, message: 'Please input affiliation', trigger: 'blur' }
+                  ],
+                  country: [
+                    { required: true, message: 'Please input country', trigger: 'blur' }
+                  ],
+                  orcid: [
+                    { required: true, message: 'Please input orcid', trigger: 'blur' }
+                  ],
+                },
+                titleList:[
+                  {
+                    label:'Mr',
+                    value:'mr'
+                  },
+                  {
+                    label:'Ms',
+                    value:'ms'
+                  },
+                  {
+                    label:'Miss',
+                    value:'miss'
+                  },
+                  {
+                    label:'Mrs',
+                    value:'mrs'
+                  },
+                  {
+                    label:'Dr',
+                    value:'dr'
+                  },
+                  {
+                    label:'Professor',
+                    value:'professor'
+                  },
+                ],
+                countryList:[
+                  {
+                    label:'China',
+                    value:'china'
+                  },
+                ]
             }
         },
         methods:{
@@ -235,7 +345,12 @@
               this.$router.push({path:'/markdownpage/documentationpage'});
             },
             showLogin(){
+              this.$refs['formInline'].resetFields();
               this.loginModalBool=true;
+            },
+            showSignup(){
+              this.$refs['formInlineSignUp'].resetFields();
+              this.signUpModalBool=true;
             },
             login(name) {
               this.$refs[name].validate((valid) => {
@@ -272,6 +387,15 @@
                           this.$Spin.hide()
                           this.$Message.error({ content: 'Invalid Username or Password'});
                         });
+              })
+            },
+            signup(name){
+              this.$refs[name].validate((valid) => {
+                  if (!valid) {
+                    this.$Message.error({ content: 'Fill all required items' });
+                    return
+                  }
+                
               })
             },
             logout(){
@@ -361,6 +485,12 @@
     .user-action a{
       margin-left: 10px;
     }
+    .signUpForm div{
+      margin-bottom: 5px;
+    }
+    .signupButton{
+      margin-top: 20px;
+    }
 </style>
 <style>
    .sub-nav-ebi .sub-nav-list .ivu-select-dropdown{
@@ -374,5 +504,14 @@
     }
     .sub-nav-ebi .ivu-dropdown-menu .ivu-dropdown{
       border-bottom: 1px solid #e7e7e7 !important;
+    }
+    .signup-modal .ivu-modal-body{
+      padding: 0 16px 16px 16px;
+    }
+    .signUpForm.ivu-form .ivu-form-item-label{
+      padding:6 12px 2px 0;
+    }
+    .signUpForm .ivu-form-item-error-tip{
+      padding-top: 0px
     }
 </style>
