@@ -233,8 +233,8 @@
                 title:'',
                 subnav:[],
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
-                //signupAPI: this.$store.state.baseURL + 
-                signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
+                signupAPI: this.$store.state.baseApiURL + '/user/register',
+                //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
                 formInline: {
