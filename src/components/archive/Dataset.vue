@@ -1,6 +1,6 @@
 <template>
   <div class="dataset-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="content">
           <Row>
             <Col span="24">
@@ -391,7 +391,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/landingpage/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   export default {
     name: 'archive',
