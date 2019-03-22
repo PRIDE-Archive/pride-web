@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-detail-container">
-        <NavBar></NavBar>
+        <NavBar page="landingpage"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="20">
@@ -98,7 +98,7 @@
     import LinePride from './statistics_chart/Line.vue'
     import PiePride from './statistics_chart/Pie.vue'
     import MapPride from './statistics_chart/Map.vue'
-    import NavBar from '@/components/landingpage/Nav'
+    import NavBar from '@/components/ebi/Nav'
     import store from "@/store/store.js"
     export default {
         data () {
