@@ -26,18 +26,18 @@
                   </div>
                 </div>
                 <small class="">-->
-          <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search -->
-          <!-- <span class="adv"><a href="../search" id="adv-search" title="Advanced">Advanced</a></span> | -->
-          <!-- Include some example searchterms - keep them short and few. -->
-          <!--
-          <a href="[search-url-1]">[search-1]</a>
-          <a href="[search-url-1]">[search-2]</a>
-          <a href="[search-url-1]">[search-3]</a>
-        </small>
-      </fieldset>
-    </form>
-  </div>
-  -->
+                  <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search -->
+                  <!-- <span class="adv"><a href="../search" id="adv-search" title="Advanced">Advanced</a></span> | -->
+                  <!-- Include some example searchterms - keep them short and few. -->
+                  <!--
+                  <a href="[search-url-1]">[search-1]</a>
+                  <a href="[search-url-1]">[search-2]</a>
+                  <a href="[search-url-1]">[search-3]</a>
+                </small>
+              </fieldset>
+            </form>
+          </div>
+          -->
           <!-- /local-search -->
           <!-- local-nav -->
           <nav class="sub-nav-ebi">
@@ -80,28 +80,28 @@
                 </Dropdown>
               </li>
               <li class="sub-nav-list">
-                <Dropdown @on-click="resourcesClick">
-                          <a href="javascript:void(0)" @click="gotoDocs">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span class='sub-nav-title'>Docs</span>
-                  </a>
-                          <!--<DropdownMenu slot="list">-->
-                              <!--&lt;!&ndash;-->
-                              <!--<Dropdown placement="right-start">-->
-                                  <!--<DropdownItem>-->
-                                      <!--User Guide-->
-                                      <!--<Icon type="ios-arrow-right"></Icon>-->
-                                  <!--</DropdownItem>-->
-                                  <!--<DropdownMenu slot="list">-->
-                                      <!--<DropdownItem>PRIDE Archive</DropdownItem>-->
-                                      <!--<DropdownItem>PRIDE Peptidome</DropdownItem>-->
-                                  <!--</DropdownMenu>-->
-                              <!--</Dropdown>-->
-                              <!--&ndash;&gt;-->
-                              <!--<DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>-->
-                              <!--<DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>-->
-                          <!--</DropdownMenu>-->
-                </Dropdown>
+                  <Dropdown @on-click="resourcesClick">
+                      <a href="javascript:void(0)" @click="gotoDocs">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class='sub-nav-title'>Docs</span>
+                      </a>
+                      <!--<DropdownMenu slot="list">-->
+                          <!--&lt;!&ndash;-->
+                          <!--<Dropdown placement="right-start">-->
+                              <!--<DropdownItem>-->
+                                  <!--User Guide-->
+                                  <!--<Icon type="ios-arrow-right"></Icon>-->
+                              <!--</DropdownItem>-->
+                              <!--<DropdownMenu slot="list">-->
+                                  <!--<DropdownItem>PRIDE Archive</DropdownItem>-->
+                                  <!--<DropdownItem>PRIDE Peptidome</DropdownItem>-->
+                              <!--</DropdownMenu>-->
+                          <!--</Dropdown>-->
+                          <!--&ndash;&gt;-->
+                          <!--<DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>-->
+                          <!--<DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>-->
+                      <!--</DropdownMenu>-->
+                  </Dropdown>
               </li>
               <li class="sub-nav-list">
                 <Dropdown>
@@ -120,31 +120,31 @@
           </nav>
           <!-- /local-nav -->
         </div>
-        <Modal
-            v-model="loginModalBool"
-            title="Log In"
-            :mask-closable="true"
-            :footer-hide="true"
-            :closable="false"
-            scrollable>
-            <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
-              <FormItem prop="user">
-                <Input type="text" v-model="formInline.user" placeholder="Username">
-                <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
-                </Input>
-              </FormItem>
-              <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
-                <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
-                </Input>
-              </FormItem>
-              <FormItem>
-                <Button type="primary" @click="login('formInline')" long>Log in</Button>
-              </FormItem>
-            </Form>
-        </Modal>
       </header>
     </div>
+    <Modal
+        v-model="loginModalBool"
+        title="Log In"
+        :mask-closable="true"
+        :footer-hide="true"
+        :closable="false"
+        scrollable>
+        <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+          <FormItem prop="user">
+            <Input type="text" v-model="formInline.user" placeholder="Username">
+            <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+            </Input>
+          </FormItem>
+          <FormItem prop="password">
+            <Input type="password" v-model="formInline.password" placeholder="Password">
+            <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+            </Input>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="login('formInline')" long>Log in</Button>
+          </FormItem>
+        </Form>
+    </Modal>
   </div>
 </template>
 <script>
@@ -159,6 +159,7 @@
         landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
         logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo.png',
         loginModalBool:false,
+        signUpModalBool:false,
         formInline: {
           user: '',
           password: ''
@@ -285,8 +286,6 @@
     mounted() {
       this.init();
     },
-
-
   }
 </script>
 <style scoped>
