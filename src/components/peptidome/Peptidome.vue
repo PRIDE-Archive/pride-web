@@ -1,6 +1,6 @@
 <template>
   <div class="notFound-container">
-    <div class="panel nav"><NavBar/></div>
+    <div class="panel nav"><NavBar page="peptidome"/></div>
    
     <Carousel v-model="value1" loop>
         <CarouselItem>
@@ -143,7 +143,7 @@
   </div>
 </template>
 <script>
-  import NavBar from '@/components/peptidome/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   export default {
     name: 'notfound',
