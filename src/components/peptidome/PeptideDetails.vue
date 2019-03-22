@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-detail-container">
-        <NavBar></NavBar>
+        <NavBar page="landingpage"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="20">
@@ -154,7 +154,7 @@
 <script>
     import PiesSecies from '@/components/peptidome/chart/PieSpecies.vue'
     import Modifications from '@/components/peptidome/chart/Modifications.vue'
-    import NavBar from '@/components/landingpage/Nav'
+    import NavBar from '@/components/ebi/Nav'
     import store from "@/store/store.js"
     export default {
         data () {
