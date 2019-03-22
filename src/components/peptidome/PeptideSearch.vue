@@ -1,6 +1,6 @@
 <template>
   <div class="archive-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="peptidome"/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
@@ -114,7 +114,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/peptidome/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   var paramsFromLandingPage='';
   export default {
