@@ -11,7 +11,7 @@ export default {
     return {
       options: {
         title: {
-          text: 'Public Submitted datasets',
+          text: '',
           textStyle:{
             fontSize:14,
             fontWeight:'normal',
@@ -29,7 +29,7 @@ export default {
         xAxis: {
             type: 'category',
             boundaryGap: false,
-            name:'Years',
+            name:'',
             nameLocation:'end',
             /*offset:10,*/
             nameGap:8,
@@ -110,7 +110,7 @@ export default {
         },*/
         series: [
               {
-                  name:'SUBMISSIONS_PER_YEAR',
+                  name:'SUBMISSIONS',
                   type:'line',
                   data:[0,0]
               }
@@ -122,12 +122,26 @@ export default {
       setOptions(data){
         let xValue = [];
         let yValue = [];
-        for(let i=0; i<data.length; i++){
-          xValue.push(data[i].key);
-          yValue.push(data[i].value);
+        if(data[0].key){
+          for(let i=0; i<data.length; i++){
+            xValue.push(data[i].key);
+            yValue.push(data[i].value);
+          }
+          this.options.xAxis.name = 'Years'
+          this.options.title.text = 'Public Submitted datasets'
         }
-        this.options.xAxis.data = xValue;
+        else{
+          for(let i=0; i<data.length; i++){
+            xValue.push(data[i][0]);
+            yValue.push(data[i][1]);
+          }
+          this.options.xAxis.name = 'Months'
+          this.options.title.text = 'Number of Submittion'
+          xValue = xValue.reverse();
+          yValue= yValue.reverse();
+        }
         this.options.series[0].data = yValue;
+        this.options.xAxis.data = xValue;
     }
   },
   created(){

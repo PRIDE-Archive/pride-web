@@ -929,6 +929,8 @@
             .then(function(res){
                 this.similarityLoading=false;
                 this.similarProjects=res.body._embedded.compactprojects;
+
+                console.log(this.similarProjects)
             },function(err){
 
             });

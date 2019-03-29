@@ -90,12 +90,24 @@ export default {
       setOptions(data){
         let xValue = [];
         let yValue = [];
-        for(let i=0; i<data.length; i++){
-          xValue.push(data[i].key);
-          yValue.push(data[i].value);
+        if(data[0].key){
+          for(let i=0; i<data.length; i++){
+            xValue.push(data[i].key);
+            yValue.push(data[i].value);
+          }
+          this.options.xAxis.name = 'Years'
         }
-        this.options.xAxis.data = xValue;
+        else{
+          for(let i=0; i<data.length; i++){
+            xValue.push(data[i][0]);
+            yValue.push(data[i][1]);
+          }
+          this.options.xAxis.name = 'Months'
+          xValue = xValue.reverse();
+          yValue= yValue.reverse();
+        }
         this.options.series[0].data = yValue;
+        this.options.xAxis.data = xValue;
     }
   },
   created(){
