@@ -660,18 +660,18 @@
         else
           this.hightlightMode = false;
 
-        this.$router.push({name: 'archive', query: this.query});
+        this.$router.push({name: 'annotation', query: this.query});
         //this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
           this.setFilter();
-          this.$router.push({name: 'archive', query: this.query});
+          this.$router.push({name: 'annotation', query: this.query});
       },
       pageSizeChange(size){
           this.pageSize = size;
           this.setFilter();
-          this.$router.push({name: 'archive', query: this.query});
+          this.$router.push({name: 'annotation', query: this.query});
       },
       /*new api has no sort funtions
       sortChange(type){
