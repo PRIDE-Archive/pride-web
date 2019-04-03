@@ -117,7 +117,7 @@
             <div class="annotate-drawer" :class="{ active: drawerShowBool }" @wheel.stop>
                 <div class="header"><span>MsRUN Table</span><a @click="hideMsRunTable"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
                 <div class="content">
-                  <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData" height="800"></Table>
+                  <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData"></Table>
                 </div>
                 <div class="footer">
                     <a class="button search-button" @click="msRunAnnotate">OK</a>
@@ -221,26 +221,65 @@
                       });
                   }
               },
-              
-              {
-                  title: 'Accession',
-              
-                  key: 'accession',
-                  align: 'center',
-                  className:'msrun-modal-table-accession'
-              },
               {
                   title: 'Name',
                   key: 'name',
-                  align: 'center'
+                  align: 'center',
               },
               {
                   title: 'Size (M)',
                   key: 'size',
                   width: 70,
-                  align: 'center'
+                  align: 'center',
+              },
+              {
+                  title: 'Accession',
+                  width:1,
+                  key: 'accession',
+                  className:'msrun-modal-table-accession'
               },
           ],
+          // msRunModalTableCol:[
+          //     {
+          //         align: 'center',
+          //         width: 40,
+          //         render: (h, params) => {
+          //             return h('Checkbox', {
+          //                 props: {
+          //                     value: params.row.select
+          //                 },
+          //                 on: {
+          //                     'on-change': (val) => {
+          //                         this.msRunModalTableData.map(x => {
+          //                             x.select= false;
+          //                             return x;
+          //                         });
+          //                         this.msRunModalTableData[params.index].select= val;
+          //                         this.selectedFileItem = params;
+          //                     }
+          //                 }
+          //             });
+          //         }
+          //     },
+          //     {
+          //         title: 'Name',
+          //         //width: 70,
+          //         key: 'name',
+                  
+          //     },
+          //     {
+          //         title: 'Size (M)',
+          //         key: 'size',
+          //         //width: 0.1,
+          //        // className:'msrun-modal-table-accession'
+          //     },
+          //     {
+          //         title: 'Accession',
+          //         key: 'accession',
+          //         width: 0.1,
+          //         className:'msrun-modal-table-accession'
+          //     },
+          // ],
           msRunModalTableData:[],
           sampleCol:[
             {
@@ -1231,12 +1270,13 @@
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .content{
     flex:1;
-    padding: 30px 10px 0 10px;
+    padding: 30px 10px 30px 10px;
   } 
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer{
     display:flex;
     justify-content: flex-end;
     padding: 10px;
+    border-top: 1px solid #00000026;
   }
   .annotate-drawer-container .annotate-drawer-wrapper .annotate-drawer .footer a{
     padding: 8px 10px;
@@ -1289,9 +1329,9 @@
     .add-col-table table{
         margin-bottom:0 !important;
     }
-    .add-col-table tbody th, table tbody td, table thead th, table thead td, table tfoot th, table tfoot td{
+    /*.add-col-table tbody th, table tbody td, table thead th, table thead td, table tfoot th, table tfoot td{
         padding: 0 !important;
-    }
+    }*/
     .dropdown-remote .ivu-select-dropdown{
         top: 30px !important;
         left: 0 !important;
@@ -1317,7 +1357,7 @@
         border: 1px solid red !important;
     }
     .msrun-modal-table{
-      max-height:70vh;
+      height:100%;
     }
     .msrun-modal-table .ivu-table-cell{
         padding-left: 0; 
