@@ -8,9 +8,9 @@
             <span class="icon-hint-text">Add Property</span><Icon type="plus-round" @click="showModal" size="20"></Icon>
           </p>
           <div class="card-content">
-              <draggable class="draggable-class" v-model="sampleCol">
+              <draggable class="draggable-class" v-model="sampleCol"  :options="{ handle: '.handle' }">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
-                      <div class="table-row first">{{itemCol.name}}<Icon class="icon-in-th" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
+                      <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key)" size="10"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="10"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData">
                             <div v-if="itemCol.key!='accession'">
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])">
@@ -708,6 +708,12 @@
                   }
               });
           },
+          removeAll(key){
+              for(let i=0;i<this.sampleData.length; i++){
+                console.log('123',this.sampleData[i][key]);
+                  this.sampleData[i][key].value = '';
+              }
+          },
           init(){
             let tempSampleData = JSON.parse(localStorage.getItem("sampleData"));
             //this.tempFileData = JSON.parse(localStorage.getItem("fileData"));
@@ -1136,10 +1142,15 @@
   .table-row.first{
     cursor: all-scroll
   }
-  .icon-in-th{
+  .icon-in-th-right{
     position: absolute;
     right: 10px;
-    cursor: default;
+    cursor: pointer;
+  }
+  .icon-in-th-left{
+    position: absolute;
+    left: 3px;
+    cursor: pointer;
   }
   .icon-in-row{
     /*position: absolute;
