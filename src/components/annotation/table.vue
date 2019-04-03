@@ -17,7 +17,9 @@
                                   </Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
-                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
+                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
+                                          </DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
                                           </DropdownItem>
@@ -70,7 +72,9 @@
                                   <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
-                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data</DropdownItem>
+                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
+                                          </DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
                                           </DropdownItem>
