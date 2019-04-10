@@ -94,6 +94,13 @@
 
         },
         {
+          "title":"How to annotate data",
+          "content":"How to annotate the project in PRIDE Archive",
+          "externalURL":"",
+          "moreID":"",
+          "markdownFolder":"annotatepridedata"
+        },
+        {
           "title":"Searching public datasets",
           "content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
           "externalURL":"",
