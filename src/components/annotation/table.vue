@@ -113,11 +113,12 @@
           <Table border ref="addPropertyTable" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
       </Modal>
       <div v-if="drawerShowBool" class="annotate-drawer-container">
-          <div class="annotate-drawer-wrapper" @wheel.stop="wheel" @wheel.prevent="wheel">
-            <div class="annotate-drawer" :class="{ active: drawerShowBool }" @wheel.stop>
+          <!-- <div class="annotate-drawer-wrapper" @wheel.stop="wheel" @wheel.prevent="wheel"> -->
+          <div class="annotate-drawer-wrapper">
+            <div class="annotate-drawer" :class="{ active: drawerShowBool }">
                 <div class="header"><span>MsRUN Table</span><a @click="hideMsRunTable"><Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="20"/></a></div>
                 <div class="content">
-                  <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData"></Table>
+                  <Table border ref="selection" class="msrun-modal-table" :columns="msRunModalTableCol" :data="msRunModalTableData" height="400"></Table>
                 </div>
                 <div class="footer">
                     <a class="button search-button" @click="msRunAnnotate">OK</a>
@@ -1357,7 +1358,7 @@
         border: 1px solid red !important;
     }
     .msrun-modal-table{
-      height:100%;
+      height:30%;
     }
     .msrun-modal-table .ivu-table-cell{
         padding-left: 0; 
