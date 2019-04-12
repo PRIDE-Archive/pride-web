@@ -168,7 +168,7 @@
                 this.linePrideShow=true;
                 let temp = item || 'year'
                 let api = temp == 'year' ? this.linePrideYearApi:this.linePrideMonthApi;
-                this.submissionTitle = temp == 'year' ? 'Public Submitted datasets':'Number of Submittions'; 
+                this.submissionTitle = temp == 'year' ? 'Public Submitted datasets':'Number of Submissions per month';
                 this.$http
                   .get(api)
                   .then(function(res){

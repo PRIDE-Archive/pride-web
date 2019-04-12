@@ -136,7 +136,7 @@ export default {
             yValue.push(data[i][1]);
           }
           this.options.xAxis.name = 'Months'
-          this.options.title.text = 'Number of Submittion'
+          this.options.title.text = 'Number of Submissions'
           xValue = xValue.reverse();
           yValue= yValue.reverse();
         }

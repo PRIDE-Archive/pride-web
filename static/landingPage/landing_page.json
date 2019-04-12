@@ -116,9 +116,9 @@
     },
     "citation":{
       "lineone": "Citing PRIDE",
-      "linetwo": "Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.",
-      "linethree": "2016 update of the PRIDE database and related tools.",
-      "linefour": "Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722.",
+      "linetwo": "Perez-Riverol Y, Csordas A, Bai J, Bernal-Llinares M, Hewapathirana S, Kundu DJ, Inuganti A ... Jarnuczak AF, Ternent T, Brazma A, Vizcaíno JA.",
+      "linethree": "The PRIDE database and related tools and resources in 2019: improving support for quantification data.",
+      "linefour": "Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450. doi: 10.1093/nar/gky1106",
       "button":{
         "moreID":"",
         "markdownFolder":"citationpage"

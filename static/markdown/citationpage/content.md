@@ -5,8 +5,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 ## Citing PRIDE Resources:
 
-- **Citing the PRIDE Generally**: Vizcaíno JA, Csordas A, del-Toro N, Dianes JA, Griss J, Lavidas I, Mayer G, Perez-Riverol Y, Reisinger F, Ternent T, Xu QW, Wang R, Hermjakob H.
-  [2016 update of the PRIDE database and related tools](http://nar.oxfordjournals.org/content/44/D1/D447.long). Nucleic Acids Res. 2016 Jan 1;44(D1): D447-D456. PubMed PMID:26527722.
+- **Citing the PRIDE Generally**: Perez-Riverol Y, Csordas A, Bai J, Bernal-Llinares M, Hewapathirana S, Kundu DJ, Inuganti A, Griss J, Mayer G, Eisenacher M, Pérez E, Uszkoreit J, Pfeuffer J, Sachsenberg T, Yilmaz S, Tiwary S, Cox J, Audain E, Walzer M, Jarnuczak AF, Ternent T, Brazma A, Vizcaíno JA. [The PRIDE database and related tools and resources in 2019: improving support for quantification data.](https://academic.oup.com/nar/article/47/D1/D442/5160986). Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450. doi: 10.1093/nar/gky1106. PubMed PMID:30395289.
 
 - **Citing ProteomeXchange**: Deutsch EW. , Csordas A, Sun Z, Jarnuczak A, Perez-Riverol Y, Ternent T, Campbell D, Bernal-Llinares M, Okuda S, Kawano S, Moritz RL,1 Carver JJ., Wang M, Ishihama Y, Bandeira N, Hermjakob H and Vizcaíno JA.
   [The ProteomeXchange consortium in 2017: supporting the cultural change in proteomics public data deposition](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210636/).  Nucleic Acids Res. 2017 Jan 4; 45(Database issue): D1100–D1106.

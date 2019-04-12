@@ -1,11 +1,10 @@
 ## Welcome to Pride Annotation System!
 
-
-
 We have four steps to finish our [Annotation](http://wwwdev.ebi.ac.uk/pride/annotation): 
-- Search
-- Check
-- Sample
+
+- Dataset Search
+- Check Metadata
+- Experimental Design 
 - Annotate
 
 Before go for the annotation, please log in the system first. If you do not have a valid account, then sign up. After you get an account, you could feel free to do your annotation. More details will introduced in this documents below.
@@ -14,7 +13,7 @@ Before go for the annotation, please log in the system first. If you do not have
 
 ![Sign Up](../static/markdown/annotatepridedata/image/signup.jpg)
 
-## Search
+## Dataset Search
 
 You need to search the project in our database and find one you would like to do the annotation. More specifically:
 
@@ -28,7 +27,7 @@ The screenshot shows you could use our search function.
 
 ![search](../static/markdown/annotatepridedata/image/search.jpg)
 
-## Check
+## Check Metadata 
 
 In this step, you could go through the details about the project such as project description, properties and msRun files.
 
@@ -36,9 +35,9 @@ If you would like to continue, just click "**Next**" button at the bottom.
 
 ![check](../static/markdown/annotatepridedata/image/check.jpg)
 
-## Sample
+## Experimental Design
 
-In this page, you could choose the type of the experiment (**Requied**). Also, the sample number and fraction number is needed for the following step.
+In this page, you could choose the type of the experiment (**Required**). Also, the sample number and fraction number is needed for the following step.
 
 After you finished,  click "**Next**" button at the bottom.
 
