@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-download-container">
-        <div class="panel nav"><NavBar/></div>
+        <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="jumbotron">
             <div class="container">
                 <p class="head">Cluster Results Files</p>
@@ -28,7 +28,7 @@
     </div>
 </template>
 <script>
-    import NavBar from '@/components/landingpage/Nav'
+    import NavBar from '@/components/ebi/Nav'
     export default {
         data () {
             return {

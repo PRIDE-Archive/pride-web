@@ -1,6 +1,6 @@
 <template>
   <div class="archive-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="archive"/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
@@ -133,7 +133,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/archive/Nav'
+  import NavBar from '@/components/ebi/Nav'
   export default {
     name: 'archive',
     data(){

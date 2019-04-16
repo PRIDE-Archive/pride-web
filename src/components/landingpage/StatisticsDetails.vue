@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-detail-container">
-        <NavBar></NavBar>
+        <NavBar page="landingpage"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="20">
@@ -31,7 +31,7 @@
                 <Col span="10">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Public Submitted datasets</p>
+                             <p slot="title">{{submissionTitle}}</p>
 
                              <p slot="extra">
                                <a class="submission-options" @click="queryLine('year')">Year</a> <a class="submission-options" @click="queryLine('month')">Month</a>
@@ -98,7 +98,7 @@
     import LinePride from './statistics_chart/Line.vue'
     import PiePride from './statistics_chart/Pie.vue'
     import MapPride from './statistics_chart/Map.vue'
-    import NavBar from '@/components/landingpage/Nav'
+    import NavBar from '@/components/ebi/Nav'
     import store from "@/store/store.js"
     export default {
         data () {
@@ -108,7 +108,8 @@
                 sankeyPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
                 mapPrideApi: this.$store.state.baseApiURL +'/stats/SUBMISSIONS_PER_COUNTRY',
                 linePrideYearApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
-                linePrideMonthApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
+                //linePrideMonthApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
+                linePrideMonthApi: this.$store.state.baseApiURL + '/stats/submissions-monthly', 
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
@@ -116,7 +117,8 @@
                 piePrideShow:true,
                 treePrideShow:true,
                 facetsType:'INSTRUMENT',
-                facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS']
+                facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS'],
+                submissionTitle: ''
             }
         },
         components: {
@@ -166,6 +168,7 @@
                 this.linePrideShow=true;
                 let temp = item || 'year'
                 let api = temp == 'year' ? this.linePrideYearApi:this.linePrideMonthApi;
+                this.submissionTitle = temp == 'year' ? 'Public Submitted datasets':'Number of Submissions per month';
                 this.$http
                   .get(api)
                   .then(function(res){

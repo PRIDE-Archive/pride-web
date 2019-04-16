@@ -1,6 +1,6 @@
 <template>
   <div class="landingpage-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="panel resource"><Resource/></div>
       <div class="panel statistics"><Statistics/></div>
       <div class="panel tools"><Tools/></div>
@@ -9,7 +9,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/landingpage/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import Resource from '@/components/landingpage/Resource'
   import Statistics from '@/components/landingpage/Statistics'
   import Tools from '@/components/landingpage/Tools'

@@ -26,18 +26,18 @@
                   </div>
                 </div>
                 <small class="">-->
-          <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search -->
-          <!-- <span class="adv"><a href="../search" id="adv-search" title="Advanced">Advanced</a></span> | -->
-          <!-- Include some example searchterms - keep them short and few. -->
-          <!--
-          <a href="[search-url-1]">[search-1]</a>
-          <a href="[search-url-1]">[search-2]</a>
-          <a href="[search-url-1]">[search-3]</a>
-        </small>
-      </fieldset>
-    </form>
-  </div>
-  -->
+                  <!-- If your search is more complex than just a keyword search, you can link to an Advanced Search -->
+                  <!-- <span class="adv"><a href="../search" id="adv-search" title="Advanced">Advanced</a></span> | -->
+                  <!-- Include some example searchterms - keep them short and few. -->
+                  <!--
+                  <a href="[search-url-1]">[search-1]</a>
+                  <a href="[search-url-1]">[search-2]</a>
+                  <a href="[search-url-1]">[search-3]</a>
+                </small>
+              </fieldset>
+            </form>
+          </div>
+          -->
           <!-- /local-search -->
           <!-- local-nav -->
           <nav class="sub-nav-ebi">
@@ -80,28 +80,28 @@
                 </Dropdown>
               </li>
               <li class="sub-nav-list">
-                <Dropdown @on-click="resourcesClick">
-                          <a href="javascript:void(0)" @click="gotoDocs">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span class='sub-nav-title'>Docs</span>
-                  </a>
-                          <!--<DropdownMenu slot="list">-->
-                              <!--&lt;!&ndash;-->
-                              <!--<Dropdown placement="right-start">-->
-                                  <!--<DropdownItem>-->
-                                      <!--User Guide-->
-                                      <!--<Icon type="ios-arrow-right"></Icon>-->
-                                  <!--</DropdownItem>-->
-                                  <!--<DropdownMenu slot="list">-->
-                                      <!--<DropdownItem>PRIDE Archive</DropdownItem>-->
-                                      <!--<DropdownItem>PRIDE Peptidome</DropdownItem>-->
-                                  <!--</DropdownMenu>-->
-                              <!--</Dropdown>-->
-                              <!--&ndash;&gt;-->
-                              <!--<DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>-->
-                              <!--<DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>-->
-                          <!--</DropdownMenu>-->
-                </Dropdown>
+                  <Dropdown @on-click="resourcesClick">
+                      <a href="javascript:void(0)" @click="gotoDocs">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span class='sub-nav-title'>Docs</span>
+                      </a>
+                      <!--<DropdownMenu slot="list">-->
+                          <!--&lt;!&ndash;-->
+                          <!--<Dropdown placement="right-start">-->
+                              <!--<DropdownItem>-->
+                                  <!--User Guide-->
+                                  <!--<Icon type="ios-arrow-right"></Icon>-->
+                              <!--</DropdownItem>-->
+                              <!--<DropdownMenu slot="list">-->
+                                  <!--<DropdownItem>PRIDE Archive</DropdownItem>-->
+                                  <!--<DropdownItem>PRIDE Peptidome</DropdownItem>-->
+                              <!--</DropdownMenu>-->
+                          <!--</Dropdown>-->
+                          <!--&ndash;&gt;-->
+                          <!--<DropdownItem name="goToPrideArchiveWS">PRIDE Archive WS</DropdownItem>-->
+                          <!--<DropdownItem name="goToPridePeptidomeWS">PRIDE Peptidome WS</DropdownItem>-->
+                      <!--</DropdownMenu>-->
+                  </Dropdown>
               </li>
               <li class="sub-nav-list">
                 <Dropdown>
@@ -112,11 +112,39 @@
                 </Dropdown>
               </li>
             </ul>
+            <span class="user-action">
+              <a v-if="!username" @click="showLogin">Log in</a>
+              <a v-else>{{username}}</a>
+              <a v-if="username" @click="logout">Log out</a>
+            </span>
           </nav>
           <!-- /local-nav -->
         </div>
       </header>
     </div>
+    <Modal
+        v-model="loginModalBool"
+        title="Log In"
+        :mask-closable="true"
+        :footer-hide="true"
+        :closable="false"
+        scrollable>
+        <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+          <FormItem prop="user">
+            <Input type="text" v-model="formInline.user" placeholder="Username">
+            <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+            </Input>
+          </FormItem>
+          <FormItem prop="password">
+            <Input type="password" v-model="formInline.password" placeholder="Password">
+            <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+            </Input>
+          </FormItem>
+          <FormItem>
+            <Button type="primary" @click="login('formInline')" long>Log in</Button>
+          </FormItem>
+        </Form>
+    </Modal>
   </div>
 </template>
 <script>
@@ -130,6 +158,23 @@
         subnav:[],
         landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
         logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo.png',
+        loginModalBool:false,
+        signUpModalBool:false,
+        formInline: {
+          user: '',
+          password: ''
+        },
+        ruleInline: {
+          user: [
+            { required: true, message: 'Please input username', trigger: 'blur' }
+          ],
+          password: [
+            { required: true, message: 'Please input password', trigger: 'blur' },
+            { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
+          ]
+        },
+        tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
+        username:''
       }
     },
     methods:{
@@ -182,13 +227,65 @@
         }
       },
       gotoAbout(){
-              this.$router.push({path:'/markdownpage/citationpage'});
-            },
-            gotoDocs(){
-              this.$router.push({path:'/markdownpage/documentationpage'});
+        this.$router.push({path:'/markdownpage/citationpage'});
+      },
+      gotoDocs(){
+        this.$router.push({path:'/markdownpage/documentationpage'});
+      },
+      showLogin(){
+        this.loginModalBool=true;
+      },
+      login(name) {
+        this.$refs[name].validate((valid) => {
+            if (!valid) {
+              this.$Message.error({ content: 'Format Invalid' });
+              return
+            }
+            this.$Spin.show({
+              render: (h) => {
+                return h('div', [
+                  h('Icon', {
+                    'class': 'demo-spin-icon-load',
+                    props: {
+                      type: 'ios-loading',
+                      size: 18
+                    }
+                  }),
+                  h('div', 'Loading')
+                ])
+              }
+            });
+            this.$http
+                  .post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
+                  .then(function(res){
+                        this.loginModalBool=false;
+                        sessionStorage.setItem('username',this.formInline.user);
+                        sessionStorage.setItem('token',res.bodyText);
+                        this.username = this.formInline.user;
+                        //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                        this.$Message.success({ content: 'Login Success' })
+                        this.$Spin.hide()
+                        this.$refs[name].resetFields();
+                  },function(err){
+                    this.$Spin.hide()
+                    this.$Message.error({ content: 'Invalid Username or Password'});
+                  });
+        })
+      },
+      logout(){
+        //this.$store.commit('setUser',{username: '', token:''});  
+        sessionStorage.setItem('username','');
+        sessionStorage.setItem('token','');
+        this.username = '';  
+        this.$router.push({name:'annotation'})
+      },
+      init(){
+          this.username = sessionStorage.getItem('username') || '';
       }
     },
-
+    mounted() {
+      this.init();
+    },
   }
 </script>
 <style scoped>
@@ -252,6 +349,13 @@
     max-width: 150rem !important;
   }
   #local-nav{
+    margin-left: 10px;
+  }
+  .user-action{
+    float: right;
+    margin-right: 10px;
+  }
+  .user-action a{
     margin-left: 10px;
   }
 </style>

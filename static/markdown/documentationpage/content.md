@@ -10,6 +10,8 @@
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
 
+- [PRIDE Annotation tool](./annotatepridedata)
+
 ## Tools Help Pages
 
 - [PRIDE Inspector Toolsuite](./prideinspector)

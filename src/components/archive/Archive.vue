@@ -1,6 +1,6 @@
 <template>
   <div class="archive-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="archive"/></div>
       <div class="browse-data-container">
           <Row class="search-row">
               <Card>
@@ -165,7 +165,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/archive/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   var paramsFromLandingPage='';
   export default {
@@ -332,6 +332,7 @@
           this.loading = true;
           let query = q || this.$route.query;
           query.dateGap = '+1YEAR';
+          query.sortDirection='DESC';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
@@ -342,6 +343,11 @@
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
 
+          if(!this.keyword)
+            query.keyword ='*:*';
+
+          console.log(encodeURIComponent('*:*'));
+          console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
@@ -381,8 +387,10 @@
                           this.publicaitionList.push(item);
                            
                       }
+                      console.log(this.publicaitionList)
                 }
                 else{
+
                   this.$Message.error({content:'No results', duration:1});
                 }
                 
@@ -671,15 +679,15 @@
       sortChange(type){
         console.log(type);
         if(type == 'Title')
-          this.sort = 'title'
+          this.sort = 'project_title'
         else if(type == 'Accession')
           this.sort = 'accession'
         else if(type == 'Relevance')
           this.sort = 'score'
         else if(type == 'Submission Date')
-          this.sort = 'submissionDate';
+          this.sort = 'submission_date';
         else if(type == 'Publication Date')
-          this.sort = 'publicationDate';
+          this.sort = 'publication_date';
        
         this.setFilter();
         this.$router.push({name: 'archive', query: this.query});
@@ -801,6 +809,7 @@
           }
           if(this.keyword)
             normalQuery.keyword = this.keyword;
+
           if(this.filter)
             normalQuery.filter = this.filter;
           if(this.sort)

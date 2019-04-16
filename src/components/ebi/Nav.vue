@@ -6,7 +6,7 @@
               <!-- local-title -->
               <div class="columns medium-5" id="local-title"> 
                 <div class="pride-logo">
-                  <a title="Back to [service-name] homepage"><img @click="gotoArchivegpage" :src="logoURL" alt="logo" width="410"></a>
+                  <a title="Back to [service-name] homepage"><img @click="gotoPage(pageObj.pageName)" :src="pageObj.logoURL" alt="logo" :width="pageObj.logoWidth"></a>
                 </div>
               </div>
               <!-- /local-title -->
@@ -44,7 +44,7 @@
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoLandingpage">
+                          <a href="javascript:void(0)" @click="gotoHomepage(pageObj.homePageName)">
                             <i class="fas fa-home"></i>
                             <span class='sub-nav-title'>Home</span>
                           </a>
@@ -182,11 +182,14 @@
                 </Select>
               </FormItem>
               <FormItem prop="orcid" label="ORCID">
-                <Input type="password" v-model="formInlineSignUp.orcid" placeholder="">
+                <Input type="text" v-model="formInlineSignUp.orcid" placeholder="">
                 </Input>
               </FormItem>
+              <FormItem prop="terms" label="Terms of Usage" >
+                  <Checkbox v-model="formInlineSignUp.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
+              </FormItem>
               <FormItem>
-                <Button class="signupButton" type="primary" @click="login('formInlineSignUp')" long>Sign Up</Button>
+                <Button class="signupButton" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
               </FormItem>
             </Form>
         </Modal>
@@ -194,6 +197,34 @@
 </template>
 <script>
     import store from "@/store/store.js"
+    const initPage = function(page){
+      let item = {}
+      if(page == 'archive'){
+        item = {
+            pageName:'archive',
+            homePageName:'landingpage',
+            logoWidth:410,
+            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        }
+      }
+      else if(page == 'peptidome'){
+        item = {
+            pageName:'peptidome',
+            homePageName:'landingpage',
+            logoWidth:400,
+            logoURL:'/static/logo/PRIDE_logo_Peptide.png',
+        }
+      }
+      else if(page == 'landingpage'){
+        item = {
+            pageName:'landingpage',
+            homePageName:'landingpage',
+            logoWidth:500,
+            logoURL:'/static/logo/PRIDE_logo.png',
+        }
+      } 
+      return item;
+    }
     export default {
         data () {
             return {
@@ -202,7 +233,8 @@
                 title:'',
                 subnav:[],
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
-                logoURL: this.$store.state.baseURL + '/static/logo/PRIDE_logo_Archive.png',
+                signupAPI: this.$store.state.baseApiURL + '/user/register',
+                //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
                 formInline: {
@@ -228,10 +260,11 @@
                   affiliation:'',
                   country:'',
                   orcid:'',
+                  terms:false,
                 },
                 ruleInlineSignUp:{
                   email: [
-                    { required: true, message: 'Please input email', trigger: 'blur' }
+                    { required: true, type:'email', message: 'Please input email', trigger: 'blur' }
                   ],
                   title: [
                     { required: true, message: 'Please input username', trigger: 'blur' }
@@ -251,41 +284,46 @@
                   orcid: [
                     { required: true, message: 'Please input orcid', trigger: 'blur' }
                   ],
+                  terms:[
+                    { required: true, type:'enum', enum: ["true"], transform: value => value.toString(), message: 'Please check Terms and Conditions' }
+                  ],
                 },
                 titleList:[
                   {
                     label:'Mr',
-                    value:'mr'
+                    value:'Mr'
                   },
                   {
                     label:'Ms',
-                    value:'ms'
+                    value:'Ms'
                   },
                   {
                     label:'Miss',
-                    value:'miss'
+                    value:'Miss'
                   },
                   {
                     label:'Mrs',
-                    value:'mrs'
+                    value:'Mrs'
                   },
                   {
                     label:'Dr',
-                    value:'dr'
+                    value:'Dr'
                   },
                   {
                     label:'Professor',
-                    value:'professor'
+                    value:'Professor'
                   },
                 ],
                 countryList:[
                   {
-                    label:'China',
-                    value:'china'
+                    label:'UK',
+                    value:'uk'
                   },
-                ]
+                ],
+                pageObj:{}
             }
         },
+        props: ['page'],
         methods:{
             submit(){
                 this.$Message.error({content:this.selected+' search coming soon', duration:3});
@@ -303,11 +341,11 @@
             failSearch(){
                 this.$Message.error({content:'error search', duration:3});
             },
-            gotoLandingpage(){
-              this.$router.push({name:'landingpage'});
+            gotoHomepage(name){
+              this.$router.push({name:name});
             },
-            gotoArchivegpage(){
-              this.$router.push({name:'archive'});
+            gotoPage(name){
+              this.$router.push({name:name});
             },
             resourcesClick(name){
                 if(name=='goToArchive'){
@@ -395,7 +433,43 @@
                     this.$Message.error({ content: 'Fill all required items' });
                     return
                   }
-                
+                  this.$Spin.show({
+                    render: (h) => {
+                      return h('div', [
+                        h('Icon', {
+                          'class': 'demo-spin-icon-load',
+                          props: {
+                            type: 'load-b',
+                            size: 18
+                          }
+                        }),
+                        h('div', 'Please wait...')
+                      ])
+                    }
+                  });
+                  let query = {};
+                  query.UserSummary = {
+                    acceptedTermsOfUse: this.formInlineSignUp.terms,
+                    affiliation: this.formInlineSignUp.affiliation,
+                    country: this.formInlineSignUp.country,
+                    email: this.formInlineSignUp.email,
+                    firstName: this.formInlineSignUp.firstname,
+                    lastName: this.formInlineSignUp.lastname,
+                    orcid: this.formInlineSignUp.orcid,
+                    title: this.formInlineSignUp.title,
+                  }
+                  this.$http
+                        .post(this.signupAPI,query)
+                        .then(function(res){
+                              this.signUpModalBool=false;
+                              this.$Message.success({ content: 'Sign Up Success' })
+                              this.$Spin.hide()
+                              this.$refs[name].resetFields();
+                        },function(err){
+                          let errArray = err.body;
+                          this.$Spin.hide()
+                          this.$Message.error({ content: errArray[0].defaultMessage});
+                        });
               })
             },
             logout(){
@@ -407,6 +481,12 @@
             },
             init(){
                 this.username = sessionStorage.getItem('username') || '';
+                console.log(this.page);
+                this.pageObj = initPage(this.page)
+                this.pageObj.logoURL =  this.$store.state.baseURL +  this.pageObj.logoURL
+            },
+            openTerms(){
+              window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
             }
         },
         mounted() {
@@ -493,6 +573,9 @@
     }
 </style>
 <style>
+   .demo-spin-icon-load{
+      animation: ani-demo-spin 1s linear infinite;
+    }
    .sub-nav-ebi .sub-nav-list .ivu-select-dropdown{
       padding: 0 !important;
       border-radius: 0px !important;

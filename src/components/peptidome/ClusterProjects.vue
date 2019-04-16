@@ -1,6 +1,6 @@
 <template>
   <div class="projects-container">
-      <div class="panel nav"><NavBar/></div>
+      <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="browse-data-container">
           <Row>
             <Card>
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/landingpage/Nav'
+  import NavBar from '@/components/ebi/Nav'
   export default {
     name: 'archive',
     data(){

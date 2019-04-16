@@ -1,6 +1,6 @@
 <template>
     <div class="peptide-download-container">
-        <div class="panel nav"><NavBar/></div>
+        <div class="panel nav"><NavBar page="peptidome"/></div>
         <div class="jumbotron">
             <div class="container">
                 <p class="head">Spectrum Libraries</p>
@@ -32,7 +32,7 @@
     </div>
 </template>
 <script>
-    import NavBar from '@/components/peptidome/Nav'
+    import NavBar from '@/components/ebi/Nav'
     export default {
         data () {
             return {

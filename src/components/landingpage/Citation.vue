@@ -1,13 +1,13 @@
 <template>
     <div class="submit-data-container">
-        <div class="panel nav"><NavBar/></div>
+        <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="markdown-wrapper">
             <vue-markdown class="markdown-body" :source="source"></vue-markdown>
         </div>
     </div>
 </template>
 <script>
-    import NavBar from '@/components/landingpage/Nav'
+    import NavBar from '@/components/ebi/Nav'
     import store from "@/store/store.js"
     export default {
         data () {
