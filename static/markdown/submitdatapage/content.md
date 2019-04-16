@@ -18,7 +18,7 @@ The first step to prepare your submission for PRIDE Archive is to know which fil
 
 - Peptide/protein identification files (called ‘SEARCH’) (**Mandatory**): These are the files provided by the software used to perform the data analysis - Mascot .dat, ProteomeDiscover .msf - [check the full list here](./pridefileformats#search_files). Each SEARCH file needs to be related with at least one RAW file.
 
-- mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](./pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Idnetification results. These files needs to be related with at least one PEAK file.
+- mzTab or mzIdentML result files (called 'RESULT') (**Recommended**): The mzTab and mzIdentML are standard file formats provided by most of the analysis software tools [check the full list here](./pridefileformats#result_files). The mzIdentML contains only identification information, were the mzTab can contains Quantitation/Identification results. These files needs to be related with at least one PEAK file.
 
 - PEAK List files (called 'PEAK') (**Recommended**): If the mzTab or mzIdentML is provided the corresponding peak list files should be provided in order to be able to check the MS/MS spectrum evidences that support the peptide/protein identifications ([check the full list here](./pridefileformats#peak_files)).
 
@@ -85,5 +85,3 @@ The particular post-submission steps include the following:
 -  Contacting pride-support@ebi.ac.uk.
 
 Upon making the project public, a project page will be released over at ProteomeCentral (http://proteomecentral.proteomexchange.org) and from a particular dataset page an FTP location will be available.
-
-
