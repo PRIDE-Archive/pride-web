@@ -5,11 +5,13 @@ PRIDE welcomes direct user submissions of protein and peptide identification/qua
 
 The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../static/markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
-## Register into PRIDE
+The following [open access publication](https://onlinelibrary.wiley.com/doi/full/10.1002/pmic.201400120) also exemplifies the main steps of a submission to PRIDE, although some of less-important details might have changed.
+
+## Register as a user in PRIDE
 
 Before submitting to PRIDE database the user need to be sure that it has an account with PRIDE resource. This can be checked by [login into PRIDE database](https://www.ebi.ac.uk/pride/archive/login). If you don't have already a PRIDE account, please create one [here](https://www.ebi.ac.uk/pride/archive/register). Currently we don't send out automatic emails upon successful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
 
-## What constitutes a dataset?
+## What constitutes a PRIDE dataset?
 The general rule is that a dataset should correspond to the data described in a single manuscript, if all data in the manuscript comes from the same data workflow (e.g. Data Dependent Acquisition, DDA). If a manuscript contains data coming from different proteomics workflows (DDA and Selected Reaction Monitoring, SRM), it is recommended to split the data in different datasets so this is easier to interpret for third parties. However, it should be highlighted that it is the submitter’s decision how to organise their submitted datasets, which could depend on a number of factors (e.g. future publications).
 
 
@@ -81,17 +83,19 @@ IMPORTANT: Aspera-based faster download for 'private' datasets is enabled in PRI
 In case of Complete Submissions you can alternatively use PRIDE Inspector. This option is for downloading the PRIDE XML and mzIdentML files only into a target folder. In order to use the PRIDE Inspector Java Web Start option to display your data there is a waiting period of up to one day upon getting the automatic "Submission Complete" e-mail.
 
 
-## Post-submission
+## Post-submission steps
 
-The particular post-submission steps include the following:
+The main post-submission steps include the following ones:
 
-- Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spread sheets, scripts, etc) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional RAW files and accompanying RESULT or SEARCH files, you need to resubmit the whole dataset again. Please follow the procedure here.
+- 1) Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spread sheets, scripts, etc) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional RAW files and accompanying RESULT or SEARCH files, you need to resubmit the whole dataset again. Please follow the procedure here.
 
-- Referencing the dataset in the [paper](./citationpage).
+- 2) Referencing the dataset in the [paper](./citationpage).
 
-### Public Release
+- 3) **Public release of datasets**
 
-- Public Release of a submitted dataset: By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. You can notify us in three different ways:
+By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. It is important for authors to take into account that some journals may also have this public release policy in parallel as well, and it may be possible that the manuscript is not accepted until the dataset in made public to the community. 
+
+You can notify us in three different ways:
 
 - Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can click the green “Publish” buttons located next to your unpublished datasets. Here you can provide details for your dataset and submit a web form.
 
@@ -100,3 +104,6 @@ The particular post-submission steps include the following:
 -  Contacting pride-support@ebi.ac.uk.
 
 Upon making the project public, a project page will be released in PRIDE and available also at ProteomeCentral (http://proteomecentral.proteomexchange.org).
+
+**Exceptions to the public release policy of the datasets**
+Exceptions to this policy may be only be granted in documented special cases, which will be considered in an individual case-by-case basis. If the original submitters have used or are planning to use the same dataset (that should be released) in other ongoing studies, they can request once an extension of the non-released status. This extension will be of a maximum of 6-months. An official request must be done by the data owner to PRIDE, justifying this request appropriately. It should be noted that this 6-month extension does not consider the requirements of the scientific journal where the article has been published, which may mandate that the data is released immediately anyway.
