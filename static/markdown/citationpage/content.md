@@ -22,7 +22,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 Citing Peptidome and PRIDE Cluster resources:
 
-- **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA. [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed
+- **Citing PRIDE Peptidome**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA. [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656.
 
 Citing PRIDE Tools:
 
