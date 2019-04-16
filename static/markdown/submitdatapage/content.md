@@ -1,5 +1,5 @@
 
-## How to submit data to PRIDE as a ProteomeXchange Submission
+## How to submit data to PRIDE and what happens after a dataset has been submitted
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
@@ -93,7 +93,7 @@ The main post-submission steps include the following ones:
 
 - 3) **Public release of datasets**
 
-By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. It is important for authors to take into account that some journals may also have this public release policy in parallel as well, and it may be possible that the manuscript is not accepted until the dataset in made public to the community. 
+By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. It is important for authors to take into account that some journals may also have this public release policy in parallel as well, and it may be possible that the manuscript is not accepted until the dataset in made public to the community.
 
 You can notify us in three different ways:
 
