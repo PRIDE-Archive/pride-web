@@ -9,9 +9,26 @@ The current way of submitting data to PRIDE is using the PX Submission tool [che
 
 Before submitting to PRIDE database the user need to be sure that it has an account with PRIDE resource. This can be checked by [login into PRIDE database](https://www.ebi.ac.uk/pride/archive/login). If you don't have already a PRIDE account, please create one [here](https://www.ebi.ac.uk/pride/archive/register). Currently we don't send out automatic emails upon successful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
 
+## What constitutes a dataset?
+The general rule is that a dataset should correspond to the data described in a single manuscript, if all data in the manuscript comes from the same data workflow (e.g. Data Dependent Acquisition, DDA). If a manuscript contains data coming from different proteomics workflows (DDA and Selected Reaction Monitoring, SRM), it is recommended to split the data in different datasets so this is easier to interpret for third parties. However, it should be highlighted that it is the submitter’s decision how to organise their submitted datasets, which could depend on a number of factors (e.g. future publications).
+
+
+## Complete and Partial submissions
+
+There are two types of submitted datasets to PRIDE (or to any other ProteomeXchange resource):
+
+- **Complete Submissions.** A complete submission ensures that the processed results (at least the identification data) and the corresponding mass spectra can be parsed, integrated and visualised by PRIDE, connecting the identification data to the corresponding mass spectra. To achieve that, processed identification results need to be provided in a PSI open standard format (either mzIdentML or mzTab).
+
+Examples include bottom-up DDA datasets where identification results were generated from any tool that can export the data standard mzIdentML (and the corresponding peak list files, see below).
+
+
+- **Partial Submissions.** In this case processed identification results are provided in other data formats than the ones indicated above for complete submissions. For PRIDE, it is then not possible to parse, integrate and visualise the identification and/or connect the processed results to the corresponding mass spectra. However, all the submitted files are made available to download. This mechanism allows data generated from any software that cannot export yet to the supported formats, or from less-mature/novel proteomics experimental approaches to be deposited in PRIDE.
+
+Examples include bottom-up DDA datasets where identification results were generated from any tool that cannot export the PSI data standards mzIdentML or mzTab, or other datasets coming from approaches where no open standard for the results currently has been implemented (e.g. top-down proteomics).
+
 ## Prepare submission
 
-The first step to prepare your submission for PRIDE is to know which files are **Mandatory**, which are **Recommended**, and the benefits of providing each file type. Each submitted dataset to PRIDE **MUST** contain the following information (following ProteomeXchange guidelines):
+The first step to prepare your submission for PRIDE is to know which files are **Mandatory**, which are **Recommended** and which are **Optional**, and the benefits of providing each file type. Each submitted dataset to PRIDE **MUST** contain the following information (following ProteomeXchange guidelines):
 
 - Mass spectrometer output files (called ‘RAW’) (**Mandatory**): The RAW files are the native machine data files - Thermo .RAW, ABSCIEX .wiff, .scan, Agilent .d, Waters .raw, Bruker .yep, Bruker .baf - [check the full list here](./pridefileformats#search_files). Each RAW file needs to be related with at least one SEARCH file.
 
