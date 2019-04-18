@@ -30,8 +30,7 @@ The jmzReader Library is a collection of Java APIs to parse the most commonly us
 - mzML
 - PRIDE XML
 
-All parsers are optimized to be used in conjunction with mzIdentML (see link in the left panel). Based on a custom build class to efficiently parse text files line by line all parsers can handle arbitrary large files in minimal memory, allowing easy and efficient processing of peak list files using the Java programming language. mzIdentML files do not contain spectra data but refer to external peak list files. All peak list parsers support
-The methods used by mzIdentML to reference external spectra and implement a common interface. Thus, when developing software for mzIdentML programmers no longer have to support multiple peak list file formats but only this one interface.
+All parsers are optimized to be used in conjunction with mzIdentML (see link in the left panel). Based on a custom build class to efficiently parse text files line by line all parsers can handle arbitrary large files in minimal memory, allowing easy and efficient processing of peak list files using the Java programming language. mzIdentML files do not contain spectra data but refer to external peak list files. All peak list parsers support the methods used by mzIdentML to reference external spectra and implement a common interface. Thus, when developing software for mzIdentML programmers no longer have to support multiple peak list file formats but only this one interface.
 
 It should be cited using the following reference:
 
