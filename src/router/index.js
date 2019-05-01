@@ -21,6 +21,8 @@ const Annotation = resolve => require(['@/components/annotation/Annotation'], re
 const Check = resolve => require(['@/components/annotation/Check'], resolve);
 const Sample = resolve => require(['@/components/annotation/Sample'], resolve);
 const Annotate = resolve => require(['@/components/annotation/Annotate'], resolve);
+const Profile = resolve => require(['@/components/ebi/Profile'], resolve);
+
 
 Vue.use(Router)
 
@@ -138,6 +140,12 @@ export default new Router({
       path:'/annotation/:id/annotate',
       name: 'annotate',
       component: Annotate,
+    },
+    {
+      path:'/profile/:id',
+      name: 'profile',
+      component: Profile,
+      
     },
     {
       path:'/404',
