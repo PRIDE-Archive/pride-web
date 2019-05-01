@@ -112,12 +112,35 @@
                       </Dropdown>
                   </li>
                 </ul>
-                <span class="user-action">
-                  <a v-if="!username" @click="showLogin">Log in</a>
-                  <a v-else>{{username}}</a>
-                  <a v-if="username" @click="logout">Log out</a>
-                  <a @click="showSignup">Register</a>
-                </span>
+                <ul class="user-action dropdown menu float-right" data-description="navigational">
+                    <li v-if="!username" class="sub-nav-list">
+                        <Dropdown>
+                            <a href="javascript:void(0)" @click="showLogin">
+                              <span class='sub-nav-title'>Log in</span>
+                            </a>
+                        </Dropdown>
+                    </li>
+                    <li v-else class="sub-nav-list">
+                        <Dropdown @on-click="usernameClick">
+                            <a href="javascript:void(0)">
+                              
+                              <span class='sub-nav-title'>{{username}}</span>
+                              <Icon type="chevron-down"></Icon>
+                            </a>
+                            <DropdownMenu slot="list">
+                                <DropdownItem name="profile">Profile</DropdownItem>
+                                <DropdownItem name="logout">Log out</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
+                    </li>
+                    <li class="sub-nav-list">
+                        <Dropdown>
+                            <a href="javascript:void(0)" @click="showSignup">
+                              <span class='sub-nav-title'>Register</span>
+                            </a>
+                        </Dropdown>
+                    </li>
+                </ul>
               </nav>
               <!-- /local-nav -->
             </div>
@@ -251,7 +274,6 @@
                   ]
                 },
                 tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
-                username:'',
                 formInlineSignUp:{
                   email:'',
                   title:'',
@@ -416,8 +438,8 @@
                               this.loginModalBool=false;
                               sessionStorage.setItem('username',this.formInline.user);
                               sessionStorage.setItem('token',res.bodyText);
-                              this.username = this.formInline.user;
-                              //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                              //this.username = this.formInline.user;
+                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
@@ -476,23 +498,42 @@
               //this.$store.commit('setUser',{username: '', token:''});  
               sessionStorage.setItem('username','');
               sessionStorage.setItem('token','');
-              this.username = '';
-              this.$router.push({name:'annotation'})
+              this.$router.replace({name:'annotation'});
+              this.$store.commit('setUser',{username: '', token:''});    
             },
             init(){
-                this.username = sessionStorage.getItem('username') || '';
-                console.log(this.page);
+                let username = sessionStorage.getItem('username');
+                let token = sessionStorage.getItem('token');
+                if(username && token)
+                  this.$store.commit('setUser',{username: username, token:token});
+
                 this.pageObj = initPage(this.page)
                 this.pageObj.logoURL =  this.$store.state.baseURL +  this.pageObj.logoURL
             },
             openTerms(){
               window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
+            },
+            gotoProfile(){
+              this.$router.push({ name: 'profile', params: {id: this.$store.state.username }});
+            },
+            usernameClick(name){
+              if(name=='profile'){
+                this.gotoProfile();
+              }
+              else if(name=='logout'){
+                this.logout();
+              }
             }
         },
         mounted() {
           this.init();
         },
-
+        computed:{
+          username(){
+            var username = this.$store.state.username || '';
+            return username;
+          },
+        }
     }
 </script>
 <style scoped>
@@ -558,13 +599,15 @@
    #local-nav{
       margin-left: 10px;
    }
-   .user-action{
+   /*.user-action{
       float: right;
       margin-right: 10px;
+      display: flex;
+      margin-bottom: 5px;
     }
     .user-action a{
       margin-left: 10px;
-    }
+    }*/
     .signUpForm div{
       margin-bottom: 5px;
     }
