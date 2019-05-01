@@ -114,8 +114,8 @@
                 </ul>
                 <span class="user-action">
                   <a v-if="!username" @click="showLogin">Log in</a>
-                  <a v-else>{{username}}</a>
-                  <a v-if="username" @click="logout">Log out</a>
+                  <a v-else @click="gotoProfile">{{username}}</a>
+                  <!-- <a v-if="username" @click="logout">Log out</a> -->
                   <a @click="showSignup">Register</a>
                 </span>
               </nav>
@@ -219,7 +219,6 @@
                   ]
                 },
                 tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
-                username:'',
                 formInlineSignUp:{
                   email:'',
                   title:'',
@@ -378,8 +377,7 @@
                               this.loginModalBool=false;
                               sessionStorage.setItem('username',this.formInline.user);
                               sessionStorage.setItem('token',res.bodyText);
-                              this.username = this.formInline.user;
-                              //this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
@@ -402,17 +400,28 @@
               //this.$store.commit('setUser',{username: '', token:''});  
               sessionStorage.setItem('username','');
               sessionStorage.setItem('token','');
-              this.username = '';
+              this.$store.commit('setUser',{username: '', token:''});    
               this.$router.push({name:'annotation'})
             },
             init(){
-                this.username = sessionStorage.getItem('username') || '';
+                let username = sessionStorage.getItem('username');
+                let token = sessionStorage.getItem('token');
+                if(username && token)
+                  this.$store.commit('setUser',{username: username, token:token});
+            },
+            gotoProfile(){
+              this.$router.push({ name: 'profile', params: {id: this.$store.state.username }});
             }
         },
         mounted() {
           this.init();
         },
-
+        computed:{
+          username(){
+            var username = this.$store.state.username || '';
+            return username;
+          },
+        }
     }
 </script>
 <style scoped>

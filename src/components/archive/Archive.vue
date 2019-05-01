@@ -675,7 +675,6 @@
           this.setFilter();
           this.$router.push({name: 'archive', query: this.query});
       },
-
       sortChange(type){
         console.log(type);
         if(type == 'Title')
