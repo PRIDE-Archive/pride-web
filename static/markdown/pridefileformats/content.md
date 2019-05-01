@@ -1,22 +1,22 @@
 ## File formats in PRIDE Archive
 
-Each file included in dataset submission to PRIDE Archive is associated with a category depending of the extension of the file and the content. These categories are used in PRIDE Archive purpose; for example; every submission in PRIDE MUST contains the RAW files from the instruments. At the moment, PRIDE Archive classified the provided files in four different categories:
+Each file included in dataset submission to PRIDE Archive is associated with a category depending of the extension of the file and the content. These categories are used in PRIDE Archive purpose; for example; every submission in PRIDE MUST contains the RAW files from the instruments. At the moment, PRIDE Archive classifies the provided files in different categories:
 
  - "RAW" (**Mandatory**): Original proprietary files provided by the instruments used in the study (e.g. Thermo RAW).
- - "SEARCH" (**Mandatory**): Files from the software analysis tool (e.g. .dat from Mascot).
- - "RESULT" (**Recommended**): Standard file formats from HUPO-PSI to report peptide/protein identification and quantification results (e.g. mzIdentML)
- - "PEAK" (**Recommended**): The peak list files contains the set of MS/MS peaks used for peptide/protein identification (e.g. .mgf Mascot generic file).
- - "FASTA" (**Optional**): The protein database used to perform the analysis (e.g. Uniprot Human FASTA file)
+ - "SEARCH" (**Mandatory for Partial Submissions, Optional for Complete Submissions**): Files from the software analysis tool (e.g. .dat from Mascot).
+ - "RESULT" (**Mandatory for Complete Submissions**): Standard file formats from HUPO-PSI to report peptide/protein identification and quantification results: mzIdentML and mzTab.
+ - "PEAK" (**Mandatory for Complete Submissions, Recommended for Partial Submissions**): The peak list files contains the set of MS/MS peaks used for peptide/protein identification (e.g. mgf Mascot generic files).
+ - "FASTA" (**Optional**): The search protein database used to perform the analysis (e.g. Uniprot Reference Proteome FASTA file)
  - "SPECTRUM_LIBRARY" (**Optional**): Spectrum libraries used to perform spectrum search.
  - "GEL" (**Optional**): Image files with the gels of the experiment.
- - "OTHER" (**Optional**): Additional files that has been used to perform the experiment.
- - "PARAMETERS_FILE" (**Optional**): The parameters file contains information about the parameters that where used to perform the experiment (e.g. MaxQuant param file)
+ - "PARAMETERS_FILE" (**Optional**): The parameters file contains information about the parameters that where used to perform the experiment (e.g. MaxQuant param file).
+ - "OTHER" (**Optional**): Additional files that have been used to perform the experiment.
 
- The following sections explain each Category and the file formats that classified into each category. Please if you have suggestions you can contact pride-support@ebi.ac.uk
+ The following sections explain each category and the file formats that can be included into each category. Please if you have questions and/or suggestions you can contact pride-support@ebi.ac.uk.
 
 ## RAW File Formats
 
-The following table specified some of the recognized RAW files in PRIDE Archive by Instrument Provider:
+The following table specified some of the recognised RAW files in PRIDE Archive per Instrument Provider:
 
 <div class="content">
 
@@ -48,46 +48,46 @@ The following table specified some of the recognized RAW files in PRIDE Archive 
 
 | Software Provider | Extension	| File type                   |
 |---------------------|-----------|-----------------------------|
-| Peptide and Protein Phrophet, X!Tandem, PRIDE Converter	            |.xml*         |	peptide/protein identification in XML   |
-| Peptide and Protein Phrophet	            |.pepxml, .protxml	      | Peptide and Protein identification Files      |
+| Peptide and Protein Prophet, X!Tandem, PRIDE Converter	            |.xml*         |	peptide/protein identification in XML   |
+| Peptide and Protein Prophet	            |.pepxml, .protxml	      | Peptide and Protein identification Files      |
 | Mascot Output	    |.dat       | Mascot Output File            |
 | OMSSA	            |.omx	      | OMSSA Search engine results   |
 | SpectraST         |.xls*	    | QSTAR and QTRAP file format |
-| ProteomeDiscover  |.msf	      | ProteomeDiscover Result files |
+| ProteomeDiscoverer  |.msf	      | ProteomeDiscover Result files |
 | CRUX              |.txt*      | CRUX Search engines results  |
 | Protein Pilot     |.group     | Protein Pilot results        |
 
-> By default *.txt and *.xls would be recognized in the submission tool as Result files. The user should be careful in cases where those files correspond to other categories of files like "OTHER" or "PEAK"
-
-Peak files correspond to MS/MS files that can be use to verified the corresponding Peptide Identification. Here the list of PEAK List file formats supported by all PRIDE tools:
 
 ## PEAK Files
+
+Peak files correspond to MS/MS files that can be used to verify the corresponding peptide identifications. The list of PEAK file formats supported by all PRIDE tools is:
 
 |  Extension	| File type                   | Documentation URL |
 |-------------|-----------------------------|-------------------|
 |  .mgf       | Mascot generic format       | http://www.matrixscience.com/help/data_file_help.html |
 |  .mzML      | PSI mass spectra file format| http://www.psidev.info/index.php?q=node/257 |
-|  .mzXML     | Mass spectra file format from System Biology Institute | http://tools.proteomecenter.org/wiki/index.php?title=Formats:mzXML|
+|  .mzXML     | Mass spectra file format from the Institute for Systems Biology | http://tools.proteomecenter.org/wiki/index.php?title=Formats:mzXML|
 |  .ms2       | Sequest MS/MS peak list     | https://onlinelibrary.wiley.com/doi/pdf/10.1002/rcm.1603 |
 |  .pkl       | Micromass peak list        | http://www.matrixscience.com/help/data_file_help.html#QTOF |
 |  .mzData    | HUPO PSI predecessor of mzML | http://www.psidev.info/mzdata |
 |  .dta       | Sequest MS/MS peak list     | |
 
-> PEAK files are used internally by PRIDE Archive to confirm the Peptide/Protein identifications of RESULT files.
-
 ## RESULT files
 
-Result files are standard file formats developed by HUPO-PSI Consortium to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provides these files are called **COMPLETE** submissions. These files are really important in PRIDE because they are the only result files that PRIDE ecosystem (resources, tools) are able to read/write/transform. For example, for these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](../static/documentation/searchinginpridearchive).
+Result files are standard open file formats developed by HUPO-PSI to exchange proteomics results. Following the ProteomeXchange guidelines the submissions that provide these files are called **COMPLETE** submissions. These files are the only result files that the PRIDE ecosystem (resources, tools) is able to read, write and transform. For example, these submissions are the only ones that are searchable by protein identifiers and peptide sequences in PRIDE Archive [read more here about searching](../static/documentation/searchinginpridearchive).
 
-- mzIdentML (version 1.1 and 1.2 http://www.psidev.info/mzidentml):  mzIdentML is one of the standards developed by the Proteomics Informatics working group of the PSI. The extension of the file .mzid is used by the submission tool to recognize the file format. The mzIdentML only contains the peptide/protein identification information of a proteomics experiment not the Quantitation.
+There are two relevant PSI file formats:
 
-- mzTab (version 1.0 http://www.psidev.info/mztab): mzTab is one of the standards developed by members of the Proteomics Informatics working group of the PSI to represent Quantification data. For PRIDE Archive the mzTab file MUST contains the Protein and PSM tables and is optional the Peptide section. **We recommended this file format to report the Quantification Results**
+- mzIdentML (version 1.1 and 1.2 http://www.psidev.info/mzidentml):  mzIdentML is a data standard developed by the Proteomics Informatics working group of the PSI. The extension of the file .mzid is used by the submission tool to recognize the file format automatically. The mzIdentML only contains the peptide/protein identification information of a proteomics experiment, not the quantitation related information.
+
+- mzTab (version 1.0 http://www.psidev.info/mztab): mzTab is is a data standard also developed by members of the Proteomics Informatics working group of the PSI to represent both identification and quantification data. For PRIDE Archive the mzTab file MUST contain the Protein and PSM tables and the Peptide section is optional. **We recommended this file format to report quantification results**
 
 | Software | Standard File format supported|
 |----------|-------------------------------|
-| Mascot   | mztab v1.0, mzIdentML v1.1 v1.2 |
-| OpenMS   | mztab v1.0, mzIdentML v1.1 v1.2 |
-| PEAKS    | mzIdetML v1.1                    |
+| Mascot   | mzTab v1.0, mzIdentML v1.1 v1.2 |
+| MaxQuant   | mzTab v1.0 |
+| OpenMS   | mzTab v1.0, mzIdentML v1.1 v1.2 |
+| PEAKS    | mzIdentML v1.1                    |
 | MSGF+    | mzIdentML v1.1                   |
 | Byonic (Protein Metrics Inc.)	| mzIdentML v1.1        |
 | Crux	   | mzIdentML v1.1                   |
@@ -107,27 +107,27 @@ Result files are standard file formats developed by HUPO-PSI Consortium to excha
 | PatternLab | mzIdentML v1.1 |
 | DTASelect2MzId	| mzIdentML v1.1 |
 
-> It is important to highlight that mzIdentML/mzTab does not contain the mass spectra, which must be provided in external files referenced from the mzIdentML and the mzTab (like mzML, mzXML or mzData, or peak lists like mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab referencing spectra in the RAW files are not allowed for PRIDE Submissions, only to Peak List files**.
+It is important to highlight that mzIdentML/mzTab files do not contain the mass spectra, which must be provided in external corresponding files referenced from the mzIdentML or mzTab (like mzML, mgf, dta, ms2, apl or pkl). **mzIdentML and mzTab files that reference mass spectra in the RAW files are not currently allowed for PRIDE Complete Submissions. They have to reference Peak List files**.
 
 ## FASTA and SPECTRUM_LIBRARY
 
-Protein and Peptide identification of mass spectra data is mainly performed using Protein sequence in Fasta file format or Spectral library search using Spectral libraries.
+Peptide and protein identification analysis is mainly performed using protein sequence databases or spectral library searches using spectral libraries. The following files are **Recommended**:
 
-- FASTA files are recognised in the following formats: .fasta and .faa
+- 'FASTA' files are automatically recognised if they are in the following formats: .fasta and .faa. The PSI PEFF format can also be provided as searched sequence database, but at present these files need to be tagged as 'FASTA' as well.
 
-- SPECTRUM library format is recognized with the extension: msp
+- 'SPECTRUM_LIBRARY' is automatically recognised if files have the extension: .msp
 
 ## PARAMETER FILES
 
-PARAMETER files are the configuration files used during the data analysis process. These files are optional files that can be provided during the submission step. Some of the files PRIDE Archive recognized:
+PARAMETER files are the configuration files used during the data analysis process. These files are **Optional** files. Some of the files that are automatically recognised by PRIDE are:
 
 |  Extension	| File type                        |
 |-------------|----------------------------------|
 |  .json      | PeptideShaker Configuration file |
 |  .txt       | MaxQuant param file              |
 
-## GEL and OTHERS
+## 'GEL' and 'OTHER' files
 
-Additional files that are not main part of the proteomics analysis can be added as GEL or OTHER files. The Submission Tool recognize every image extension provided during the submission as a GEL image.
+Additional files that can be added as 'GEL' or 'OTHER' files. The Submission Tool recognizes every image extension provided during the submission as a 'GEL' image.
 
-Other file types such as .doc, .pdf, .xls can be added as **OTHER** files and will be provided to the users of PRIDE in the main interface but they will not be read or their information will not be indexed for searching purpose.
+Other file types such as .doc, .pdf, .xls can be added as 'OTHER' files and will be provided.
