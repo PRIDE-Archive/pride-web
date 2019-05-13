@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-  import Nav from '@/components/landingpage/Nav'
+  import Nav from '@/components/ebi/Nav'
   export default {
     name: 'notfound',
     components: {
