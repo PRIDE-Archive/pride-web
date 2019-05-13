@@ -231,7 +231,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/archive/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   export default {
     name: 'check',
