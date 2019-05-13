@@ -31,6 +31,43 @@
                             </div>
                       </div>
                   </div>
+                  <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
+                      <div class="table-row first msrun">{{itemCol.name}}</div>
+                      <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
+                            <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
+                            <!--<div v-if="itemCol.key=='label'">-->
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
+                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
+                                      <DropdownMenu slot="list">
+                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
+                                          </DropdownItem>
+                                          <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
+                                          </DropdownItem>
+                                      </DropdownMenu>
+                                  </Dropdown>
+                            </div>
+                            <div v-else-if="itemCol.key=='msrun'">
+                              <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].file">
+                                  <Tooltip max-width="200" class="show-button-tooltip" placement="right">
+                                      <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
+                                      <div class="tooltip-content" slot="content">
+                                          {{itemRow[itemCol.key].file}}
+                                      </div>
+                                  </Tooltip>
+                                  <Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="16" style="margin-left:5px" @click="itemRow[itemCol.key].file=''"/>
+                              </div>
+                              <div v-else>
+                                    <a class="button search-button" @click="showMsRunTable(itemRow,j)">Edit</a> 
+                              </div>
+                              
+                            </div>
+                            <div v-else>
+                                <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
+                            </div>
+                      </div>
+                  </div>
               </draggable>
               <div class="sample-table-extra add-row-icon">
                  <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon><span>Add Sample</span>
@@ -53,8 +90,7 @@
                       <div class="table-row" v-for="(itemRow,j) in fileData" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key!='accession'">
 
-                                  <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"  >
-                                  </Input>
+                                  <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"></Input>
                             </div>
                             <div v-else >
                                 <div class="accession-col">
@@ -729,7 +765,7 @@
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,item,key){
-                console.log(name,item,key);
+               console.log(name,item,key);
                this.dropdownClick(name,item);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   for(let i=0;i<this.sampleData.length; i++){
