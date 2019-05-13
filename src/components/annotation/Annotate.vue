@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/archive/Nav'
+  import NavBar from '@/components/ebi/Nav'
   import store from "@/store/store.js"
   import selfTable from './table.vue'
   var paramsFromLandingPage='';
