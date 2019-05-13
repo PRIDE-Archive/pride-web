@@ -98,7 +98,7 @@
 </template>
 
 <script>
-  import NavBar from '@/components/archive/Nav'
+  import NavBar from '@/components/ebi/Nav'
   export default {
     name: 'sample',
     data(){
