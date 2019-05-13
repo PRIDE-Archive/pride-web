@@ -246,6 +246,14 @@
             logoURL:'/static/logo/PRIDE_logo.png',
         }
       } 
+      else{
+        item = {
+            pageName:'archive',
+            homePageName:'landingpage',
+            logoWidth:410,
+            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        }
+      }
       return item;
     }
     export default {
