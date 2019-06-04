@@ -11,18 +11,18 @@
           <div class="card-content">
               <draggable class="draggable-class" v-model="sampleCol"  :options="{ handle: '.handle' }">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
-                      <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key)" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
+                      <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'sampledata')" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key],itemCol.key,j)" @on-blur="inputBlur">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur">
                                   </Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data',itemCol,itemRow,'sampledata',j)"></Icon>
                                           </DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemCol,itemRow,'sampledata',j)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
@@ -43,21 +43,21 @@
                       <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
                             <!--<div v-if="itemCol.key=='label'">-->
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data',itemCol,itemRow,'msrundata',j)"></Icon>
                                           </DropdownItem>
                                           <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
+                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemCol,itemRow,'msrundata',j)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
                                   </Dropdown>
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
-                              <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].file">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].file" :icon="itemRow[itemCol.key].file ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
+                              <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].value">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
                                   <!-- <Tooltip max-width="200" class="show-button-tooltip" placement="right">
                                       <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
                                       <div class="tooltip-content" slot="content">
@@ -229,113 +229,10 @@
                   className:'msrun-modal-table-accession'
               },
           ],
-          // msRunModalTableCol:[
-          //     {
-          //         align: 'center',
-          //         width: 40,
-          //         render: (h, params) => {
-          //             return h('Checkbox', {
-          //                 props: {
-          //                     value: params.row.select
-          //                 },
-          //                 on: {
-          //                     'on-change': (val) => {
-          //                         this.msRunModalTableData.map(x => {
-          //                             x.select= false;
-          //                             return x;
-          //                         });
-          //                         this.msRunModalTableData[params.index].select= val;
-          //                         this.selectedFileItem = params;
-          //                     }
-          //                 }
-          //             });
-          //         }
-          //     },
-          //     {
-          //         title: 'Name',
-          //         //width: 70,
-          //         key: 'name',
-                  
-          //     },
-          //     {
-          //         title: 'Size (M)',
-          //         key: 'size',
-          //         //width: 0.1,
-          //        // className:'msrun-modal-table-accession'
-          //     },
-          //     {
-          //         title: 'Accession',
-          //         key: 'accession',
-          //         width: 0.1,
-          //         className:'msrun-modal-table-accession'
-          //     },
-          // ],
           msRunModalTableData:[],
-          sampleCol:[
-            {
-              name:'111',
-              key:'key1',
-              required:false,
-            },
-            {
-              name:'222',
-              key:'key2',
-              required:false,
-            },
-            {
-              name:'333',
-              key:'key3',
-              required:false,
-            }
-          ],
-          fileCol:[],
-          sampleData:[
-              {
-                  key1:{
-                    value:'',
-                    accession:'',
-                    dropdown:false,
-                    icon:'',
-                    cvLabel:'',
-                    col:{},
-                    
-                  },
-                  key2:{
-                    value:'',
-                    accession:'',
-                    dropdown:false,
-                    icon:'',
-                    cvLabel:'',
-                    col:{}
-                  },
-                  key3:{
-                    value:'',
-                    accession:'',
-                    dropdown:false,
-                    icon:'',
-                    cvLabel:'',
-                    col:{}
-                  },
-              },
-          ],
-          fileData:[],
-          dropdownOptions:[
-            {
-              cvLabel:'',
-              accession:'',
-              name:'123',
-            },
-            {
-              cvLabel:'',
-              accession:'',
-              name:'222',
-            },
-            {
-              cvLabel:'',
-              accession:'',
-              name:'333',
-            }
-          ],
+          sampleCol:[],
+          sampleData:[],
+          dropdownOptions:[],
           experimentType:'',
           sampleNumber:0,
           fractionNumber:0,
@@ -389,6 +286,7 @@
           copyContent:'',
           copyValue:'',
           pasteIndex:null,
+          timeoutId:0
       }
     },
     components: {
@@ -405,16 +303,13 @@
                         required:true,
                     },
                 ];
-                this.fileCol=[{
-                  name:'Fraction ID',
-                  key:'fractionid',
-                  required:true,
-                }];
                 this.$http
                       .get(this.getSampleAttributesApi)
                       .then((res)=>{
-                          let sampleDataItem={};
+                          console.log(res.body);
+                          let sampleDataItem={};//temp sampledata item for table rows
                           for(let i=0; i<res.body.length; i++){
+
                               if(res.body[i].first == this.experimentType){
                                   let item = {
                                     experimentType:res.body[i].first,
@@ -425,10 +320,11 @@
                                     orignal_name:res.body[i].third.name,
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
-                              
+                                  //we are creating sample table columns
                                   this.sampleCol.push(item);
                                   this.newData.push(item);
-                                  sampleDataItem.accession={};
+                                  //we are creating sample table rows
+                                  sampleDataItem.accession={};//we will apply for the value for ac
                                   sampleDataItem[item.key]={
                                       value:'',
                                       dropdown:false,
@@ -463,13 +359,34 @@
                           
                       });
           },
-          organismSampleQuery(itemCol,item){
-              let searchValue = item[itemCol.key].value;
+          getMSRunTableData(){
+              this.msRunModalTableData=[];
+              let query={
+                  accession: this.$route.params.id,
+              }
+              this.$http
+                  .get(this.msRunApi,{params: query})
+                  .then(function(res){
+                      for(let i of res.body){
+                          let item = {
+                            accession:i.accession,
+                            name:i.fileName,
+                            size:Math.round(i.fileSizeBytes/1024/1024),
+                            select:false,
+                          }
+                          this.msRunModalTableData.push(item);
+                      }
+                  },function(err){
+
+                  });
+          },
+          organismSampleQuery(itemCol,itemRow){
+              let searchValue = itemRow[itemCol.key].value;
               if(searchValue)
-                  item[itemCol.key].icon = 'close-circled'
+                  itemRow[itemCol.key].icon = 'close-circled'
               else{
-                  item[itemCol.key].icon= '';
-                  item[itemCol.key].dropdown=false;
+                  itemRow[itemCol.key].icon= '';
+                  itemRow[itemCol.key].dropdown=false;
                   return;
               }
               this.dropdownOptions=[];
@@ -478,29 +395,32 @@
                 ontologyAccession: itemCol.cvLabel,
                 keyword:searchValue
               }
-              this.$http
-                  .get(this.getValuesByAttributeApi,{params: query})
-                  .then(function(res){
-                    if(!item[itemCol.key].active)
-                      return;
-                    if(res.body.length>0 || searchValue)
-                      item[itemCol.key].dropdown=true;
+              clearTimeout(this.timeoutId);
+              this.timeoutId = setTimeout( ()=> {
+                   this.$http
+                      .get(this.getValuesByAttributeApi,{params: query})
+                      .then(function(res){
+                        if(!itemRow[itemCol.key].active)
+                          return;
+                        if(res.body.length>0 || searchValue)
+                          itemRow[itemCol.key].dropdown=true;
 
-                    this.dropdownOptions=res.body;
-                    if(this.dropdownOptions.length == 0){
-                        item[itemCol.key].value==searchValue;
-                    }
-                  },function(err){
+                        this.dropdownOptions=res.body;
+                        if(this.dropdownOptions.length == 0){
+                            itemRow[itemCol.key].value==searchValue;
+                        }
+                      },function(err){
 
-                  });
+                      });
+              }, 500);
           },
-          labelQuery(itemCol,item){
-              let searchValue = item[itemCol.key].value;
+          labelQuery(itemCol,itemRow){
+              let searchValue = itemRow[itemCol.key].value;
               if(searchValue)
-                  item[itemCol.key].icon = 'close-circled'
+                  itemRow[itemCol.key].icon = 'close-circled'
               else{
-                  item[itemCol.key].icon= '';
-                  item[itemCol.key].dropdown=false;
+                  itemRow[itemCol.key].icon= '';
+                  itemRow[itemCol.key].dropdown=false;
                   return;
               }
               this.dropdownOptions=[];
@@ -515,64 +435,73 @@
                   let query={
                     keyword:searchValue
                   }
-                  this.$http
-                      .get(this.labelQueryApi,{params: query})
-                      .then(function(res){
-                        if(!item[itemCol.key].active)
-                          return;
-                        if(res.body.length>0 || searchValue)
-                          item[itemCol.key].dropdown=true;
+                  clearTimeout(this.timeoutId);
+                  this.timeoutId = setTimeout( ()=> {
+                      this.$http
+                        .get(this.labelQueryApi,{params: query})
+                        .then(function(res){
+                          if(!itemRow[itemCol.key].active)
+                            return;
+                          if(res.body.length>0 || searchValue)
+                            item[itemCol.key].dropdown=true;
 
-                        this.dropdownOptions=res.body;
-                        if(this.dropdownOptions.length == 0){
-                            item[itemCol.key].value==searchValue;
-                        }
-                      },function(err){
+                          this.dropdownOptions=res.body;
+                          if(this.dropdownOptions.length == 0){
+                              itemRow[itemCol.key].value==searchValue;
+                          }
+                        },function(err){
 
-                      });
+                        });
+                  }, 500);
               }
               else if(itemCol.key=='labelReagent'){
                 let query={
                     keyword: searchValue,
                 }
-                this.$http
-                    .get(this.labelReagentQueryApi,{params: query})
-                    //.get(this.labelQueryApi,{params: query})
-                    .then(function(res){
-                      console.log(res.body)
-                      if(!item[itemCol.key].active)
-                        return;
-                      if(res.body.length>0 || searchValue)
-                        item[itemCol.key].dropdown=true;
+                clearTimeout(this.timeoutId);
+                this.timeoutId = setTimeout( ()=> {
+                    this.$http
+                      .get(this.labelReagentQueryApi,{params: query})
+                      //.get(this.labelQueryApi,{params: query})
+                      .then(function(res){
+                        console.log(res.body)
+                        if(!itemRow[itemCol.key].active)
+                          return;
+                        if(res.body.length>0 || searchValue)
+                          itemRow[itemCol.key].dropdown=true;
 
-                      this.dropdownOptions=res.body;
-                      if(this.dropdownOptions.length == 0){
-                          item[itemCol.key].value==searchValue;
-                      }
-                    },function(err){
+                        this.dropdownOptions=res.body;
+                        if(this.dropdownOptions.length == 0){
+                            itemRow[itemCol.key].value==searchValue;
+                        }
+                      },function(err){
 
-                    });
+                      });
+                }, 500);
               }
               else if(itemCol.key=='msrun'){
                   let query={
                       accession: this.$route.params.id,
                   }
-                  this.$http
-                      .get(this.msRunApi,{params: query})
-                      //.get(this.labelQueryApi,{params: query})
-                      .then(function(res){
-                        if(!item[itemCol.key].active)
-                          return;
-                        if(res.body.length>0 || searchValue)
-                          item[itemCol.key].dropdown=true;
+                  clearTimeout(this.timeoutId);
+                  this.timeoutId = setTimeout( ()=> {
+                      this.$http
+                        .get(this.msRunApi,{params: query})
+                        //.get(this.labelQueryApi,{params: query})
+                        .then(function(res){
+                          if(!itemRow[itemCol.key].active)
+                            return;
+                          if(res.body.length>0 || searchValue)
+                            itemRow[itemCol.key].dropdown=true;
 
-                        this.dropdownOptions=res.body;
-                        if(this.dropdownOptions.length == 0){
-                            item[itemCol.key].value==searchValue;
-                        }
-                      },function(err){
+                          this.dropdownOptions=res.body;
+                          if(this.dropdownOptions.length == 0){
+                              itemRow[itemCol.key].value==searchValue;
+                          }
+                        },function(err){
 
-                      });
+                        });
+                  }, 500);
               }
               this.$forceUpdate();
           },
@@ -585,21 +514,12 @@
             str=str.join(" ");
             return str;
           },
-          focus(item,col,row){
-        
-             
-              item.active=true;
-              if(!item.value)
+          focus(itemCol,itemRow){
+              itemRow[itemCol.key].active=true;
+              if(!itemRow[itemCol.key].value)
                 return;
-              item.dropdown = false;
-              /*
-              this.dropdownOptions = [
-                  {
-                    cvLabel:item.cvLabel,
-                    accession:item.accession,
-                    name:item.value,
-                  },
-              ];*/
+              itemRow[itemCol.key].dropdown = false;
+              this.organismSampleQuery(itemCol,itemRow)
           },
           inputBlur(){
             this.pasteIndex = null;
@@ -680,17 +600,35 @@
                         this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
                       }
                   }
-                else
-                  for(let i=0; i< tempArray.length; i++){
-                      if(this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)]){
-                        this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
-                        this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                else{
+                  if(this.pasteIndex.col != 'msrun')
+                      for(let i=0; i< tempArray.length; i++){
+                          if(this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)]){
+                            this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
+                            this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                          }
+                      }
+                  else{
+                      for(let i=0; i< tempArray.length; i++){
+                          if(this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)]){
+                            let found = false;
+                            for(let j=0; j<this.msRunModalTableData.length; j++){
+                                if(tempArray[i] == this.msRunModalTableData[j].name){
+                                  found = true;
+                                  break;
+                                }
+                            }
+                            if(found){
+                                this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
+                                this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                            }
+                          }
                       }
                   }
+                }
                 this.blur(this.pasteIndex.item);
               },80)
             }
-
           },
           modalVisibleChange(stat){
               if(!stat)
@@ -747,30 +685,6 @@
               //   this.sampleData[i].accession.value = "PXD_S"+(i+1);
               // }
           },
-          disableFileDataRow(itemRow, index){
-              itemRow.disable = true;
-  
-              let foundNum = 0;
-              let foundIndex;
-              for(let i in this.fileData){
-                if(!this.fileData[i].disable && this.fileData[i].accession == itemRow.accession){
-                  foundIndex = i;
-                  foundNum ++;
-                }
-              }
-              if(foundNum==1){
-                this.fileData[foundIndex].hideIcon = true;
-              }
-
-              this.$forceUpdate();
-              //itemRow.disable = true;
-              //this.msRunArray[index].disable = true;
-              //console.log('itemRow',itemRow)
-              console.log(this.fileData)
-              console.log(this.msRunArray)
-              console.log(this.msRunArray)
-              return;
-          },
           dropdownClick(e,item){
             item.dropdown=false;
             if(e == "nodata" && !item.value){
@@ -792,53 +706,47 @@
           newColSelectChange(selection){
               this.newColumnNameSelectedArray=selection;
           },
-          applyAll(name,item,key){
-               console.log(name,item,key);
-               this.dropdownClick(name,item);
+          applyAll(name,itemCol,itemRow,type,index){
+                console.log(index);
+               this.dropdownClick(name,itemRow[itemCol.key]);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
-                  for(let i=0;i<this.sampleData.length; i++){
-                      let newItem =  JSON.parse(JSON.stringify(item));
-                      this.sampleData[i][key] = newItem;
+                  if(type == 'sampledata')
+                    for(let i=index;i<this.sampleData.length; i++){
+                        let newItem =  JSON.parse(JSON.stringify(itemRow[itemCol.key]));
+                        this.sampleData[i][itemCol.key] = newItem;
+                        //console.log(this.sampleData[i][itemCol.key].value,this.sampleData[i+1][itemCol.key].value)
+                        if(i+1<this.sampleData.length && this.sampleData[i+1][itemCol.key].value!='' && this.sampleData[i][itemCol.key].value != this.sampleData[i+1][itemCol.key].value)
+                          break;
+                    }
+                  else if(type == 'msrundata'){
+                    for(let i=index;i<this.msRunArray.length; i++){
+                        let newItem =  JSON.parse(JSON.stringify(itemRow[itemCol.key]));
+                        this.msRunArray[i][itemCol.key] = newItem;
+                    }
                   }
-                  this.blur(item);
+                  this.blur(itemRow[itemCol.key]);
               });
           },
-          applyAllFile(name,item,key){
-              this.dropdownClick(name,item);
-              this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
-                  for(let i=0;i<this.msRunArray.length; i++){
-                      let newItem =  JSON.parse(JSON.stringify(item));
-                      this.msRunArray[i][key] = newItem;
-                  }
-              });
-          },
-          removeAll(key){
-              for(let i=0;i<this.sampleData.length; i++){
-                  this.sampleData[i][key].value = '';
-              }
+          removeAll(key,type){
+              if(type == 'sampledata')
+                for(let i=0;i<this.sampleData.length; i++){
+                    this.sampleData[i][key].value = '';
+                }
+              else if(type == 'msrundata')
+                for(let i=0;i<this.msRunArray.length; i++){
+                    this.msRunArray[i][key].value = '';
+                }
           },
           init(){
             let tempSampleData = JSON.parse(localStorage.getItem("sampleData"));
-            //this.tempFileData = JSON.parse(localStorage.getItem("fileData"));
             this.tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
             if(tempSampleData)
               this.sampleData = tempSampleData;
-            // if(tempFileData)
-            //   this.fileData = tempFileData;
-            // if(tempMSRunArray)
-            //   this.msRunArray = tempMSRunArray;
-
-            //console.log('this.sampleData',this.sampleData);
-            //console.log('this.fileData',this.fileData);
 
             this.experimentType = localStorage.getItem('selectedExperimentType')
             this.sampleNumber  = +localStorage.getItem("samplesNum")
             this.fractionNumber = +localStorage.getItem("fractionsNum")
             this.trNumber = +localStorage.getItem("trNum")
-
-            //console.log('samplesNum',this.sampleNumber);
-            //console.log('fractionsNum',this.fractionNumber);
-            //console.log('selectedExperimentType',this.experimentType);
           },
           confirm(){
               let results = [];
@@ -846,7 +754,6 @@
               let sampleDataCheckPass=true;
               let msRunCheckPass= true;
               console.log('this.sampleData',this.sampleData);
-              console.log('this.fileData',this.fileData)
               console.log('this.msRunArray',this.msRunArray)
               //check for sample data completed
               for(let i=0; i<this.sampleData.length; i++){
@@ -901,28 +808,28 @@
                   console.log('pass');
                   let submitData = [];
                   
-                  for(let i=0; i<this.fileData.length; i++){
+                  for(let i=0; i<this.sampleData.length; i++){
                       let item = {};
                       item.projectAccession = this.$route.params.id;
-                      item.sampleAccession = this.fileData[i].accession;
+                      item.sampleAccession = this.sampleData[i].accession;
                       item.fractionAccession = this.msRunArray[i].fractionid.value;
                       item.msRunAccession = this.msRunArray[i].msrun.accession;
                       item.sampleProperties = [];
-                      for(let j in this.fileData[i]){
+                      for(let j in this.sampleData[i]){
                           let sampleItem = {};
                           if(j == 'accession' || j == 'accessionKey' || j == 'disable')
                             continue;
                           else{
                               sampleItem.key={};
-                              sampleItem.key.accession=this.fileData[i][j].col.accession; 
-                              sampleItem.key.cvLabel=this.fileData[i][j].col.cvLabel;
-                              sampleItem.key.name=this.fileData[i][j].col.name;
-                              sampleItem.key.value=this.fileData[i][j].col.orignal_name;
+                              sampleItem.key.accession=this.sampleData[i][j].col.accession; 
+                              sampleItem.key.cvLabel=this.sampleData[i][j].col.cvLabel;
+                              sampleItem.key.name=this.sampleData[i][j].col.name;
+                              sampleItem.key.value=this.sampleData[i][j].col.orignal_name;
                               sampleItem.value={};
-                              sampleItem.value.accession=this.fileData[i][j].accession;
-                              sampleItem.value.cvLabel=this.fileData[i][j].cvLabel;
-                              sampleItem.value.name=this.fileData[i][j].col.name;
-                              sampleItem.value.value=this.fileData[i][j].value;
+                              sampleItem.value.accession=this.sampleData[i][j].accession;
+                              sampleItem.value.cvLabel=this.sampleData[i][j].cvLabel;
+                              sampleItem.value.name=this.sampleData[i][j].col.name;
+                              sampleItem.value.value=this.sampleData[i][j].value;
                               item.sampleProperties.push(sampleItem);
                           }  
                       }
@@ -942,7 +849,7 @@
                       }
                       item.labelReagent = labelReagent;
 
-                      if(!this.fileData[i].disable)
+                      if(!this.sampleData[i].disable)
                         submitData.push(item);
                   }
                   console.log('submitData',submitData);
@@ -958,15 +865,12 @@
                       })
                       .then(function(res){
                         this.$Message.success({content:'Annotation Success', duration:1});
-                        //localStorage.clear();
-                        //this.$router.push({name:'annotation'});
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
                         }
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
-
               }
               else{
                 this.$Message.error({content:'Fill required content', duration:1});
@@ -978,8 +882,7 @@
               let msRunArrayStr = JSON.stringify(this.msRunArray);
               if(this.sampleData.length>0)
                 this.localStorageItemAdd('sampleData', sampleDataStr);
-              //if(this.fileData.length>0)
-                //this.localStorageItemAdd('fileData', JSON.stringify(this.fileData));
+
               if(this.msRunArray.length>0)
                 this.localStorageItemAdd('msRunArray', msRunArrayStr);
 
@@ -991,11 +894,8 @@
               localStorage.setItem('trNum',this.trNumber);
 
               let sampleDataB64 = Base64.encode(sampleDataStr)
-              
-              //console.log(Base64.decode(sampleDataB64));
           },
           logout(){
-            //this.$store.commit('setUser',{username: '', token:''});  
             sessionStorage.setItem('username','');
             sessionStorage.setItem('token','');
             this.$router.push({name:'annotation'})
@@ -1013,7 +913,7 @@
             }
             for(let i of this.msRunArray){
                 if(i.fractionid.id == this.msRunTableRowID){
-                    i.msrun.file = this.selectedFileItem.row.name;
+                    i.msrun.value = this.selectedFileItem.row.name;
                     i.msrun.accession = this.selectedFileItem.row.accession;
                     break;
                 }
@@ -1023,26 +923,6 @@
           showMsRunTable(itemRow,index){
             this.drawerShowBool=true;
             this.msRunTableRowID = itemRow.fractionid.id;
-            this.msRunModalTableData=[];
-            let query={
-                accession: this.$route.params.id,
-            }
-            this.$http
-                .get(this.msRunApi,{params: query})
-                .then(function(res){
-                    //console.log(res.body);
-                    for(let i of res.body){
-                        let item = {
-                          accession:i.accession,
-                          name:i.fileName,
-                          size:Math.round(i.fileSizeBytes/1024/1024),
-                          select:false,
-                        }
-                        this.msRunModalTableData.push(item);
-                    }
-                },function(err){
-
-                });
           },
           hideMsRunTable(){
             this.drawerShowBool=false;
@@ -1059,62 +939,12 @@
     watch: {
         sampleData:{
           handler(){
-              // this.fileData=[];
-              // let tempFileData = []
-              // for(let k=0; k<this.sampleData.length; k++){
-              //     for(let j=0; j<this.fractionNumber; j++){
-              //         console.log(this.sampleData[k]);
-              //         let item = {};
-              //         for(let m in this.sampleData[k]){
-              //           //console.log(m)
-              //           item[m] = this.sampleData[k][m]
-              //         }
-              //         //let item = JSON.parse(JSON.stringify(this.sampleData[k]));
-              //         let found = false;
-              //         for(let i=0; i<this.msRunArray.length; i++){
-              //           if(this.msRunArray[i].fractionid.id == item.accession + '_F'+(j+1)){
-              //               item.disable = this.msRunArray[i].disable ? true : false;
-              //               found = true;
-              //               break;
-              //           }
-              //         }
-              //         if(!found)
-              //           item.disable = false;
-
-              //         //console.log(item);
-              //         this.fileData.push(item);
-              //     }
-              // }
-              // for(let i in this.fileData){
-              //     let foundNum = 0;
-              //     let foundIndex;
-              //     //let pass = false;
-              //     for(let j in this.fileData){
-              //       if(!this.fileData[j].disable && this.fileData[j].accession == this.fileData[i].accession){
-              //         foundIndex = j;
-              //         foundNum ++;
-              //       }
-              //     }
-              //     if(foundNum==1){
-              //       this.fileData[foundIndex].hideIcon = true;
-              //     }
-              // } 
-              let lastAccesstion='';
-              let lastIndex=1;
-              this.msRunArray=this.sampleData.map((fileItem)=>{
-                  if(lastAccesstion!=fileItem.accession){
-                      lastAccesstion=fileItem.accession;
-                      lastIndex=1;
-                  }
-                  else
-                    lastIndex++;
-
+              this.msRunArray=this.sampleData.map((sampleItem,index)=>{
                   let item={
                         label:{
                               value:'',
                               dropdown:false,
                               accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
                               cvLabel:'null',
                               col:{
                                 required:true
@@ -1126,7 +956,6 @@
                               value:'',
                               dropdown:false,
                               accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
                               cvLabel:'null',
                               col:{
                                 required:true
@@ -1138,126 +967,36 @@
                               value:'',
                               dropdown:false,
                               accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
                               cvLabel:'null',
                               col:{
                                 required:true
                               },
                               icon:'',
                               checked:true,
-                              file:'',
                         },
                         fractionid:{
-                              id:fileItem.accession+'_F'+lastIndex,
-                              value:'F'+lastIndex,
+                              id:sampleItem.accession+'_F'+(index+1),
+                              value:'F'+(index+1),
                               dropdown:false,
                               accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
                               cvLabel:'null',
                               col:{},
                               icon:'',
                               checked:true,
                         },
-                        accessionKey:fileItem.accessionKey,
-                        disable:fileItem.disable
+                        accessionKey:sampleItem.accessionKey,
+                        disable:sampleItem.disable
                   }
                   return item;
               })
-              // if(this.tempMSRunArray){
-              //   for(let i=0; i<this.msRunArray.length; i++){
-              //       this.msRunArray[i].label.value = this.tempMSRunArray[i].label.value;
-              //       this.msRunArray[i].label.icon = this.tempMSRunArray[i].label.icon;
-              //       this.msRunArray[i].labelReagent.value = this.tempMSRunArray[i].labelReagent.value
-              //       this.msRunArray[i].labelReagent.icon = this.tempMSRunArray[i].labelReagent.icon
-              //       this.msRunArray[i].msrun.file = this.tempMSRunArray[i].msrun.file
-              //   }
-              // }
-            
           },
           deep:true
         },
-        fileData:{
-          handler(){
-              let lastAccesstion='';
-              let lastIndex=1;
-              this.msRunArray=this.fileData.map((fileItem)=>{
-                  if(lastAccesstion!=fileItem.accession){
-                      lastAccesstion=fileItem.accession;
-                      lastIndex=1;
-                  }
-                  else
-                    lastIndex++;
-
-                  let item={
-                        label:{
-                              value:'',
-                              dropdown:false,
-                              accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
-                              cvLabel:'null',
-                              col:{
-                                required:true
-                              },
-                              icon:'',
-                              checked:true,
-                        },
-                        labelReagent:{
-                              value:'',
-                              dropdown:false,
-                              accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
-                              cvLabel:'null',
-                              col:{
-                                required:true
-                              },
-                              icon:'',
-                              checked:true,
-                        },
-                        msrun:{
-                              value:'',
-                              dropdown:false,
-                              accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
-                              cvLabel:'null',
-                              col:{
-                                required:true
-                              },
-                              icon:'',
-                              checked:true,
-                              file:'',
-                        },
-                        fractionid:{
-                              id:fileItem.accession+'_F'+lastIndex,
-                              value:'F'+lastIndex,
-                              dropdown:false,
-                              accession:'null',
-                              //accessionKey:this.fileData[i].accessionKey,
-                              cvLabel:'null',
-                              col:{},
-                              icon:'',
-                              checked:true,
-                        },
-                        accessionKey:fileItem.accessionKey,
-                        disable:fileItem.disable
-                  }
-                  return item;
-              })
-              if(this.tempMSRunArray){
-                for(let i=0; i<this.msRunArray.length; i++){
-                    this.msRunArray[i].label.value = this.tempMSRunArray[i].label.value;
-                    this.msRunArray[i].label.icon = this.tempMSRunArray[i].label.icon;
-                    this.msRunArray[i].labelReagent.value = this.tempMSRunArray[i].labelReagent.value
-                    this.msRunArray[i].labelReagent.icon = this.tempMSRunArray[i].labelReagent.icon
-                    this.msRunArray[i].msrun.file = this.tempMSRunArray[i].msrun.file
-                }
-              }
-          },
-          deep:true
-        }
     },
     
     mounted: function(){
       this.getSampleAttributes();
+      this.getMSRunTableData();
       this.init();
     },
     computed:{
@@ -1266,12 +1005,10 @@
     created(){
       this.$bus.$on('annotation-confirm', this.confirm);
       this.$bus.$on('annotation-save', this.save);
-      //window.addEventListener('paste', this.paste, false)
     },
     beforeCreate:function(){
       this.$bus.$off('annotation-confirm');
       this.$bus.$off('annotation-save');
-      //window.removeEventListener('paste', this.paste, false)
     },
     beforeRouteEnter(to,from,next){
      
@@ -1292,11 +1029,13 @@
       min-width: 200px;
       border-right: 1px solid #e9eaec;
   }
+   .table-col:last-child{
+      min-width: 350px;
+  }
   .table-row:first-child{
       min-width: 100px;
       border-top: 1px solid #e9eaec;
       background-color: #f8f8f9;
-  
       align-items: center;
       height:40px; 
       display: flex;
@@ -1307,9 +1046,7 @@
       font-size: 12px;
   }
   .table-row:first-child.msrun{
-      
       background-color: #75bfbecf;
-  
   }
   .table-row{
       border-bottom: 1px solid #e9eaec;
