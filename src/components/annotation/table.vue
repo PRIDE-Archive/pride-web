@@ -1,19 +1,20 @@
 <template>
   <div class="archive-container">
-      <Card class="card">
+      <Card id="sample-card" class="card annotation">
           <p slot="title" class="resource-list-title-container">
             <span>Sample</span>
           </p>
           <p slot="extra" class="sample-table-extra">
             <span class="icon-hint-text">Add Property</span><Icon type="plus-round" @click="showModal" size="20"></Icon>
+            <span class="icon-hint-text">Add Sample</span><Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon>
           </p>
           <div class="card-content">
               <draggable class="draggable-class" v-model="sampleCol"  :options="{ handle: '.handle' }">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
-                      <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key)" size="10"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="10"></Icon></div>
+                      <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key)" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key],itemCol.key,j)" @on-blur="inputBlur">
                                   </Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
@@ -27,8 +28,14 @@
                                   </Dropdown>
                             </div>
                             <div v-else>
-                                <div class="accession-col"><Icon v-if="sampleData.length>1 && j == sampleData.length-1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon><span>{{itemRow.accession}}</span></div>
+                                <div class="accession-col">
+                                    <Icon v-if="sampleData.length>1 && j == sampleData.length-1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>
+                                    <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-blur="inputBlur">
+                                    </Input>
+                                    <!-- <span>{{itemRow.accession}}</span> -->
+                                </div>
                             </div>
+                            <div class="copy-icon"><Icon @click="showCopyModal(itemRow[itemCol.key],itemCol.key,j)" type="ios-copy-outline" size="16"></Icon></div>
                       </div>
                   </div>
                   <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
@@ -36,7 +43,7 @@
                       <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
                             <!--<div v-if="itemCol.key=='label'">-->
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
@@ -50,93 +57,31 @@
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
                               <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].file">
-                                  <Tooltip max-width="200" class="show-button-tooltip" placement="right">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].file" :icon="itemRow[itemCol.key].file ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
+                                  <!-- <Tooltip max-width="200" class="show-button-tooltip" placement="right">
                                       <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
                                       <div class="tooltip-content" slot="content">
                                           {{itemRow[itemCol.key].file}}
                                       </div>
                                   </Tooltip>
-                                  <Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="16" style="margin-left:5px" @click="itemRow[itemCol.key].file=''"/>
+                                  <Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="16" style="margin-left:5px" @click="itemRow[itemCol.key].file=''"/> -->
                               </div>
                               <div v-else>
                                     <a class="button search-button" @click="showMsRunTable(itemRow,j)">Edit</a> 
                               </div>
-                              
                             </div>
                             <div v-else>
-                                <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
+                                <div class="accession-col">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)"  @on-blur="inputBlur"></Input>
+                                  <!-- <span>{{itemRow.fractionid.value}}</span> -->
+                                </div>
                             </div>
+                            <div class="copy-icon"><Icon @click="showCopyModal(itemRow[itemCol.key],itemCol.key,j)" type="ios-copy-outline" size="16"></Icon></div>
                       </div>
                   </div>
               </draggable>
               <div class="sample-table-extra add-row-icon">
-                 <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon><span>Add Sample</span>
-              </div>
-          </div>
-      </Card>
-      <Card class="card">
-          <p slot="title" class="resource-list-title-container">
-            <span>File</span>
-          </p>
-          <!--
-          <p slot="extra" class="sample-table-extra">
-            <span class="icon-hint-text">Add MsRun</span><Icon type="plus-round" disable size="20"></Icon>
-          </p>
-           -->
-          <div class="card-content">
-              <div class="draggable-class">
-                  <div class="table-col" v-for="(itemCol,i) in sampleCol" v-if="itemCol.key!='developmentalstage' && itemCol.key!='sex' && itemCol.key!='individualaccession' " :key="itemCol.key">
-                      <div class="table-row first">{{itemCol.name}}</div>
-                      <div class="table-row" v-for="(itemRow,j) in fileData" :key="j" :class="{hideRow:itemRow.disable}">
-                            <div v-if="itemCol.key!='accession'">
-
-                                  <Input size="small" type="text" disabled v-model="itemRow[itemCol.key].value"></Input>
-                            </div>
-                            <div v-else >
-                                <div class="accession-col">
-                                  <Icon v-if="!itemRow.hideIcon" class="icon-in-row" type="ios-close-outline" @click="disableFileDataRow(itemRow,j)" size="14"></Icon>
-                                  <span>{{itemRow.accession}}</span>
-                                </div>
-                            </div>
-                      </div>
-                  </div>
-                  <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
-                      <div class="table-row first msrun">{{itemCol.name}}</div>
-                      <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
-                            <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
-                            <!--<div v-if="itemCol.key=='label'">-->
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].icon" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemRow[itemCol.key])"></Input>
-                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
-                                      <DropdownMenu slot="list">
-                                          <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile('no data', itemRow[itemCol.key],itemCol.key)"></Icon>
-                                          </DropdownItem>
-                                          <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
-                                              <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAllFile(item.name, itemRow[itemCol.key],itemCol.key)"></Icon>
-                                          </DropdownItem>
-                                      </DropdownMenu>
-                                  </Dropdown>
-                            </div>
-                            <div v-else-if="itemCol.key=='msrun'">
-                              <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].file">
-                                  <Tooltip max-width="200" class="show-button-tooltip" placement="right">
-                                      <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
-                                      <div class="tooltip-content" slot="content">
-                                          {{itemRow[itemCol.key].file}}
-                                      </div>
-                                  </Tooltip>
-                                  <Icon color="rgba(0, 0, 0, 0.6)" type="ios-close"  size="16" style="margin-left:5px" @click="itemRow[itemCol.key].file=''"/>
-                              </div>
-                              <div v-else>
-                                    <a class="button search-button" @click="showMsRunTable(itemRow,j)">Edit</a> 
-                              </div>
-                              
-                            </div>
-                            <div v-else>
-                                <div class="accession-col"><span>{{itemRow.fractionid.value}}</span></div>
-                            </div>
-                      </div>
-                  </div>
+                <!--  <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon><span>Add Sample</span> -->
               </div>
           </div>
       </Card>
@@ -147,6 +92,14 @@
           @on-ok="addCol"
           @on-visible-change="modalVisibleChange">
           <Table border ref="addPropertyTable" class="add-col-table" :columns="newCol" :data="newData" @on-selection-change="newColSelectChange"></Table>
+      </Modal>
+      <Modal
+          title="Copy"
+          v-model="copyModalBool"
+          :closable="false"
+          @on-ok="copy"
+          @on-visible-change="copyModalVisibleChange">
+          <Input id="text-to-copy" v-model="copyValue" type="textarea" placeholder="Enter something..." :rows="8"/>
       </Modal>
       <div v-if="drawerShowBool" class="annotate-drawer-container">
           <!-- <div class="annotate-drawer-wrapper" @wheel.stop="wheel" @wheel.prevent="wheel"> -->
@@ -431,6 +384,11 @@
           accessionKey:0,
           msRunTableRowID:'',
           selectedFileItem:{},
+          copyArray:[],
+          copyModalBool:false,
+          copyContent:'',
+          copyValue:'',
+          pasteIndex:null,
       }
     },
     components: {
@@ -467,9 +425,10 @@
                                     orignal_name:res.body[i].third.name,
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
+                              
                                   this.sampleCol.push(item);
                                   this.newData.push(item);
-                                  sampleDataItem.accession="";
+                                  sampleDataItem.accession={};
                                   sampleDataItem[item.key]={
                                       value:'',
                                       dropdown:false,
@@ -484,15 +443,24 @@
                           }
                           let projectAccession = localStorage.getItem("projectAccession")
                           if(!projectAccession){
-                              for(let k=0; k<this.sampleNumber; k++){
+                              for(let k=0; k<this.sampleNumber * this.fractionNumber; k++){
                                     let item = JSON.parse(JSON.stringify(sampleDataItem))
-                                    item.accession="PXD_S"+(k+1);
-                                    item.accessionKey=this.accessionKey++;
+                                    console.log(item);
+                                    item.accession={
+                                        value:"PXD_S"+(k+1),
+                                        dropdown:false,
+                                        accession:'null',
+                                        accessionKey:this.accessionKey++,
+                                        cvLabel:'null',
+                                        col:item,
+                                        icon:'',
+                                        checked:true,
+                                    }
                                     this.sampleData.push(item)
                               }    
                           }
                       },function(err){
-
+                          
                       });
           },
           organismSampleQuery(itemCol,item){
@@ -617,7 +585,9 @@
             str=str.join(" ");
             return str;
           },
-          focus(item){
+          focus(item,col,row){
+        
+             
               item.active=true;
               if(!item.value)
                 return;
@@ -630,6 +600,9 @@
                     name:item.value,
                   },
               ];*/
+          },
+          inputBlur(){
+            this.pasteIndex = null;
           },
           blur(item){
               item.active=false;
@@ -646,6 +619,13 @@
           showModal(){
             this.newColumnNameSelectedArray=[];
             this.addColumnBool=true;
+          },
+          showCopyModal(item,col,row){
+            this.pasteIndex = {item,row,col};
+            console.log( this.pasteIndex);
+            this.copyValue='';
+            this.copyArray=[];
+            this.copyModalBool=true;
           },
           addCol(){
               let keyArray = [];
@@ -677,9 +657,49 @@
                   }
               }
           },
+          copy(){
+            document.querySelector('#text-to-copy textarea').select();
+            document.execCommand('copy');
+            this.paste();
+          },
+          paste(){
+            if(this.pasteIndex && this.copyValue){
+              setTimeout(()=>{
+                let msrunBool = null;
+                let tempArray = this.copyValue.split('\n');
+                for(let i in this.msRunArray[0]){
+                    if(this.pasteIndex.col == i){
+                      msrunBool = true;
+                      break;
+                    }
+                }
+                if(!msrunBool)
+                  for(let i=0; i< tempArray.length; i++){
+                      if(this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)]){
+                        this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
+                        this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                      }
+                  }
+                else
+                  for(let i=0; i< tempArray.length; i++){
+                      if(this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)]){
+                        this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
+                        this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                      }
+                  }
+                this.blur(this.pasteIndex.item);
+              },80)
+            }
+
+          },
           modalVisibleChange(stat){
               if(!stat)
                 this.$refs.addPropertyTable.selectAll(false);
+          },
+          copyModalVisibleChange(stat){
+              console.log(stat)
+              //if(!stat)
+                //this.$refs.addPropertyTable.selectAll(false);
           },
           addRow(){
             let item={};
@@ -695,9 +715,17 @@
                     checked:true,
                 } 
             }
+            item.accession={
+                value:"PXD_S"+(this.sampleData.length+1),
+                dropdown:false,
+                accession:'null',
+                accessionKey:this.accessionKey++,
+                cvLabel:'null',
+                col:item,
+                icon:'',
+                checked:true,
+            }
             //console.log('this.sampleCol.length+1',this.sampleData.length+1);
-            item.accession = "PXD_S"+(this.sampleData.length+1);
-            item.accessionKey = this.accessionKey++;
             this.sampleData.push(item);
           },
           deleteCol(itemCol, index){
@@ -714,10 +742,10 @@
           },
           deleteRow(itemRow, index){
               this.sampleData.splice(index,1);
-              //update row index
-              for(let i=0; i<this.sampleData.length; i++){
-                this.sampleData[i].accession = "PXD_S"+(i+1);
-              }
+              // //update row index
+              // for(let i=0; i<this.sampleData.length; i++){
+              //   this.sampleData[i].accession.value = "PXD_S"+(i+1);
+              // }
           },
           disableFileDataRow(itemRow, index){
               itemRow.disable = true;
@@ -786,7 +814,6 @@
           },
           removeAll(key){
               for(let i=0;i<this.sampleData.length; i++){
-                console.log('123',this.sampleData[i][key]);
                   this.sampleData[i][key].value = '';
               }
           },
@@ -1027,52 +1054,124 @@
           },
           wheel(e){
             //console.log(e)
-          }
+          },
     },
     watch: {
         sampleData:{
           handler(){
-              this.fileData=[];
-              let tempFileData = []
-              for(let k=0; k<this.sampleData.length; k++){
-                  for(let j=0; j<this.fractionNumber; j++){
-                      console.log(this.sampleData[k]);
-                      let item = {};
-                      for(let m in this.sampleData[k]){
-                        //console.log(m)
-                        item[m] = this.sampleData[k][m]
-                      }
-                      //let item = JSON.parse(JSON.stringify(this.sampleData[k]));
-                      let found = false;
-                      for(let i=0; i<this.msRunArray.length; i++){
-                        if(this.msRunArray[i].fractionid.id == item.accession + '_F'+(j+1)){
-                            item.disable = this.msRunArray[i].disable ? true : false;
-                            found = true;
-                            break;
-                        }
-                      }
-                      if(!found)
-                        item.disable = false;
+              // this.fileData=[];
+              // let tempFileData = []
+              // for(let k=0; k<this.sampleData.length; k++){
+              //     for(let j=0; j<this.fractionNumber; j++){
+              //         console.log(this.sampleData[k]);
+              //         let item = {};
+              //         for(let m in this.sampleData[k]){
+              //           //console.log(m)
+              //           item[m] = this.sampleData[k][m]
+              //         }
+              //         //let item = JSON.parse(JSON.stringify(this.sampleData[k]));
+              //         let found = false;
+              //         for(let i=0; i<this.msRunArray.length; i++){
+              //           if(this.msRunArray[i].fractionid.id == item.accession + '_F'+(j+1)){
+              //               item.disable = this.msRunArray[i].disable ? true : false;
+              //               found = true;
+              //               break;
+              //           }
+              //         }
+              //         if(!found)
+              //           item.disable = false;
 
-                      //console.log(item);
-                      this.fileData.push(item);
+              //         //console.log(item);
+              //         this.fileData.push(item);
+              //     }
+              // }
+              // for(let i in this.fileData){
+              //     let foundNum = 0;
+              //     let foundIndex;
+              //     //let pass = false;
+              //     for(let j in this.fileData){
+              //       if(!this.fileData[j].disable && this.fileData[j].accession == this.fileData[i].accession){
+              //         foundIndex = j;
+              //         foundNum ++;
+              //       }
+              //     }
+              //     if(foundNum==1){
+              //       this.fileData[foundIndex].hideIcon = true;
+              //     }
+              // } 
+              let lastAccesstion='';
+              let lastIndex=1;
+              this.msRunArray=this.sampleData.map((fileItem)=>{
+                  if(lastAccesstion!=fileItem.accession){
+                      lastAccesstion=fileItem.accession;
+                      lastIndex=1;
                   }
-              }
-              for(let i in this.fileData){
-                  let foundNum = 0;
-                  let foundIndex;
-                  //let pass = false;
-                  for(let j in this.fileData){
-                    if(!this.fileData[j].disable && this.fileData[j].accession == this.fileData[i].accession){
-                      foundIndex = j;
-                      foundNum ++;
-                    }
-                  }
-                  if(foundNum==1){
-                    this.fileData[foundIndex].hideIcon = true;
-                  }
-              } 
+                  else
+                    lastIndex++;
 
+                  let item={
+                        label:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                        },
+                        labelReagent:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                        },
+                        msrun:{
+                              value:'',
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{
+                                required:true
+                              },
+                              icon:'',
+                              checked:true,
+                              file:'',
+                        },
+                        fractionid:{
+                              id:fileItem.accession+'_F'+lastIndex,
+                              value:'F'+lastIndex,
+                              dropdown:false,
+                              accession:'null',
+                              //accessionKey:this.fileData[i].accessionKey,
+                              cvLabel:'null',
+                              col:{},
+                              icon:'',
+                              checked:true,
+                        },
+                        accessionKey:fileItem.accessionKey,
+                        disable:fileItem.disable
+                  }
+                  return item;
+              })
+              // if(this.tempMSRunArray){
+              //   for(let i=0; i<this.msRunArray.length; i++){
+              //       this.msRunArray[i].label.value = this.tempMSRunArray[i].label.value;
+              //       this.msRunArray[i].label.icon = this.tempMSRunArray[i].label.icon;
+              //       this.msRunArray[i].labelReagent.value = this.tempMSRunArray[i].labelReagent.value
+              //       this.msRunArray[i].labelReagent.icon = this.tempMSRunArray[i].labelReagent.icon
+              //       this.msRunArray[i].msrun.file = this.tempMSRunArray[i].msrun.file
+              //   }
+              // }
             
           },
           deep:true
@@ -1136,6 +1235,7 @@
                               cvLabel:'null',
                               col:{},
                               icon:'',
+                              checked:true,
                         },
                         accessionKey:fileItem.accessionKey,
                         disable:fileItem.disable
@@ -1166,14 +1266,16 @@
     created(){
       this.$bus.$on('annotation-confirm', this.confirm);
       this.$bus.$on('annotation-save', this.save);
+      //window.addEventListener('paste', this.paste, false)
     },
     beforeCreate:function(){
       this.$bus.$off('annotation-confirm');
       this.$bus.$off('annotation-save');
+      //window.removeEventListener('paste', this.paste, false)
     },
     beforeRouteEnter(to,from,next){
      
-    }
+    },
   }
 </script>
 
@@ -1187,18 +1289,18 @@
   }
   .table-col{
       flex:1;
-      
+      min-width: 200px;
       border-right: 1px solid #e9eaec;
   }
   .table-row:first-child{
+      min-width: 100px;
       border-top: 1px solid #e9eaec;
       background-color: #f8f8f9;
   
       align-items: center;
       height:40px; 
       display: flex;
-      white-space: normal;
-      word-break: break-all;
+      white-space: nowrap;
       overflow: hidden;
       justify-content: center;
       font-weight: 700;
@@ -1211,12 +1313,23 @@
   }
   .table-row{
       border-bottom: 1px solid #e9eaec;
-      padding: 10px;
+      padding: 10px 20px 10px 5px;
       position: relative;
       height:45px;
   }
   .table-row.first{
-    cursor: all-scroll
+    cursor: all-scroll;
+    padding:10px 20px;
+  }
+  .table-row .copy-icon{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    display: none;
+    cursor: pointer;
+  }
+  .table-row:hover .copy-icon{
+    display: block;
   }
   .icon-in-th-right{
     position: absolute;
@@ -1241,6 +1354,8 @@
     text-align: center;
     position: relative;
     min-width: 80px;
+    display: flex;
+    align-items: center;
   }
   .card{
     margin-bottom: 20px;
@@ -1248,7 +1363,8 @@
   .search-button{
       padding: 5px;
       font-size: 12px;
-      width: 100%;
+      width: 95%;
+      margin-left: 11px;
       margin-bottom: 0;
       /*padding: 20px 85px;
       font-size: 24px;*/
@@ -1393,6 +1509,20 @@
     .inputError .ivu-input{
         border: 1px solid red !important;
     }
+    .table-row input{
+        background-color:white;
+        border:none;
+        box-shadow:none;
+    }
+    .table-row:hover input{
+        /*border: 1px solid #5bc0be;*/
+    }
+    .table-row .ivu-input-wrapper .ivu-icon-close-circled{
+      display: none;
+    }
+    .table-row:hover .ivu-input-wrapper .ivu-icon-close-circled{
+      display: inline-block;
+    }
     .msrun-modal-table{
       height:30%;
     }
@@ -1423,5 +1553,7 @@
     .show-button-tooltip .ivu-tooltip-inner{
       max-width:600px;
     }
-    
+    .card.annotation .card-content{
+      overflow-x: auto;
+    }
 </style>
