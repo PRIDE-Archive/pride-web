@@ -39,7 +39,7 @@
                       </div>
                   </div>
                   <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
-                      <div class="table-row first msrun">{{itemCol.name}}</div>
+                      <div class="table-row first msrun"><Icon v-if="itemCol.key!='fractionid'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'msrundata')" size="14"></Icon>{{itemCol.name}}</div>
                       <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
                             <!--<div v-if="itemCol.key=='label'">-->
@@ -321,7 +321,9 @@
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
                                   //we are creating sample table columns
-                                  this.sampleCol.push(item);
+                                  console.log(item);
+                                  if(item.required)
+                                    this.sampleCol.push(item);
                                   this.newData.push(item);
                                   //we are creating sample table rows
                                   sampleDataItem.accession={};//we will apply for the value for ac
@@ -341,7 +343,6 @@
                           if(!projectAccession){
                               for(let k=0; k<this.sampleNumber * this.fractionNumber; k++){
                                     let item = JSON.parse(JSON.stringify(sampleDataItem))
-                                    console.log(item);
                                     item.accession={
                                         value:"PXD_S"+(k+1),
                                         dropdown:false,
@@ -352,7 +353,8 @@
                                         icon:'',
                                         checked:true,
                                     }
-                                    this.sampleData.push(item)
+                                    //if(item.col.required)
+                                      this.sampleData.push(item)
                               }    
                           }
                       },function(err){
@@ -396,10 +398,13 @@
                 keyword:searchValue
               }
               clearTimeout(this.timeoutId);
+              this.timeoutId = 0;
               this.timeoutId = setTimeout( ()=> {
                    this.$http
                       .get(this.getValuesByAttributeApi,{params: query})
                       .then(function(res){
+                        if(this.timeoutId == 0)
+                          return;
                         if(!itemRow[itemCol.key].active)
                           return;
                         if(res.body.length>0 || searchValue)
@@ -436,10 +441,13 @@
                     keyword:searchValue
                   }
                   clearTimeout(this.timeoutId);
+                  this.timeoutId = 0;
                   this.timeoutId = setTimeout( ()=> {
                       this.$http
                         .get(this.labelQueryApi,{params: query})
                         .then(function(res){
+                          if(this.timeoutId == 0)
+                            return;
                           if(!itemRow[itemCol.key].active)
                             return;
                           if(res.body.length>0 || searchValue)
@@ -459,12 +467,14 @@
                     keyword: searchValue,
                 }
                 clearTimeout(this.timeoutId);
+                this.timeoutId = 0;
                 this.timeoutId = setTimeout( ()=> {
                     this.$http
                       .get(this.labelReagentQueryApi,{params: query})
                       //.get(this.labelQueryApi,{params: query})
                       .then(function(res){
-                        console.log(res.body)
+                        if(this.timeoutId == 0)
+                          return;
                         if(!itemRow[itemCol.key].active)
                           return;
                         if(res.body.length>0 || searchValue)
@@ -484,11 +494,14 @@
                       accession: this.$route.params.id,
                   }
                   clearTimeout(this.timeoutId);
+                  this.timeoutId = 0;
                   this.timeoutId = setTimeout( ()=> {
                       this.$http
                         .get(this.msRunApi,{params: query})
                         //.get(this.labelQueryApi,{params: query})
                         .then(function(res){
+                          if(this.timeoutId == 0)
+                            return;
                           if(!itemRow[itemCol.key].active)
                             return;
                           if(res.body.length>0 || searchValue)
@@ -516,6 +529,7 @@
           },
           focus(itemCol,itemRow){
               itemRow[itemCol.key].active=true;
+              console.log('itemRow[itemCol.key].value',itemRow[itemCol.key].value)
               if(!itemRow[itemCol.key].value)
                 return;
               itemRow[itemCol.key].dropdown = false;
@@ -707,21 +721,21 @@
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,itemCol,itemRow,type,index){
-                console.log(index);
+               let tempValue = itemRow[itemCol.key].value;
                this.dropdownClick(name,itemRow[itemCol.key]);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
                   if(type == 'sampledata')
                     for(let i=index;i<this.sampleData.length; i++){
                         let newItem =  JSON.parse(JSON.stringify(itemRow[itemCol.key]));
-                        this.sampleData[i][itemCol.key] = newItem;
-                        //console.log(this.sampleData[i][itemCol.key].value,this.sampleData[i+1][itemCol.key].value)
-                        if(i+1<this.sampleData.length && this.sampleData[i+1][itemCol.key].value!='' && this.sampleData[i][itemCol.key].value != this.sampleData[i+1][itemCol.key].value)
-                          break;
+                        if(tempValue == this.sampleData[i][itemCol.key].value || !this.sampleData[i][itemCol.key].value)
+                          this.sampleData[i][itemCol.key] = newItem;
+                        
                     }
                   else if(type == 'msrundata'){
                     for(let i=index;i<this.msRunArray.length; i++){
                         let newItem =  JSON.parse(JSON.stringify(itemRow[itemCol.key]));
-                        this.msRunArray[i][itemCol.key] = newItem;
+                        if(newItem.value != this.msRunArray[i][itemCol.key].value)
+                          this.msRunArray[i][itemCol.key] = newItem;
                     }
                   }
                   this.blur(itemRow[itemCol.key]);
