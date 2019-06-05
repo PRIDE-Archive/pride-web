@@ -41,6 +41,9 @@
                     </div>
                     <div class="description">123</div>
                 </Card>
+                <div class="profile-button">
+                    <a @click="changePasswordModalBool = true">Change Password</a>
+                </div>
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
                 <div class="name-wrapper">
@@ -319,6 +322,39 @@
                 </div>
             </div>
         </div>
+        <Modal
+            v-model="changePasswordModalBool"
+            title="Change Password"
+            :mask-closable="true"
+            :footer-hide="true"
+            :closable="false"
+            scrollable>
+            <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+              <FormItem prop="user">
+                <Input type="text" v-model="formInline.email" placeholder="Username">
+                <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem prop="password">
+                <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem prop="password">
+                <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem prop="password">
+                <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem>
+                <Button type="primary" @click="changePassword" long>Confirm</Button>
+              </FormItem>
+            </Form>
+        </Modal>
     </div>
 </template>
 <script>
@@ -359,6 +395,7 @@
                   //   icon:'gear-a'
                   // },
                 ],
+                changePasswordModalBool:false,
                 privateLoading:false,
                 publicLoading:false,
                 reviewLoading:false,
@@ -380,6 +417,19 @@
                     species:["Arabidopsis thaliana (mouse-ear cress)","Escherichia coli"],
                     submissionType:'',
                 }],
+                formInline: {
+                  user: '',
+                  password: ''
+                },
+                ruleInline: {
+                  user: [
+                    { required: true, message: 'Please input username', trigger: 'blur' }
+                  ],
+                  password: [
+                    { required: true, message: 'Please input password', trigger: 'blur' },
+                    { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
+                  ]
+                },
                 page:0,
                 pageSize:20,
                 total:0,
@@ -473,6 +523,9 @@
                 console.log("go to details")
                 // this.$router.push({name:'dataset',params:{id:id}});
             },
+            changePassword(){
+                this.changePasswordModalBool = true;
+            }
         },
         mounted:function(){
               this.getPrivateData();
@@ -576,6 +629,24 @@
         text-decoration:none;
         border-bottom: none;
         width: 80px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .profile-button{
+        margin-top: 20px;
+    }
+    .profile-button a{
+        color: #f8f8f8;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 700;
+        background-color: #5bc0be;
+        border-radius: 3px;
+        text-decoration:none;
+        border-bottom: none;
+        width: 140px;
         text-align: center;
         display: flex;
         justify-content: center;
