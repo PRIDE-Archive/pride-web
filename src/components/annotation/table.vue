@@ -14,7 +14,7 @@
                       <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'sampledata')" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])">
                                   </Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
@@ -30,7 +30,7 @@
                             <div v-else>
                                 <div class="accession-col">
                                     <Icon v-if="sampleData.length>1 && j == sampleData.length-1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>
-                                    <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-blur="inputBlur">
+                                    <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])">
                                     </Input>
                                     <!-- <span>{{itemRow.accession}}</span> -->
                                 </div>
@@ -43,7 +43,7 @@
                       <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
                             <!--<div v-if="itemCol.key=='label'">-->
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur"></Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])"></Input>
                                   <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
@@ -57,7 +57,7 @@
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
                               <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].value">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-blur="inputBlur"></Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-blur="inputBlur(itemRow[itemCol.key])"></Input>
                                   <!-- <Tooltip max-width="200" class="show-button-tooltip" placement="right">
                                       <a class="button search-button finish" @click="showMsRunTable(itemRow,j)">Finish</a> 
                                       <div class="tooltip-content" slot="content">
@@ -72,7 +72,7 @@
                             </div>
                             <div v-else>
                                 <div class="accession-col">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)"  @on-blur="inputBlur"></Input>
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)"  @on-blur="inputBlur(itemRow[itemCol.key])"></Input>
                                   <!-- <span>{{itemRow.fractionid.value}}</span> -->
                                 </div>
                             </div>
@@ -451,7 +451,7 @@
                           if(!itemRow[itemCol.key].active)
                             return;
                           if(res.body.length>0 || searchValue)
-                            item[itemCol.key].dropdown=true;
+                            itemRow[itemCol.key].dropdown=true;
 
                           this.dropdownOptions=res.body;
                           if(this.dropdownOptions.length == 0){
@@ -462,7 +462,7 @@
                         });
                   }, 500);
               }
-              else if(itemCol.key=='labelReagent'){
+              else if(itemCol.key=='labelReagent'){ 
                 let query={
                     keyword: searchValue,
                 }
@@ -533,10 +533,14 @@
               if(!itemRow[itemCol.key].value)
                 return;
               itemRow[itemCol.key].dropdown = false;
-              this.organismSampleQuery(itemCol,itemRow)
+              if(itemCol.key == "label" || itemCol.key =="labelReagent")
+                this.labelQuery(itemCol,itemRow);
+              else
+                this.organismSampleQuery(itemCol,itemRow)
           },
-          inputBlur(){
+          inputBlur(item){
             this.pasteIndex = null;
+            this.blur(item)
           },
           blur(item){
               item.active=false;
@@ -612,6 +616,7 @@
                       if(this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)]){
                         this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
                         this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                        this.sampleData[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].checked = true;
                       }
                   }
                 else{
@@ -620,6 +625,7 @@
                           if(this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)]){
                             this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
                             this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                            this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].checked = true;
                           }
                       }
                   else{
@@ -635,6 +641,7 @@
                             if(found){
                                 this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].value= tempArray[i];
                                 this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].icon= 'close-circled';
+                                this.msRunArray[parseInt(this.pasteIndex.row)+parseInt(i)][this.pasteIndex.col].checked = true;
                             }
                           }
                       }
@@ -734,7 +741,7 @@
                   else if(type == 'msrundata'){
                     for(let i=index;i<this.msRunArray.length; i++){
                         let newItem =  JSON.parse(JSON.stringify(itemRow[itemCol.key]));
-                        if(newItem.value != this.msRunArray[i][itemCol.key].value)
+                        if(tempValue == this.msRunArray[i][itemCol.key].value || !this.msRunArray[i][itemCol.key].value)
                           this.msRunArray[i][itemCol.key] = newItem;
                     }
                   }
@@ -817,8 +824,8 @@
               }
               console.log('sampleDataCheckPass',sampleDataCheckPass);
               console.log('msRunCheckPass',msRunCheckPass);
-              //if(sampleDataCheckPass&&msRunCheckPass){
-              if(true){
+              if(sampleDataCheckPass&&msRunCheckPass){
+              //if(true){
                   console.log('pass');
                   let submitData = [];
                   
@@ -878,8 +885,10 @@
                         }
                       })
                       .then(function(res){
+                        console.log('success',res);
                         this.$Message.success({content:'Annotation Success', duration:1});
                       },function(err){
+                        console.log('err',err);
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
                         }
