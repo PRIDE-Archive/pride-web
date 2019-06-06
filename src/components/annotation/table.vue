@@ -547,6 +547,8 @@
               item.dropdown = false;
               if(item.value)
                 item.checked=true;
+              else
+                item.checked=false;
           },
           removeInputContent(item){
               //console.log('removeInputContent',item);
@@ -752,10 +754,14 @@
               if(type == 'sampledata')
                 for(let i=0;i<this.sampleData.length; i++){
                     this.sampleData[i][key].value = '';
+                    if(this.sampleData[i][key].col.required)
+                        this.sampleData[i][key].checked = false;
                 }
               else if(type == 'msrundata')
                 for(let i=0;i<this.msRunArray.length; i++){
                     this.msRunArray[i][key].value = '';
+                    if(this.msRunArray[i][key].col.required)
+                        this.msRunArray[i][key].checked = false;
                 }
           },
           init(){
