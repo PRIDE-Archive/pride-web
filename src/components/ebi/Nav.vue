@@ -281,7 +281,7 @@
                     { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
-                tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken',
+                tokenApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/getAAPToken',
                 formInlineSignUp:{
                   email:'',
                   title:'',
