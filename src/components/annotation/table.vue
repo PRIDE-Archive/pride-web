@@ -128,13 +128,13 @@
     name: 'archive',
     data(){
       return {
-          getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/sampleAttributes',
+          getSampleAttributesApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/sampleAttributes', 
           getValuesByAttributeApi: 'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/valuesByAttribute',
           labelQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/labelingValues',
-          labelReagentQueryApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/annotator/reagentValues',
+          labelReagentQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/reagentValues',
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
-          tokenApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/getAAPToken', 
-          updateSampleApi:'http://ves-ebi-4d.ebi.ac.uk:8090/pride/ws/archive/annotator/'+this.$route.params.id+'/updateSampleMsRuns',
+          tokenApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/getAAPToken', 
+          updateSampleApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/'+this.$route.params.id+'/updateSampleMsRuns',
           visible:true,
           loading1:false,
           addColumnBool:false,
@@ -205,7 +205,11 @@
                                       return x;
                                   });
                                   this.msRunModalTableData[params.index].select= val;
-                                  this.selectedFileItem = params;
+                                  console.log(val);
+                                  if(val)
+                                    this.selectedFileItem = params;
+                                  else
+                                    this.selectedFileItem={};
                               }
                           }
                       });
@@ -766,9 +770,11 @@
           },
           init(){
             let tempSampleData = JSON.parse(localStorage.getItem("sampleData"));
-            this.tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
+            let tempMSRunArray = JSON.parse(localStorage.getItem("msRunArray"));
             if(tempSampleData)
               this.sampleData = tempSampleData;
+            if(tempMSRunArray)
+              this.tempMSRunArray = tempMSRunArray;
 
             this.experimentType = localStorage.getItem('selectedExperimentType')
             this.sampleNumber  = +localStorage.getItem("samplesNum")
@@ -834,13 +840,13 @@
               //if(true){
                   console.log('pass');
                   let submitData = [];
-                  
+                  console.log(this.sampleData)
                   for(let i=0; i<this.sampleData.length; i++){
                       let item = {};
                       item.projectAccession = this.$route.params.id;
-                      item.sampleAccession = this.sampleData[i].accession;
+                      item.sampleAccession = this.sampleData[i].accession.value;
                       item.fractionAccession = this.msRunArray[i].fractionid.value;
-                      item.msRunAccession = this.msRunArray[i].msrun.accession;
+                      item.msRunAccession = this.msRunArray[i].msrun.value;
                       item.sampleProperties = [];
                       for(let j in this.sampleData[i]){
                           let sampleItem = {};
@@ -880,7 +886,7 @@
                         submitData.push(item);
                   }
                   console.log('submitData',submitData);
-
+                  console.log('submitData',JSON.stringify(submitData));
                   let sendData = {};
                   sendData.SampleMSRunTable = {};
                   sendData.SampleMSRunTable.sampleMSRunRows = submitData;
@@ -936,7 +942,7 @@
               localStorage.removeItem(key);
           },
           msRunAnnotate(){
-            if(this.msRunModalTableData.length == 0){
+            if(!this.selectedFileItem.row){
               this.$Message.error({content:'Choose one file at least', duration:1});
               return;
             }
@@ -956,7 +962,7 @@
           hideMsRunTable(){
             this.drawerShowBool=false;
             this.msRunTableRowID = '';
-            this.selectedFileItem={};
+            //this.selectedFileItem={};
           },
           removeAnnotationFile(){
 
