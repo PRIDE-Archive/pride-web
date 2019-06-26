@@ -190,7 +190,7 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Download</p>
+                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
                        <!--
                        <div class="filter-wrapper">
                            <div class="summary-content-header">Filter</div>
