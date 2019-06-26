@@ -297,7 +297,7 @@
                     { required: true, type:'email', message: 'Please input email', trigger: 'blur' }
                   ],
                   title: [
-                    { required: true, message: 'Please input username', trigger: 'blur' }
+                    { required: true, message: 'Please input title', trigger: 'blur' }
                   ],
                   firstname: [
                     { required: true, message: 'Please input firstname', trigger: 'blur' }
@@ -522,7 +522,7 @@
               window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
             },
             gotoProfile(){
-              this.$router.push({ name: 'profile', params: {id: this.$store.state.username }});
+              this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
             },
             usernameClick(name){
               if(name=='profile'){
