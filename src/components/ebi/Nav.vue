@@ -278,7 +278,7 @@
                   ],
                   password: [
                     { required: true, message: 'Please input password', trigger: 'blur' },
-                    { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
+                    // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
                 tokenApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/getAAPToken',
