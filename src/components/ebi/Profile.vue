@@ -42,7 +42,7 @@
                     <div class="description">123</div>
                 </Card>
                 <div class="profile-button">
-                    <a @click="changePasswordModalBool = true">Change Password</a>
+                    <a @click="showPasswordModal">Change Password</a>
                 </div>
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
@@ -330,28 +330,28 @@
             :closable="false"
             scrollable>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
-              <FormItem prop="user">
-                <Input type="text" v-model="formInline.email" placeholder="Username">
+              <FormItem prop="email">
+                <Input type="text" v-model="formInline.email" placeholder="Email">
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
-              <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
+              <FormItem prop="oldPassword">
+                <Input type="password" v-model="formInline.oldPassword" placeholder="Old Password">
                 <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
-              <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
+              <FormItem prop="newPassword">
+                <Input type="password" v-model="formInline.newPassword" placeholder="New Password">
                 <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
-              <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
+              <FormItem prop="confirmedNewPassword">
+                <Input type="password" v-model="formInline.confirmedNewPassword" placeholder="Confirmed New Password" @on-enter="changePassword('formInline')">
                 <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
               <FormItem>
-                <Button type="primary" @click="changePassword" long>Confirm</Button>
+                <Button type="primary" @click="changePassword('formInline')" long>Confirm</Button>
               </FormItem>
             </Form>
         </Modal>
@@ -362,12 +362,84 @@
     import store from "@/store/store.js"
     export default {
         data () {
+            const errorInfo = {
+                email:{
+                    noneEmail:'Can not be empty',
+                    unRegEmail:'Wrong Email Format',
+                },
+                password:{
+                    nonePassword: 'Can not be empty',
+                    invalidConfirmPassword:'Different Password Error'
+                }
+            };
+            const emailCheck = (rule, value, callback) => {
+                var pattern = /^.{1,}$/;
+                console.log('emailCheck')
+                if(!pattern.test(this.formInline.email)){
+                    this.emailState = false;
+                    return callback(new Error(errorInfo.email.noneEmail));
+                }
+                
+                var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+                if(!pattern.test(this.formInline.email)){
+                    this.emailState = false;
+                    return callback(new Error(errorInfo.email.unRegEmail));
+                }
+                this.emailState = true;
+                callback();
+            };
+            const passwordCheck = (rule, value, callback) => {
+                var pattern = /^.{1,}$/;
+                //var pattern = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S{6,16}$/;
+                //var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+                if(!pattern.test(this.formInline.oldPassword)){
+                    this.passwordState = false;
+                    return callback(new Error(errorInfo.password.nonePassword));
+                }
+
+                this.passwordState=true;
+                callback();
+            };
+            const newPasswordCheck = (rule, value, callback) => {
+                var pattern = /^.{1,}$/;
+                //var pattern = /^(?![A-Z]+$)(?![a-z]+$)(?!\d+$)(?![\W_]+$)\S{6,16}$/;
+                //var pattern = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$/;
+                if(!pattern.test(this.formInline.newPassword)){
+                    this.newPasswordState = false;
+                    return callback(new Error(errorInfo.password.nonePassword));
+                }
+
+                else{
+                    if(this.formInline.confirmedNewPassword!=''){
+                        console.log(22222);
+                        this.$refs['formInline'].validateField('confirmedNewPassword');
+                    }
+                
+                    this.newPasswordState=true;
+                    callback();
+                }
+            };
+            const newPasswordRecheck = (rule, value, callback) => {
+                var pattern = /^.{1,}$/;
+                console.log('newPasswordRecheck')
+                if(!pattern.test(this.formInline.confirmedNewPassword)){
+                    this.confirmedNewPasswordState = false;
+                    return callback(new Error(errorInfo.password.nonePassword));
+                }
+                else if(this.formInline.confirmedNewPassword != this.formInline.newPassword){
+                    this.confirmedNewPasswordState = false;
+                    return callback(new Error(errorInfo.password.invalidConfirmPassword));
+                }
+                this.confirmedNewPasswordState = true;
+                callback(); 
+            };
             return {
                 source: '',
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.baseApiURL + '/my-private-submissions',
                 reviewSubmissionURL: this.$store.state.baseApiURL + '/reviewer-submissions',  
+                changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
                 tableList:[
                   {
                     label:'Edit Profile',
@@ -418,18 +490,29 @@
                     submissionType:'',
                 }],
                 formInline: {
-                  user: '',
-                  password: ''
+                  email: '',
+                  oldPassword: '',
+                  newPassword:'',
+                  confirmedNewPassword:''
                 },
                 ruleInline: {
-                  user: [
-                    { required: true, message: 'Please input username', trigger: 'blur' }
+                  email: [
+                    { required: true, validator: emailCheck, trigger: 'on-change' }
                   ],
-                  password: [
-                    { required: true, message: 'Please input password', trigger: 'blur' },
-                    { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
-                  ]
+                  oldPassword: [
+                    { required: true, validator: passwordCheck, trigger: 'on-change' }
+                  ],
+                  newPassword: [
+                    { required: true, validator: newPasswordCheck, trigger: 'on-change' }
+                  ],
+                  confirmedNewPassword: [
+                    { required: true, validator: newPasswordRecheck, trigger: 'on-change' }
+                  ],
                 },
+                newPasswordState:false,
+                confirmedNewPasswordState:false,
+                emailState:false,
+                passwordState:false,
                 page:0,
                 pageSize:20,
                 total:0,
@@ -476,7 +559,7 @@
                             this.privateDataList.push(item);
                         }
                         
-                        console.log(this.privateDataList);
+                        //console.log(this.privateDataList);
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -495,7 +578,7 @@
                       .then(function(res){
                         this.reviewLoading = false;
                         let dataList = res.body;
-                        console.log(res)
+                        //console.log(res)
                         for(let i=0; i<dataList.length; i++){
                             let item = {
                                 accession: dataList[i].accession,
@@ -505,7 +588,7 @@
                             }
                             this.reviewDataList.push(item);
                         }
-                        console.log(this.reviewDataList);
+                        //console.log(this.reviewDataList);
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -514,7 +597,7 @@
                       });
             },
             logout(){
-                //this.$store.commit('setUser',{username: '', token:''});  
+                this.$store.commit('setUser',{username: '', token:''});  
                 sessionStorage.setItem('username','');
                 sessionStorage.setItem('token','');
                 this.$router.push({name:'landingpage'})
@@ -523,14 +606,80 @@
                 console.log("go to details")
                 // this.$router.push({name:'dataset',params:{id:id}});
             },
-            changePassword(){
-                this.changePasswordModalBool = true;
+            changePassword(name){
+                if(this.confirmedNewPasswordState && this.newPasswordState && this.emailState && this.passwordState)  
+                    this.submitChangePassword();
+                else{
+                    this.$refs[name].validate((valid) => {
+                          if (valid) {
+                                this.$Spin.show({
+                                    render: (h) => {
+                                      return h('div', [
+                                        h('Icon', {
+                                          'class': 'demo-spin-icon-load',
+                                          props: {
+                                            type: 'ios-loading',
+                                            size: 18
+                                          }
+                                        }),
+                                        h('div', 'Loading')
+                                      ])
+                                    }
+                                });
+                                this.submitChangePassword();
+                          }
+                          else{
+                            console.log('valid error')
+                          }
+                    })
+                }
+            },
+            submitChangePassword(){
+                let query = {};
+                query.ChangePassword = this.formInline
+                this.$http
+                    .post(this.changePasswordURL,query,{
+                        headers: {
+                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                        }
+                    })
+                    .then(function(res){
+                          this.changePasswordModalBool=false;
+                          this.$Message.success({ content: 'Password Change Success, Please Login again!' })
+                          this.$Spin.hide()
+                          this.$refs['formInline'].resetFields();
+                          this.resetState();
+                          this.logout();
+                    },function(err){
+                      this.$Spin.hide()
+                      this.$Message.error({ content: 'Invalid Username or Password'});
+                    });
+            },
+            showPasswordModal(){
+                this.$refs['formInline'].resetFields();
+                this.resetState();
+                this.changePasswordModalBool=true;
+            },
+            resetState(){
+                this.newPasswordState = false;
+                this.confirmedNewPasswordState = false;
+                this.emailState = false;
+                this.passwordState = false;
             }
         },
         mounted:function(){
               this.getPrivateData();
               this.getReviewerSubmission();
         },
+        beforeRouteEnter(to,from,next){
+            next(vm=>{
+              let username = sessionStorage.getItem('username') || '';
+              if(!username){
+                vm.$Message.error({content:'Please Login', duration:2})
+                vm.$router.push({name:'landingpage'})
+              }
+            });
+        }
     }
 </script>
 <style>
