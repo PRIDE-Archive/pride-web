@@ -22,7 +22,9 @@
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
-                        <a class="button search-button" @click="page">Page</a>
+                    </div>
+                    <div class="annotation-page">
+                      <Page :total="total" :page-size="pageSize" size="small" show-total @on-change="pageChange"></Page>
                     </div>
                     <div class="search-button right">
                         <a class="button search-button" @click="annotationSave">Save</a>
@@ -48,6 +50,8 @@
             title:'',
             keyword:'',
             loading:true,
+            total:0,
+            pageSize:100
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -81,8 +85,9 @@
         else
           this.$router.push({path:'/annotation/'+this.$route.params.id+'/sample'});
       },
-      page(){
-        this.$bus.$emit('annotation-page');
+      pageChange(page){
+        console.log(page)
+        this.$bus.$emit('annotation-page',{page:page,pageSize:this.pageSize});
       },
       annotationConfirm(){
           this.$Modal.confirm({
@@ -105,6 +110,10 @@
             this.$Message.error({content:'Wrong Project Accession', duration:1});
             this.$router.push({path:'/annotation'});
           }
+
+          let sampleNumber = +localStorage.getItem("samplesNum")
+          let fractionNumber = +localStorage.getItem("fractionsNum")
+          this.total = sampleNumber * fractionNumber;
       },
     },
     watch: {
@@ -199,5 +208,12 @@
   }
   .sample-class-table{
     margin-bottom: 20px;
+  }
+  
+</style>
+<style > 
+  .annotation-page a{
+    text-decoration:none !important;
+    border-bottom-style:none !important;
   }
 </style>
