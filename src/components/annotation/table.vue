@@ -9,14 +9,14 @@
             <span class="icon-hint-text">Add Sample</span><Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon>
           </p>
           <div class="card-content">
-              <draggable class="draggable-class" v-model="sampleCol"  :options="{ handle: '.handle' }">
+              <div class="draggable-class">
                   <div class="table-col" v-for="(itemCol,i) in sampleCol" :key="itemCol.key">
                       <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'sampledata')" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
-                      <div class="table-row" v-for="(itemRow,j) in sampleData">
+                      <div class="table-row" v-for="(itemRow,j) in sampleData.slice(rowStart,rowEnd)">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus($event,itemCol,itemRow,'sampledata',j)" @on-blur="inputBlur(itemRow[itemCol.key])">
                                   </Input>
-                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
+                                  <!-- <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data',itemCol,itemRow,'sampledata',j)"></Icon>
@@ -25,7 +25,7 @@
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemCol,itemRow,'sampledata',j)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
-                                  </Dropdown>
+                                  </Dropdown> -->
                             </div>
                             <div v-else>
                                 <div class="accession-col">
@@ -40,11 +40,11 @@
                   </div>
                   <div class="table-col" v-for="(itemCol,i) in msRunCol" :key="itemCol.key">
                       <div class="table-row first msrun"><Icon v-if="itemCol.key!='fractionid'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'msrundata')" size="14"></Icon>{{itemCol.name}}</div>
-                      <div class="table-row" v-for="(itemRow,j) in msRunArray" :key="j" :class="{hideRow:itemRow.disable}">
+                      <div class="table-row" v-for="(itemRow,j) in msRunArray.slice(rowStart,rowEnd)" :key="j" :class="{hideRow:itemRow.disable}">
                             <div v-if="itemCol.key=='label' || itemCol.key=='labelReagent'">
                             <!--<div v-if="itemCol.key=='label'">-->
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])"></Input>
-                                  <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus($event,itemCol,itemRow,'msrundata',j)" @on-blur="inputBlur(itemRow[itemCol.key])"></Input>
+                                  <!-- <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
                                           <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data',itemCol,itemRow,'msrundata',j)"></Icon>
@@ -53,7 +53,7 @@
                                               <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,itemCol,itemRow,'msrundata',j)"></Icon>
                                           </DropdownItem>
                                       </DropdownMenu>
-                                  </Dropdown>
+                                  </Dropdown> -->
                             </div>
                             <div v-else-if="itemCol.key=='msrun'">
                               <div class="msRun-button-wrapper" v-if="itemRow[itemCol.key].value">
@@ -79,11 +79,22 @@
                             <div class="copy-icon"><Icon @click="showCopyModal(itemRow[itemCol.key],itemCol.key,j)" type="ios-copy-outline" size="16"></Icon></div>
                       </div>
                   </div>
-              </draggable>
+              </div>
               <div class="sample-table-extra add-row-icon">
                 <!--  <Icon class="add-row-icon" type="plus-round" @click="addRow" size="20"></Icon><span>Add Sample</span> -->
               </div>
           </div>
+          <Dropdown class="dropdown-remote" :style="{left:dropdown.left + 'px', top:dropdown.top + 'px'}" trigger="custom" :visible="dropdown.visible" placement="bottom-end" @on-click="dropdownClick($event,dropdown.row[dropdown.col.key])">
+              <DropdownMenu slot="list">
+                  <DropdownItem v-if="dropdownOptions.length == 0" name="nodata">No data
+                      <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll('no data',dropdown.col,dropdown.row,dropdown.type,dropdown.index)"></Icon>
+                  </DropdownItem>
+                  <DropdownItem v-for="item in dropdownOptions" :name="item.name" :key="item.name">{{item.name}}
+                      <Icon class="apply-all-button" type="arrow-down-a" size="15" @click.stop="applyAll(item.name,dropdown.col,dropdown.row,dropdown.type,dropdown.index)"></Icon>
+                  </DropdownItem>
+              </DropdownMenu>
+          </Dropdown>
+          <Spin class="table-spin" v-if="tableLoading"></Spin>  
       </Card>
       <Modal
           title="Add Column"
@@ -134,7 +145,7 @@
           labelReagentQueryApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/reagentValues',
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           tokenApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/getAAPToken', 
-          updateSampleApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/'+this.$route.params.id+'/updateSampleMsRuns',
+          updateSampleApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/annotator/'+this.$route.params.id+'/updateSampleMsRuns',
           visible:true,
           loading1:false,
           addColumnBool:false,
@@ -205,7 +216,6 @@
                                       return x;
                                   });
                                   this.msRunModalTableData[params.index].select= val;
-                                  console.log(val);
                                   if(val)
                                     this.selectedFileItem = params;
                                   else
@@ -290,7 +300,19 @@
           copyContent:'',
           copyValue:'',
           pasteIndex:null,
-          timeoutId:0
+          timeoutId:0,
+          dropdown:{
+            left:0,
+            top:0,
+            visible:false,
+            row:null,
+            col:null,
+            index:null,
+            type:null,
+          },
+          rowStart:0,
+          rowEnd:100,
+          tableLoading:true
       }
     },
     components: {
@@ -325,12 +347,11 @@
                                     key: this.titleCase(res.body[i].third.name).toLowerCase().replace(/\s/ig,''),
                                   }
                                   //we are creating sample table columns
-                                  console.log(item);
                                   if(item.required)
                                     this.sampleCol.push(item);
                                   this.newData.push(item);
                                   //we are creating sample table rows
-                                  sampleDataItem.accession={};//we will apply for the value for ac
+                                  //sampleDataItem.accession={};//we will apply for the value for ac
                                   sampleDataItem[item.key]={
                                       value:'',
                                       dropdown:false,
@@ -353,7 +374,7 @@
                                         accession:'null',
                                         accessionKey:this.accessionKey++,
                                         cvLabel:'null',
-                                        col:item,
+                                        col:this.sampleCol[0],
                                         icon:'',
                                         checked:true,
                                     }
@@ -392,7 +413,7 @@
                   itemRow[itemCol.key].icon = 'close-circled'
               else{
                   itemRow[itemCol.key].icon= '';
-                  itemRow[itemCol.key].dropdown=false;
+                  this.dropdown.visible = false;
                   return;
               }
               this.dropdownOptions=[];
@@ -411,8 +432,10 @@
                           return;
                         if(!itemRow[itemCol.key].active)
                           return;
-                        if(res.body.length>0 || searchValue)
-                          itemRow[itemCol.key].dropdown=true;
+                        if(res.body.length>0 || searchValue){
+                          //itemRow[itemCol.key].dropdown=true;
+                          this.dropdown.visible = true
+                        }
 
                         this.dropdownOptions=res.body;
                         if(this.dropdownOptions.length == 0){
@@ -429,7 +452,7 @@
                   itemRow[itemCol.key].icon = 'close-circled'
               else{
                   itemRow[itemCol.key].icon= '';
-                  itemRow[itemCol.key].dropdown=false;
+                  this.dropdown.visible = false;
                   return;
               }
               this.dropdownOptions=[];
@@ -454,8 +477,10 @@
                             return;
                           if(!itemRow[itemCol.key].active)
                             return;
-                          if(res.body.length>0 || searchValue)
-                            itemRow[itemCol.key].dropdown=true;
+                          if(res.body.length>0 || searchValue){
+                            //itemRow[itemCol.key].dropdown=true;
+                            this.dropdown.visible = true
+                          }
 
                           this.dropdownOptions=res.body;
                           if(this.dropdownOptions.length == 0){
@@ -531,12 +556,25 @@
             str=str.join(" ");
             return str;
           },
-          focus(itemCol,itemRow){
+          focus(e,itemCol,itemRow,type,index){
+              let left = e.target.parentNode.parentNode.parentNode.offsetLeft;
+              let top = e.target.parentNode.parentNode.parentNode.offsetTop;
+
               itemRow[itemCol.key].active=true;
-              console.log('itemRow[itemCol.key].value',itemRow[itemCol.key].value)
+
+              this.dropdown.focus = itemCol.key+index
+              this.dropdown.visible = false
+              this.dropdown.index = index
+              this.dropdown.type = type
+              this.dropdown.col = itemCol
+              this.dropdown.row = itemRow
+              this.dropdown.top = top
+              this.dropdown.left =left
+
+              console.log(this.dropdown);
               if(!itemRow[itemCol.key].value)
                 return;
-              itemRow[itemCol.key].dropdown = false;
+              //itemRow[itemCol.key].dropdown = false;
               if(itemCol.key == "label" || itemCol.key =="labelReagent")
                 this.labelQuery(itemCol,itemRow);
               else
@@ -547,16 +585,28 @@
             this.blur(item)
           },
           blur(item){
+              console.log('blurblur',item);
               item.active=false;
-              item.dropdown = false;
-              if(item.value)
-                item.checked=true;
-              else
-                item.checked=false;
+              //item.dropdown = false;
+              if(item.col.required){
+                if(item.value)
+                  item.checked=true;
+                else
+                  item.checked=false;
+              }
+              let lastFocus = this.dropdown.focus;
+              setTimeout(()=>{ 
+                if(lastFocus != this.dropdown.focus)
+                  return;
+                this.dropdown.visible = false
+                this.dropdown.index = null
+                this.dropdown.type = null
+                this.dropdown.col = null
+                this.dropdown.row = null
+              },100);
           },
           removeInputContent(item){
-              //console.log('removeInputContent',item);
-              item.dropdown = false;
+              //item.dropdown = false;
               item.value="";
               item.icon="";
           },
@@ -566,7 +616,6 @@
           },
           showCopyModal(item,col,row){
             this.pasteIndex = {item,row,col};
-            console.log( this.pasteIndex);
             this.copyValue='';
             this.copyArray=[];
             this.copyModalBool=true;
@@ -609,6 +658,7 @@
           paste(){
             if(this.pasteIndex && this.copyValue){
               setTimeout(()=>{
+                this.tableLoading=true;
                 let msrunBool = null;
                 let tempArray = this.copyValue.split('\n');
                 for(let i in this.msRunArray[0]){
@@ -686,7 +736,7 @@
                 accession:'null',
                 accessionKey:this.accessionKey++,
                 cvLabel:'null',
-                col:item,
+                col:this.sampleCol[0],
                 icon:'',
                 checked:true,
             }
@@ -713,6 +763,7 @@
               // }
           },
           dropdownClick(e,item){
+            console.log(123);
             item.dropdown=false;
             if(e == "nodata" && !item.value){
                 item.icon="";
@@ -734,6 +785,7 @@
               this.newColumnNameSelectedArray=selection;
           },
           applyAll(name,itemCol,itemRow,type,index){
+               this.tableLoading=true;
                let tempValue = itemRow[itemCol.key].value;
                this.dropdownClick(name,itemRow[itemCol.key]);
                this.$nextTick(()=>{ //make the value bind with the input first and then apply this value to all the other rows
@@ -755,6 +807,8 @@
               });
           },
           removeAll(key,type){
+              //this.tableLoading=true;
+              //console.log(key,type);
               if(type == 'sampledata')
                 for(let i=0;i<this.sampleData.length; i++){
                     this.sampleData[i][key].value = '';
@@ -774,7 +828,7 @@
             if(tempSampleData)
               this.sampleData = tempSampleData;
             if(tempMSRunArray)
-              this.tempMSRunArray = tempMSRunArray;
+              this.msRunArray = tempMSRunArray;
 
             this.experimentType = localStorage.getItem('selectedExperimentType')
             this.sampleNumber  = +localStorage.getItem("samplesNum")
@@ -840,7 +894,6 @@
               //if(true){
                   console.log('pass');
                   let submitData = [];
-                  console.log(this.sampleData)
                   for(let i=0; i<this.sampleData.length; i++){
                       let item = {};
                       item.projectAccession = this.$route.params.id;
@@ -885,11 +938,10 @@
                       if(!this.sampleData[i].disable)
                         submitData.push(item);
                   }
-                  console.log('submitData',submitData);
-                  console.log('submitData',JSON.stringify(submitData));
                   let sendData = {};
                   sendData.SampleMSRunTable = {};
                   sendData.SampleMSRunTable.sampleMSRunRows = submitData;
+                  console.log('sendData',sendData)
                   this.$http
                       .put(this.updateSampleApi,sendData,{
                         headers: {
@@ -899,6 +951,8 @@
                       .then(function(res){
                         console.log('success',res);
                         this.$Message.success({content:'Annotation Success', duration:1});
+                        localStorage.clear();
+                        this.$router.push({path:'/annotation'});
                       },function(err){
                         console.log('err',err);
                         if(err.body.error == 'TOKEN_EXPIRED'){
@@ -912,7 +966,7 @@
               }
           },
           save(){
-              this.$Message.success({content:'Save Successfully', duration:1});
+
               let sampleDataStr = JSON.stringify(this.sampleData);
               let msRunArrayStr = JSON.stringify(this.msRunArray);
               if(this.sampleData.length>0)
@@ -928,7 +982,8 @@
               localStorage.setItem('fractionsNum',this.fractionNumber);
               localStorage.setItem('trNum',this.trNumber);
 
-              let sampleDataB64 = Base64.encode(sampleDataStr)
+              this.$Message.success({content:'Save Successfully', duration:1});
+              //let sampleDataB64 = Base64.encode(sampleDataStr)  TODO for backend.
           },
           logout(){
             sessionStorage.setItem('username','');
@@ -970,10 +1025,19 @@
           wheel(e){
             //console.log(e)
           },
+          page(){
+            this.rowStart += 100;
+            this.rowEnd += 100;
+          }
     },
     watch: {
         sampleData:{
           handler(){
+            if(this.sampleData.length>0)
+              setTimeout(()=>{
+                this.tableLoading=false;
+              },50)
+            if(!JSON.parse(localStorage.getItem("msRunArray")))
               this.msRunArray=this.sampleData.map((sampleItem,index)=>{
                   let item={
                         label:{
@@ -1024,6 +1088,8 @@
                   }
                   return item;
               })
+            else
+              return;
           },
           deep:true
         },
@@ -1040,10 +1106,12 @@
     created(){
       this.$bus.$on('annotation-confirm', this.confirm);
       this.$bus.$on('annotation-save', this.save);
+      this.$bus.$on('annotation-page', this.page);
     },
     beforeCreate:function(){
       this.$bus.$off('annotation-confirm');
       this.$bus.$off('annotation-save');
+      this.$bus.$off('annotation-page');
     },
     beforeRouteEnter(to,from,next){
      
@@ -1245,6 +1313,18 @@
   .hideRow{
     display: none;
   }
+  .table-spin{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f78f;
+  }
 </style>
 
 <style>
@@ -1257,6 +1337,9 @@
     /*.add-col-table tbody th, table tbody td, table thead th, table thead td, table tfoot th, table tfoot td{
         padding: 0 !important;
     }*/
+    .dropdown-remote{
+      position: absolute;
+    }
     .dropdown-remote .ivu-select-dropdown{
         top: 30px !important;
         left: 0 !important;
@@ -1327,5 +1410,6 @@
     }
     .card.annotation .card-content{
       overflow-x: auto;
+      /*position: relative;*/
     }
 </style>
