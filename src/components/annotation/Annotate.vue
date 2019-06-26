@@ -22,6 +22,7 @@
                 <div class="button-wrapper">
                     <div class="search-button">
                         <a class="button search-button" @click="back">Back</a>
+                        <a class="button search-button" @click="page">Page</a>
                     </div>
                     <div class="search-button right">
                         <a class="button search-button" @click="annotationSave">Save</a>
@@ -79,6 +80,9 @@
         }
         else
           this.$router.push({path:'/annotation/'+this.$route.params.id+'/sample'});
+      },
+      page(){
+        this.$bus.$emit('annotation-page');
       },
       annotationConfirm(){
           this.$Modal.confirm({
