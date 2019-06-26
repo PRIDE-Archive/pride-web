@@ -223,9 +223,9 @@
                             </Panel>
                         </Collapse>
                     </Card>
-                    <div class="page-container">
+                    <!-- <div class="page-container">
                       <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div v-if="activeName == 'reviewer_submission'" class="content-wrapper">
@@ -331,7 +331,7 @@
             scrollable>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
               <FormItem prop="email">
-                <Input type="text" v-model="formInline.email" placeholder="Email">
+                <Input type="text" v-model="formInline.email" placeholder="Email" disabled>
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
@@ -496,9 +496,9 @@
                   confirmedNewPassword:''
                 },
                 ruleInline: {
-                  email: [
-                    { required: true, validator: emailCheck, trigger: 'on-change' }
-                  ],
+                  // email: [
+                  //   { required: true, validator: emailCheck, trigger: 'on-change' }
+                  // ],
                   oldPassword: [
                     { required: true, validator: passwordCheck, trigger: 'on-change' }
                   ],
@@ -511,7 +511,7 @@
                 },
                 newPasswordState:false,
                 confirmedNewPasswordState:false,
-                emailState:false,
+                emailState:true,//we have the default email
                 passwordState:false,
                 page:0,
                 pageSize:20,
@@ -657,13 +657,14 @@
             },
             showPasswordModal(){
                 this.$refs['formInline'].resetFields();
+                this.formInline.email = sessionStorage.getItem('username') || '';
                 this.resetState();
                 this.changePasswordModalBool=true;
             },
             resetState(){
                 this.newPasswordState = false;
                 this.confirmedNewPasswordState = false;
-                this.emailState = false;
+                this.emailState = true;
                 this.passwordState = false;
             }
         },
