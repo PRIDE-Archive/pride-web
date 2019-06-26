@@ -1025,9 +1025,11 @@
           wheel(e){
             //console.log(e)
           },
-          page(){
-            this.rowStart += 100;
-            this.rowEnd += 100;
+          pageChange(data){
+            this.rowStart = (data.page-1)*data.pageSize;
+            this.rowEnd = data.page*data.pageSize;
+
+            console.log(this.rowStart,this.rowEnd);
           }
     },
     watch: {
@@ -1106,7 +1108,7 @@
     created(){
       this.$bus.$on('annotation-confirm', this.confirm);
       this.$bus.$on('annotation-save', this.save);
-      this.$bus.$on('annotation-page', this.page);
+      this.$bus.$on('annotation-page', this.pageChange);
     },
     beforeCreate:function(){
       this.$bus.$off('annotation-confirm');
