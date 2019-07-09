@@ -212,6 +212,28 @@
                          </div>
                        </div>
                     </Card>
+                    <Card class="card">
+                       <p slot="title"> <i class="fas fa-download icon-tag"></i>MSRun Files</p>
+                       <!--
+                       <div class="filter-wrapper">
+                           <div class="summary-content-header">Filter</div>
+                           <Select v-model="model1" size="small" style="width:100px">
+                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                           </Select>
+                       </div>
+                        -->
+                       <div class="download-list-wrapper">
+                         <!--<div class="summary-content-header">List</div>-->
+                         <div class="download-list">
+                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="msRunModalTableCol" :data="msRunModalTableData"></Table>
+                           <!--
+                           <div class="page-container">
+                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
+                           </div>
+                           -->
+                         </div>
+                       </div>
+                    </Card>
                     <!--
                     <Card v-if="total>0" class="card">
                         <p slot="title">Assay</p>
@@ -419,6 +441,7 @@
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
+          msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           contactors:[],
           similarProjects:[],
@@ -750,6 +773,26 @@
           pageSizeDownLoad:100,
           totalDownLoad:0,
           selectAllfiles:false,
+          msRunModalTableCol:[
+              {
+                  title: 'Accession',
+                  key: 'accession',
+                  align: 'center',
+              },
+              {
+                  title: 'Name',
+                  key: 'name',
+                  align: 'center',
+              },
+              {
+                  title: 'Size (M)',
+                  key: 'size',
+                  width: 70,
+                  align: 'center',
+              }
+          ],
+          msRunModalTableData:[],
+          msRunTableLoading:false,
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -820,6 +863,30 @@
             },function(err){
                 this.$router.replace({name:'404'});
             });
+      },
+      getMSRunTableData(){
+          this.msRunTableLoading = true;
+          this.msRunModalTableData=[];
+          let query={
+              accession: this.$route.params.id,
+          }
+          this.$http
+              .get(this.msRunApi,{params: query})
+              .then(function(res){
+                  this.msRunTableLoading = false;
+                  for(let i of res.body){
+                      let item = {
+                        accession:i.accession,
+                        name:i.fileName,
+                        size:Math.round(i.fileSizeBytes/1024/1024),
+                        //select:false,
+                      }
+                      this.msRunModalTableData.push(item);
+                  }
+                  console.log(this.msRunModalTableData);
+              },function(err){
+                  this.msRunTableLoading = false;
+              });
       },
       queryArchiveProjectFiles(id){
            var id = id || this.$route.params.id;
@@ -944,6 +1011,7 @@
         //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
+        this.getMSRunTableData();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
