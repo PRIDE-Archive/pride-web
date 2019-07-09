@@ -661,6 +661,14 @@
                 this.tableLoading=true;
                 let msrunBool = null;
                 let tempArray = this.copyValue.split('\n');
+                console.log(this.sampleNumber * this.fractionNumber)
+                console.log(this.pasteIndex.row)
+                console.log(tempArray.length)
+                if((this.sampleNumber * this.fractionNumber - this.pasteIndex.row) < tempArray.length){
+                  this.tableLoading=false;
+                  this.$Message.error({content:'Not enough rows to paste, please check', duration:2});
+                  return
+                }
                 for(let i in this.msRunArray[0]){
                     if(this.pasteIndex.col == i){
                       msrunBool = true;
