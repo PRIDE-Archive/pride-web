@@ -13,7 +13,7 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>
-                  <a class="tag-button" @click="gotoMoleculo">Moleculo</a>
+                  <a class="tag-button" @click="gotoMolecules">Molecules</a>
                   <!--<div class="tags">
                     
                       <span class="type-tag-wrapper">
@@ -1008,8 +1008,8 @@
       gotoDetails(id){
           this.$router.push({name:'dataset',params:{id:id}});
       },
-      gotoMoleculo(){
-          this.$router.push({name:'moleculo',params:{id:this.$route.params.id}});
+      gotoMolecules(){
+          this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
       }
     },
     mounted: function(){
@@ -1167,7 +1167,7 @@
       color: white;
       padding: 8px 10px;
       font-size: 12px;
-      width: 70px;
+      width: 80px;
       text-align: center;
       font-weight: 700;
       background-color: #5bc0be;

@@ -51,6 +51,9 @@
          <div class="download-list">
            <Table class="peptide-table" :loading="loading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
          </div>
+         <div class="page-container">
+            <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+          </div>
        </div>
       </Card>    
     </div>
@@ -226,6 +229,9 @@
               }
           ],
           proteinTableResults:[],
+          page:0,
+          pageSize:20,
+          total:2000,
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           proteinEvidencesApi:'https://wwwdev.ebi.ac.uk/pride/ws/archive/proteinevidences'
       }
@@ -340,7 +346,15 @@
               },function(err){
 
               });
-      }
+      },
+      pageChange(page){
+          this.page = page-1;
+          //this.$router.push({name: 'peptidesearch', query: this.query});
+      },
+      pageSizeChange(size){
+          this.pageSize = size;
+          //this.$router.push({name: 'peptidesearch', query: this.query});
+      },
     },
     watch: {
         selectedItem1:{
@@ -442,7 +456,10 @@
     /*border-bottom: 1px solid #e7e7e7;*/
     margin-bottom: 10px;
   }
-  
+  .page-container{
+    text-align: center;
+    margin-top: 20px;
+  }
 </style>
 <style>
   .card .ivu-card-body table{
