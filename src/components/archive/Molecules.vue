@@ -33,9 +33,9 @@
          <div class="download-list">
            <Table class="peptide-table" :loading="loading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
          </div>
-         <div class="page-container">
-            <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-          </div>
+       </div>
+       <div class="page-container">
+          <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
        </div>
       </Card>    
     </div>
@@ -488,6 +488,7 @@
   }
   .card.protein .download-list-wrapper{
      overflow-x: auto;
+     max-height: 600px;
   }
 </style>
 
