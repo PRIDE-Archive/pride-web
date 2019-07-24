@@ -31,7 +31,7 @@
        <div class="download-list-wrapper">
          <!--<div class="summary-content-header">List</div>-->
          <div class="download-list">
-           <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
+           <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table>
          </div>
        </div>
        <div class="page-container">
