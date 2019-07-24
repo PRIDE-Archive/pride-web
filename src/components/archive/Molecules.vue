@@ -31,7 +31,7 @@
        <div class="download-list-wrapper">
          <!--<div class="summary-content-header">List</div>-->
          <div class="download-list">
-           <Table class="peptide-table" :loading="loading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
+           <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
          </div>
        </div>
        <div class="page-container">
@@ -144,6 +144,7 @@
           tableData2:[],
           data2:[],
           selectedItem2:[],
+          proteinTableLoading: false,
           proteinTableColumn: [
 
               {
@@ -292,6 +293,7 @@
       },
       getProteinEvidences(){
           this.tableData2=[];
+          this.proteinTableLoading = true;
           let query={
               // accession: this.$route.params.id,
                   projectAccession:'PXD009796',
@@ -303,6 +305,7 @@
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
                 console.log(res.body);
+                this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   for(let i=0; i < proteinEvidences.length; i++){
@@ -334,7 +337,7 @@
                   // this.data2 = this.tableData2
                   // console.log(this.tableData2);
               },function(err){
-
+                  this.proteinTableLoading = false;
               });
       },
       pageChange(page){
