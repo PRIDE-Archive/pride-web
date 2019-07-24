@@ -22,7 +22,7 @@ const Check = resolve => require(['@/components/annotation/Check'], resolve);
 const Sample = resolve => require(['@/components/annotation/Sample'], resolve);
 const Annotate = resolve => require(['@/components/annotation/Annotate'], resolve);
 const Profile = resolve => require(['@/components/ebi/Profile'], resolve);
-const Moleculo = resolve => require(['@/components/archive/Moleculo'], resolve);
+const Molecules = resolve => require(['@/components/archive/Molecules'], resolve);
 
 Vue.use(Router)
 
@@ -75,9 +75,9 @@ export default new Router({
       component: Dataset
     },
     {
-      path:'/dataset/:id/moleculo',
-      name: 'moleculo',
-      component: Moleculo
+      path:'/dataset/:id/Molecules',
+      name: 'molecules',
+      component: Molecules
     },
     {
       path: '/peptidome',

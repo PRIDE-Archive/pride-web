@@ -1,5 +1,6 @@
 <template>
   <div class="moleculo-container">
+    <div class="panel nav"><NavBar page="archive"/></div>
     <div class="content">
       <Card class="card">
        <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
@@ -35,6 +36,23 @@
          </div>
        </div>
       </Card>
+      <Card class="card">
+       <p slot="title"> <i class="fas fa-download icon-tag"></i>Protein Table</p>
+       <!--
+       <div class="filter-wrapper">
+           <div class="summary-content-header">Filter</div>
+           <Select v-model="model1" size="small" style="width:100px">
+              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+           </Select>
+       </div>
+        -->
+       <div class="download-list-wrapper">
+         <!--<div class="summary-content-header">List</div>-->
+         <div class="download-list">
+           <Table class="peptide-table" :loading="loading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
+         </div>
+       </div>
+      </Card>    
     </div>
   </div>
 </template>
@@ -137,10 +155,79 @@
                   className:'msrun-modal-table-accession'
               },
           ],
+
           tableData2:[],
           data2:[],
           selectedItem2:[],
+          proteinTableColumn: [
+
+              {
+                  title: 'ProjectAccession ',
+                  key: 'projectAccession', 
+                  // sortable: true,
+                  //minWidth: 150,
+                  //ellipsis:true
+              },
+              {
+                  title: 'AssayAccession',
+                  key: 'assayAccession',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'ProteinGroupMembers',
+                  key: 'proteingroupmembers',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'BestSearchEngineScore',
+                  key: 'bestsearchenginescore',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'QualityMethod',
+                  key: 'qualitymethod',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'PTMs',
+                  key: 'ptms',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'Decoy',
+                  key: 'decoy',
+                  // sortable: true,
+                  // minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'Valid',
+                  key: 'valid',
+                  // width:1,
+                  //maxWidth:0,
+                  //className:'peptideID'
+              },
+              {
+                  title: 'AdditionalAttributes',
+                  key: 'additionalattributes',
+                  // width:1,
+                  //maxWidth:0,
+                  //className:'peptideID'
+              }
+          ],
+          proteinTableResults:[],
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
+          proteinEvidencesApi:'https://wwwdev.ebi.ac.uk/pride/ws/archive/proteinevidences'
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -208,6 +295,52 @@
 
               });
       },
+      getProteinEvidences(){
+          this.tableData2=[];
+          let query={
+              // accession: this.$route.params.id,
+                  projectAccession:'PXD009796',
+                  pageSize:100,
+                  sortDirection:'DESC',
+                  sortConditions:'projectAccession'
+          }
+          this.$http
+              .get(this.proteinEvidencesApi,{params: query})
+              .then(function(res){
+                console.log(res.body);
+                if(res.body && res.body._embedded){
+                  let proteinEvidences = res.body._embedded.proteinevidences;
+                  for(let i=0; i < proteinEvidences.length; i++){
+                      var item = {
+                        projectAccession: proteinEvidences[i].projectAccession,
+                        assayAccession: proteinEvidences[i].assayAccession,
+                        proteingroupmembers: proteinEvidences[i].proteinGroupMembers[0] || '',
+                        bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.name || '',
+                        qualitymethod: proteinEvidences[i].qualityMethods[0].name || '',
+                        ptms: proteinEvidences[i].ptms[0] || '',
+                        decoy: proteinEvidences[i].decoy,
+                        valid: proteinEvidences[i].valid,
+                        additionalattributes:proteinEvidences[i].additionalAttributes[0].name || '',
+                      }
+                      this.proteinTableResults.push(item);
+                  }
+                }
+                
+                  // for(let i of res.body){
+                  //     let item = {
+                  //       accession:i.accession,
+                  //       name:i.fileName,
+                  //       size:Math.round(i.fileSizeBytes/1024/1024),
+                  //       select:false,
+                  //     }
+                  //     this.tableData2.push(item);
+                  // }
+                  // this.data2 = this.tableData2
+                  // console.log(this.tableData2);
+              },function(err){
+
+              });
+      }
     },
     watch: {
         selectedItem1:{
@@ -228,6 +361,7 @@
     mounted: function(){
         this.getMSRunTableData1();
         this.getMSRunTableData2();
+        this.getProteinEvidences();
     },
     
   }
