@@ -11,17 +11,20 @@
                     <BreadcrumbItem>PXD006887</BreadcrumbItem>
                 </Breadcrumb>
                 -->
-               <h2 class="project-title">Project {{accession}}</h2>
-                <div class="tags">
-                  <!--
-                    <span class="type-tag-wrapper">
-                      <Icon class="type-tag" type="ios-pricetag-outline"></Icon>
-                      <a>Biological Dataset</a>
-                    </span>
-                    <span>
-                      <Icon class="download-tag" type="ios-download-outline"></Icon><a>Download</a>
-                    </span>
-                  -->
+                <div class="title-wrapper">
+                  <h2 class="project-title">Project {{accession}}</h2>
+                  <a class="tag-button" @click="gotoMoleculo">Moleculo</a>
+                  <!--<div class="tags">
+                    
+                      <span class="type-tag-wrapper">
+                        <Icon class="type-tag" type="ios-pricetag-outline"></Icon>
+                        <a>Biological Dataset</a>
+                      </span>
+                      <span>
+                        <Icon class="download-tag" type="ios-download-outline"></Icon><a>Download</a>
+                      </span>
+                   
+                  </div> -->
                 </div>
             </Col>
           </Row>
@@ -1005,6 +1008,9 @@
       gotoDetails(id){
           this.$router.push({name:'dataset',params:{id:id}});
       },
+      gotoMoleculo(){
+          this.$router.push({name:'moleculo',params:{id:this.$route.params.id}});
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1046,7 +1052,6 @@
     margin-top: 30px;
   }
   .project-title{
-      margin: 20px 0;
       color:rgb(100, 102, 100);
   }
   .tags{
@@ -1152,6 +1157,27 @@
     text-align: center;
     margin-top: 20px;
   }
+  .title-wrapper{
+    display: flex;
+    margin: 20px 0; 
+    align-items: center;
+    justify-content: space-between;
+  }
+  .tag-button{
+      color: white;
+      padding: 8px 10px;
+      font-size: 12px;
+      width: 70px;
+      text-align: center;
+      font-weight: 700;
+      background-color: #5bc0be;
+      border-radius: 3px;
+  }
+  .tag-button:hover{
+    opacity: 0.8 !important;
+    color: white;
+  }
+  
   /*
   @media (min-width: 768px) {
       .content{

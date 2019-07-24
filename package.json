@@ -11,6 +11,7 @@
     "server": "node src/lib/server.js"
   },
   "dependencies": {
+    "apexcharts": "^3.8.2",
     "body-parser": "^1.18.2",
     "compression": "^1.7.2",
     "connect-history-api-fallback": "^1.5.0",
@@ -24,7 +25,9 @@
     "ssri": "^6.0.0",
     "v-suggest": "^1.0.4",
     "vue": "^2.5.2",
+    "vue-apexcharts": "^1.4.0",
     "vue-echarts": "^3.0.4",
+    "vue-fusioncharts": "^3.0.4",
     "vue-markdown": "^2.2.4",
     "vue-material": "^1.0.0-beta-10.2",
     "vue-read-more": "^1.1.1",

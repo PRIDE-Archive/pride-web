@@ -389,7 +389,8 @@
           getMSRunTableData(){
               this.msRunModalTableData=[];
               let query={
-                  accession: this.$route.params.id,
+                  // accession: this.$route.params.id,
+                  accession:'PXD014344'
               }
               this.$http
                   .get(this.msRunApi,{params: query})
