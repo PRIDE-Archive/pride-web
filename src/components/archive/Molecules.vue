@@ -2,18 +2,9 @@
   <div class="moleculo-container">
     <div class="panel nav"><NavBar page="archive"/></div>
     <div class="content">
-      <Card class="card">
+      <!-- <Card class="card">
        <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-       <!--
-       <div class="filter-wrapper">
-           <div class="summary-content-header">Filter</div>
-           <Select v-model="model1" size="small" style="width:100px">
-              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-           </Select>
-       </div>
-        -->
        <div class="download-list-wrapper">
-         <!--<div class="summary-content-header">List</div>-->
          <div class="download-list">
            <Table border ref="selection" class="msrun-modal-table" :columns="tableCol1" :data="tableData1" height="200"></Table>
          </div>
@@ -21,22 +12,13 @@
       </Card>
       <Card class="card">
        <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-       <!--
-       <div class="filter-wrapper">
-           <div class="summary-content-header">Filter</div>
-           <Select v-model="model1" size="small" style="width:100px">
-              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-           </Select>
-       </div>
-        -->
        <div class="download-list-wrapper">
-         <!--<div class="summary-content-header">List</div>-->
          <div class="download-list">
            <Table border ref="selection" class="msrun-modal-table" :columns="tableCol2" :data="data2" height="200"></Table>
          </div>
        </div>
-      </Card>
-      <Card class="card">
+      </Card> -->
+      <Card class="card protein">
        <p slot="title"> <i class="fas fa-download icon-tag"></i>Protein Table</p>
        <!--
        <div class="filter-wrapper">
@@ -168,63 +150,70 @@
                   title: 'ProjectAccession ',
                   key: 'projectAccession', 
                   // sortable: true,
-                  //minWidth: 150,
+                  minWidth: 150,
                   //ellipsis:true
               },
               {
                   title: 'AssayAccession',
                   key: 'assayAccession',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'ReportedAccession',
+                  key: 'reportedaccession',
+                  // sortable: true,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'ProteinGroupMembers',
                   key: 'proteingroupmembers',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'BestSearchEngineScore',
                   key: 'bestsearchenginescore',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'QualityMethod',
                   key: 'qualitymethod',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'PTMs',
                   key: 'ptms',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'Decoy',
                   key: 'decoy',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'Valid',
                   key: 'valid',
                   // width:1,
-                  //maxWidth:0,
+                  minWidth: 150,
                   //className:'peptideID'
               },
               {
                   title: 'AdditionalAttributes',
                   key: 'additionalattributes',
                   // width:1,
-                  //maxWidth:0,
+                  minWidth: 150,
                   //className:'peptideID'
               }
           ],
@@ -320,6 +309,7 @@
                       var item = {
                         projectAccession: proteinEvidences[i].projectAccession,
                         assayAccession: proteinEvidences[i].assayAccession,
+                        reportedaccession: proteinEvidences[i].reportedAccession,
                         proteingroupmembers: proteinEvidences[i].proteinGroupMembers[0] || '',
                         bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.name || '',
                         qualitymethod: proteinEvidences[i].qualityMethods[0].name || '',
@@ -495,6 +485,9 @@
   }
   .msrun-modal-table .msrun-modal-table-accession{
     display: none;
+  }
+  .card.protein .download-list-wrapper{
+     overflow-x: auto;
   }
 </style>
 
