@@ -2,8 +2,8 @@
   <div class="moleculo-container">
     <div class="panel nav"><NavBar page="archive"/></div>
     <div class="content">
-      <Card class="card">
-       <p slot="title"> <i class="fas fa-download icon-tag"></i>Protein Table</p>
+      <Card class="card protein">
+        <p slot="title"> <i class="fas fa-download icon-tag"></i>Identified Proteins</p>
        <!--
        <div class="filter-wrapper">
            <div class="summary-content-header">Filter</div>
@@ -15,11 +15,11 @@
        <div class="download-list-wrapper">
          <!--<div class="summary-content-header">List</div>-->
          <div class="download-list">
-           <Table class="peptide-table" :loading="loading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-row-click="rowClick"></Table>
+           <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table>
          </div>
-         <div class="page-container">
-            <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-          </div>
+       </div>
+       <div class="page-container">
+          <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
        </div>
       </Card>    
     </div>
@@ -128,69 +128,77 @@
           tableData2:[],
           data2:[],
           selectedItem2:[],
+          proteinTableLoading: false,
           proteinTableColumn: [
 
               {
                   title: 'Project ',
                   key: 'projectAccession', 
                   // sortable: true,
-                  //minWidth: 150,
+                  minWidth: 150,
                   //ellipsis:true
               },
               {
                   title: 'Assay',
                   key: 'assayAccession',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
+                  // ellipsis:true
+              },
+              {
+                  title: 'ReportedAccession',
+                  key: 'reportedaccession',
+                  // sortable: true,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'GroupMembers',
                   key: 'proteingroupmembers',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'BestSearchEngineScore',
                   key: 'bestsearchenginescore',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'QualityMethod',
                   key: 'qualitymethod',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'PTMs',
                   key: 'ptms',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'Decoy',
                   key: 'decoy',
                   // sortable: true,
-                  // minWidth: 150,
+                  minWidth: 150,
                   // ellipsis:true
               },
               {
                   title: 'Valid',
                   key: 'valid',
                   // width:1,
-                  //maxWidth:0,
+                  minWidth: 150,
                   //className:'peptideID'
               },
               {
                   title: 'AdditionalAttributes',
                   key: 'additionalattributes',
                   // width:1,
-                  //maxWidth:0,
+                  minWidth: 150,
                   //className:'peptideID'
               }
           ],
@@ -269,6 +277,7 @@
       },
       getProteinEvidences(){
           this.tableData2=[];
+          this.proteinTableLoading = true;
           let query={
               // accession: this.$route.params.id,
                   projectAccession:'PXD009796',
@@ -280,12 +289,14 @@
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
                 console.log(res.body);
+                this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   for(let i=0; i < proteinEvidences.length; i++){
                       var item = {
                         projectAccession: proteinEvidences[i].projectAccession,
                         assayAccession: proteinEvidences[i].assayAccession,
+                        reportedaccession: proteinEvidences[i].reportedAccession,
                         proteingroupmembers: proteinEvidences[i].proteinGroupMembers[0] || '',
                         bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.name || '',
                         qualitymethod: proteinEvidences[i].qualityMethods[0].name || '',
@@ -310,7 +321,7 @@
                   // this.data2 = this.tableData2
                   // console.log(this.tableData2);
               },function(err){
-
+                  this.proteinTableLoading = false;
               });
       },
       pageChange(page){
@@ -461,6 +472,10 @@
   }
   .msrun-modal-table .msrun-modal-table-accession{
     display: none;
+  }
+  .card.protein .download-list-wrapper{
+     overflow-x: auto;
+     max-height: 600px;
   }
 </style>
 
