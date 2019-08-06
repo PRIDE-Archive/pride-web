@@ -13,33 +13,31 @@
             </Affix>
             <div v-if="activeName == 'profile'" class="content-wrapper">
                 <Card class="profile">
-                    <div class="name">Yasset</div>
+                    <div class="name">{{profileData.firstName}} {{profileData.lastName}}</div>
                     <div class="content">
                         <Row>
-                            <Col span="12">
+                            <!-- <Col span="12">
                                 <Avatar class="avatar" icon="person" size="large" />
-                            </Col>
-                            <Col span="12">
+                            </Col> -->
+                            <Col span="24">
                                 <div class="info-wrapper">
                                     <div class="info-left">
                                         <div><span class="info-item">Email</span></div>
                                         <div><span class="info-item">Affiliation</span></div>
                                         <div><span class="info-item">OrcID</span></div>
-                                        <div><span class="info-item">Public profile</span></div>
-                                        <div><span class="info-item">Home page</span></div>
+                                        <div><span class="info-item">Country</span></div>
                                     </div>
                                     <div class="info-right">
-                                        <div><a>XXXX</a></div>
-                                        <div><span>XXXX</span></div>
-                                        <div><a>XXXX</a></div>
-                                        <div><a>XXXX</a></div>
-                                        <div><a>XXXX</a></div>
+                                        <div><span>{{profileData.email}}</span></div>
+                                        <div><span>{{profileData.affiliation}}</span></div>
+                                        <div><span>{{profileData.orcid}}</span></div>
+                                        <div><span>{{profileData.country}}</span></div>
                                     </div>
                                 </div>
                             </Col>
                         </Row>
                     </div>
-                    <div class="description">123</div>
+                    <!-- <div class="description">123</div> -->
                 </Card>
                 <div class="profile-button">
                     <a @click="showPasswordModal">Change Password</a>
@@ -440,6 +438,7 @@
                 privateSubmissionURL: this.$store.state.baseApiURL + '/my-private-submissions',
                 reviewSubmissionURL: this.$store.state.baseApiURL + '/reviewer-submissions',  
                 changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
+                viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
                 tableList:[
                   {
                     label:'Edit Profile',
@@ -471,6 +470,7 @@
                 privateLoading:false,
                 publicLoading:false,
                 reviewLoading:false,
+                profileLoading:false,
                 publicDataList:[],
                 privateDataList:[],
                 reviewDataList:[],
@@ -508,6 +508,17 @@
                   confirmedNewPassword: [
                     { required: true, validator: newPasswordRecheck, trigger: 'on-change' }
                   ],
+                },
+                profileData:{
+                    email:'',
+                    title:'',
+                    firstName:'',
+                    lastName:'',
+                    affiliation:'',
+                    country:'',
+                    orcid:'',
+                    acceptedTermsOfUse:null,
+
                 },
                 newPasswordState:false,
                 confirmedNewPasswordState:false,
@@ -596,6 +607,32 @@
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
             },
+            getProfile(){
+                this.profileLoading = true;
+                this.$http
+                      .get(this.viewProfileURL,{
+                        headers: {
+                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                        }
+                      })
+                      .then(function(res){
+                        this.profileLoading = false;
+                        this.profileData.email = res.body.email;
+                        this.profileData.title = res.body.title;
+                        this.profileData.firstName = res.body.firstName;
+                        this.profileData.lastName = res.body.lastName;
+                        this.profileData.affiliation = res.body.affiliation;
+                        this.profileData.country = res.body.country;
+                        this.profileData.orcid = res.body.orcid;
+                        this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
+                      },function(err){
+                        if(err.body.error == 'TOKEN_EXPIRED'){
+                            this.logout();
+                        }
+                        this.$Message.error({content:'Annotation Error', duration:1});
+                      });
+                
+            },
             logout(){
                 this.$store.commit('setUser',{username: '', token:''});  
                 sessionStorage.setItem('username','');
@@ -671,6 +708,7 @@
         mounted:function(){
               this.getPrivateData();
               this.getReviewerSubmission();
+              this.getProfile();
         },
         beforeRouteEnter(to,from,next){
             next(vm=>{
