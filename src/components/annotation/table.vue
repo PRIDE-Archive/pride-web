@@ -14,7 +14,7 @@
                       <div class="table-row first handle"><Icon v-if="itemCol.key!='accession'" class="icon-in-th-left" type="ios-minus-outline" @click="removeAll(itemCol.key,'sampledata')" size="14"></Icon>{{itemCol.name}}<Icon class="icon-in-th-right" type="ios-close-outline" v-if="!itemCol.required" @click="deleteCol(itemCol,i)" size="14"></Icon></div>
                       <div class="table-row" v-for="(itemRow,j) in sampleData.slice(rowStart,rowEnd)">
                             <div v-if="itemCol.key!='accession'">
-                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-focus="focus($event,itemCol,itemRow,'sampledata',j)" @on-blur="inputBlur(itemRow[itemCol.key])">
+                                  <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-focus="focus($event,itemCol,itemRow,'sampledata',j)" @on-blur="inputBlur(itemRow[itemCol.key])">
                                   </Input>
                                   <!-- <Dropdown class="dropdown-remote" trigger="custom" :visible="itemRow[itemCol.key].dropdown" placement="bottom-end" @on-click="dropdownClick($event,itemRow[itemCol.key])" @on-clickoutside="blur(itemRow[itemCol.key])">
                                       <DropdownMenu slot="list">
@@ -30,7 +30,7 @@
                             <div v-else>
                                 <div class="accession-col">
                                     <Icon v-if="sampleData.length>1 && j == sampleData.length-1" class="icon-in-row" type="ios-close-outline" @click="deleteRow(itemRow,j)" size="14"></Icon>
-                                    <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="organismSampleQuery(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])">
+                                    <Input :class="{inputError:!itemRow[itemCol.key].checked}" size="small" type="text" v-model="itemRow[itemCol.key].value" :icon="itemRow[itemCol.key].value ? 'close-circled':''" @on-click ="removeInputContent(itemRow[itemCol.key])" @on-change="labelQuery(itemCol,itemRow)" @on-blur="inputBlur(itemRow[itemCol.key])">
                                     </Input>
                                     <!-- <span>{{itemRow.accession}}</span> -->
                                 </div>
@@ -312,7 +312,7 @@
           },
           rowStart:0,
           rowEnd:100,
-          tableLoading:true
+          tableLoading:false
       }
     },
     components: {
@@ -408,45 +408,45 @@
 
                   });
           },
-          organismSampleQuery(itemCol,itemRow){
-              let searchValue = itemRow[itemCol.key].value;
-              if(searchValue)
-                  itemRow[itemCol.key].icon = 'close-circled'
-              else{
-                  itemRow[itemCol.key].icon= '';
-                  this.dropdown.visible = false;
-                  return;
-              }
-              this.dropdownOptions=[];
-              let query={
-                attributeAccession: itemCol.accession,
-                ontologyAccession: itemCol.cvLabel,
-                keyword:searchValue
-              }
-              clearTimeout(this.timeoutId);
-              this.timeoutId = 0;
-              this.timeoutId = setTimeout( ()=> {
-                   this.$http
-                      .get(this.getValuesByAttributeApi,{params: query})
-                      .then(function(res){
-                        if(this.timeoutId == 0)
-                          return;
-                        if(!itemRow[itemCol.key].active)
-                          return;
-                        if(res.body.length>0 || searchValue){
-                          //itemRow[itemCol.key].dropdown=true;
-                          this.dropdown.visible = true
-                        }
+          // organismSampleQuery(itemCol,itemRow){
+          //     let searchValue = itemRow[itemCol.key].value;
+          //     if(searchValue)
+          //         itemRow[itemCol.key].icon = 'close-circled'
+          //     else{
+          //         itemRow[itemCol.key].icon= '';
+          //         this.dropdown.visible = false;
+          //         return;
+          //     }
+          //     this.dropdownOptions=[];
+          //     let query={
+          //       attributeAccession: itemCol.accession,
+          //       ontologyAccession: itemCol.cvLabel,
+          //       keyword:searchValue
+          //     }
+          //     clearTimeout(this.timeoutId);
+          //     this.timeoutId = 0;
+          //     this.timeoutId = setTimeout( ()=> {
+          //          this.$http
+          //             .get(this.getValuesByAttributeApi,{params: query})
+          //             .then(function(res){
+          //               if(this.timeoutId == 0)
+          //                 return;
+          //               if(!itemRow[itemCol.key].active)
+          //                 return;
+          //               if(res.body.length>0 || searchValue){
+          //                 //itemRow[itemCol.key].dropdown=true;
+          //                 this.dropdown.visible = true
+          //               }
 
-                        this.dropdownOptions=res.body;
-                        if(this.dropdownOptions.length == 0){
-                            itemRow[itemCol.key].value==searchValue;
-                        }
-                      },function(err){
+          //               this.dropdownOptions=res.body;
+          //               if(this.dropdownOptions.length == 0){
+          //                   itemRow[itemCol.key].value==searchValue;
+          //               }
+          //             },function(err){
 
-                      });
-              }, 500);
-          },
+          //             });
+          //     }, 500);
+          // },
           labelQuery(itemCol,itemRow){
               let searchValue = itemRow[itemCol.key].value;
               if(searchValue)
@@ -464,7 +464,6 @@
                 keyword:searchValue
               }*/
               if(itemCol.key=='label'){
-                  
                   let query={
                     keyword:searchValue
                   }
@@ -479,7 +478,6 @@
                           if(!itemRow[itemCol.key].active)
                             return;
                           if(res.body.length>0 || searchValue){
-                            //itemRow[itemCol.key].dropdown=true;
                             this.dropdown.visible = true
                           }
 
@@ -508,7 +506,8 @@
                         if(!itemRow[itemCol.key].active)
                           return;
                         if(res.body.length>0 || searchValue)
-                          itemRow[itemCol.key].dropdown=true;
+                          this.dropdown.visible = true
+
 
                         this.dropdownOptions=res.body;
                         if(this.dropdownOptions.length == 0){
@@ -535,7 +534,7 @@
                           if(!itemRow[itemCol.key].active)
                             return;
                           if(res.body.length>0 || searchValue)
-                            itemRow[itemCol.key].dropdown=true;
+                            this.dropdown.visible = true
 
                           this.dropdownOptions=res.body;
                           if(this.dropdownOptions.length == 0){
@@ -545,6 +544,36 @@
 
                         });
                   }, 500);
+              }
+              else{
+                let query={
+                  attributeAccession: itemCol.accession,
+                  ontologyAccession: itemCol.cvLabel,
+                  keyword:searchValue
+                }
+                clearTimeout(this.timeoutId);
+                this.timeoutId = 0;
+                this.timeoutId = setTimeout( ()=> {
+                     this.$http
+                        .get(this.getValuesByAttributeApi,{params: query})
+                        .then(function(res){
+                          if(this.timeoutId == 0)
+                            return;
+                          if(!itemRow[itemCol.key].active)
+                            return;
+                          if(res.body.length>0 || searchValue){
+                            //itemRow[itemCol.key].dropdown=true;
+                            this.dropdown.visible = true
+                          }
+
+                          this.dropdownOptions=res.body;
+                          if(this.dropdownOptions.length == 0){
+                              itemRow[itemCol.key].value==searchValue;
+                          }
+                        },function(err){
+
+                        });
+                }, 500);
               }
               this.$forceUpdate();
           },
@@ -558,7 +587,7 @@
             return str;
           },
           focus(e,itemCol,itemRow,type,index){
-              let left = e.target.parentNode.parentNode.parentNode.offsetLeft;
+              let left = e.target.parentNode.parentNode.parentNode.offsetLeft-document.querySelector('.card-content').scrollLeft;
               let top = e.target.parentNode.parentNode.parentNode.offsetTop;
 
               itemRow[itemCol.key].active=true;
@@ -576,10 +605,12 @@
               if(!itemRow[itemCol.key].value)
                 return;
               //itemRow[itemCol.key].dropdown = false;
-              if(itemCol.key == "label" || itemCol.key =="labelReagent")
-                this.labelQuery(itemCol,itemRow);
-              else
-                this.organismSampleQuery(itemCol,itemRow)
+              // if(itemCol.key == "label" || itemCol.key =="labelReagent")
+              //   this.labelQuery(itemCol,itemRow);
+              // else
+              //   this.organismSampleQuery(itemCol,itemRow)
+
+              this.labelQuery(itemCol,itemRow);
           },
           inputBlur(item){
             this.pasteIndex = null;
@@ -772,7 +803,6 @@
               // }
           },
           dropdownClick(e,item){
-            console.log(123);
             item.dropdown=false;
             if(e == "nodata" && !item.value){
                 item.icon="";
@@ -816,7 +846,7 @@
               });
           },
           removeAll(key,type){
-              //this.tableLoading=true;
+              this.tableLoading=true;
               //console.log(key,type);
               if(type == 'sampledata')
                 for(let i=0;i<this.sampleData.length; i++){
@@ -1044,7 +1074,7 @@
     watch: {
         sampleData:{
           handler(){
-            if(this.sampleData.length>0)
+            if(this.sampleData.length>0 || this.msRunArray.length>0)
               setTimeout(()=>{
                 this.tableLoading=false;
               },50)
@@ -1101,6 +1131,15 @@
               })
             else
               return;
+          },
+          deep:true
+        },
+        msRunArray:{
+          handler(){
+            if(this.msRunArray.length>0)
+              setTimeout(()=>{
+                this.tableLoading=false;
+              },50)
           },
           deep:true
         },
