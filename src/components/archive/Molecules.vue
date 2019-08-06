@@ -2,24 +2,8 @@
   <div class="moleculo-container">
     <div class="panel nav"><NavBar page="archive"/></div>
     <div class="content">
-      <!-- <Card class="card">
-       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-       <div class="download-list-wrapper">
-         <div class="download-list">
-           <Table border ref="selection" class="msrun-modal-table" :columns="tableCol1" :data="tableData1" height="200"></Table>
-         </div>
-       </div>
-      </Card>
-      <Card class="card">
-       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-       <div class="download-list-wrapper">
-         <div class="download-list">
-           <Table border ref="selection" class="msrun-modal-table" :columns="tableCol2" :data="data2" height="200"></Table>
-         </div>
-       </div>
-      </Card> -->
       <Card class="card protein">
-       <p slot="title"> <i class="fas fa-download icon-tag"></i>Protein Table</p>
+        <p slot="title"> <i class="fas fa-download icon-tag"></i>Identified Proteins</p>
        <!--
        <div class="filter-wrapper">
            <div class="summary-content-header">Filter</div>
@@ -148,14 +132,14 @@
           proteinTableColumn: [
 
               {
-                  title: 'ProjectAccession ',
+                  title: 'Project ',
                   key: 'projectAccession', 
                   // sortable: true,
                   minWidth: 150,
                   //ellipsis:true
               },
               {
-                  title: 'AssayAccession',
+                  title: 'Assay',
                   key: 'assayAccession',
                   // sortable: true,
                   minWidth: 150,
@@ -169,7 +153,7 @@
                   // ellipsis:true
               },
               {
-                  title: 'ProteinGroupMembers',
+                  title: 'GroupMembers',
                   key: 'proteingroupmembers',
                   // sortable: true,
                   minWidth: 150,
