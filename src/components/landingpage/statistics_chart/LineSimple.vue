@@ -140,6 +140,9 @@ export default {
           xValue = xValue.reverse();
           yValue= yValue.reverse();
         }
+        //remove the latest month value because of the sudden drop 
+        xValue.pop()
+        yValue.pop()
         this.options.series[0].data = yValue;
         this.options.xAxis.data = xValue;
     }

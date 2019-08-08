@@ -93,7 +93,7 @@
                   .get(this.linePrideApi)
                   .then(function(res){
                     this.linePrideShow=false;
-                    console.log(res.body);
+                    //console.log(res.body);
                     this.$bus.$emit('show-simple-line', res.body);
                   },function(err){
 
