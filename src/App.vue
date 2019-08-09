@@ -22,7 +22,7 @@ export default {
 </script>
 <style type="text/css">
   html,body {
-      min-width: 657px !important;
+      min-width: 720px !important;
   }
   ul {
    list-style-type: disc;
