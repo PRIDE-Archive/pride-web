@@ -71,7 +71,7 @@
                                     {{citation.linetwo}}
                                 </div>
                                 <div>
-                                    <a>{{citation.linethree}}</a>
+                                    {{citation.linethree}}
                                 </div>
                                 <div>
                                      {{citation.linefour}}
