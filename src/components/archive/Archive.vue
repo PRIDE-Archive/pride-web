@@ -78,7 +78,7 @@
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable @on-close="conditionDelete(index,item)">
-                            <Dropdown>
+                            <!-- <Dropdown>
                                 <a class="dropdown-action" href="javascript:void(0)">
                                     {{item.condition}}
                                     <Icon type="arrow-down-b"></Icon>
@@ -89,7 +89,8 @@
                                     <DropdownItem @click.native="conditionChange(index,'Or')">Or</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
-                            <span class="search-condition">{{item.field}} > {{item.contains}} </span>
+                            <span class="search-condition">{{item.field}} > {{item.contains}} </span> -->
+                            {{item.field}} > {{item.contains}}
                           </Tag>
                       </div>
                     </div>
