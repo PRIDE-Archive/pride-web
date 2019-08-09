@@ -8,7 +8,7 @@ export default new Vuex.Store({
 	state:{
 		baseURL: location.hostname.match(/localhost/)?'':'/pride',
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',  
-		baseApiURL: location.hostname.match(/localhost/)?'//wwwdev.ebi.ac.uk/pride/ws/archive':'//www.ebi.ac.uk/pride/ws/archive/v2',  
+		baseApiURL: location.hostname.match(/localhost/)?'//wwwdev.ebi.ac.uk/pride/ws/archive/v2':'//www.ebi.ac.uk/pride/ws/archive/v2',  
 		username: '',
 		token:''
 	},
