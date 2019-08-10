@@ -321,12 +321,13 @@
           for(let i=0; i<this.filterCombination.length; i++){
             for(let j in this.facetsConfigRes.body.archive){
               if(this.facetsConfigRes.body.archive[j].name == this.filterCombination[i].field){
-                   condition += j+'='+this.filterCombination[i].contains+','
+                   condition += j+'=='+this.filterCombination[i].contains+','
                 break;
               }
             }
           }
           this.filter = condition.replace(/,$/gi,'');
+          console.log(this.filter)
       },
       queryArchiveProjectList(q){
           this.publicaitionList = [];
@@ -334,6 +335,7 @@
           let query = q || this.$route.query;
           query.dateGap = '+1YEAR';
           query.sortDirection='DESC';
+          //query.sortDirection='ASC';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
@@ -756,18 +758,18 @@
               }
           });
       },
-      queryFormatter(query){
-          console.log('query',query);
-          let queryTemp = '?';
-          for(let i in query){
-              if(query[i] && i == 'keyword'){
-                  queryTemp = queryTemp + i + '='+query[i]
-              }
-              else if(query[i] && i == 'filter'){
-                console.log('query[i]',query[i]);
-              }
-          }
-      },
+      // queryFormatter(query){
+      //     console.log('query',query);
+      //     let queryTemp = '?';
+      //     for(let i in query){
+      //         if(query[i] && i == 'keyword'){
+      //             queryTemp = queryTemp + i + '=='+query[i]
+      //         }
+      //         else if(query[i] && i == 'filter'){
+      //           console.log('query[i]',query[i]);
+      //         }
+      //     }
+      // },
       queryConfig(){
           this.$http
             .get(this.searchConfigURL)
@@ -813,10 +815,10 @@
           if(this.filter)
             normalQuery.filter = this.filter;
           if(this.sort)
-            normalQuery.sortConditions = this.sort;
+            normalQuery.sortFields = this.sort;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
-          //console.log('this.normalQuery',this.normalQuery);
+          console.log('this.normalQuery',this.normalQuery);
           //return '?'+keyword+filter+page+pageSize;
           return normalQuery;
           
