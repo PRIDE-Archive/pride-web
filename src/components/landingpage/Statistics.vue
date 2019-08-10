@@ -80,8 +80,9 @@
            },
            querySankey(){
                 this.$http
-                  .get(this.sankeyPrideApi)
+                  .get('http://www.ebi.ac.uk/pride/ws/archive/v2/stats/SUBMISSIONS_PER_MONTH')
                   .then(function(res){
+                    console.log(res.body)
                     this.sankeyPrideShow=false;
                     this.$bus.$emit('show-simple-sankey', res.body);
                   },function(err){
