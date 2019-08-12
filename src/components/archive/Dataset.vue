@@ -215,28 +215,15 @@
                          </div>
                        </div>
                     </Card>
-                    <Card class="card">
+                    <!-- <Card class="card">
                        <p slot="title"> <i class="fas fa-download icon-tag"></i>MSRun Files</p>
-                       <!--
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                        -->
                        <div class="download-list-wrapper">
-                         <!--<div class="summary-content-header">List</div>-->
+                         <div class="summary-content-header">List</div>
                          <div class="download-list">
                            <Table border ref="selection" height="350" :loading="fileListLoading" :columns="msRunModalTableCol" :data="msRunModalTableData"></Table>
-                           <!--
-                           <div class="page-container">
-                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
-                           </div>
-                           -->
                          </div>
                        </div>
-                    </Card>
+                    </Card> -->
                     <!--
                     <Card v-if="total>0" class="card">
                         <p slot="title">Assay</p>
