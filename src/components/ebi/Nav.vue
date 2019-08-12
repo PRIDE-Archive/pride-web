@@ -155,15 +155,19 @@
             scrollable>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
               <FormItem prop="user">
-                <Input type="text" v-model="formInline.user" placeholder="Username">
+                <Input type="text" v-model="formInline.user" placeholder="Email">
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
               <FormItem prop="password">
-                <Input type="password" v-model="formInline.password" placeholder="Password">
+                <Input :type="passwordType" v-model="formInline.password" placeholder="Password">
                 <Icon type="ios-locked-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
+              <div class="login-action">
+                <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
+                <a @click="forgetPassword">Forget Password</a>
+              </div>
               <FormItem>
                 <Button type="primary" @click="login('formInline')" long>Log in</Button>
               </FormItem>
@@ -348,7 +352,8 @@
                   },
                 ],
                 countryList:[],
-                pageObj:{}
+                pageObj:{},
+                passwordType:'password'
             }
         },
         props: ['page'],
@@ -565,6 +570,16 @@
               }
               //return result; //JavaScript object
               return JSON.stringify(result); //JSON
+            },
+            forgetPassword(){
+              window.open('https://www.ebi.ac.uk/pride/archive/users/forgotpassword');
+            },
+            passwordTypeChange(type){
+              if(type)
+                this.passwordType="text";
+              else
+                this.passwordType="password"
+              //console.log(type)
             }
         },
         mounted() {
@@ -656,6 +671,19 @@
     }
     .signupButton{
       margin-top: 20px;
+    }
+    .login-action{
+      display: flex;
+      justify-content: space-between;
+      margin-top: -10px;
+      margin-bottom: 10px;
+      color:#454548 !important;
+    }
+    .login-action label{
+      color:#454548 !important;
+    }
+    .login-action a{
+      border-bottom-style:none !important;
     }
 </style>
 <style>
