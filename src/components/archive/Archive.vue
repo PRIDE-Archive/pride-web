@@ -102,7 +102,12 @@
                   <p slot="title" class="resource-list-title-container">
                     <span>Resources List ({{total}})</span>
                     <span class="sort-wrapper">
-                        <span>Sort by: </span>
+                        <span>Order by: </span>
+                        <div class="sortOption">
+                            <a><Icon v-if="order=='DESC'" type="arrow-down-b" size="18" @click="orderChange('ASC')"/></a>
+                            <a><Icon v-if="order=='ASC'" type="arrow-up-b" size="18" @click="orderChange('DESC')"/></a>
+                        </div>
+                        <span style="margin-left: 10px">Sort by: </span>
                         <div class="sortOption">
                             <Select v-model="sortType" size="small" style="width:95px" @on-change="sortChange">
                                 <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -226,6 +231,7 @@
           pageSize:20,
           filter:'',
           sort:'',
+          order:'DESC',
           total:0,
           facetsConfigRes:'',
           projectItemsConfigRes:'',
@@ -334,8 +340,6 @@
           this.loading = true;
           let query = q || this.$route.query;
           query.dateGap = '+1YEAR';
-          query.sortDirection='DESC';
-          //query.sortDirection='ASC';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
@@ -694,6 +698,11 @@
         this.setFilter();
         this.$router.push({name: 'archive', query: this.query});
       },
+      orderChange(type){
+        this.order = type;
+        this.setFilter();
+        this.$router.push({name: 'archive', query: this.query});
+      },
       updateCondition(q){
           let query = q || this.$route.query;
           for(let i in query){
@@ -816,6 +825,8 @@
             normalQuery.filter = this.filter;
           if(this.sort)
             normalQuery.sortFields = this.sort;
+          if(this.order)
+            normalQuery.sortDirection = this.order;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
           console.log('this.normalQuery',this.normalQuery);
