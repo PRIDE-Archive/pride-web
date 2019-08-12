@@ -416,6 +416,7 @@
           submissionDate:'',
           sampleProcessingProtocol:'',
           dataProcessingProtocol:'',
+          contactors:[],
           publications:[],
           species:[],
           diseases:[],
@@ -433,7 +434,6 @@
           viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
           msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
-          contactors:[],
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -808,6 +808,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + id)
             .then(function(res){
+                this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
                 this.projectDescription = res.body.projectDescription;
@@ -997,6 +998,25 @@
       },
       gotoMolecules(){
           this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
+      },
+      init(){
+          this.accession=''
+          this.title=''
+          this.projectDescription=''
+          this.publicationDate=''
+          this.submissionDate=''
+          this.sampleProcessingProtocol=''
+          this.dataProcessingProtocol=''
+          this.contactors = []
+          this.publications=[]
+          this.species=[]
+          this.diseases=[]
+          this.tissues=[]
+          this.instrumentNames=[]
+          this.quantificationMethods=[]
+          this.experimentTypes=[]
+          this.softwares=[]
+          this.modification=[]
       }
     },
     mounted: function(){
