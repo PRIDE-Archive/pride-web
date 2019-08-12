@@ -220,6 +220,7 @@
 </template>
 <script>
     import store from "@/store/store.js"
+    //const csv=require('csvtojson')
     const initPage = function(page){
       let item = {}
       if(page == 'archive'){
@@ -264,6 +265,8 @@
                 title:'',
                 subnav:[],
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                countryListURL: this.$store.state.baseURL + '/static/country/index.csv',
+                //countryListURL:'https://github.com/PRIDE-Utilities/pride-ontology/blob/master/pride-annotations/countries.csv',
                 signupAPI: this.$store.state.baseApiURL + '/user/register',
                 //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
@@ -312,7 +315,7 @@
                     { required: true, message: 'Please input country', trigger: 'blur' }
                   ],
                   orcid: [
-                    { required: true, message: 'Please input orcid', trigger: 'blur' }
+                    { required: false, message: 'Please input orcid', trigger: 'blur' }
                   ],
                   terms:[
                     { required: true, type:'enum', enum: ["true"], transform: value => value.toString(), message: 'Please check Terms and Conditions' }
@@ -344,12 +347,7 @@
                     value:'Professor'
                   },
                 ],
-                countryList:[
-                  {
-                    label:'UK',
-                    value:'uk'
-                  },
-                ],
+                countryList:[],
                 pageObj:{}
             }
         },
@@ -531,10 +529,47 @@
               else if(name=='logout'){
                 this.logout();
               }
+            },
+            queryCountryList(){
+                console.log(123)
+                this.$http
+                  .get(this.countryListURL)
+                  .then(function(res){
+                      this.countryList = [];
+                      let json = JSON.parse(this.csvJSON(res.body)) 
+                      for(let i=0; i < json.length-1; i++){
+                        //console.log(json[i].value);
+                          json[i].value = json[i].value.replace(/^"(.*)"$/, '$1');
+                          let item = {}
+                          item.label=json[i].value
+                          item.value=json[i].id
+                          this.countryList.push(item);
+                        //json[i].value.replace(/['"]+/g, '')
+                        //console.log(i);
+                      }
+                  },function(err){
+
+                  });
+            },
+            csvJSON(csv){
+              var lines=csv.split("\n");
+              var result = [];
+              var headers=lines[0].split(",");
+              for(var i=1;i<lines.length;i++){
+                  var obj = {};
+                  var currentline=lines[i].split(",");
+                  for(var j=0;j<headers.length;j++){
+                      obj[headers[j]] = currentline[j];
+                  }
+                  result.push(obj);
+              }
+              //return result; //JavaScript object
+              return JSON.stringify(result); //JSON
             }
         },
         mounted() {
           this.init();
+          this.queryCountryList();
         },
         computed:{
           username(){
