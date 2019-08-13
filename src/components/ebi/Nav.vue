@@ -378,7 +378,10 @@
               this.$router.push({name:name});
             },
             gotoPage(name){
-              this.$router.push({name:name});
+              if(name=="archive")
+                this.$router.push({name: 'archive', query: {refresh:true}});
+              else
+                this.$router.push({name:name});
             },
             resourcesClick(name){
                 if(name=='goToArchive'){
@@ -536,7 +539,7 @@
               }
             },
             queryCountryList(){
-                console.log(123)
+                //console.log(123)
                 this.$http
                   .get(this.countryListURL)
                   .then(function(res){

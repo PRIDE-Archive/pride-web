@@ -113,6 +113,11 @@
                                 <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                             </Select>
                         </div>
+                        <div class="sortOption page">
+                            <span style="margin-left: 5px">Page: </span>
+                            <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                        </div>
+
                     </span>
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
@@ -252,11 +257,18 @@
       if(filter.length>1)
         filter.split("=");
       console.log('filter',filter);*/
-      this.updateCondition(to.query);
-      console.log('beforeRouteUpdate',to.query);
-      this.queryArchiveProjectList(to.query);
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
-      next();
+        if(to.query.refresh){
+           window.location = window.location.pathname
+           next();
+        }
+        
+        this.updateCondition(to.query);
+        console.log('beforeRouteUpdate',to.query);
+        this.queryArchiveProjectList(to.query);
+        //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
+        next();
+        
+      
     },
     components: {
       NavBar
@@ -353,8 +365,8 @@
           if(!this.keyword)
             query.keyword ='*:*';
 
-          console.log(encodeURIComponent('*:*'));
-          console.log('search query',query);
+          //console.log(encodeURIComponent('*:*'));
+          //console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
@@ -394,7 +406,7 @@
                           this.publicaitionList.push(item);
                            
                       }
-                      console.log(this.publicaitionList)
+                      //console.log(this.publicaitionList)
                 }
                 else{
 
@@ -717,6 +729,7 @@
               }
               else if(i == 'filter'){
                 if(query[i]){
+                    console.log(query[i])
                     let filterArray = query[i].split(',');
                     console.log('filterArray',filterArray);
                     this.filterCombination=[];
@@ -1218,5 +1231,21 @@
     }
     .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
       /*display: none;*//******this will be removed when autocomplete function needed********/
+    }
+    .sortOption.page .ivu-page-total{
+      display: none;
+    }
+    .sortOption.page .ivu-page>li{
+      display: none;
+    }
+    .sortOption.page .ivu-page{
+      display: flex;
+    }
+    .sortOption.page .ivu-page-options-sizer{
+      display: flex;
+      align-items: center;
+    }
+    .sortOption.page .ivu-page-options{
+      margin-left: 5px;
     }
 </style>
