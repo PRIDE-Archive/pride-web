@@ -100,7 +100,7 @@
           <Row>
               <Card>
                   <p slot="title" class="resource-list-title-container">
-                    <span>Resources List ({{total}})</span>
+                    <span>List of Datasets ({{total}})</span>
                     <span class="sort-wrapper">
                         <span>Order by: </span>
                         <div class="sortOption">
