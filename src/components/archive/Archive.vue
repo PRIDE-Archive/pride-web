@@ -124,7 +124,7 @@
                   <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
                       <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.accession}}</text-highlight></router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
                       <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.title}}</text-highlight></p> 
-                      <p><span class="project-info">{{projectItemsSpecies}}: </span> <span v-for="item in publicationItem.species"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight></span></p>
+                      <p><span class="project-info">{{projectItemsSpecies}}: </span> <span v-for="item in publicationItem.species"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>;</span><a style="margin-left: 5px"v-if= "publicationItem.organisms.length>3" @click="gotoDetails(publicationItem.accession)">(More)</a></p>
                       <span><span class="project-info">{{projectItemsProjectDescription}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.projectDescription}}</text-highlight>
                         <a @click="gotoDetails(publicationItem.accession)">(More)</a>
                         <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
@@ -379,6 +379,7 @@
                           let item = {
                               accession: projectsList[i].accession,
                               title: projectsList[i].title,
+                              organisms: projectsList[i].organisms, //for show more species link in UI
                               species: projectsList[i].organisms,
                               projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                               publicationDate: projectsList[i].publicationDate,
@@ -386,7 +387,10 @@
                               submissionType: projectsList[i].submissionType,
                               hightlightItemArray:[],
                           }
-                          //console.log('projectsList[i].highlights',projectsList[i].highlights);
+                          if(item.species.length>3){
+                            item.species=item.species.slice(0,4)
+                          }
+                          console.log(item)
                           for(let j in projectsList[i].highlights){
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
