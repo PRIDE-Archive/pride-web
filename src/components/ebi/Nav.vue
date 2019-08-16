@@ -44,10 +44,10 @@
                 <ul id="local-nav" class="dropdown menu float-left" data-description="navigational">
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoHomepage(pageObj.homePageName)">
+                          <router-link :to="{ name: pageObj.homePageName}">
                             <i class="fas fa-home"></i>
                             <span class='sub-nav-title'>Home</span>
-                          </a>
+                          </router-link>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
@@ -58,9 +58,9 @@
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem name="goToArchive">PRIDE Archive</DropdownItem>
-                              <DropdownItem name="goToPeptidome">PRIDE Peptidome</DropdownItem>
-                              <DropdownItem name="gotoSpectrumLibrary">PRIDE Spectral Libraries</DropdownItem>
+                              <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
+                              <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
+                              <DropdownItem name="gotoSpectrumLibrary"><router-link :to="{ name: 'spectrumlibrary'}">PRIDE Spectral Libraries</router-link></DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
                   </li>
@@ -73,18 +73,18 @@
                           </a>
                           <DropdownMenu slot="list">
                     <!--<DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>-->
-                    <DropdownItem name="goToPrideSubmission">PRIDE Submission Tool</DropdownItem>
-                              <DropdownItem name="goToPrideInspector">PRIDE Inspector Toolsuite</DropdownItem>
-                              <DropdownItem name="goToPrideUtilities">PRIDE Utilities Libraries</DropdownItem>
+                              <DropdownItem name="goToPrideSubmission"><router-link :to="{ path: '/markdownpage/pridesubmissiontool' }">PRIDE Submission Tool</router-link></DropdownItem>
+                              <DropdownItem name="goToPrideInspector"><router-link :to="{ path: '/markdownpage/prideinspector' }">PRIDE Inspector Toolsuite</router-link></DropdownItem>
+                              <DropdownItem name="goToPrideUtilities"><router-link :to="{ path: '/markdownpage/prideutilities' }">PRIDE Utilities Libraries</router-link></DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown @on-click="resourcesClick">
-                          <a href="javascript:void(0)" @click="gotoDocs">
+                          <router-link :to="{ path: '/markdownpage/documentationpage' }"> 
                             <i class="fas fa-graduation-cap"></i>
                             <span class='sub-nav-title'>Docs</span>
-                          </a>
+                          </router-link>
                           <!--<DropdownMenu slot="list">-->
                               <!--&lt;!&ndash;-->
                               <!--<Dropdown placement="right-start">-->
@@ -105,10 +105,10 @@
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <a href="javascript:void(0)" @click="gotoAbout">
+                          <router-link :to="{ path: '/markdownpage/citationpage' }"> 
                             <i class="fas fa-info-circle"></i>
                             <span class='sub-nav-title'>About</span>
-                          </a>
+                          </router-link>
                       </Dropdown>
                   </li>
                 </ul>
@@ -374,9 +374,6 @@
             failSearch(){
                 this.$Message.error({content:'error search', duration:3});
             },
-            gotoHomepage(name){
-              this.$router.push({name:name});
-            },
             gotoPage(name){
               if(name=="archive")
                 this.$router.push({name: 'archive', query: {refresh:true}});
@@ -399,18 +396,18 @@
                 else if(name=='goToPrideSubmission'){
                   this.$router.push({path:'/markdownpage/pridesubmissiontool'});
                 }
-                        else if(name=='goToPrideInspector'){
-                            this.$router.push({path:'/markdownpage/prideinspector'});
-                        }
-                        else if(name=='goToPrideUtilities'){
-                            this.$router.push({path:'/markdownpage/prideutilities'});
-                        }
-                        else if(name=='goToPrideArchiveWS'){
-                            this.$router.push({path:'/markdownpage/pridearchivews'});
-                        }
-                        else if(name=='goToPridePeptidomeWS'){
-                            this.$router.push({path:'/markdownpage/pridepeptidomews'});
-                        }
+                else if(name=='goToPrideInspector'){
+                    this.$router.push({path:'/markdownpage/prideinspector'});
+                }
+                else if(name=='goToPrideUtilities'){
+                    this.$router.push({path:'/markdownpage/prideutilities'});
+                }
+                else if(name=='goToPrideArchiveWS'){
+                    this.$router.push({path:'/markdownpage/pridearchivews'});
+                }
+                else if(name=='goToPridePeptidomeWS'){
+                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
+                }
             },
             gotoAbout(){
               this.$router.push({path:'/markdownpage/citationpage'});
