@@ -390,7 +390,6 @@
                           if(item.species.length>3){
                             item.species=item.species.slice(0,4)
                           }
-                          console.log(item)
                           for(let j in projectsList[i].highlights){
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
@@ -738,12 +737,13 @@
                     console.log('filterArray',filterArray);
                     this.filterCombination=[];
                       for(let i=0; i<filterArray.length;i++){
-                          let facetsArray = filterArray[i].split('=')
+                          let facetsArray = filterArray[i].split('==')
                           let item={
                               condition:'And',
                               field: this.facetsConfigRes.body.archive[facetsArray[0]].name,     
                               contains:facetsArray[1]
                           };
+                          console.log('test',item)
                           this.filterCombination.push(item);
                           //this.tadAdd(keywordArray[i]);
                       }
