@@ -906,7 +906,7 @@
                       let item ={
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
-                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024),
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
                             url: {
                               ftp: filesArray[i].publicFileLocations[0].value,
                               asp: filesArray[i].publicFileLocations[1].value
