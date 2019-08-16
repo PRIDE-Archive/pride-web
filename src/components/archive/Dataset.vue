@@ -567,6 +567,17 @@
                                   }
                               }
                           }, 'FTP'),
+                          
+                          // h('i', {
+                          //     attrs: { class: 'fas fa-download'},
+                          //     style: {
+                          //         marginRight: '5px',
+                          //         marginLeft: '0px'
+                          //     },
+                          // }),
+
+
+
                           // h('Button', {
                           //     props: {
                           //         type: 'primary',
@@ -1053,7 +1064,7 @@
     width: 100%;
   }
   .content{
-    width: 80%;
+    width: 90%;
     margin:0 auto;
     padding: 40px 0;
     min-height: calc(100vh - 200px);

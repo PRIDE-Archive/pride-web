@@ -3,7 +3,7 @@
         <NavBar page="landingpage"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="20">
+                <Col span="24">
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
                             <h2 class="project-title">Consensus Peptide</h2>
@@ -42,7 +42,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Species ({{speciesNum}})</p>
@@ -63,7 +63,7 @@
                         </Card>
                     </div>
                 </Col>
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Modifications ({{modificationsNum}})</p>
@@ -84,7 +84,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Peptides ({{peptidesNum}})</p>
@@ -109,7 +109,7 @@
                         </Card>
                     </div>
                 </Col>
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Original Experiments ({{originalExperimentsNum}})</p>
@@ -136,7 +136,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="20">
+                <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Consensus Spectrum</p>

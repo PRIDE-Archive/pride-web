@@ -3,7 +3,7 @@
         <NavBar page="landingpage"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="20">
+                <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Submitted datasets properties tree</p>
@@ -28,7 +28,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">{{submissionTitle}}</p>
@@ -45,7 +45,7 @@
                         </Card>
                     </div>
                 </Col>
-                <Col span="10">
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Submitted datasets properties</p>
@@ -66,7 +66,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="20">
+                <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Submitted datasets per country</p>
@@ -219,7 +219,7 @@
         padding: 50px 0;
     }
     .visualization-wrapper{
-        padding: 50px 20px 0 20px;
+        padding: 0px 20px 0 20px;
     }
     .visualization-wrapper.title{
         padding: 0px 20px 0px 20px;

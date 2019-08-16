@@ -882,7 +882,7 @@
    
   }
   .browse-data-container{
-    width: 80%;
+    width: 95%;
     margin:0 auto;
     padding: 90px 0;
   }
