@@ -33,7 +33,7 @@
         "name":"Organisms"
     }, 
     "project_identified_ptms_facet": {
-        "name": "PTMs"
+        "name": "Modification"
     },
     "countries_facet": {
         "name": "Country"

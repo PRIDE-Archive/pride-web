@@ -283,7 +283,7 @@
                               <div class="property-wrapper">
                                 <div v-if="species.length>0">
                                   <div v-for="item in species">
-                                    <a>{{item.name}}</a>
+                                    <a @click="searchProperties('organisms_facet=='+item.name)">{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -296,7 +296,7 @@
                               <div class="property-wrapper">
                                 <div v-if="tissues.length>0">
                                   <div v-for="item in tissues">
-                                    <a>{{item.name}}</a>
+                                    <a @click="searchProperties('organisms_part_facet=='+item.name)">{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -309,7 +309,7 @@
                               <div class="property-wrapper">
                                 <div v-if="diseases.length>0">
                                   <div v-for="item in diseases">
-                                    <a>{{item.name}}</a>
+                                    <a @click="searchProperties('diseases_facet=='+item.name)">{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -322,7 +322,7 @@
                               <div class="property-wrapper">
                                 <div v-if="modification.length>0">
                                   <div v-for="item in modification">
-                                    <a>{{item.name}}</a>
+                                    <a @click="searchProperties('project_identified_ptms_facet=='+item.name)">{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -335,7 +335,7 @@
                               <div class="property-wrapper">
                                 <div v-if="instrumentNames.length>0">
                                   <div v-for="item in instrumentNames">
-                                    <a>{{item.name}}</a>
+                                    <a @click="searchProperties('instruments_facet=='+item.name)">{{item.name}}</a>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -348,7 +348,7 @@
                               <div class="property-wrapper">
                                 <div v-if="softwares.length>0">
                                   <div v-for="item in softwares">
-                                    <a>{{item.name}}</a>
+                                    <p>{{item.name}}</p>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -362,7 +362,7 @@
                               <div class="property-wrapper">
                                 <div v-if="experimentTypes.length>0">
                                   <div v-for="item in experimentTypes">
-                                    <a>{{item}}</a>
+                                    <p>{{item}}</p>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -375,7 +375,7 @@
                               <div class="property-wrapper">
                                 <div v-if="quantificationMethods.length>0">
                                   <div v-for="item in quantificationMethods">
-                                    <a>{{item.name}}</a>
+                                    <p>{{item.name}}</p>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -1017,6 +1017,12 @@
           this.experimentTypes=[]
           this.softwares=[]
           this.modification=[]
+      },
+      searchProperties(filter){
+          let normalQuery = {}
+          normalQuery.filter = filter;
+          console.log(filter)
+          this.$router.push({name: 'archive', query: normalQuery});
       }
     },
     mounted: function(){
