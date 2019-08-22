@@ -1,28 +1,99 @@
 <template>
   <div class="moleculo-container">
     <div class="panel nav"><NavBar page="archive"/></div>
-    <div class="content">
-      <Card class="card protein">
-        <p slot="title"> <i class="fas fa-download icon-tag"></i>Identified Proteins</p>
-       <!--
-       <div class="filter-wrapper">
-           <div class="summary-content-header">Filter</div>
-           <Select v-model="model1" size="small" style="width:100px">
-              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-           </Select>
-       </div>
-        -->
-       <div class="download-list-wrapper">
-         <!--<div class="summary-content-header">List</div>-->
-         <div class="download-list">
-           <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table>
-         </div>
-       </div>
-       <div class="page-container">
-          <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-       </div>
-      </Card>    
-    </div>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="12">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title" class="molecules-table-header"> 
+                          <span><i class="fas fa-download icon-tag"></i>Identified Proteins</span>
+                          <!-- <Input placeholder="Enter something..." style="width: 200px" size="small"></Input> -->
+                      </p>
+                      
+                     <div class="download-list-wrapper">
+                       <!--<div class="summary-content-header">List</div>-->
+                       <div class="download-list">
+                         <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table>
+                       </div>
+                     </div>
+                     <div class="page-container">
+                        <Page :total="proteinTotal" :page-size="proteinPageSize" size="small" show-sizer show-total @on-change="proteinPageChange" @on-page-size-change="proteinPageSizeChange"></Page>
+                     </div>
+                  </Card>    
+              </div>
+          </Col>
+          <Col span="12">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title"> <i class="fas fa-download icon-tag"></i>Sequence</p>
+                     <!--
+                     <div class="filter-wrapper">
+                         <div class="summary-content-header">Filter</div>
+                         <Select v-model="model1" size="small" style="width:100px">
+                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                         </Select>
+                     </div>
+                      -->
+                     <div class="sequence-container">
+                      <span class="no-data-wrapper">No data</span>
+                       <!--<div class="summary-content-header">List</div>-->
+                      
+                     </div>
+            
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="12">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title"> <i class="fas fa-download icon-tag"></i>Peptides</p>
+                     <!--
+                     <div class="filter-wrapper">
+                         <div class="summary-content-header">Filter</div>
+                         <Select v-model="model1" size="small" style="width:100px">
+                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                         </Select>
+                     </div>
+                      -->
+                     <div class="download-list-wrapper">
+                       <!--<div class="summary-content-header">List</div>-->
+                       <div class="download-list">
+                         <!-- <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table> -->
+                       </div>
+                     </div>
+                     <div class="page-container">
+                        <!-- <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page> -->
+                     </div>
+                  </Card>    
+              </div>
+          </Col>
+          <Col span="12">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title"> <i class="fas fa-download icon-tag"></i>PSM</p>
+                     <!--
+                     <div class="filter-wrapper">
+                         <div class="summary-content-header">Filter</div>
+                         <Select v-model="model1" size="small" style="width:100px">
+                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                         </Select>
+                     </div>
+                      -->
+                     <div class="download-list-wrapper">
+                       <!--<div class="summary-content-header">List</div>-->
+                       <div class="download-list">
+                         <!-- <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table> -->
+                       </div>
+                     </div>
+                     <div class="page-container">
+                        <!-- <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page> -->
+                     </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
   </div>
 </template>
 
@@ -130,84 +201,117 @@
           selectedItem2:[],
           proteinTableLoading: false,
           proteinTableColumn: [
-
               {
-                  title: 'Project ',
-                  key: 'projectAccession', 
-                  // sortable: true,
-                  minWidth: 150,
-                  //ellipsis:true
+                  title: '#',
+                  width: 30,
+                  align: 'center',
+                  render: (h, params) => {
+                      return h('Checkbox', {
+                          props: {
+                              value: params.row.select
+                          },
+                          on: {
+                              'on-change': (val) => {
+                                  this.proteinTableResults.map(x => {
+                                      x.select= false;
+                                      return x;
+                                  });
+                                  console.log(222)
+                                  this.proteinTableResults[params.index].select= val;
+                                  if(val)
+                                    this.selectedProteinTableItem =params;
+                                  else
+                                    this.selectedProteinTableItem={};
+                              }
+                          }
+                      });
+                  }
+              },
+              {
+                  title: 'Accession',
+                  key: 'reportedaccession',
+                  sortable: true,
+                  minWidth: 200,
+                  // ellipsis:true
+              },
+              {
+                  title: '#Peptides',
+                  key: 'numberPeptides',
+                  sortable: true,
+                  minWidth: 90,
+                  //className:'peptideID'
+              },
+              {
+                  title: '#PSMs',
+                  key: 'numberPSMs',
+                  sortable: true,
+                  minWidth: 75,
+                  //className:'peptideID'
+              },
+              {
+                  title: 'Coverage',
+                  key: 'sequenceCoverage',
+                  sortable: true,
+                  minWidth: 85,
+                  //className:'peptideID'
               },
               {
                   title: 'Assay',
                   key: 'assayAccession',
-                  // sortable: true,
-                  minWidth: 150,
+                  sortable: true,
+                  minWidth: 60,
                   // ellipsis:true
               },
               {
-                  title: 'ReportedAccession',
-                  key: 'reportedaccession',
-                  // sortable: true,
-                  minWidth: 150,
-                  // ellipsis:true
-              },
-              {
-                  title: 'GroupMembers',
-                  key: 'proteingroupmembers',
-                  // sortable: true,
-                  minWidth: 150,
-                  // ellipsis:true
-              },
-              {
-                  title: 'BestSearchEngineScore',
+                  title: 'Confidence Score',
                   key: 'bestsearchenginescore',
-                  // sortable: true,
-                  minWidth: 150,
-                  // ellipsis:true
-              },
-              {
-                  title: 'QualityMethod',
-                  key: 'qualitymethod',
-                  // sortable: true,
-                  minWidth: 150,
-                  // ellipsis:true
-              },
-              {
-                  title: 'PTMs',
-                  key: 'ptms',
-                  // sortable: true,
-                  minWidth: 150,
-                  // ellipsis:true
-              },
-              {
-                  title: 'Decoy',
-                  key: 'decoy',
-                  // sortable: true,
-                  minWidth: 150,
+                  sortable: true,
+                  minWidth: 130,
                   // ellipsis:true
               },
               {
                   title: 'Valid',
                   key: 'valid',
-                  // width:1,
-                  minWidth: 150,
-                  //className:'peptideID'
-              },
-              {
-                  title: 'AdditionalAttributes',
-                  key: 'additionalattributes',
-                  // width:1,
-                  minWidth: 150,
-                  //className:'peptideID'
+                  sortable: true,
+                  minWidth: 60,
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.valid){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               }
           ],
+          selectedProteinTableItem:{},
           proteinTableResults:[],
-          page:0,
-          pageSize:20,
-          total:2000,
-          msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
-          proteinEvidencesApi:'https://wwwdev.ebi.ac.uk/pride/ws/archive/proteinevidences'
+          proteinPage:0,
+          proteinPageSize:20,
+          proteinTotal:2000,
+          msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
+          proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences'
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -275,62 +379,42 @@
 
               });
       },
-      getProteinEvidences(){
-          this.tableData2=[];
+      getProteinEvidences(q){
           this.proteinTableLoading = true;
-          let query={
-              // accession: this.$route.params.id,
-                  projectAccession:'PXD009796',
-                  pageSize:100,
-                  sortDirection:'DESC',
-                  sortConditions:'projectAccession'
-          }
+          let query = q || this.proteinQuery;
           this.$http
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
-                console.log(res.body);
+                this.proteinTableResults=[];
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   for(let i=0; i < proteinEvidences.length; i++){
                       var item = {
-                        projectAccession: proteinEvidences[i].projectAccession,
-                        assayAccession: proteinEvidences[i].assayAccession,
                         reportedaccession: proteinEvidences[i].reportedAccession,
-                        proteingroupmembers: proteinEvidences[i].proteinGroupMembers[0] || '',
-                        bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.name || '',
-                        qualitymethod: proteinEvidences[i].qualityMethods[0].name || '',
-                        ptms: proteinEvidences[i].ptms[0] || '',
-                        decoy: proteinEvidences[i].decoy,
+                        assayAccession: proteinEvidences[i].assayAccession,
+                        numberPeptides: proteinEvidences[i].numberPeptides,
+                        sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'NaN' ? 'No Value' : proteinEvidences[i].sequenceCoverage,
+                        numberPSMs: proteinEvidences[i].numberPSMs,
+                        bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.value || '',
                         valid: proteinEvidences[i].valid,
-                        additionalattributes:proteinEvidences[i].additionalAttributes[0].name || '',
+                        select:false,
                       }
                       this.proteinTableResults.push(item);
                   }
                 }
-                
-                  // for(let i of res.body){
-                  //     let item = {
-                  //       accession:i.accession,
-                  //       name:i.fileName,
-                  //       size:Math.round(i.fileSizeBytes/1024/1024),
-                  //       select:false,
-                  //     }
-                  //     this.tableData2.push(item);
-                  // }
-                  // this.data2 = this.tableData2
-                  // console.log(this.tableData2);
               },function(err){
                   this.proteinTableLoading = false;
+                  this.$Message.error({content:'Search Error', duration:1});
               });
       },
-      pageChange(page){
-          this.page = page-1;
-          //this.$router.push({name: 'peptidesearch', query: this.query});
+      proteinPageChange(page){
+          this.proteinPage = page-1;
+          this.getProteinEvidences();
       },
-      pageSizeChange(size){
-          this.pageSize = size;
-          //this.$router.push({name: 'peptidesearch', query: this.query});
+      proteinPageSizeChange(size){
+          this.proteinPageSize = size;
+          this.getProteinEvidences();
       },
     },
     watch: {
@@ -349,9 +433,20 @@
           deep:true
         },
     },
+    computed:{
+      proteinQuery:function(){
+          let normalQuery = {}
+          normalQuery.projectAccession='PXD012991'
+          normalQuery.sortDirection='DESC'
+          normalQuery.sortConditions='projectAccession'
+          normalQuery.page = this.proteinPage
+          normalQuery.pageSize = this.proteinPageSize
+          return normalQuery;
+      }
+    },
     mounted: function(){
-        this.getMSRunTableData1();
-        this.getMSRunTableData2();
+        //this.getMSRunTableData1();
+        //this.getMSRunTableData2();
         this.getProteinEvidences();
     },
     
@@ -437,6 +532,24 @@
     text-align: center;
     margin-top: 20px;
   }
+  .visualization-wrapper{
+      padding: 0px 20px 0 20px;
+  }
+  .sequence-container{
+    height: 495px;
+    border: 1px solid #5bc0be;
+  }
+  .no-data-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+  }
+  .molecules-table-header{
+    display: flex;
+    justify-content: space-between;
+  }
 </style>
 <style>
   .card .ivu-card-body table{
@@ -474,8 +587,11 @@
     display: none;
   }
   .card.protein .download-list-wrapper{
-     overflow-x: auto;
-     max-height: 600px;
+     overflow: auto;
+     height: 450px;
+  }
+  .peptide-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
+    visibility: hidden;
   }
 </style>
 
