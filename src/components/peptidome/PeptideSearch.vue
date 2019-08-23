@@ -1237,7 +1237,7 @@
     .peptide-table table{
       margin-bottom: 0 !important;
     }
-            .peptide-table .peptideID{
+    .peptide-table .peptideID{
       display: none;
     }
     .search-input-wrapper.peptidome .ivu-select-dropdown{
