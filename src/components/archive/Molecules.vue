@@ -125,12 +125,10 @@
                                       return x;
                                   });
                                   this.proteinTableResults[params.index].select= val;
+                                  
                                   if(val){
-                                    this.selectedProteinTableItem =params;
-                                    this.peptideProteinAccession = this.selectedProteinTableItem.row.reportedaccession
-                                    //this.peptideProjectAccession = 
-                                    this.peptideAssayAccession = this.selectedProteinTableItem.row.assayAccession
-
+                                    this.peptideProteinAccession = params.row.reportedaccession
+                                    this.peptideAssayAccession = params.row.assayAccession
                                     this.getPeptidesEvidences();
                                   }
                                   else
@@ -233,58 +231,16 @@
                   key: 'peptideSequence',
                   sortable: true,
                   minWidth: 140,
-                  // render: (h, params) => {
-                  //     if(params.row.peptide!=this.sequence){
-                  //         return h('div', [
-                  //             h('span', {
-                  //                 on: {
-                  //                     click: () => {
-                                          
-                  //                     }
-                  //                 }
-                  //             }, params.row.peptide),
-                  //         ]);
-                  //     }
-                  //     else{
-                  //         return h('div', [
-                  //             h('span', {
-                  //                 on: {
-                  //                     click: () => {
-                                          
-                  //                     }
-                  //                 }
-                  //             }, params.row.peptide),
-                  //             h('Tooltip',//first item
-                  //                 {
-                  //                     props: {
-                  //                         content: 'Consensus peptide',
-                  //                     },
-                  //                 },//second item
-                  //                 [
-                  //                    h('Icon', {
-                  //                         props: {
-                  //                             type: 'checkmark-round',
-                  //                         },
-                  //                         style: {
-                  //                             marginLeft: '5px'
-                  //                         },
-                  //                     }),
-                                  
-                  //                 ]//third item
-                  //             ),
-                              
-                  //         ]);
-                  //     }
-                  // }
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      console.log(params.row)
+                      //console.log(params.row)
                       let highlightChar=[];
                       if(params.row.peptideSequence){
-                          if(params.row.ptms){
+                          if(params.row.ptms&&params.row.ptms.length>0){
                              for(let i=0; i< params.row.ptms.length; i++){
                                 let positionMap = params.row.ptms[i].positionMap;
+                                //console.log('positionMap',positionMap);
                                 for(let j=0; j<positionMap.length; j++){
                                     let item = {
                                       pos:positionMap[j].key,
@@ -293,41 +249,39 @@
                                     highlightChar.push(item);
                                 }
                              }
+                             //console.log('highlightChar',highlightChar);
                              let spanArray = [];
                              let sequenceChar = params.row.peptideSequence.split('')
-                             console.log(highlightChar,sequenceChar)
-                             for(let i=0; i< highlightChar.length; i++){
-                                  for(let j=0; j< sequenceChar.length; j++){
-                                      if(highlightChar[i].pos-1 == j){
-                                          // let item = h('Tooltip',{ 
-                                          //           props: {content: '222222'},
-                                          //           style: {color:'red'}
-                                          //       },sequenceChar[j])
-                                        
+                             //console.log(highlightChar,sequenceChar)
+                            
+                              for(let i=0; i<sequenceChar.length; i++){
+                                  let found = false;
+                                  for(let j=0; j< highlightChar.length; j++){
+                                      if(highlightChar[j].pos && highlightChar[j].pos-1 ==i){
+                                          found =true;
                                           let item = h('span',[
                                                 h('span', {
                                                     style: {color:'red'}
-                                                }, sequenceChar[j]),
+                                                }, sequenceChar[i]),
                                                 h('Tooltip',{ 
                                                     props: {content: '222222'}
                                                 })
                                             ])
-                                          spanArray.push(item)
-                                          i++;
+                                          spanArray.push(item);
+                                          highlightChar.splice(j, 1);
+                                          break;
                                       }
-                                      else{
-                                          let item = h('span', {}, sequenceChar[j])
-                                          spanArray.push(item)
-                                      }
-                                      
                                   }
-                             }
-
+                                  if(!found){
+                                      let item = h('span', {}, sequenceChar[i])
+                                      spanArray.push(item)
+                                  }
+                              }  
                              return h('span',spanArray)
 
                           }
                           else{
-                              return h('span',[h('span',{}, params.row.peptide)])
+                              return h('span',[h('span',{}, params.row.peptideSequence)])
                           }
                       }
                       else{
@@ -458,7 +412,7 @@
           peptideTableResults:[],
           peptidePage:0,
           peptidePageSize:20,
-          selectedProteinTableItem:{},
+          //selectedProteinTableItem:{},
           proteinPage:0,
           proteinPageSize:20,
           proteinTotal:2000,
@@ -474,53 +428,6 @@
       NavBar
     },
     methods:{
-      getMSRunTableData1(){
-          this.tableData1=[];
-          let query={
-              // accession: this.$route.params.id,
-                  accession:'PXD014344'
-          }
-          this.$http
-              .get(this.msRunApi,{params: query})
-              .then(function(res){
-                  for(let i of res.body){
-                      let item = {
-                        accession:i.accession,
-                        name:i.fileName,
-                        size:Math.round(i.fileSizeBytes/1024/1024),
-                        select:false,
-                      }
-                      this.tableData1.push(item);
-                  }
-                  console.log(this.tableData1);
-              },function(err){
-
-              });
-      },
-      getMSRunTableData2(){
-          this.tableData2=[];
-          let query={
-              // accession: this.$route.params.id,
-                  accession:'PXD014344'
-          }
-          this.$http
-              .get(this.msRunApi,{params: query})
-              .then(function(res){
-                  for(let i of res.body){
-                      let item = {
-                        accession:i.accession,
-                        name:i.fileName,
-                        size:Math.round(i.fileSizeBytes/1024/1024),
-                        select:false,
-                      }
-                      this.tableData2.push(item);
-                  }
-                  this.data2 = this.tableData2
-                  console.log(this.tableData2);
-              },function(err){
-
-              });
-      },
       getProteinEvidences(q){
           this.proteinTableLoading = true;
           let query = q || this.proteinQuery;
@@ -530,7 +437,7 @@
                 this.proteinTableResults=[];
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
-                  //console.log(res.body._embedded)
+                  //console.log('getProteinEvidences',res.body._embedded)
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   for(let i=0; i < proteinEvidences.length; i++){
                       var item = {
@@ -554,14 +461,16 @@
       getPeptidesEvidences(q){
           this.peptideTableLoading = true;
           let query = q || this.peptideQuery;
+          query.proteinAccession = this.peptideProteinAccession
+          query.assayAccession = this.peptideAssayAccession
           this.$http
               .get(this.peptideEvidencesApi,{params: query})
               .then(function(res){
                 this.peptideTableResults=[];
                 this.peptideTableLoading = false;
                 if(res.body && res.body._embedded){
-                  console.log(res.body._embedded)
                   let peptideevidences = res.body._embedded.peptideevidences;
+                  console.log('peptideevidences',peptideevidences)
                   for(let i=0; i < peptideevidences.length; i++){
                       var item = {
                         proteinAccession: peptideevidences[i].projectAccession,
@@ -582,7 +491,7 @@
                       this.peptideTableResults.push(item);
 
                   }
-                   console.log(this.peptideTableResults)
+                   //console.log(this.peptideTableResults)
                 }
               },function(err){
                   this.peptideTableLoading = false;
@@ -617,7 +526,7 @@
     computed:{
       proteinQuery:function(){
           let normalQuery = {}
-          normalQuery.projectAccession='PXD012991'
+          normalQuery.projectAccession=this.$route.params.id
           normalQuery.sortDirection='DESC'
           normalQuery.sortConditions='projectAccession'
           normalQuery.page = this.proteinPage
@@ -626,9 +535,9 @@
       },
       peptideQuery:function(){
           let normalQuery = {}
-          normalQuery.proteinAccession=this.peptideProteinAccession
-          normalQuery.projectAccession='PXD012991' //this.peptideProjectAccession
-          normalQuery.assayAccession=this.peptideAssayAccession
+          //normalQuery.proteinAccession=this.peptideProteinAccession
+          normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
+          //normalQuery.assayAccession=this.peptideAssayAccession
           normalQuery.sortDirection='DESC'
           normalQuery.sortConditions='projectAccession'
           normalQuery.page = this.peptidePage
@@ -637,8 +546,6 @@
       }
     },
     mounted: function(){
-        //this.getMSRunTableData1();
-        //this.getMSRunTableData2();
         this.getProteinEvidences();
     },
     
