@@ -125,11 +125,15 @@
                                       return x;
                                   });
                                   this.proteinTableResults[params.index].select= val;
-                                  
+                                  //console.log(params.row);
                                   if(val){
                                     this.peptideProteinAccession = params.row.reportedaccession
                                     this.peptideAssayAccession = params.row.assayAccession
                                     this.getPeptidesEvidences();
+                                    if (history.pushState) {
+                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
+                                        window.history.pushState({path:newurl},'',newurl);
+                                    }
                                   }
                                   else
                                     this.selectedProteinTableItem={};
@@ -422,6 +426,11 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
+      console.log('to.query',to.query);
+      if(to.query && to.query.accession)
+        this.getProteinEvidencesByAccession(to.query.accession);
+      else
+        this.getProteinEvidences();
       next();
     },
     components: {
@@ -437,8 +446,10 @@
                 this.proteinTableResults=[];
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
-                  //console.log('getProteinEvidences',res.body._embedded)
+                  //console.log('getProteinEvidences',res.body)
+                  console.log('getProteinEvidences',res.body._embedded)
                   let proteinEvidences = res.body._embedded.proteinevidences;
+                  this.proteinTotal = res.body.page.totalElements;
                   for(let i=0; i < proteinEvidences.length; i++){
                       var item = {
                         reportedaccession: proteinEvidences[i].reportedAccession,
@@ -458,6 +469,36 @@
                   this.$Message.error({content:'Search Error', duration:1});
               });
       },
+      getProteinEvidencesByAccession(accession){
+          this.proteinTableLoading = true;
+          this.$http
+              .get(this.proteinEvidencesApi+'/'+accession)
+              .then(function(res){
+                //console.log('accession',accession)
+                //console.log('getProteinEvidencesByAccession',res.body)
+                this.proteinTableResults=[];
+                this.proteinTableLoading = false;
+                if(res.body){
+                  this.proteinTotal = 1;
+                  let proteinEvidences = res.body;
+                  var item = {
+                    reportedaccession: proteinEvidences.reportedAccession,
+                    assayAccession: proteinEvidences.assayAccession,
+                    numberPeptides: proteinEvidences.numberPeptides,
+                    sequenceCoverage: proteinEvidences.sequenceCoverage == 'NaN' ? 'No Value' : proteinEvidences.sequenceCoverage,
+                    numberPSMs: proteinEvidences.numberPSMs,
+                    bestsearchenginescore: proteinEvidences.bestSearchEngineScore.value || '',
+                    valid: proteinEvidences.valid,
+                    select:false,
+                  }
+                  this.proteinTableResults.push(item);
+                }
+              },function(err){
+                  console.log(err);
+                  this.proteinTableLoading = false;
+                  this.$Message.error({content:'No protein', duration:3});
+              });
+      },
       getPeptidesEvidences(q){
           this.peptideTableLoading = true;
           let query = q || this.peptideQuery;
@@ -466,6 +507,7 @@
           this.$http
               .get(this.peptideEvidencesApi,{params: query})
               .then(function(res){
+                console.log('getPeptidesEvidences',res.body);
                 this.peptideTableResults=[];
                 this.peptideTableLoading = false;
                 if(res.body && res.body._embedded){
@@ -493,9 +535,13 @@
                   }
                    //console.log(this.peptideTableResults)
                 }
+                else{
+                  this.$Message.success({content:'No Peptides', duration:3});
+
+                }
               },function(err){
                   this.peptideTableLoading = false;
-                  this.$Message.error({content:'Search Error', duration:1});
+                  this.$Message.error({content:'Search Error', duration:3});
               });
       },
       proteinPageChange(page){
@@ -508,25 +554,25 @@
       },
     },
     watch: {
-        selectedItem1:{
-          handler(){
-            console.log(this.selectedItem1)
-            console.log(this.data2)
-            for(let i=0; i<this.data2.length; i++){
-              if(this.data2[i].accession != this.selectedItem1[0].row.accession){
-                this.data2.splice(i,1)
-                i--;
-              }
-            }
-            console.log('111',this.selectedItem1[0].row.accession);
-          },
-          deep:true
-        },
+        // selectedItem1:{
+        //   handler(){
+        //     console.log(this.selectedItem1)
+        //     console.log(this.data2)
+        //     for(let i=0; i<this.data2.length; i++){
+        //       if(this.data2[i].accession != this.selectedItem1[0].row.accession){
+        //         this.data2.splice(i,1)
+        //         i--;
+        //       }
+        //     }
+        //     console.log('111',this.selectedItem1[0].row.accession);
+        //   },
+        //   deep:true
+        // },
     },
     computed:{
       proteinQuery:function(){
           let normalQuery = {}
-          normalQuery.projectAccession=this.$route.params.id
+          normalQuery.projectAccession=this.$route.params.id //'PXD012991'
           normalQuery.sortDirection='DESC'
           normalQuery.sortConditions='projectAccession'
           normalQuery.page = this.proteinPage
@@ -546,7 +592,11 @@
       }
     },
     mounted: function(){
-        this.getProteinEvidences();
+        //console.log('this.$route',this.$route);
+        if(this.$route.query && this.$route.query.accession)
+          this.getProteinEvidencesByAccession(this.$route.query.accession);
+        else
+          this.getProteinEvidences();
     },
     
   }
