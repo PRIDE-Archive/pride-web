@@ -546,10 +546,14 @@
       },
       proteinPageChange(page){
           this.proteinPage = page-1;
+          if(this.$route.query && this.$route.query.accession)
+            return
           this.getProteinEvidences();
       },
       proteinPageSizeChange(size){
           this.proteinPageSize = size;
+          if(this.$route.query && this.$route.query.accession)
+            return
           this.getProteinEvidences();
       },
     },
