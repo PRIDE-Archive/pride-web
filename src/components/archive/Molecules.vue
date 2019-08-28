@@ -466,7 +466,7 @@
                         reportedaccession: proteinEvidences[i].reportedAccession,
                         assayAccession: proteinEvidences[i].assayAccession,
                         numberPeptides: proteinEvidences[i].numberPeptides,
-                        sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'NaN' ? 'No Value' : proteinEvidences[i].sequenceCoverage,
+                        sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000,
                         numberPSMs: proteinEvidences[i].numberPSMs,
                         bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.value || '',
                         valid: proteinEvidences[i].valid,
