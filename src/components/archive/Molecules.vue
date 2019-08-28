@@ -9,7 +9,8 @@
                       <p slot="title" class="molecules-table-header"> 
                           <span><i class="fas fa-download icon-tag"></i>Identified Proteins</span>
                           <span class="right">
-                              <Input v-model="value" icon="ios-search" placeholder="Enter something..." style="width: 200px" size="small" @click="search"></Input>
+                              <Input v-model="proteinAccessionInputModel" placeholder="Enter something..." style="width: 200px" size="small"></Input>
+                              <Icon type="ios-search" size="20" @click="searchProtein"></Icon>
                               <Icon type="ios-refresh-empty" size="24" @click="refreshProteinTable"></Icon>
                           </span>
                       </p>
@@ -110,6 +111,7 @@
     name: 'archive',
     data(){
       return {
+          proteinAccessionInputModel:'',
           proteinTableLoading: false,
           proteinTableColumn: [
               {
@@ -138,8 +140,13 @@
                                         window.history.pushState({path:newurl},'',newurl);
                                     }
                                   }
-                                  else
-                                    this.selectedProteinTableItem={};
+                                  else{
+                                    if (history.pushState) {
+                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname
+                                        window.history.pushState({path:newurl},'',newurl);
+                                    }
+                                    this.peptideTableResults=[];
+                                  }
                               }
                           }
                       });
@@ -447,6 +454,7 @@
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
                 this.proteinTableResults=[];
+                this.peptideTableResults=[];
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   //console.log('getProteinEvidences',res.body)
@@ -466,8 +474,13 @@
                       }
                       this.proteinTableResults.push(item);
                   }
+                  if(this.proteinTableResults.length>0){
+                      this.peptideProteinAccession = this.proteinTableResults[0].reportedaccession
+                      this.peptideAssayAccession = this.proteinTableResults[0].assayAccession
+                  }
                 }
               },function(err){
+                  this.proteinTableResults = [];
                   this.proteinTableLoading = false;
                   this.$Message.error({content:'Search Error', duration:1});
               });
@@ -492,11 +505,18 @@
                     numberPSMs: proteinEvidences.numberPSMs,
                     bestsearchenginescore: proteinEvidences.bestSearchEngineScore.value || '',
                     valid: proteinEvidences.valid,
-                    select:false,
+                    select:true,
                   }
                   this.proteinTableResults.push(item);
+
+                  if(this.proteinTableResults.length>0){
+                      this.peptideProteinAccession = this.proteinTableResults[0].reportedaccession
+                      this.peptideAssayAccession = this.proteinTableResults[0].assayAccession
+                  }
+                  this.getPeptidesEvidences();
                 }
               },function(err){
+                  this.proteinTableResults=[];
                   console.log(err);
                   this.proteinTableLoading = false;
                   this.$Message.error({content:'No protein', duration:3});
@@ -543,6 +563,7 @@
 
                 }
               },function(err){
+                  this.peptideTableResults=[];
                   this.peptideTableLoading = false;
                   this.$Message.error({content:'Search Error', duration:3});
               });
@@ -565,6 +586,15 @@
               window.history.pushState({path:newurl},'',newurl);
           }
           this.getProteinEvidences();
+      },
+      searchProtein(){ 
+          console.log(123);
+          let accession = this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.proteinAccessionInputModel
+          this.getProteinEvidencesByAccession(accession)
+          if (history.pushState) {
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession='+accession
+              window.history.pushState({path:newurl},'',newurl);
+          }
       }
     },
     watch: {
@@ -717,6 +747,7 @@
   }
   .molecules-table-header .right{
     display: flex;
+    align-items: center;
   }
   .molecules-table-header .right i{
     margin-left: 10px;
