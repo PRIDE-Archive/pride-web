@@ -458,6 +458,7 @@
               .then(function(res){
                 this.proteinTableResults=[];
                 this.peptideTableResults=[];
+                this.peptideTotal = 0;
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   //console.log('getProteinEvidences',res.body)
@@ -505,7 +506,7 @@
                     reportedaccession: proteinEvidences.reportedAccession,
                     assayAccession: proteinEvidences.assayAccession,
                     numberPeptides: proteinEvidences.numberPeptides,
-                    sequenceCoverage: proteinEvidences.sequenceCoverage == 'NaN' ? 'No Value' : proteinEvidences.sequenceCoverage,
+                    sequenceCoverage: proteinEvidences.sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences.sequenceCoverage * 10000)/10000,
                     numberPSMs: proteinEvidences.numberPSMs,
                     bestsearchenginescore: proteinEvidences.bestSearchEngineScore.value || '',
                     valid: proteinEvidences.valid,
