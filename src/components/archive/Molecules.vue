@@ -89,15 +89,13 @@
                          </Select>
                      </div>
                       -->
-                     <div class="download-list-wrapper">
-                       <!--<div class="summary-content-header">List</div>-->
-                       
-                         <!-- <Table class="peptide-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table> -->
-                      
+                     <div class="download-list-wrapper psm-container">
+                        <span v-if="psmTableLoading==false && psmTableResults.length<1" class="no-data-wrapper">No data</span>
+                        <Table v-else class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                      </div>
-                     <div class="page-container">
-                        <!-- <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page> -->
-                     </div>
+                      <!-- <div class="page-container">
+                       <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                     </div> -->
                   </Card>
               </div>
           </Col>
@@ -138,7 +136,7 @@
                                     this.peptideAssayAccession = params.row.assayAccession
                                     this.getPeptidesEvidences();
                                     if (history.pushState) {
-                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
+                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?proteinAccession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
                                         window.history.pushState({path:newurl},'',newurl);
                                     }
                                   }
@@ -235,6 +233,46 @@
           proteinTableResults:[],
           peptideTableLoading:false,
           peptideTableColumn: [
+              {
+                  title: '#',
+                  minWidth: 30,
+                  align: 'center',
+                  render: (h, params) => {
+                      return h('Checkbox', {
+                          props: {
+                              value: params.row.select
+                          },
+                          on: {
+                              'on-change': (val) => {
+                                  this.peptideTableResults.map(x => {
+                                      x.select= false;
+                                      return x;
+                                  });
+                                  this.peptideTableResults[params.index].select= val;
+                                  if(val){
+                                    let accession = this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession + '%3A'+ params.row.peptideSequence
+                                    this.getPSM(accession);
+                                    // this.peptideProteinAccession = params.row.reportedaccession
+                                    // this.peptideAssayAccession = params.row.assayAccession
+                                    // this.getPeptidesEvidences();
+                                    // if (history.pushState) {
+                                    //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
+                                    //     window.history.pushState({path:newurl},'',newurl);
+                                    // }
+                                  }
+                                  else{
+                                    this.psmTableResults = [];
+                                    // if (history.pushState) {
+                                    //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname
+                                    //     window.history.pushState({path:newurl},'',newurl);
+                                    // }
+                                    // this.peptideTableResults=[];
+                                  }
+                              }
+                          }
+                      });
+                  }
+              },
               {
                   title: 'Protein Accession',
                   key: 'proteinAccession',
@@ -426,6 +464,239 @@
               },
           ],
           peptideTableResults:[],
+          psmTableLoading:false,
+          psmTableColumn: [
+              {
+                  title: '#',
+                  minWidth: 30,
+                  align: 'center',
+                  render: (h, params) => {
+                      return h('Checkbox', {
+                          props: {
+                              value: params.row.select
+                          },
+                          on: {
+                              'on-change': (val) => {
+                                  this.psmTableResults.map(x => {
+                                      x.select= false;
+                                      return x;
+                                  });
+                                  this.psmTableResults[params.index].select= val;
+                                  //console.log(params.row);
+                                  if(val){
+                                    
+                                    // this.peptideProteinAccession = params.row.reportedaccession
+                                    // this.peptideAssayAccession = params.row.assayAccession
+                                    // this.getPeptidesEvidences();
+                                    // if (history.pushState) {
+                                    //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
+                                    //     window.history.pushState({path:newurl},'',newurl);
+                                    // }
+                                  }
+                                  else{
+                                    //this.psmTableResults = [];
+                                    // if (history.pushState) {
+                                    //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname
+                                    //     window.history.pushState({path:newurl},'',newurl);
+                                    // }
+                                    // this.peptideTableResults=[];
+                                  }
+                              }
+                          }
+                      });
+                  }
+              },
+              // {
+              //     title: 'Protein Accession',
+              //     key: 'proteinAccession',
+              //     sortable: true,
+              //     minWidth: 140,
+              //     // ellipsis:true
+              // },
+              {
+                  title: 'Peptide Sequence',
+                  key: 'peptideSequence',
+                  sortable: true,
+                  minWidth: 140,
+                  render: (h, params) => {
+                      // var className;
+                      // var iconColor;
+                      //console.log(params.row)
+                      let highlightChar=[];
+                      if(params.row.peptideSequence){
+                          if(params.row.ptms&&params.row.ptms.length>0){
+                             for(let i=0; i< params.row.ptms.length; i++){
+                                let positionMap = params.row.ptms[i].positionMap;
+                                //console.log('positionMap',positionMap);
+                                for(let j=0; j<positionMap.length; j++){
+                                    let item = {
+                                      pos:positionMap[j].key,
+                                      val:'123'
+                                    }
+                                    highlightChar.push(item);
+                                }
+                             }
+                             //console.log('highlightChar',highlightChar);
+                             let spanArray = [];
+                             let sequenceChar = params.row.peptideSequence.split('')
+                             //console.log(highlightChar,sequenceChar)
+                            
+                              for(let i=0; i<sequenceChar.length; i++){
+                                  let found = false;
+                                  for(let j=0; j< highlightChar.length; j++){
+                                      if(highlightChar[j].pos && highlightChar[j].pos-1 ==i){
+                                          found =true;
+                                          let item = h('span',[
+                                                h('span', {
+                                                    style: {color:'red'}
+                                                }, sequenceChar[i]),
+                                                h('Tooltip',{ 
+                                                    props: {content: '222222'}
+                                                })
+                                            ])
+                                          spanArray.push(item);
+                                          highlightChar.splice(j, 1);
+                                          break;
+                                      }
+                                  }
+                                  if(!found){
+                                      let item = h('span', {}, sequenceChar[i])
+                                      spanArray.push(item)
+                                  }
+                              }  
+                             return h('span',spanArray)
+
+                          }
+                          else{
+                              return h('span',[h('span',{}, params.row.peptideSequence)])
+                          }
+                      }
+                      else{
+                          return h('span',[h('span',{}, 'No Seq')])
+                      }
+                      
+
+                      // return h('div', [
+                      //     h('span', {
+                      //         on: {
+                      //             click: () => {
+                                      
+                      //             }
+                      //         }
+                      //     }, params.row.peptide),
+                      //     h('Tooltip',//first item
+                      //         {
+                      //             props: {
+                      //                 content: 'Consensus peptide',
+                      //             },
+                      //         },//second item
+                      //         [
+                      //            h('Icon', {
+                      //                 props: {
+                      //                     type: 'checkmark-round',
+                      //                 },
+                      //                 style: {
+                      //                     marginLeft: '5px'
+                      //                 },
+                      //             }),
+                              
+                      //         ]//third item
+                      //     ),
+                          
+                      // ]);
+                      // if(params.row.valid){
+                      //   className='fa fa-check';
+                      //   iconColor='#19be6b'
+                      // }
+                      // else{
+                      //   className ='fa fa-times';
+                      //   iconColor='#ed3f14'
+                      // }
+                      // return h('div', [
+                      //     h('i', {
+                      //         attrs: { class: className},
+                      //         style: {
+                      //             color:iconColor,
+                      //             //marginRight: '5px',
+                      //             marginLeft: '20px'
+                      //         },
+                      //     }),
+                      // ]);
+                  }
+                  //className:'peptideID'
+              },
+              {
+                  title: 'Decoy',
+                  key: 'decoy',
+                  sortable: true,
+                  minWidth: 75,
+                  //className:'peptideID'
+              },
+              // {
+              //     title: 'Start',
+              //     key: 'startPostion',
+              //     sortable: true,
+              //     minWidth: 60,
+              //     // ellipsis:true
+              // },
+              // {
+              //     title: 'End',
+              //     key: 'endPostion',
+              //     sortable: true,
+              //     minWidth: 60,
+              //     // ellipsis:true
+              // },
+              {
+                  title: 'PSM-level FDR',
+                  key: 'psmlevelFDR',
+                  sortable: true,
+                  minWidth: 130,
+                  // ellipsis:true
+              },
+              {
+                  title: 'Valid',
+                  key: 'isValid',
+                  sortable: true,
+                  minWidth: 60,
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isValid){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
+              },
+              {
+                  title: 'PTMs',
+                  key: 'ptms',
+                  width:1,
+                  className:'psmPTMs'
+                  // ellipsis:true
+              },
+          ],
+          psmTableResults:[],
           //selectedProteinTableItem:{},
           proteinPage:0,
           proteinPageSize:20,
@@ -440,8 +711,8 @@
     },
     beforeRouteUpdate:function (to, from, next) {
       console.log('to.query',to.query);
-      if(to.query && to.query.accession)
-        this.getProteinEvidencesByAccession(to.query.accession);
+      if(to.query && to.query.proteinAccession)
+        this.getProteinEvidencesByAccession(to.query.proteinAccession);
       else
         this.getProteinEvidences();
       next();
@@ -552,6 +823,7 @@
                         startPostion: peptideevidences[i].startPostion,
                         endPostion: peptideevidences[i].endPostion,
                         ptms:peptideevidences[i].ptms,
+                        select:false,
                       }
                       //add peptidelevelFDR for item
                       for(let j=0; j<peptideevidences[i].properties.length; j++){
@@ -573,18 +845,59 @@
                   this.peptideTotal = 0;
                   this.peptideTableResults=[];
                   this.peptideTableLoading = false;
-                  this.$Message.error({content:'Search Error', duration:3});
+                  this.$Message.error({content:'Peptide Search Error', duration:3});
+              });
+      },
+      getPSM(accession){
+          this.psmTableLoading = true;
+          this.$http
+              .get(this.peptideEvidencesApi + '/'+ accession +'/psms')
+              .then(function(res){
+                this.psmTableResults=[];
+                this.psmTableLoading = false;
+                if(res.body){
+                  let psm = res.body;
+                  console.log('psm',psm)
+                  for(let i=0; i < psm.length; i++){
+                      var item = {
+                        //proteinAccession: psm[i].projectAccession,
+                        peptideSequence: psm[i].peptideSequence,
+                        decoy: psm[i].decoy,
+                        isValid: psm[i].isValid,
+                        //startPostion: psm[i].startPostion,
+                        //endPostion: psm[i].endPostion,
+                        ptms:psm[i].ptms,
+                        select:false,
+                      }
+                      //add psmlevelFDR for item
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
+                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toFixed(10)
+                              break;
+                          }
+                      }
+                      this.psmTableResults.push(item);
+
+                  }
+                }
+                else{
+                  this.$Message.success({content:'No PSMs', duration:3});
+                }
+              },function(err){
+                  this.psmTableResults=[];
+                  this.psmTableLoading = false;
+                  this.$Message.error({content:'No PSM', duration:3});
               });
       },
       proteinPageChange(page){
           this.proteinPage = page-1;
-          if(this.$route.query && this.$route.query.accession)
+          if(this.$route.query && this.$route.query.proteinAccession)
             return
           this.getProteinEvidences();
       },
       proteinPageSizeChange(size){
           this.proteinPageSize = size;
-          if(this.$route.query && this.$route.query.accession)
+          if(this.$route.query && this.$route.query.proteinAccession)
             return
           this.getProteinEvidences();
       },
@@ -606,29 +919,22 @@
       },
       searchProtein(){ 
           console.log(123);
-          let accession = this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.proteinAccessionInputModel
-          this.getProteinEvidencesByAccession(accession)
+          let proteinAccession = this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.proteinAccessionInputModel
+          this.getProteinEvidencesByAccession(proteinAccession)
           if (history.pushState) {
-              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession='+accession
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?proteinAccession='+proteinAccession
               window.history.pushState({path:newurl},'',newurl);
           }
       }
     },
     watch: {
-        // selectedItem1:{
-        //   handler(){
-        //     console.log(this.selectedItem1)
-        //     console.log(this.data2)
-        //     for(let i=0; i<this.data2.length; i++){
-        //       if(this.data2[i].accession != this.selectedItem1[0].row.accession){
-        //         this.data2.splice(i,1)
-        //         i--;
-        //       }
-        //     }
-        //     console.log('111',this.selectedItem1[0].row.accession);
-        //   },
-        //   deep:true
-        // },
+        peptideTableResults:{
+          handler(){
+            if(this.peptideTableResults.length == 0)
+              this.psmTableResults = [];
+          },
+          deep:true
+        },
     },
     computed:{
       proteinQuery:function(){
@@ -654,8 +960,8 @@
     },
     mounted: function(){
         //console.log('this.$route',this.$route);
-        if(this.$route.query && this.$route.query.accession)
-          this.getProteinEvidencesByAccession(this.$route.query.accession);
+        if(this.$route.query && this.$route.query.proteinAccession)
+          this.getProteinEvidencesByAccession(this.$route.query.proteinAccession);
         else
           this.getProteinEvidences();
     },
@@ -746,7 +1052,10 @@
       padding: 0px 20px 0 20px;
   }
   .sequence-container{
-    height: 495px;
+    height: 498px;
+  }
+  .download-list-wrapper.psm-container{
+    height: 496px !important;
   }
   .no-data-wrapper{
     display: flex;
@@ -812,7 +1121,19 @@
   .protein-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
     visibility: hidden;
   }
+  .peptide-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
+    visibility: hidden;
+  }
+  .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
+    visibility: hidden;
+  }
+  .peptide-table .ivu-table .ivu-table-body th.ivu-table-column-center, td.ivu-table-column-center{
+    padding: 0 !important;
+  }
   .peptide-table .peptidePTMs{
+      display: none;
+  }
+  .psm-table .psmPTMs{
       display: none;
   }
 </style>
