@@ -8,7 +8,10 @@
                   <Card class="card protein">
                       <p slot="title" class="molecules-table-header"> 
                           <span><i class="fas fa-download icon-tag"></i>Identified Proteins</span>
-                          <!-- <Input placeholder="Enter something..." style="width: 200px" size="small"></Input> -->
+                          <span class="right">
+                              <Input v-model="value" icon="ios-search" placeholder="Enter something..." style="width: 200px" size="small" @click="search"></Input>
+                              <Icon type="ios-refresh-empty" size="24" @click="refreshProteinTable"></Icon>
+                          </span>
                       </p>
                       
                      <div class="download-list-wrapper">
@@ -556,6 +559,13 @@
             return
           this.getProteinEvidences();
       },
+      refreshProteinTable(){
+          if (history.pushState) {
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+              window.history.pushState({path:newurl},'',newurl);
+          }
+          this.getProteinEvidences();
+      }
     },
     watch: {
         // selectedItem1:{
@@ -703,6 +713,13 @@
   .molecules-table-header{
     display: flex;
     justify-content: space-between;
+    height: 24px !important;
+  }
+  .molecules-table-header .right{
+    display: flex;
+  }
+  .molecules-table-header .right i{
+    margin-left: 10px;
   }
 </style>
 <style>
