@@ -100,6 +100,21 @@
               </div>
           </Col>
       </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                       <p slot="title">Consensus Spectrum</p>
+                       <div class="download-list-wrapper spectrum-container">
+                        <span v-if="!spectrumTableShow" class="no-data-wrapper">No data</span>
+                        <Spin fix v-if="spectrumSpinShow"></Spin> 
+                         <!-- <iframe id="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe> -->
+                       </div>
+                       <!--<Lorikeet></Lorikeet>-->
+                  </Card>
+              </div>
+          </Col>
+      </Row>
     </div>
   </div>
 </template>
@@ -111,6 +126,7 @@
     name: 'archive',
     data(){
       return {
+          iframeURL:this.$store.state.baseURL + '/static/lorikeet/html/pride.html',
           proteinAccessionInputModel:'',
           proteinTableLoading: false,
           proteinTableColumn: [
@@ -482,9 +498,39 @@
                                       return x;
                                   });
                                   this.psmTableResults[params.index].select= val;
-                                  //console.log(params.row);
                                   if(val){
-                                    
+                                      let iframeDom = document.querySelector("#lorikeetIframe");
+                                      if(iframeDom)
+                                        iframeDom.remove();
+
+                                      if(params.row.peptideSequence){
+                                          this.spectrumSpinShow = true;
+                                          //this.spectrumTableShow=false;
+                                          let peaks =params.row.peaks;
+                                          let iframe = document.createElement('iframe');
+                                          iframe.src = this.iframeURL;
+                                          iframe.id = 'lorikeetIframe'
+                                          iframe.className = 'lorikeet-iframe'
+                                          iframe.style.width = '100%'
+                                          iframe.style.height = '720px'
+                                          iframe.style.borderWidth = '0';
+                                          document.querySelector(".spectrum-container").appendChild(iframe)
+                                          document.querySelector("#lorikeetIframe").onload = ()=>{
+                                            this.spectrumTableShow=true;
+                                            this.spectrumSpinShow = false;
+                                            document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: params.row.peptideSequence, peaks:peaks}, location.origin);
+                                          }
+
+                                          document.querySelector("#lorikeetIframe").onerror = ()=> {
+                                              this.spectrumTableShow= false;
+                                              this.spectrumSpinShow = false;
+                                              this.$Message.error({content:'Spectrum Error', duration:3});
+                                          };
+                                      }
+                                      else{
+                                          this.spectrumTableShow = false;
+                                          this.spectrumSpinShow = false;
+                                      }
                                     // this.peptideProteinAccession = params.row.reportedaccession
                                     // this.peptideAssayAccession = params.row.assayAccession
                                     // this.getPeptidesEvidences();
@@ -494,12 +540,9 @@
                                     // }
                                   }
                                   else{
-                                    //this.psmTableResults = [];
-                                    // if (history.pushState) {
-                                    //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname
-                                    //     window.history.pushState({path:newurl},'',newurl);
-                                    // }
-                                    // this.peptideTableResults=[];
+                                      this.spectrumSpinShow = false;
+                                      this.spectrumTableShow=false;
+                                      document.querySelector("#lorikeetIframe").remove();
                                   }
                               }
                           }
@@ -695,9 +738,18 @@
                   className:'psmPTMs'
                   // ellipsis:true
               },
+              {
+                  title: 'Peaks',
+                  key: 'peaks',
+                  width:1,
+                  className:'psmPTMs'
+                  // ellipsis:true
+              },
           ],
           psmTableResults:[],
           //selectedProteinTableItem:{},
+          spectrumSpinShow:false,
+          spectrumTableShow:false,
           proteinPage:0,
           proteinPageSize:20,
           proteinTotal:0,
@@ -758,7 +810,7 @@
                   this.proteinTotal = 0;
                   this.proteinTableResults = [];
                   this.proteinTableLoading = false;
-                  this.$Message.error({content:'Search Error', duration:1});
+                  this.$Message.error({content:'Search Error', duration:3});
               });
       },
       getProteinEvidencesByAccession(accession){
@@ -876,6 +928,16 @@
                               break;
                           }
                       }
+                      //add peaks for item
+                      let peaksArray = [];
+                      for(let j=0; j<psm[i].intensities.length; j++){
+                          let item = {
+                            mz:psm[i].mzs[j],
+                            intensity:psm[i].intensities[j]
+                          }
+                          peaksArray.push(item)
+                      }
+                      item.peaks = peaksArray;
                       this.psmTableResults.push(item);
 
                   }
@@ -930,8 +992,13 @@
     watch: {
         peptideTableResults:{
           handler(){
-            if(this.peptideTableResults.length == 0)
               this.psmTableResults = [];
+              let iframe = document.querySelector("#lorikeetIframe");
+              if(iframe){
+                this.spectrumTableShow=false;
+                this.spectrumSpinShow=false;
+                iframe.remove();
+              }
           },
           deep:true
         },
@@ -1057,11 +1124,14 @@
   .download-list-wrapper.psm-container{
     height: 496px !important;
   }
+   .download-list-wrapper.spectrum-container{
+      height: 730px !important;
+   }
   .no-data-wrapper{
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #5bc0be;
+    /*border: 1px solid #5bc0be;*/
     height: 100%;
     width: 100%;
     z-index:-1;
@@ -1077,6 +1147,11 @@
   }
   .molecules-table-header .right i{
     margin-left: 10px;
+  }
+  .lorikeet-iframe{
+      width: 100%;
+      height: 720px;
+      border-width:0;
   }
 </style>
 <style>
