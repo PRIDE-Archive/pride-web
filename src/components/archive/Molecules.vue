@@ -70,7 +70,9 @@
                       
                      </div>
                      <div class="page-container">
-                        <!-- <Page :total="total" :page-size="pageSize" size="small" show-sizer show-total @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page> -->
+                        <div class="page-container">
+                            <Page :total="peptideTotal" :page-size="peptidePageSize" size="small" show-sizer show-total @on-change="peptidePageChange" @on-page-size-change="peptidePageSizeChange"></Page>
+                        </div>
                      </div>
                   </Card>    
               </div>
@@ -424,12 +426,13 @@
               },
           ],
           peptideTableResults:[],
-          peptidePage:0,
-          peptidePageSize:20,
           //selectedProteinTableItem:{},
           proteinPage:0,
           proteinPageSize:20,
-          proteinTotal:2000,
+          proteinTotal:0,
+          peptidePage:0,
+          peptidePageSize:20,
+          peptideTotal:0,
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
@@ -480,6 +483,7 @@
                   }
                 }
               },function(err){
+                  this.proteinTotal = 0;
                   this.proteinTableResults = [];
                   this.proteinTableLoading = false;
                   this.$Message.error({content:'Search Error', duration:1});
@@ -516,6 +520,7 @@
                   this.getPeptidesEvidences();
                 }
               },function(err){
+                  this.proteinTotal = 0;
                   this.proteinTableResults=[];
                   console.log(err);
                   this.proteinTableLoading = false;
@@ -533,6 +538,7 @@
                 console.log('getPeptidesEvidences',res.body);
                 this.peptideTableResults=[];
                 this.peptideTableLoading = false;
+                this.peptideTotal = res.body.page.totalElements;
                 if(res.body && res.body._embedded){
                   let peptideevidences = res.body._embedded.peptideevidences;
                   console.log('peptideevidences',peptideevidences)
@@ -560,9 +566,10 @@
                 }
                 else{
                   this.$Message.success({content:'No Peptides', duration:3});
-
+                  this.peptideTotal = 0;
                 }
               },function(err){
+                  this.peptideTotal = 0;
                   this.peptideTableResults=[];
                   this.peptideTableLoading = false;
                   this.$Message.error({content:'Search Error', duration:3});
@@ -579,6 +586,15 @@
           if(this.$route.query && this.$route.query.accession)
             return
           this.getProteinEvidences();
+      },
+      peptidePageChange(page){
+          this.peptidePage = page-1;
+          this.getPeptidesEvidences();
+          
+      },
+      peptidePageSizeChange(size){
+          this.peptidePageSize = size;
+          this.getPeptidesEvidences();
       },
       refreshProteinTable(){
           if (history.pushState) {
