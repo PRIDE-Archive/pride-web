@@ -10,15 +10,24 @@
                           <span><i class="fas fa-download icon-tag"></i>Identified Proteins</span>
                           <span class="right">
                               <Input v-model="proteinAccessionInputModel" placeholder="Enter something..." style="width: 200px" size="small"></Input>
-                              <Icon type="ios-search" size="20" @click="searchProtein"></Icon>
-                              <Icon type="ios-refresh-empty" size="24" @click="refreshProteinTable"></Icon>
+                              <a href="javascript:void(0)"><Icon type="ios-search" size="20" @click="searchProtein"></Icon></a>
+                              <a href="javascript:void(0)"><Icon type="ios-refresh-empty" size="24" @click="refreshProteinTable"></Icon></a>
+                              <Dropdown placement="bottom-start" class="sort-dropdown" @on-click="proteinTableSortChange">
+                                  <a href="javascript:void(0)">
+                                      <Icon type="arrow-swap" size="20"></Icon>
+                                  </a>
+                                  <DropdownMenu slot="list">
+                                      <DropdownItem v-for="item in proteinSortOptions" :name="item.key">{{item.label}}</DropdownItem>
+                                  </DropdownMenu>
+                              </Dropdown>
+                              
                           </span>
                       </p>
                       
                      <div class="download-list-wrapper">
                        <!--<div class="summary-content-header">List</div>-->
                        <div class="download-list">
-                         <Table class="protein-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small"></Table>
+                         <Table class="protein-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-sort-change=""></Table>
                        </div>
                      </div>
                      <div class="page-container">
@@ -171,7 +180,7 @@
               {
                   title: 'Accession',
                   key: 'reportedaccession',
-                  sortable: true,
+                  sortable: 'custom',
                   minWidth: 200,
                   // ellipsis:true
               },
@@ -753,6 +762,35 @@
           proteinPage:0,
           proteinPageSize:20,
           proteinTotal:0,
+          proteinSortType:'',
+          proteinSortOrder:'',
+          proteinSortOptions:[
+              {
+                key:'reportedAccession',
+                label:'Accession'
+              },
+              {
+                key:'assayAccession',
+                label:'Assay'
+              },
+              {
+                key:'numberPeptides',
+                label:'Peptides'
+              },
+              {
+                key:'numberPSMs',
+                label:'PSMs'
+              },
+              {
+                key:'sequenceCoverage',
+                label:'Coverage'
+              },
+              {
+                key:'bestSearchEngineScore.value',
+                label:'Confidence Score'
+              },
+              
+          ],
           peptidePage:0,
           peptidePageSize:20,
           peptideTotal:0,
@@ -963,6 +1001,10 @@
             return
           this.getProteinEvidences();
       },
+      proteinTableSortChange(item){
+        this.proteinSortType = item;
+        this.getProteinEvidences();
+      },
       peptidePageChange(page){
           this.peptidePage = page-1;
           this.getPeptidesEvidences();
@@ -1008,7 +1050,7 @@
           let normalQuery = {}
           normalQuery.projectAccession=this.$route.params.id //'PXD012991'
           normalQuery.sortDirection='DESC'
-          normalQuery.sortConditions='projectAccession'
+          normalQuery.sortConditions=this.proteinSortType
           normalQuery.page = this.proteinPage
           normalQuery.pageSize = this.proteinPageSize
           return normalQuery;
@@ -1153,6 +1195,12 @@
       height: 720px;
       border-width:0;
   }
+  .molecules-table-header a{
+      border-bottom-style:none;
+  }
+  .molecules-table-header a:hover{
+      border-bottom-style:none;
+  }
 </style>
 <style>
   .card .ivu-card-body table{
@@ -1210,6 +1258,9 @@
   }
   .psm-table .psmPTMs{
       display: none;
+  }
+  .sort-dropdown .ivu-select-dropdown{
+      border-radius:0;
   }
 </style>
 
