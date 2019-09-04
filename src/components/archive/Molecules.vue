@@ -209,7 +209,7 @@
                   title: 'Assay',
                   key: 'assayAccession',
                   sortable: true,
-                  minWidth: 60,
+                  minWidth: 70,
                   // ellipsis:true
               },
               {
@@ -442,7 +442,7 @@
                   title: 'Peptide-level FDR',
                   key: 'peptidelevelFDR',
                   sortable: true,
-                  minWidth: 130,
+                  minWidth: 140,
                   // ellipsis:true
               },
               {
@@ -831,12 +831,17 @@
                         reportedaccession: proteinEvidences[i].reportedAccession,
                         assayAccession: proteinEvidences[i].assayAccession,
                         numberPeptides: proteinEvidences[i].numberPeptides,
-                        sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000,
+                        //sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000,
                         numberPSMs: proteinEvidences[i].numberPSMs,
                         bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.value || '',
                         valid: proteinEvidences[i].valid,
                         select:false,
                       }
+                      if(proteinEvidences[i].sequenceCoverage == 'Infinity' || proteinEvidences[i].sequenceCoverage== 'NaN')
+                        item.sequenceCoverage = ''
+                      else
+                        item.sequenceCoverage =  Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000
+
                       this.proteinTableResults.push(item);
                   }
                   if(this.proteinTableResults.length>0){
@@ -867,12 +872,16 @@
                     reportedaccession: proteinEvidences.reportedAccession,
                     assayAccession: proteinEvidences.assayAccession,
                     numberPeptides: proteinEvidences.numberPeptides,
-                    sequenceCoverage: proteinEvidences.sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences.sequenceCoverage * 10000)/10000,
+                    //sequenceCoverage: proteinEvidences.sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences.sequenceCoverage * 10000)/10000,
                     numberPSMs: proteinEvidences.numberPSMs,
                     bestsearchenginescore: proteinEvidences.bestSearchEngineScore.value || '',
                     valid: proteinEvidences.valid,
                     select:true,
                   }
+                  if(proteinEvidences.sequenceCoverage == 'Infinity' || proteinEvidences.sequenceCoverage== 'NaN')
+                    item.sequenceCoverage = ''
+                  else
+                    item.sequenceCoverage = Math.round(proteinEvidences.sequenceCoverage * 10000)/10000
                   this.proteinTableResults.push(item);
 
                   if(this.proteinTableResults.length>0){
