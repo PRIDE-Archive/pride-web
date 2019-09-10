@@ -12,21 +12,21 @@
                               <Input v-model="proteinAccessionInputModel" placeholder="Enter something..." style="width: 200px" size="small"></Input>
                               <a href="javascript:void(0)"><Icon type="ios-search" size="20" @click="searchProtein"></Icon></a>
                               <a href="javascript:void(0)"><Icon type="ios-refresh-empty" size="24" @click="refreshProteinTable"></Icon></a>
-                              <Dropdown placement="bottom-start" class="sort-dropdown" @on-click="proteinTableSortChange">
+                              <!-- <Dropdown placement="bottom-start" class="sort-dropdown" @on-click="proteinTableSortChange">
                                   <a href="javascript:void(0)">
                                       <Icon type="arrow-swap" size="20"></Icon>
                                   </a>
                                   <DropdownMenu slot="list">
                                       <DropdownItem v-for="item in proteinSortOptions" :name="item.key">{{item.label}}</DropdownItem>
                                   </DropdownMenu>
-                              </Dropdown>
+                              </Dropdown> -->
                           </span>
                       </p>
                       
                      <div class="download-list-wrapper">
                        <!--<div class="summary-content-header">List</div>-->
                        <div class="download-list">
-                         <Table class="protein-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-sort-change=""></Table>
+                         <Table class="protein-table" :loading="proteinTableLoading" border :columns="proteinTableColumn" :data="proteinTableResults" size="small" @on-sort-change="proteinTableSortChange"></Table>
                        </div>
                      </div>
                      <div class="page-container">
@@ -213,43 +213,43 @@
               },
               {
                   title: 'Accession',
-                  key: 'reportedaccession',
-                  //sortable: 'custom',
+                  key: 'reportedAccession',
+                  sortable: 'custom',
                   minWidth: 200,
                   // ellipsis:true
               },
               {
                   title: '#Peptides',
                   key: 'numberPeptides',
-                  //sortable: true,
+                  sortable: 'custom',
                   minWidth: 90,
                   //className:'peptideID'
               },
               {
                   title: '#PSMs',
                   key: 'numberPSMs',
-                  //sortable: true,
+                  sortable: 'custom',
                   minWidth: 75,
                   //className:'peptideID'
               },
               {
                   title: 'Coverage',
                   key: 'sequenceCoverage',
-                  //sortable: true,
+                  sortable: 'custom',
                   minWidth: 85,
                   //className:'peptideID'
               },
               {
                   title: 'Assay',
                   key: 'assayAccession',
-                  //sortable: true,
+                  sortable: 'custom',
                   minWidth: 70,
                   // ellipsis:true
               },
               {
                   title: 'Confidence Score',
-                  key: 'bestsearchenginescore',
-                  //sortable: true,
+                  key: 'bestSearchEngineScore',
+                  sortable: 'custom',
                   minWidth: 130,
                   // ellipsis:true
               },
@@ -803,7 +803,6 @@
                 key:'bestSearchEngineScore.value',
                 label:'Confidence Score'
               },
-              
           ],
           peptideSortOptions:[
               {
@@ -838,8 +837,8 @@
       getProteinEvidences(q){
           this.proteinTableLoading = true;
           let query = q || this.proteinQuery;
-          console.log('this.proteinQuery',this.proteinQuery)
-          console.log('query',query)
+          //console.log('this.proteinQuery',this.proteinQuery)
+          //console.log('query',query)
           this.$http
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
@@ -848,18 +847,18 @@
                 //this.peptideTotal = 0;
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
-                  console.log('getProteinEvidences',res.body)
-                  console.log('getProteinEvidences',res.body._embedded)
+                  //console.log('getProteinEvidences',res.body)
+                  //console.log('getProteinEvidences',res.body._embedded)
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   this.proteinTotal = res.body.page.totalElements;
                   for(let i=0; i < proteinEvidences.length; i++){
                       var item = {
-                        reportedaccession: proteinEvidences[i].reportedAccession,
+                        reportedAccession: proteinEvidences[i].reportedAccession,
                         assayAccession: proteinEvidences[i].assayAccession,
                         numberPeptides: proteinEvidences[i].numberPeptides,
                         //sequenceCoverage: proteinEvidences[i].sequenceCoverage == 'Infinity' ? '' : Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000,
                         numberPSMs: proteinEvidences[i].numberPSMs,
-                        bestsearchenginescore: proteinEvidences[i].bestSearchEngineScore.value || '',
+                        bestSearchEngineScore: proteinEvidences[i].bestSearchEngineScore.value || '',
                         valid: proteinEvidences[i].valid,
                         select:false,
                       }
@@ -1053,14 +1052,32 @@
           this.getProteinEvidences();
       },
       proteinTableSortChange(item){
+        let order = ''
+        let condition = ''
+        if(item.order == 'asc')
+            order = 'ASC'
+        else
+            order = 'DESC'
+
+        if(item.order == 'normal')
+          condition = 'projectAccession'
+        else
+          for(let i=0; i< this.proteinSortOptions.length; i++){
+              //console.log(this.proteinSortOptions[i].key,item.key)
+              if(this.proteinSortOptions[i].key.indexOf(item.key)!= -1 ){
+                  condition = this.proteinSortOptions[i].key
+                  break
+              }
+          }
         let query = {
               projectAccession :this.$route.params.id,
-              sortConditions:item,
-              sortDirection:'DESC',
+              sortConditions:condition,
+              sortDirection:order,
               page : 0,
               pageSize :20,
               reportedAccession:'',
           }
+        console.log('sort',query.sortConditions, query.sortDirection)
         this.getProteinEvidences(query);
       },
       peptidePageChange(page){
@@ -1165,7 +1182,7 @@
                   document.querySelector("#lorikeetIframe").onload = ()=>{
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
-                    console.log(peptideSequence,peaks)
+                    //console.log(peptideSequence,peaks)
                     document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks}, location.origin);
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
