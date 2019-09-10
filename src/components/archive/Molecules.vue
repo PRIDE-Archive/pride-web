@@ -1026,9 +1026,9 @@
                       item.peaks = peaksArray;
                       this.psmTableResults.push(item);
                   }
-                  console.log('this.psmTableResults[0]',this.psmTableResults[0])
-                  this.psmTableResults[0].select = true; 
-                  this.showSpectrum(this.psmTableResults[0].select, this.psmTableResults[0].peptideSequence, this.psmTableResults[0].peaks);
+                  //console.log('this.psmTableResults[0]',this.psmTableResults[0])
+                  //this.psmTableResults[0].select = true; 
+                  //this.showSpectrum(this.psmTableResults[0].select, this.psmTableResults[0].peptideSequence, this.psmTableResults[0].peaks);
                 }
                 else{
                   this.$Message.success({content:'No PSMs', duration:3});
