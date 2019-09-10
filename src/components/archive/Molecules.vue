@@ -3,7 +3,7 @@
     <div class="panel nav"><NavBar page="archive"/></div>
     <div class="content">
       <Row type="flex" justify="center" class="code-row-bg">
-          <Col span="12">
+          <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
                       <p slot="title" class="table-header"> 
@@ -20,7 +20,6 @@
                                       <DropdownItem v-for="item in proteinSortOptions" :name="item.key">{{item.label}}</DropdownItem>
                                   </DropdownMenu>
                               </Dropdown>
-                              
                           </span>
                       </p>
                       
@@ -36,27 +35,37 @@
                   </Card>    
               </div>
           </Col>
-          <Col span="12">
-              <div class="visualization-wrapper">
-                  <Card class="card protein">
-                      <p slot="title"> <i class="fas fa-download icon-tag"></i>Sequence</p>
-                     <!--
-                     <div class="filter-wrapper">
-                         <div class="summary-content-header">Filter</div>
-                         <Select v-model="model1" size="small" style="width:100px">
-                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                         </Select>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+        <Col span="24">
+            <div class="visualization-wrapper">
+                <Card class="card protein">
+                    <p slot="title" class="table-header"> 
+                        <span><i class="fas fa-download icon-tag"></i>Sequence</span>
+                        <span class="right">
+                            <a v-if="proteinSequenceCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="proteinSequenceCollapse = !proteinSequenceCollapse"></Icon></a>
+                            <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="proteinSequenceCollapse = !proteinSequenceCollapse"></Icon></a>
+                        </span>
+                    </p>
+                   <div v-if="proteinSequenceCollapse">
+                     <div v-if="proteinSequence">
+                       {{proteinSequence}}
                      </div>
-                      -->
-                     <div class="sequence-container">
-                      <span class="no-data-wrapper">No data</span>
-                       <!--<div class="summary-content-header">List</div>-->
-                      
+                     <div v-else style="color:#bdbdbd; text-align: center;">
+                        Please Select One Protein
                      </div>
-            
-                  </Card>
-              </div>
-          </Col>
+                   </div>
+                   <div v-else class="sequence-container">
+                      <div v-if="proteinSequence">
+                        {{proteinSequence}}
+                      </div>
+                      <div v-else style="color:#bdbdbd; text-align: center;">
+                        Please Select One Protein
+                      </div>
+                   </div>
+                </Card>
+            </div>
+        </Col>
       </Row>
       <Row type="flex" justify="center" class="code-row-bg">
           <Col span="12">
@@ -122,13 +131,18 @@
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
-                       <p slot="title">Consensus Spectrum</p>
-                       <div class="download-list-wrapper spectrum-container">
-                        <span v-if="!spectrumTableShow" class="no-data-wrapper">No data</span>
-                        <Spin fix v-if="spectrumSpinShow"></Spin> 
-                         <!-- <iframe id="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe> -->
+                       <p slot="title" class="table-header">
+                          <span><i class="fas fa-download icon-tag"></i>Consensus Spectrum</span>
+                          <span class="right">
+                              <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
+                          </span>
+                       </p>
+                       <div class="spectrum-container">
+                          <div style="color:#bdbdbd; text-align: center;">
+                              {{proteinTableHint}}
+                          </div>
                        </div>
-                       <!--<Lorikeet></Lorikeet>-->
                   </Card>
               </div>
           </Col>
@@ -147,7 +161,10 @@
           iframeURL:this.$store.state.baseURL + '/static/lorikeet/html/pride.html',
           proteinAccessionInputModel:'',
           peptideSequenceInputModel:'',
+          proteinSequence:'',
+          proteinSequenceCollapse:true,
           proteinTableLoading: false,
+          proteinTableHint:'Please select one PSM',
           proteinTableColumn: [
               {
                   title: '#',
@@ -541,6 +558,12 @@
                                       return x;
                                   });
                                   this.psmTableResults[params.index].select= val;
+                                  if(val)
+                                      this.psmItemSelected = true;
+                                  else
+                                      this.psmItemSelected = false;
+                                     
+                                  this.spectrumTableCollapseChange(!val);
                                   this.showSpectrum(val, params.row.peptideSequence, params.row.peaks)
                               }
                           }
@@ -745,9 +768,11 @@
               },
           ],
           psmTableResults:[],
+          psmItemSelected:false,
           //selectedProteinTableItem:{},
           spectrumSpinShow:false,
           spectrumTableShow:false,
+          spectrumTableCollapse:true,
           proteinPage:0,
           proteinPageSize:20,
           proteinTotal:0,
@@ -1123,12 +1148,10 @@
       showSpectrum(val, peptideSequence, peaks){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
-
               if(peptideSequence){ 
-
                   if(iframeDom)
                     iframeDom.remove();
-
+                  
                   this.spectrumSpinShow = true;
                   this.spectrumTableShow=false;
                   let iframe = document.createElement('iframe');
@@ -1145,7 +1168,6 @@
                     console.log(peptideSequence,peaks)
                     document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks}, location.origin);
                   }
-
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
                       this.spectrumSpinShow = false;
@@ -1156,13 +1178,6 @@
                   this.spectrumTableShow = false;
                   this.spectrumSpinShow = false;
               }
-              // this.peptideProteinAccession = params.row.reportedaccession
-              // this.peptideAssayAccession = params.row.assayAccession
-              // this.getPeptidesEvidences();
-              // if (history.pushState) {
-              //     var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?accession=' + this.$route.params.id + '%3A' + this.peptideAssayAccession + '%3A'+ this.peptideProteinAccession;
-              //     window.history.pushState({path:newurl},'',newurl);
-              // }
           }
           else{
               this.spectrumSpinShow = false;
@@ -1170,6 +1185,28 @@
               document.querySelector("#lorikeetIframe").remove();
           }
       },
+      spectrumTableCollapseChange(val){
+          this.spectrumTableCollapse = val
+          if(this.spectrumTableCollapse){
+              document.querySelector('.spectrum-container').style.height = 'auto'
+              if(document.querySelector('#lorikeetIframe'))
+                document.querySelector('#lorikeetIframe').style.display= 'none'
+              if(this.psmItemSelected)
+                  this.proteinTableHint = "Open Table to see the results"
+              else
+                  this.proteinTableHint = "Please select one PSM"
+          } 
+          else{
+              document.querySelector('.spectrum-container').style.height = '730px'
+              if(this.psmItemSelected){
+                  if(document.querySelector('#lorikeetIframe'))
+                    document.querySelector('#lorikeetIframe').style.display= 'block'
+                  this.proteinTableHint = ""
+              }
+              else
+                  this.proteinTableHint = "Please select one PSM"
+          }
+      }
     },
     watch: {
         peptideTableResults:{
@@ -1184,6 +1221,19 @@
           },
           deep:true
         },
+        // proteinSequence:{
+        //   handler(){
+        //       if(this.proteinSequence){
+        //         console.log(123)
+        //         document.querySelector('.sequence-container').style.height  = '498px'
+        //       }
+        //       else{
+        //         console.log(222)
+        //         document.querySelector('.sequence-container').style.height  = '0px'
+        //       }
+        //   },
+        //   deep:false
+        // }
     },
     computed:{
       proteinQuery:function(){
@@ -1306,13 +1356,13 @@
       padding: 0px 20px 0 20px;
   }
   .sequence-container{
-    height: 498px;
+    height: 496px;
   }
   .download-list-wrapper.psm-container{
     height: 496px !important;
   }
-   .download-list-wrapper.spectrum-container{
-      height: 730px !important;
+  .spectrum-container{
+      height: auto;
    }
   .no-data-wrapper{
     display: flex;
