@@ -337,7 +337,7 @@
               },
               {
                   title: 'Protein Accession',
-                  key: 'projectAccession',
+                  key: 'proteinAccession',
                   //sortable: true,
                   minWidth: 140,
                   // ellipsis:true
@@ -531,13 +531,13 @@
                   className:'peptidePTMs'
                   // ellipsis:true
               },
-              {
-                  title: 'proteinAccession',
-                  key: 'proteinAccession',
-                  width:1,
-                  className:'peptidePTMs'
-                  // ellipsis:true
-              },
+              // {
+              //     title: 'proteinAccession',
+              //     key: 'proteinAccession',
+              //     width:1,
+              //     className:'peptidePTMs'
+              //     // ellipsis:true
+              // },
           ],
           peptideTableResults:[],
           psmTableLoading:false,
@@ -848,7 +848,7 @@
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
                   //console.log('getProteinEvidences',res.body)
-                  //console.log('getProteinEvidences',res.body._embedded)
+                  console.log('getProteinEvidences',res.body._embedded)
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   this.proteinTotal = res.body.page.totalElements;
                   for(let i=0; i < proteinEvidences.length; i++){
@@ -899,7 +899,7 @@
                   console.log('peptideevidences',peptideevidences)
                   for(let i=0; i < peptideevidences.length; i++){
                       var item = {
-                        projectAccession: peptideevidences[i].projectAccession,
+                        //projectAccession: peptideevidences[i].projectAccession,
                         peptideSequence: peptideevidences[i].peptideSequence,
                         decoy: peptideevidences[i].decoy,
                         isValid: peptideevidences[i].isValid,
