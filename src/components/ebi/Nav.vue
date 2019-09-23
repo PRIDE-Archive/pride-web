@@ -166,7 +166,8 @@
               </FormItem>
               <div class="login-action">
                 <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <a @click="forgetPassword">Forget Password</a>
+                <!-- <a @click="forgetPassword">Forget Password</a> -->
+                <a href="mailto:pride-support@ebi.ac.uk">Forget Password</a>
               </div>
               <FormItem>
                 <Button type="primary" @click="login('formInline')" long>Log in</Button>
