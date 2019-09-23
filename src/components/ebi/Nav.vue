@@ -289,7 +289,7 @@
                     // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
-                tokenApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/getAAPToken',
+                tokenApi:this.$store.state.baseApiURL+'/getAAPToken',
                 formInlineSignUp:{
                   email:'',
                   title:'',
@@ -445,7 +445,14 @@
                     }
                   });
                   this.$http
-                        .post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
+                        //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
+                        .post(this.tokenApi, 
+                            {Credentials:
+                              {
+                                username:this.formInline.user,
+                                password:this.formInline.password
+                              } 
+                            })
                         .then(function(res){
                               this.loginModalBool=false;
                               sessionStorage.setItem('username',this.formInline.user);
