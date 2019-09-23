@@ -428,7 +428,7 @@
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      //console.log(params.row)
+                      console.log('peptideTableColumn',params.row)
                       let highlightChar=[];
                       if(params.row.peptideSequence){
                           if(params.row.ptms&&params.row.ptms.length>0){
@@ -481,8 +481,6 @@
                       else{
                           return h('span',[h('span',{}, 'No Seq')])
                       }
-                      
-
                       // return h('div', [
                       //     h('span', {
                       //         on: {
@@ -669,7 +667,7 @@
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      //console.log(params.row)
+                      console.log('psmTableColumn',params.row)
                       let highlightChar=[];
                       if(params.row.peptideSequence){
                           if(params.row.ptms&&params.row.ptms.length>0){
