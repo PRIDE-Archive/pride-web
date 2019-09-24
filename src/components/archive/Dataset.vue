@@ -3,7 +3,7 @@
       <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="content">
           <Row>
-            <Col span="24">
+            <Col span="60">
                 <!--
                 <Breadcrumb separator=">">
                     <BreadcrumbItem to="/">Home</BreadcrumbItem>
@@ -13,7 +13,7 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>
-                  <a class="tag-button" @click="gotoMolecules">Molecules</a>
+                  <a class="tag-button" @click="gotoMolecules">Identification Results</a>
                   <!--<div class="tags">
                     
                       <span class="type-tag-wrapper">
@@ -1191,7 +1191,7 @@
       color: white;
       padding: 8px 10px;
       font-size: 12px;
-      width: 80px;
+      width: 150px;
       text-align: center;
       font-weight: 700;
       background-color: #5bc0be;

@@ -646,7 +646,7 @@
                                       this.psmItemSelected = false;
                                      
                                   this.spectrumTableCollapseChange(!val);
-                                  this.showSpectrum(val, params.row.peptideSequence, params.row.peaks)
+                                  this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ)
                               }
                           }
                       });
@@ -1297,7 +1297,7 @@
         }
         this.getPeptidesEvidences(query);
       },
-      showSpectrum(val, peptideSequence, peaks){
+      showSpectrum(val, peptideSequence, peaks, charge, precursorMZ){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -1318,7 +1318,7 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks}, location.origin);
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ}, location.origin);
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
