@@ -51,7 +51,7 @@
                       <div v-if="proteinSequenceArray.length>1 && !proteinSequenceCollapse" class="header">
                           <div class="info">
                               <div>Accesssion: {{sequenceTableHeader.accession}}</div>
-                              <div>{{sequenceTableHeader.peptides}} peptides ({{sequenceTableHeader.matched}} matched, {{sequenceTableHeader.distinct}} distinct) 206/509 amino ({{sequenceTableHeader.coverage}} coverage)</div>
+                              <div>{{sequenceTableHeader.peptides}} peptides ({{sequenceTableHeader.matched}} matched,  <!--{{sequenceTableHeader.distinct}} distinct) 206/509 amino (--> {{sequenceTableHeader.coverage}} coverage)</div>
                           </div>
                           <div class="legender">
                               <span style ="display: flex; align-items: center; margin-left: 20px" v-for = "item in headerLegend">
@@ -238,7 +238,7 @@
                                           sortConditions:'projectAccession',
                                           sortDirection:'DESC',
                                           page: 0,
-                                          pageSize: 20
+                                          pageSize: 1000
                                       }
                                       this.getPeptidesEvidences(query);
                                       if (history.pushState) {
@@ -1162,13 +1162,31 @@
           this.proteinPage = page-1;
           if(this.$route.query && this.$route.query.proteinAccession)
             return
-          this.getProteinEvidences();
+
+          let query = {
+              projectAccession :this.$route.params.id,
+              sortConditions:this.proteinSortConditions,
+              sortDirection:this.proteinSortDirection,
+              page : this.proteinPage,
+              pageSize :this.proteinPageSize,
+              reportedAccession:this.proteinAccessionInputModel,
+          }
+          this.getProteinEvidences(query);
       },
       proteinPageSizeChange(size){
           this.proteinPageSize = size;
           if(this.$route.query && this.$route.query.proteinAccession)
             return
-          this.getProteinEvidences();
+
+          let query = {
+              projectAccession :this.$route.params.id,
+              sortConditions:this.proteinSortConditions,
+              sortDirection:this.proteinSortDirection,
+              page : this.proteinPage,
+              pageSize :this.proteinPageSize,
+              reportedAccession:this.proteinAccessionInputModel,
+          }
+          this.getProteinEvidences(query);
       },
       proteinTableSortChange(item){
         if(item.order == 'asc')
@@ -1192,7 +1210,7 @@
               sortDirection:this.proteinSortDirection,
               page : this.proteinPage,
               pageSize :this.proteinPageSize,
-              reportedAccession:'',
+              reportedAccession:this.proteinAccessionInputModel,
           }
         console.log('sort',query.sortConditions, query.sortDirection)
         this.getProteinEvidences(query);
