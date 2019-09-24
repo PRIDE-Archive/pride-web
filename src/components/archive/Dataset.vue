@@ -3,7 +3,7 @@
       <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="content">
           <Row>
-            <Col span="60">
+            <Col span="24">
                 <!--
                 <Breadcrumb separator=">">
                     <BreadcrumbItem to="/">Home</BreadcrumbItem>
@@ -1191,7 +1191,7 @@
       color: white;
       padding: 8px 10px;
       font-size: 12px;
-      width: 150px;
+      width: 80px;
       text-align: center;
       font-weight: 700;
       background-color: #5bc0be;
