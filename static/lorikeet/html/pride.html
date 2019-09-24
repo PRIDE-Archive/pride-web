@@ -34,6 +34,8 @@ function receiveMessage(event)
     //return;
     peaksTemp = event.data.peaks;
     sequence = event.data.sequence;
+    charge = event.data.charge;
+    precursorMZ = event.data.precursorMZ;
     for(let i=0; i<peaksTemp.length; i++){
       var tempArray = [];
       tempArray.push(peaksTemp[i].mz);
@@ -47,12 +49,12 @@ function receiveMessage(event)
 function showData(){
     $("#lorikeet").specview({"sequence":sequence,
                             "scanNum":14161,
-                            "charge":2,
+                            "charge":charge,
                             "massError":0.5,
                             "peakDetect":true,
                             "showMassErrorPlot":true,
                             "massErrorPlotDefaultUnit":"ppm",
-                            "precursorMz":833.912965466879996,
+                            "precursorMz":precursorMZ,
                             "fileName":"TCGA_E2-A10A_BH-A18Q_C8-A130_117C_W_BI_20130222_H-PM_f24.14161.14161.2",
                             "width":650,
                             "height":500,
