@@ -849,6 +849,20 @@
                   className:'psmPTMs'
                   // ellipsis:true
               },
+              {
+                  title: 'Charge',
+                  key: 'charge',
+                  width:1,
+                  className:'psmPTMs'
+                  // ellipsis:true
+              },
+              {
+                  title: 'PrecursorMZ',
+                  key: 'precursorMZ',
+                  width:1,
+                  className:'psmPTMs'
+                  // ellipsis:true
+              },
           ],
           psmTableResults:[],
           protienItemSelected:false,
@@ -979,8 +993,8 @@
                       if(proteinEvidences[i].sequenceCoverage == 'Infinity' || proteinEvidences[i].sequenceCoverage== 'NaN')
                         item.sequenceCoverage = ''
                       else
-                        item.sequenceCoverage =  Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000
-
+                        item.sequenceCoverage =  Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000 * 100 + '%'
+                        
                       this.proteinTableResults.push(item);
                   }
                   // if(this.proteinTableResults.length>0){
@@ -1071,6 +1085,8 @@
                         //startPostion: psm[i].startPostion,
                         //endPostion: psm[i].endPostion,
                         ptms:psm[i].ptms,
+                        charge:psm[i].charge,
+                        precursorMZ:psm[i].charge,
                         select:false,
                       }
                       //add psmlevelFDR for item
@@ -1115,6 +1131,7 @@
                 this.psmTableLoading = false;
                 if(res.body && res.body._embedded){
                   let psm = res.body._embedded.spectraevidences;
+                  console.log('psm',psm)
                   for(let i=0; i < psm.length; i++){
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
