@@ -48,21 +48,17 @@ function receiveMessage(event)
 
 function showData(){
     $("#lorikeet").specview({"sequence":sequence,
-                            "scanNum":14161,
                             "charge":charge,
-                            "massError":0.5,
                             "peakDetect":true,
                             "showMassErrorPlot":true,
                             "massErrorPlotDefaultUnit":"ppm",
                             "precursorMz":precursorMZ,
-                            "fileName":"TCGA_E2-A10A_BH-A18Q_C8-A130_117C_W_BI_20130222_H-PM_f24.14161.14161.2",
                             "width":650,
                             "height":500,
-                            "ntermMod":144.102063,
-                            "ctermMod":0,
                             "variableMods":[],
                             "peaks":peaks,
-                            "labelReporters": true});
+                            "labelImmoniumIons": false,
+                            "labelReporters": false});
 }
 
 /*
