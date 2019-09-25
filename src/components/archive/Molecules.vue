@@ -249,8 +249,7 @@
                                      this.changeNum();
                                      this.sequenceTableHeader.accession = params.row.reportedAccession;
                                      
-                                     let tempSequenceCoverage = params.row.sequenceCoverage
-                                     this.sequenceTableHeader.coverage = Math.round(tempSequenceCoverage*100 * 10000)/10000 + '%';
+                                     this.sequenceTableHeader.coverage = params.row.sequenceCoverage
                                   }
                                   else{
                                     this.proteinSequenceArray = [];
@@ -993,7 +992,7 @@
                       if(proteinEvidences[i].sequenceCoverage == 'Infinity' || proteinEvidences[i].sequenceCoverage== 'NaN')
                         item.sequenceCoverage = ''
                       else
-                        item.sequenceCoverage =  Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000 * 100 + '%'
+                        item.sequenceCoverage =  (Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000 * 100).toFixed(2) + '%'
                         
                       this.proteinTableResults.push(item);
                   }
