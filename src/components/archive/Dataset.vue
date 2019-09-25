@@ -1191,7 +1191,7 @@
       color: white;
       padding: 8px 10px;
       font-size: 12px;
-      width: 80px;
+      width: 150px;
       text-align: center;
       font-weight: 700;
       background-color: #5bc0be;
