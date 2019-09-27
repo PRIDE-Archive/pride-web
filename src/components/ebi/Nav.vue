@@ -149,9 +149,10 @@
         <Modal
             v-model="loginModalBool"
             title="Log In"
-            :mask-closable="true"
+            :mask-closable="false"
             :footer-hide="true"
-            :closable="false"
+            :closable="true"
+            class-name="login-modal"
             scrollable>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
               <FormItem prop="user">
@@ -166,8 +167,7 @@
               </FormItem>
               <div class="login-action">
                 <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <!-- <a @click="forgetPassword">Forget Password</a> -->
-                <a href="mailto:pride-support@ebi.ac.uk">Forget Password</a>
+                <a @click="forgetPassword">Forget Password</a>
               </div>
               <FormItem>
                 <Button type="primary" @click="login('formInline')" long>Log in</Button>
@@ -177,9 +177,9 @@
         <Modal
             v-model="signUpModalBool"
             title="Sign Up"
-            :mask-closable="true"
+            :mask-closable="false"
             :footer-hide="true"
-            :closable="false"
+            :closable="true"
             class-name="signup-modal"
             scrollable>
             <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
@@ -218,6 +218,36 @@
               </FormItem>
               <FormItem>
                 <Button class="signupButton" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
+              </FormItem>
+            </Form>
+        </Modal>
+        <Modal
+            v-model="forgetPasswordModalBool"
+            title="Forget Password"
+            :mask-closable="false"
+            :footer-hide="true"
+            :closable="true"
+            class-name="forget-password-modal"
+            scrollable>
+            <Form class="signUpForm" ref="formInlineSendEmail" :model="formInlineSendEmail" :rules="ruleInlineSendEmail">
+               <FormItem prop="email" label="Email">
+                <Input type="text" v-model="formInlineSendEmail.email" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="firstname" label="First name">
+                <Input type="text" v-model="formInlineSendEmail.firstname" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="lastname" label="Last name">
+                <Input type="text" v-model="formInlineSendEmail.lastname" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem prop="content" label="Content">
+                <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlineSendEmail.content" placeholder="">
+                </Input>
+              </FormItem>
+              <FormItem>
+                <Button class="signupButton" type="primary" @click="sendEmail('formInlineSendEmail')" long>Send Email</Button>
               </FormItem>
             </Form>
         </Modal>
@@ -276,6 +306,7 @@
                 //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
+                forgetPasswordModalBool:false,
                 formInline: {
                   user: '',
                   password: ''
@@ -324,6 +355,27 @@
                   ],
                   terms:[
                     { required: true, type:'enum', enum: ["true"], transform: value => value.toString(), message: 'Please check Terms and Conditions' }
+                  ],
+                },
+                formInlineSendEmail:{
+                  email:'',
+                  firstname:'',
+                  lastname:'',
+                  content:'',
+                  
+                },
+                ruleInlineSendEmail:{
+                  email: [
+                    { required: true, type:'email', message: 'Please input email', trigger: 'blur' }
+                  ],
+                  firstname: [
+                    { required: true, message: 'Please input firstname', trigger: 'blur' }
+                  ],
+                  lastname: [
+                    { required: true, message: 'Please input lastname', trigger: 'blur' }
+                  ],
+                  content: [
+                    { required: true, message: 'Please input content', trigger: 'blur' }
                   ],
                 },
                 titleList:[
@@ -513,6 +565,48 @@
                         });
               })
             },
+            sendEmail(name){
+              this.$refs[name].validate((valid) => {
+                  if (!valid) {
+                    this.$Message.error({ content: 'Fill all required items' });
+                    return
+                  }
+                  this.$Spin.show({
+                    render: (h) => {
+                      return h('div', [
+                        h('Icon', {
+                          'class': 'demo-spin-icon-load',
+                          props: {
+                            type: 'load-b',
+                            size: 18
+                          }
+                        }),
+                        h('div', 'Please wait...')
+                      ])
+                    }
+                  });
+                  let query = {};
+                  query.UserSummary = {
+                    content: this.formInlineSendEmail.affiliation,
+                    email: this.formInlineSendEmail.email,
+                    firstName: this.formInlineSendEmail.firstname,
+                    lastName: this.formInlineSendEmail.lastname,
+                  }
+                  this.$Message.error({ content: 'Wait for API' });
+                  // this.$http
+                  //       .post(this.signupAPI,query)
+                  //       .then(function(res){
+                  //             this.signUpModalBool=false;
+                  //             this.$Message.success({ content: 'Sign Up Success' })
+                  //             this.$Spin.hide()
+                  //             this.$refs[name].resetFields();
+                  //       },function(err){
+                  //         let errArray = err.body;
+                  //         this.$Spin.hide()
+                  //         this.$Message.error({ content: errArray[0].defaultMessage});
+                  //       });
+              })
+            },
             logout(){
               //this.$store.commit('setUser',{username: '', token:''});  
               sessionStorage.setItem('username','');
@@ -580,7 +674,9 @@
               return JSON.stringify(result); //JSON
             },
             forgetPassword(){
-              window.open('https://www.ebi.ac.uk/pride/archive/users/forgotpassword');
+                this.forgetPasswordModalBool = true;
+                this.signUpModalBool = false;
+                this.loginModalBool = false;
             },
             passwordTypeChange(type){
               if(type)
@@ -718,5 +814,14 @@
     }
     .signUpForm .ivu-form-item-error-tip{
       padding-top: 0px
+    }
+    .login-modal a{
+      border-bottom-style:none;
+    }
+    .signup-modal a{
+      border-bottom-style:none;
+    }
+    .forget-password-modal a{
+      border-bottom-style:none;
     }
 </style>
