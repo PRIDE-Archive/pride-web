@@ -799,6 +799,12 @@
                   // ellipsis:true
               },
               {
+                  title: 'Charge',
+                  key: 'charge',
+                  minWidth: 60,
+                  // ellipsis:true
+              },
+              {
                   title: 'Valid',
                   key: 'isValid',
                   //sortable: true,
@@ -844,13 +850,6 @@
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: 'Charge',
-                  key: 'charge',
                   width:1,
                   className:'psmPTMs'
                   // ellipsis:true
@@ -1081,11 +1080,9 @@
                         peptideSequence: psm[i].peptideSequence,
                         decoy: psm[i].decoy,
                         isValid: psm[i].valid,
-                        //startPostion: psm[i].startPostion,
-                        //endPostion: psm[i].endPostion,
-                        ptms:psm[i].ptms,
                         charge:psm[i].charge,
-                        precursorMZ:psm[i].charge,
+                        precursorMZ:psm[i].precursorMZ,
+                        ptms:psm[i].ptms,
                         select:false,
                       }
                       //add psmlevelFDR for item
@@ -1137,8 +1134,8 @@
                         peptideSequence: psm[i].peptideSequence,
                         decoy: psm[i].decoy,
                         isValid: psm[i].isValid,
-                        //startPostion: psm[i].startPostion,
-                        //endPostion: psm[i].endPostion,
+                        charge:psm[i].charge,
+                        precursorMZ:psm[i].precursorMZ,
                         ptms:psm[i].ptms,
                         select:false,
                       }
