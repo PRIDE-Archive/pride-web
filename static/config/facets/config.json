@@ -37,6 +37,9 @@
     },
     "countries_facet": {
         "name": "Country"
+    },
+    "project_submission_type":{
+        "name": "Submission Type"
     }
   }
 }
