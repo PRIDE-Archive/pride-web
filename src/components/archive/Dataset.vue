@@ -13,7 +13,7 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>
-                  <a class="tag-button" @click="gotoMolecules">Identification Results</a>
+                  <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                   <!--<div class="tags">
                     
                       <span class="type-tag-wrapper">
@@ -428,12 +428,13 @@
           modification:[],
           queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
-          queryAssayApi:'https://www.ebi.ac.uk:443/pride/ws/archive/assay/list/project/',
+          queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
-          viewInreactomeApi:'https://www.ebi.ac.uk/pride/ws/archive/protein/list/assay/',
-          msRunApi:'http://wwwdev.ebi.ac.uk/pride/ws/archive/msruns/byProject',
+          viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
+          msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
+          proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -794,6 +795,7 @@
           ],
           msRunModalTableData:[],
           msRunTableLoading:false,
+          moleculesButtonState:true,
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1034,7 +1036,27 @@
           normalQuery.filter = filter;
           console.log(filter)
           this.$router.push({name: 'archive', query: normalQuery});
-      }
+      },
+      getProteinEvidences(q){
+          let query = {};
+          query.projectAccession=this.$route.params.id //'PXD012991'
+          this.$http
+              .get(this.proteinEvidencesApi,{params: query})
+              .then(function(res){
+               
+                if(res.body && res.body._embedded){
+                 
+                  let proteinEvidences = res.body._embedded.proteinevidences;
+                  if(proteinEvidences.length>0)
+                    this.moleculesButtonState = false
+                  else
+                    this.moleculesButtonState = true
+                  
+                }
+              },function(err){
+                  this.$Message.error({content:'Protein Check Error', duration:3});
+              });
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1042,6 +1064,7 @@
         this.queryArchiveProjectFiles();
         this.querySimilarity();
         this.getMSRunTableData();
+        this.getProteinEvidences();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1201,7 +1224,14 @@
     opacity: 0.8 !important;
     color: white;
   }
-  
+  .tag-button.notActive{
+    color: white;
+    opacity: 0.5 !important;
+  }
+  .tag-button.notActive:hover{
+    opacity: 0.5 !important;
+    color: white;
+  }
   /*
   @media (min-width: 768px) {
       .content{
