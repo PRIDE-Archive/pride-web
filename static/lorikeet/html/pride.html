@@ -32,10 +32,11 @@ function receiveMessage(event)
 {
     //if (event.origin !== "http://example.org:8080")
     //return;
-    peaksTemp = event.data.peaks;
     sequence = event.data.sequence;
     charge = event.data.charge;
     precursorMZ = event.data.precursorMZ;
+    peaksTemp = event.data.peaks;
+    variableMods = event.data.variableMods;
     for(let i=0; i<peaksTemp.length; i++){
       var tempArray = [];
       tempArray.push(peaksTemp[i].mz);
@@ -55,7 +56,7 @@ function showData(){
                             "precursorMz":precursorMZ,
                             "width":650,
                             "height":500,
-                            "variableMods":[],
+                            "variableMods":variableMods,
                             "peaks":peaks,
                             "labelImmoniumIons": false,
                             "labelReporters": false});
