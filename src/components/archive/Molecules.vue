@@ -206,7 +206,7 @@
                                       return x;
                                   });
                                   this.proteinTableResults[params.index].select= val;
-                                  console.log('params.row',params.row);
+                                  //console.log('params.row',params.row);
                                   
                                   if(val){
                                       this.proteinSequence = params.row.proteinSequence;
@@ -387,7 +387,7 @@
                                   });
                                   this.peptideTableResults[params.index].select= val;
                                   if(val){
-                                    console.log('accession',params.row.accession)
+                                    //console.log('accession',params.row.accession)
                                     this.getPSM(params.row.accession);
                                     // this.peptideProteinAccession = params.row.reportedaccession
                                     // this.peptideAssayAccession = params.row.assayAccession
@@ -427,7 +427,7 @@
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      console.log('peptideTableColumn',params.row)
+                      //console.log('peptideTableColumn',params.row)
                       let highlightChar=[];
                       if(params.row.peptideSequence){
                           if(params.row.ptms&&params.row.ptms.length>0){
@@ -643,9 +643,10 @@
                                       this.psmItemSelected = true;
                                   else
                                       this.psmItemSelected = false;
-                                     
+                                    
+                                  console.log('psm rows', params.row) 
                                   this.spectrumTableCollapseChange(!val);
-                                  this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ)
+                                  this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ, params.row.variableMods)
                               }
                           }
                       });
@@ -666,7 +667,7 @@
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      console.log('psmTableColumn',params.row)
+                      //console.log('psmTableColumn',params.row)
                       let highlightChar=[];
                       if(params.row.peptideSequence){
                           if(params.row.ptms&&params.row.ptms.length>0){
@@ -861,6 +862,14 @@
                   className:'psmPTMs'
                   // ellipsis:true
               },
+              {
+                  title: 'VariableMods',
+                  key: 'variableMods',
+                  width:1,
+                  className:'psmPTMs'
+                  // ellipsis:true
+              },
+              
           ],
           psmTableResults:[],
           protienItemSelected:false,
@@ -1102,9 +1111,24 @@
                           peaksArray.push(item)
                       }
                       item.peaks = peaksArray;
-                      this.psmTableResults.push(item);
 
+                      //add variableMods for item
+                      let variableModsArray = [];
+                      for(let j=0; j<psm[i].ptms.length; j++){
+                          for(let k=0; k<psm[i].ptms[j].positionMap.length; k++){
+                              let item = {
+                                index:psm[i].ptms[j].positionMap[k].key,
+                                modMass:parseFloat(psm[i].ptms[j].modification.value),
+                                aminoAcid: psm[i].peptideSequence.split('')[psm[i].ptms[j].positionMap[k].key-1]
+                              };
+                              variableModsArray.push(item)
+                          }
+                      }
+                      item.variableMods = variableModsArray;
+                      
+                      this.psmTableResults.push(item);
                   }
+                  console.log('this.psmTableResults',this.psmTableResults)
                 }
                 else{
                   this.$Message.success({content:'No PSMs', duration:3});
@@ -1156,6 +1180,21 @@
                           peaksArray.push(item)
                       }
                       item.peaks = peaksArray;
+
+                      //add variableMods for item
+                      let variableModsArray = [];
+                      for(let j=0; j<psm[i].ptms.length; j++){
+                          for(let k=0; k<psm[i].ptms[j].positionMap.length; k++){
+                              let item = {
+                                index:psm[i].ptms[j].positionMap[k].key,
+                                modMass:parseFloat(psm[i].ptms[j].modification.value),
+                                aminoAcid: psm[i].peptideSequence.split('')[psm[i].ptms[j].positionMap[k].key-1]
+                              };
+                              variableModsArray.push(item)
+                          }
+                      }
+                      item.variableMods = variableModsArray;
+
                       this.psmTableResults.push(item);
                   }
                   //console.log('this.psmTableResults[0]',this.psmTableResults[0])
@@ -1310,7 +1349,7 @@
         }
         this.getPeptidesEvidences(query);
       },
-      showSpectrum(val, peptideSequence, peaks, charge, precursorMZ){
+      showSpectrum(val, peptideSequence, peaks, charge, precursorMZ,variableMods){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -1331,7 +1370,7 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ}, location.origin);
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods}, location.origin);
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
@@ -1453,14 +1492,14 @@
             }
 
             if(ptms){
-              console.log('ptms',ptms)
+              //console.log('ptms',ptms)
                 for(let j=0; j<ptms.length; j++){
                     let modification =  ptms[j].modification
                     for(let k=0; k<ptms[j].positionMap.length; k++){
-                        console.log('k',k)
+                        //console.log('k',k)
                         let des = modification.name + ';' + modification.accession
                         let key = ptms[j].positionMap[k].key -1 + start
-                        console.log(des,key)
+                        //console.log(des,key)
                         this.proteinSequenceArray[key].type = 'ptm'
                         this.proteinSequenceArray[key].des = des
                     }
