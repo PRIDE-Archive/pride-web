@@ -17,7 +17,7 @@
     "organisms_part_facet":{
         "name":"Organisms Part"
     },
-    "projects_tags_facet":{
+    "project_tags_facet":{
         "name":"Projects Tags"
     },
     "project_keywords_facet":{
