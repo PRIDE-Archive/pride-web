@@ -133,7 +133,7 @@
                   <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
                 </div>
             </div>
-            <div v-if="activeName == 'private_data'" class="content-wrapper">
+            <div v-if="activeName == 'private_data' && profileData.userAuthorities =='SUBMITTER'" class="content-wrapper">
                 <div v-if="privateLoading" class="demo-spin-container">
                     <Spin size="large" fix></Spin>
                 </div>
@@ -226,7 +226,7 @@
                     </div> -->
                 </div>
             </div>
-            <div v-if="activeName == 'reviewer_submission'" class="content-wrapper">
+            <div v-if="activeName == 'reviewer_submission' && profileData.userAuthorities =='REVIEWER' " class="content-wrapper">
                 <div v-if="reviewLoading" class="demo-spin-container">
                     <Spin size="large" fix></Spin>
                 </div>
@@ -436,7 +436,7 @@
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.baseApiURL + '/my-private-submissions',
-                reviewSubmissionURL: this.$store.state.baseApiURL + '/reviewer-submissions',  
+                reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/reviewer-submissions',  
                 changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
                 viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
                 tableList:[
@@ -509,7 +509,8 @@
                     { required: true, validator: newPasswordRecheck, trigger: 'on-change' }
                   ],
                 },
-                profileData:{
+                profileData:{ 
+                    userAuthorities:'',
                     email:'',
                     title:'',
                     firstName:'',
@@ -589,7 +590,7 @@
                       .then(function(res){
                         this.reviewLoading = false;
                         let dataList = res.body;
-                        //console.log(res)
+                        console.log('getReviewerSubmission', res.body)
                         for(let i=0; i<dataList.length; i++){
                             let item = {
                                 accession: dataList[i].accession,
@@ -616,7 +617,9 @@
                         }
                       })
                       .then(function(res){
+                        console.log('res.body',res.body)
                         this.profileLoading = false;
+                        this.profileData.userAuthorities = res.body.userAuthorities[0];
                         this.profileData.email = res.body.email;
                         this.profileData.title = res.body.title;
                         this.profileData.firstName = res.body.firstName;
@@ -625,6 +628,24 @@
                         this.profileData.country = res.body.country;
                         this.profileData.orcid = res.body.orcid;
                         this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
+
+                        if(this.profileData.userAuthorities == 'SUBMITTER'){
+                            for(let i=0; i<this.tableList.length; i++){
+                                if(this.tableList[i].value == 'reviewer_submission'){
+                                    this.tableList.splice(i,1)
+                                    break;
+                                }
+                            }
+                        }
+                        else if(this.profileData.userAuthorities == 'REVIEWER'){
+                            for(let i=0; i<this.tableList.length; i++){
+                                if(this.tableList[i].value == 'private_data'){
+                                    this.tableList.splice(i,1)
+                                    break;
+                                }
+                            }
+                        }
+                        console.log('this.profileData',this.profileData)
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
