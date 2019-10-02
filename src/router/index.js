@@ -76,12 +76,12 @@ export default new Router({
       component: Dataset
     },
     {
-      path:'/dataset/:id/results',
+      path:'/archive/projects/:id/results',
       name: 'molecules',
       component: Molecules
     },
     {
-      path:'/dataset/:id/private',
+      path:'/archive/projects/:id/private',
       name: 'privatedataset',
       component: PrivateDataset
     },
