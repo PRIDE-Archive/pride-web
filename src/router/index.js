@@ -71,12 +71,12 @@ export default new Router({
       component: Test
     },
     {
-      path:'/dataset/:id',
+      path:'/archive/projects/:id',
       name: 'dataset',
       component: Dataset
     },
     {
-      path:'/dataset/:id/Molecules',
+      path:'/dataset/:id/results',
       name: 'molecules',
       component: Molecules
     },
