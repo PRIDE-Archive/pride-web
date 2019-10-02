@@ -1048,7 +1048,7 @@
                       //add peptidelevelFDR for item
                       for(let j=0; j<peptideevidences[i].properties.length; j++){
                           if(peptideevidences[i].properties[j].name && peptideevidences[i].properties[j].name.indexOf('FDR')!=-1){
-                              item.peptidelevelFDR = peptideevidences[i].properties[j].value
+                              item.peptidelevelFDR = parseFloat(peptideevidences[i].properties[j].value).toExponential(3)
                               break;
                           }
                       }
@@ -1097,7 +1097,7 @@
                       //add psmlevelFDR for item
                       for(let j=0; j<psm[i].attributes.length; j++){
                           if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
-                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toFixed(10)
+                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
                               break;
                           }
                       }
@@ -1125,7 +1125,7 @@
                           }
                       }
                       item.variableMods = variableModsArray;
-                      
+
                       this.psmTableResults.push(item);
                   }
                   console.log('this.psmTableResults',this.psmTableResults)
@@ -1166,7 +1166,7 @@
                       //add psmlevelFDR for item
                       for(let j=0; j<psm[i].attributes.length; j++){
                           if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
-                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toFixed(10)
+                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
                               break;
                           }
                       }
