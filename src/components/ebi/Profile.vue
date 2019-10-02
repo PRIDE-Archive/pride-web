@@ -237,7 +237,7 @@
                     </div>
                     
                     <Card v-for="item in reviewDataList" class="resource-item" v-bind:key = "item.accession">
-                        <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                        <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                         </router-link>
                         <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
@@ -435,8 +435,8 @@
                 source: '',
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
-                privateSubmissionURL: this.$store.state.baseApiURL + '/my-private-submissions',
-                reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/reviewer-submissions',  
+                privateSubmissionURL: this.$store.state.baseApiURL + '/projects/private',
+                reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',  
                 changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
                 viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
                 tableList:[

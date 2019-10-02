@@ -12,7 +12,7 @@
                 </Breadcrumb>
                 -->
                 <div class="title-wrapper">
-                  <h2 class="project-title">Project {{accession}}</h2>
+                  <h2 class="project-title">Private Project {{accession}}</h2>
                   <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                   <!--<div class="tags">
                     
