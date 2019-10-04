@@ -24,7 +24,7 @@
                                     <div class="info-left">
                                         <div><span class="info-item">Email</span></div>
                                         <div><span class="info-item">Affiliation</span></div>
-                                        <div><span class="info-item">OrcID</span></div>
+                                        <div><span class="info-item">ORCID</span></div>
                                         <div><span class="info-item">Country</span></div>
                                     </div>
                                     <div class="info-right">
@@ -46,7 +46,7 @@
             <div v-if="activeName == 'public_data'" class="content-wrapper">
                 <div class="name-wrapper">
                     <span>Public Data</span>
-                    <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a>
+                    <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                 </div>
                 <div class="demo-spin-container">
                     <Spin size="large" v-if="publicLoading"></Spin>
@@ -86,12 +86,12 @@
                     <div class="left">
                         <a>Cite</a>
                         <a>Watch</a>
-                        <a>Delete</a>
+                        <!-- <a>Delete</a> -->
                     </div>
                     <div class="right">
                         <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                         <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                        <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
+                        <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
                     </div>
                 </div>
                <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
@@ -140,7 +140,7 @@
                 <div v-else>
                     <div class="name-wrapper">
                         <span>Private Data</span>
-                        <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a>
+                        <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
                     
                     <Card v-for="item in privateDataList" class="resource-item" v-bind:key = "item.accession">
@@ -178,12 +178,12 @@
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <a>Delete</a>
+                                <!-- <a>Delete</a> -->
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
+                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
                             </div>
                         </div>
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
@@ -233,7 +233,7 @@
                 <div v-else>
                     <div class="name-wrapper">
                         <span>Review Submission</span>
-                        <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a>
+                        <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
                     
                     <Card v-for="item in reviewDataList" class="resource-item" v-bind:key = "item.accession">
@@ -271,12 +271,12 @@
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <a>Delete</a>
+                                <!-- <a>Delete</a> -->
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
+                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
                             </div>
                         </div>
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
@@ -446,12 +446,12 @@
                     icon:'ios-paper'
                   },
                   {
-                    label:'Public Datasets',
+                    label:'Public Data',
                     value:'public_data',
                     icon:'stats-bars'
                   },
                   {
-                    label:'Private Datasets',
+                    label:'Private Data',
                     value:'private_data',
                     icon:'ios-analytics'
                   },
