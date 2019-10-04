@@ -1008,6 +1008,7 @@
       },
       gotoDetails(id){
           this.$router.push({name:'dataset',params:{id:id}});
+          window.location.reload()
       },
       gotoMolecules(){
           this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
