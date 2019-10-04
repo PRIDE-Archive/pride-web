@@ -133,27 +133,27 @@
                       <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                           <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('projects_tags_facet=='+datesetItem )">
                              <Icon type="ios-pricetag"></Icon>
-                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
                           <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)" @click="searchByLabel('projects_tags_facet=='+datesetItem )">
                              <Icon type="ios-pricetag"></Icon>
-                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
                           <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)" @click="searchByLabel('projects_tags_facet=='+datesetItem )">
                              <Icon type="ios-pricetag"></Icon>
-                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
                           <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)" @click="searchByLabel('projects_tags_facet=='+datesetItem )">
                              <Icon type="ios-pricetag"></Icon>
-                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
                           <a v-else class="button gray-dataset-button" href="javascript:void(0)" @click="searchByLabel('projects_tags_facet=='+datesetItem )">
                              <Icon type="ios-pricetag"></Icon>
-                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                              <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
-                          <DropdownMenu slot="list">
-                              <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
-                          </DropdownMenu>
+                          <!-- <DropdownMenu slot="list">
+                              <DropdownItem>{{datesetItem}}</DropdownItem>
+                          </DropdownMenu> -->
                       </Dropdown>
                       <Collapse v-if="hightlightMode">
                           <Panel>
