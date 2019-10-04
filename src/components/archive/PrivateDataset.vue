@@ -14,17 +14,34 @@
                 <div class="title-wrapper">
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
-                  <!--<div class="tags">
-                    
-                      <span class="type-tag-wrapper">
-                        <Icon class="type-tag" type="ios-pricetag-outline"></Icon>
-                        <a>Biological Dataset</a>
-                      </span>
-                      <span>
-                        <Icon class="download-tag" type="ios-download-outline"></Icon><a>Download</a>
-                      </span>
-                   
-                  </div> -->
+                </div>
+                <div class="tag-wrapper">
+                    <span>PRIDE Assigned Tags: </span>
+                    <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
+                        <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                           <Icon type="ios-pricetag"></Icon>
+                            {{datesetItem}}
+                        </a>
+                        <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                           <Icon type="ios-pricetag"></Icon>
+                            {{datesetItem}}
+                        </a>
+                        <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                           <Icon type="ios-pricetag"></Icon>
+                            {{datesetItem}}
+                        </a>
+                        <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                           <Icon type="ios-pricetag"></Icon>
+                            {{datesetItem}}
+                        </a>
+                        <a v-else class="button gray-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                           <Icon type="ios-pricetag"></Icon>
+                            {{datesetItem}}
+                        </a>
+                        <!-- <DropdownMenu slot="list">
+                            <DropdownItem>{{datesetItem}}</DropdownItem>
+                        </DropdownMenu> -->
+                    </span>
                 </div>
             </Col>
           </Row>
@@ -1057,6 +1074,9 @@
                   this.$Message.error({content:'Protein Check Error', duration:3});
               });
       },
+      searchByLabel(filter){
+        this.$router.push({name: 'archive', query:{filter:filter}});
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1232,6 +1252,58 @@
     opacity: 0.5 !important;
     color: white;
   }
+   .biological-dataset-button{
+      padding: 2px 3px;
+      font-size: 12px;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      background-color: #5bc0be;
+      border-radius: 3px;
+  }
+  .biomedical-dataset-button{
+      padding: 2px 3px;
+      font-size: 12px;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      background-color: #bd7edc;
+      border-radius: 3px;
+  }
+  .highlighted-dataset-button{
+      padding: 2px 3px;
+      font-size: 12px;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      background-color: #e2c94c;
+      border-radius: 3px;
+  }
+  .technical-dataset-button{
+      padding: 2px 3px;
+      font-size: 12px;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      background-color: #6acaef;
+      border-radius: 3px;
+  }
+  .gray-dataset-button{
+      padding: 2px 3px;
+      font-size: 12px;
+      margin-bottom: 0;
+      /*padding: 20px 85px;
+      font-size: 24px;*/
+      background-color: #999c9c;
+      border-radius: 3px;
+  }
+  .tag-wrapper{
+    display: flex;
+    align-items: center;
+  }
+  .dataset-wrapper{
+      margin-left: 5px;
+    }
   /*
   @media (min-width: 768px) {
       .content{
