@@ -129,9 +129,9 @@
                         </Panel>
                     </Collapse>
                 </Card>
-                <div class="page-container">
+                <!-- <div class="page-container">
                   <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                </div>
+                </div> -->
             </div>
             <div v-if="activeName == 'private_data' && profileData.userAuthorities =='SUBMITTER'" class="content-wrapper">
                 <div v-if="privateLoading" class="demo-spin-container">
@@ -314,9 +314,9 @@
                             </Panel>
                         </Collapse>
                     </Card>
-                    <div class="page-container">
+                    <!-- <div class="page-container">
                       <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -674,7 +674,11 @@
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'private_data'){
                                     this.tableList.splice(i,1)
-                                    break;
+                                    i--;
+                                }
+                                else if(this.tableList[i].value == 'public_data'){
+                                    this.tableList.splice(i,1)
+                                    i--;
                                 }
                             }
                         }
