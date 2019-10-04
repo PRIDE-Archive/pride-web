@@ -52,82 +52,82 @@
                     <Spin size="large" v-if="publicLoading"></Spin>
                 </div>
                 <Card v-for="item in publicDataList" class="resource-item" v-bind:key = "item.accession">
-                <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
-                    <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
-                </router-link>
-                <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
-                <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p> 
-                <p>
-                    <span class="project-info">{{projectItemsSpecies}}: </span> 
-                    <span v-for="item in item.species">
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>
-                    </span>
-                </p> -->
-                <p style="margin-top: 10px;">
-                    <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
-                    <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                    <a @click="gotoDetails(item.accession)">(More)</a>
-                  <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
-                </p>
-                <p style="margin-top: 10px;">
-                    <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                    <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                    <span class="project-info">{{item.publicationDate}}</span>
-                    <span>|</span>
                     <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
-                        {{item.accession}}
+                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                     </router-link>
-                    <span>|</span>
-                    <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
-                        Pride 
-                    </router-link>
-                </p>
-                <div class="action-group">
-                    <div class="left">
-                        <a>Cite</a>
-                        <a>Watch</a>
-                        <!-- <a>Delete</a> -->
+                    <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
+                    <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p> 
+                    <p>
+                        <span class="project-info">{{projectItemsSpecies}}: </span> 
+                        <span v-for="item in item.species">
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>
+                        </span>
+                    </p> -->
+                    <p style="margin-top: 10px;">
+                        <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
+                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
+                        <a @click="gotoDetails(item.accession)">(More)</a>
+                      <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
+                    </p>
+                    <p style="margin-top: 10px;">
+                        <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
+                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
+                        <span class="project-info">{{item.publicationDate}}</span>
+                        <span>|</span>
+                        <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            {{item.accession}}
+                        </router-link>
+                        <span>|</span>
+                        <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            Pride 
+                        </router-link>
+                    </p>
+                    <div class="action-group">
+                        <div class="left">
+                            <a>Cite</a>
+                            <a>Watch</a>
+                            <!-- <a>Delete</a> -->
+                        </div>
+                        <div class="right">
+                            <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
+                            <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
+                            <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                        </div>
                     </div>
-                    <div class="right">
-                        <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
-                        <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                        <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
-                    </div>
-                </div>
-               <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
-                    <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
-                       <Icon type="ios-pricetag"></Icon>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
-                    </a>
-                    <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
-                       <Icon type="ios-pricetag"></Icon>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                    </a>
-                    <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
-                       <Icon type="ios-pricetag"></Icon>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                    </a>
-                    <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
-                       <Icon type="ios-pricetag"></Icon>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                    </a>
-                    <a v-else class="button gray-dataset-button" href="javascript:void(0)">
-                       <Icon type="ios-pricetag"></Icon>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                    </a>
-                    <DropdownMenu slot="list">
-                        <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
-                    </DropdownMenu>
-                </Dropdown> -->
-                <Collapse v-if="hightlightMode">
-                    <Panel>
-                        <span>Matched Items</span>
-                        <p class="matched-items" v-for="highlightItem in item.hightlightItemArray" slot="content">
-                            <span class="project-info">{{highlightItem.name}}: </span>
-                           <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{highlightItem.content}}</text-highlight>
-                        </p>
-                    </Panel>
-                </Collapse>
+                   <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
+                        <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
+                           <Icon type="ios-pricetag"></Icon>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
+                        </a>
+                        <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
+                           <Icon type="ios-pricetag"></Icon>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                        </a>
+                        <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
+                           <Icon type="ios-pricetag"></Icon>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                        </a>
+                        <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
+                           <Icon type="ios-pricetag"></Icon>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                        </a>
+                        <a v-else class="button gray-dataset-button" href="javascript:void(0)">
+                           <Icon type="ios-pricetag"></Icon>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
+                        </a>
+                        <DropdownMenu slot="list">
+                            <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
+                        </DropdownMenu>
+                    </Dropdown> -->
+                    <Collapse v-if="hightlightMode">
+                        <Panel>
+                            <span>Matched Items</span>
+                            <p class="matched-items" v-for="highlightItem in item.hightlightItemArray" slot="content">
+                                <span class="project-info">{{highlightItem.name}}: </span>
+                               <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{highlightItem.content}}</text-highlight>
+                            </p>
+                        </Panel>
+                    </Collapse>
                 </Card>
                 <div class="page-container">
                   <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
@@ -144,7 +144,7 @@
                     </div>
                     
                     <Card v-for="item in privateDataList" class="resource-item" v-bind:key = "item.accession">
-                        <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                        <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                         </router-link>
                         <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
@@ -166,11 +166,11 @@
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
                             <span class="project-info">{{item.publicationDate}}</span>
                             <span>|</span>
-                            <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
                             </router-link>
                             <span>|</span>
-                            <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 Pride 
                             </router-link>
                         </p>
@@ -259,11 +259,11 @@
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
                             <span class="project-info">{{item.publicationDate}}</span>
                             <span>|</span>
-                            <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
                             </router-link>
                             <span>|</span>
-                            <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
+                            <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 Pride 
                             </router-link>
                         </p>
@@ -436,6 +436,7 @@
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.baseApiURL + '/projects/private',
+                publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
                 reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',  
                 changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
                 viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
@@ -572,6 +573,38 @@
                         }
                         
                         //console.log(this.privateDataList);
+                      },function(err){
+                        if(err.body.error == 'TOKEN_EXPIRED'){
+                            this.logout();
+                        }
+                        this.$Message.error({content:'Annotation Error', duration:1});
+                      });
+            },
+            getPublicData(){
+                 this.publicLoading = true;
+                 this.$http
+                      .get(this.publicSubmissionURL,{
+                        headers: {
+                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                        },
+                        params:{
+                            isPublic:true,
+                        }
+                      })
+                      .then(function(res){
+                        this.publicLoading = false;
+                        let dataList = res.body;
+                        for(let i=0; i<dataList.length; i++){
+                            let item = {
+                                accession: dataList[i].accession,
+                                title: dataList[i].title,
+                                projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                                publicationDate: dataList[i].publicationDate,
+                            }
+                            this.publicDataList.push(item);
+                        }
+                        
+                        //console.log(this.publicDataList);
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -728,6 +761,7 @@
         },
         mounted:function(){
               this.getPrivateData();
+              this.getPublicData();
               this.getReviewerSubmission();
               this.getProfile();
         },
