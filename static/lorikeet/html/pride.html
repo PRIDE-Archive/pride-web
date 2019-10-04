@@ -25,6 +25,10 @@ window.addEventListener("message", receiveMessage, false);
 
 
 var sequence = '';
+var charge = 0;
+var width = 650;
+var precursorMZ = 0;
+var variableMods = null;
 var peaksTemp = [];
 var peaks = [];
 
@@ -32,11 +36,12 @@ function receiveMessage(event)
 {
     //if (event.origin !== "http://example.org:8080")
     //return;
-    sequence = event.data.sequence;
-    charge = event.data.charge;
-    precursorMZ = event.data.precursorMZ;
-    peaksTemp = event.data.peaks;
-    variableMods = event.data.variableMods;
+    width = event.data.width || width;
+    sequence = event.data.sequence || sequence;
+    charge = event.data.charge || charge;
+    precursorMZ = event.data.precursorMZ || precursorMZ;
+    peaksTemp = event.data.peaks || peaksTemp;
+    variableMods = event.data.variableMods || variableMods;
     for(let i=0; i<peaksTemp.length; i++){
       var tempArray = [];
       tempArray.push(peaksTemp[i].mz);
@@ -54,8 +59,8 @@ function showData(){
                             "showMassErrorPlot":true,
                             "massErrorPlotDefaultUnit":"ppm",
                             "precursorMz":precursorMZ,
-                            "width":650,
-                            "height":500,
+                            "width":width,
+                            "height":700,
                             "variableMods":variableMods,
                             "peaks":peaks,
                             "labelImmoniumIons": false,
