@@ -612,7 +612,7 @@
               //this.$store.commit('setUser',{username: '', token:''});  
               sessionStorage.setItem('username','');
               sessionStorage.setItem('token','');
-              this.$router.replace({name:'landingpage'});
+              this.$router.replace({name:'archive'});
               this.$store.commit('setUser',{username: '', token:''});    
             },
             init(){
