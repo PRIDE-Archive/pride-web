@@ -74,7 +74,7 @@
                           <span v-else class="sequence-block" v-for="item in this.tempSequenceArray">
                             <span v-for="char in item" :class="{fit:char.type == 'fit', fuzzyfit:char.type == 'fuzzyfit', ptm: char.type == 'ptm'}">
                                 <span v-if="!char.des">{{char.val}}</span>
-                                <Tooltip v-else :content="char.des">{{char.val}}</Tooltip>
+                                <Tooltip v-else :content="char.des" placement="top">{{char.val}}</Tooltip>
                             </span>  
                           </span>
                       </div>
@@ -148,7 +148,7 @@
               <div class="visualization-wrapper">
                   <Card class="card protein">
                        <p slot="title" class="table-header">
-                          <span><i class="fas fa-download icon-tag"></i>Consensus Spectrum</span>
+                          <span><i class="fas fa-download icon-tag"></i>Spectrum</span>
                           <span class="right">
                               <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
@@ -427,17 +427,16 @@
                   render: (h, params) => {
                       // var className;
                       // var iconColor;
-                      //console.log('peptideTableColumn',params.row)
+                      console.log('params.row',params.row);
                       let highlightChar=[];
                       if(params.row.peptideSequence){
                           if(params.row.ptms&&params.row.ptms.length>0){
                              for(let i=0; i< params.row.ptms.length; i++){
                                 let positionMap = params.row.ptms[i].positionMap;
-                                //console.log('positionMap',positionMap);
                                 for(let j=0; j<positionMap.length; j++){
                                     let item = {
                                       pos:positionMap[j].key,
-                                      val:'123'
+                                      val:params.row.ptms[i].modification.name+';'+params.row.ptms[i].modification.accession
                                     }
                                     highlightChar.push(item);
                                 }
@@ -453,12 +452,13 @@
                                       if(highlightChar[j].pos && highlightChar[j].pos-1 ==i){
                                           found =true;
                                           let item = h('span',[
-                                                h('span', {
-                                                    style: {color:'red'}
-                                                }, sequenceChar[i]),
                                                 h('Tooltip',{ 
-                                                    props: {content: '222222'}
-                                                })
+                                                    props: {content:highlightChar[j].val ,placement:"right"},
+                                                },[
+                                                    h('span', {
+                                                        style: {color:'red'}
+                                                    }, sequenceChar[i]),
+                                                ])
                                             ])
                                           spanArray.push(item);
                                           highlightChar.splice(j, 1);
@@ -677,7 +677,7 @@
                                 for(let j=0; j<positionMap.length; j++){
                                     let item = {
                                       pos:positionMap[j].key,
-                                      val:'123'
+                                      val:params.row.ptms[i].modification.name+';'+params.row.ptms[i].modification.accession
                                     }
                                     highlightChar.push(item);
                                 }
@@ -693,12 +693,13 @@
                                       if(highlightChar[j].pos && highlightChar[j].pos-1 ==i){
                                           found =true;
                                           let item = h('span',[
-                                                h('span', {
-                                                    style: {color:'red'}
-                                                }, sequenceChar[i]),
                                                 h('Tooltip',{ 
-                                                    props: {content: '222222'}
-                                                })
+                                                    props: {content: highlightChar[j].val,placement:"right"}
+                                                },[
+                                                  h('span', {
+                                                      style: {color:'red'}
+                                                  }, sequenceChar[i]),
+                                                ])
                                             ])
                                           spanArray.push(item);
                                           highlightChar.splice(j, 1);
@@ -1370,7 +1371,7 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods}, location.origin);
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, location.origin);
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
@@ -1444,6 +1445,10 @@
               }
           }
       },
+      change(){
+        this.changeNum();
+        //this.changeSpectrum();
+      },
       changeNum(){
           this.countArray = [];
           let tempDiv = document.querySelector('.sequence-tag');
@@ -1457,6 +1462,10 @@
               else
                 this.countArray.push(lineNum*(i+1)*10)
           }
+      },
+      changeSpectrum(){
+          let tempDiv = document.querySelector('.spectrum-container');
+          document.querySelector("#lorikeetIframe").contentWindow.postMessage({width: window.innerWidth-800}, location.origin);
       },
       highLightSequence(){
         // if(params.row.ptms){
@@ -1567,7 +1576,7 @@
     },
     mounted: function(){
         //console.log('this.$route',this.$route);
-        window.addEventListener("resize", this.changeNum);
+        window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
           this.getPeptidesEvidences();
           this.getProteinEvidences();
