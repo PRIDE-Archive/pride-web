@@ -129,6 +129,7 @@
                         <a @click="gotoDetails(publicationItem.accession)">(More)</a>
                         <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                       </span>
+                      <p><span class="project-info">{{projectItemsSubmitters}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.submitters}}</text-highlight></p>
                       <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
                       <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                           <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
@@ -246,6 +247,7 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
+          projectItemsSubmitters:'',
           normalQuery:{},
           autoCompleteArray:[]
       }
@@ -375,6 +377,7 @@
                 if(res.body._embedded && res.body._embedded.compactprojects){
                     this.setHighlightKeywords();
                     let projectsList = res.body._embedded.compactprojects;
+                    console.log('projectsList',projectsList);
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -390,6 +393,19 @@
                           if(item.species.length>3){
                             item.species=item.species.slice(0,4)
                           }
+                          //for submitters:
+                          item.submitters='';
+                          for(let j=0; j< projectsList[i].submitters.length; j++){
+                              item.submitters += (projectsList[i].submitters[j]+',');
+                              //if no need to hightlight, it could be removed.
+                              // let hightlightItem={
+                              //     name:this.projectItemsConfigRes[j],
+                              //     content:item.submitters.replace(/,$/gi,'')
+                              // }
+                              // item.hightlightItemArray.push(hightlightItem);
+                          }
+                          item.submitters = item.submitters.replace(/,$/gi,'')
+
                           for(let j in projectsList[i].highlights){
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
@@ -406,10 +422,11 @@
                           this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
+                          this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);
                            
                       }
-                      //console.log(this.publicaitionList)
+                      console.log(this.projectItemsPublicationDate)
                 }
                 else{
 
@@ -805,6 +822,7 @@
                   .get(this.projectItemsConfigURL)
                   .then(function(projectItemsConfigRes){
                       this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
+                      console.log('this.projectItemsConfigRes',this.projectItemsConfigRes);
                       this.setFilter();
                       this.updateCondition();
                       this.queryArchiveProjectList();
