@@ -12,7 +12,8 @@
     "organisms":"Species",
     "organisms_facet":"Organisms Facet",
     "publicationDate":"Made public",
-    "submissionType":"Submission Type"
+    "submissionType":"Submission Type",
+    "submitters":"Submitters"
   }
 }
 
