@@ -364,9 +364,13 @@
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
 
-          if(!this.keyword)
+          if(this.keyword)
+            this.hightlightMode = true;
+          else{
+            //for highlight mode
+            this.hightlightMode = false;
             query.keyword ='*:*';
-
+          }
           //console.log(encodeURIComponent('*:*'));
           //console.log('search query',query);
           this.$http
@@ -423,10 +427,9 @@
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
-                          this.publicaitionList.push(item);
-                           
+                          this.publicaitionList.push(item);  
                       }
-                      console.log(this.projectItemsPublicationDate)
+                      console.log('this.publicaitionList', this.publicaitionList);
                 }
                 else{
 
@@ -452,7 +455,8 @@
           this.$router.push({name:'dataset',params:{id:id}});
       },
       setHighlightKeywords(){
-          this.highlightKeyword = this.keyword.split(',');
+          if(this.keyword)
+            this.highlightKeyword = this.keyword.split(',');
           //console.log('this.highlightKeyword',this.highlightKeyword);
       },
       querySpecificFacets(keyword){
@@ -695,12 +699,6 @@
           this.tadAdd(temp);
           this.$refs.searchRef.setQuery(null);
         }
-        
-        if(this.keyword)
-          this.hightlightMode = true;
-        else
-          this.hightlightMode = false;
-
         this.$router.push({name: 'archive', query: this.query});
         //this.$Message.success({content:'new result', duration:1});
       },
