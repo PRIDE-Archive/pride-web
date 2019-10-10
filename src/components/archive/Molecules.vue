@@ -387,8 +387,18 @@
                                   });
                                   this.peptideTableResults[params.index].select= val;
                                   if(val){
+                                    console.log('params.row',params.row)
+                                    let query = {
+                                          reportedProtein:params.row.proteinAccession,
+                                          peptideEvidenceAccession:params.row.accession,
+                                          peptideSequence:params.row.peptideSequence,
+                                          projectAccession:this.$route.params.id,
+                                          assayAccession: params.row.assayAccession,
+                                          sortConditions:'projectAccession',
+                                          sortDirection:'DESC',
+                                      }
                                     //console.log('accession',params.row.accession)
-                                    this.getPSM(params.row.accession);
+                                    this.getSpectra(query);
                                     // this.peptideProteinAccession = params.row.reportedaccession
                                     // this.peptideAssayAccession = params.row.assayAccession
                                     // this.getPeptidesEvidences();
@@ -869,8 +879,7 @@
                   width:1,
                   className:'psmPTMs'
                   // ellipsis:true
-              },
-              
+              },  
           ],
           psmTableResults:[],
           protienItemSelected:false,
@@ -1140,10 +1149,8 @@
                   this.$Message.error({content:'No PSM', duration:3});
               });
       },
-      getSpectra(){
-          let query = {
-            projectAccession: this.$route.params.id
-          }
+      getSpectra(q){
+          let query = q || this.spectraQuery
           this.psmTableLoading = true;
           this.$http
               .get(this.spectraApi,{params: query})
@@ -1563,6 +1570,17 @@
           normalQuery.sortConditions='projectAccession'
           normalQuery.page = this.peptidePage
           normalQuery.pageSize = this.peptidePageSize
+          return normalQuery;
+      },
+      spectraQuery:function(){
+          let normalQuery = {}
+          normalQuery.reportedProtein=''
+          normalQuery.peptideEvidenceAccession=''
+          normalQuery.peptideSequence=''
+          normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
+          normalQuery.assayAccession=''
+          normalQuery.sortDirection='DESC'
+          normalQuery.sortConditions='projectAccession'
           return normalQuery;
       },
       tempSequenceArray:function(){
