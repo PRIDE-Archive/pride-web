@@ -1165,7 +1165,7 @@
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm[i].peptideSequence,
                         decoy: psm[i].decoy,
-                        isValid: psm[i].isValid,
+                        isValid: psm[i].valid,
                         charge:psm[i].charge,
                         precursorMZ:psm[i].precursorMZ,
                         ptms:psm[i].ptms,
@@ -1378,7 +1378,7 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, location.origin);
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
@@ -1472,7 +1472,7 @@
       },
       changeSpectrum(){
           let tempDiv = document.querySelector('.spectrum-container');
-          document.querySelector("#lorikeetIframe").contentWindow.postMessage({width: window.innerWidth-800}, location.origin);
+          document.querySelector("#lorikeetIframe").contentWindow.postMessage({width: window.innerWidth-800}, "*");
       },
       highLightSequence(){
         // if(params.row.ptms){
