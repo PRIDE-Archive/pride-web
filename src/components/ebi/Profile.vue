@@ -45,7 +45,8 @@
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
                 <div class="name-wrapper">
-                    <span>Public Data</span>
+                    <span v-if="publicDataList.length>0">Public Data</span>
+                    <span v-else>No Public Data</span>
                     <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                 </div>
                 <div class="demo-spin-container">
@@ -139,7 +140,8 @@
                 </div>
                 <div v-else>
                     <div class="name-wrapper">
-                        <span>Private Data</span>
+                        <span v-if="privateDataList.length>0">Private Data</span>
+                        <span v-else>No Private Data</span>
                         <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
                     
@@ -232,7 +234,8 @@
                 </div>
                 <div v-else>
                     <div class="name-wrapper">
-                        <span>Review Submission</span>
+                        <span v-if="reviewDataList.length>0">Review Submission</span>
+                        <span v-else>No Review Data</span>
                         <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
                     
@@ -623,8 +626,9 @@
                       .then(function(res){
                         this.reviewLoading = false;
                         let dataList = res.body;
-                        console.log('getReviewerSubmission', res.body)
+                        console.log('getReviewerSubmission1111', res.body)
                         for(let i=0; i<dataList.length; i++){
+                            console.log('11111', res.body)
                             let item = {
                                 accession: dataList[i].accession,
                                 title: dataList[i].title,
@@ -633,7 +637,6 @@
                             }
                             this.reviewDataList.push(item);
                         }
-                        //console.log(this.reviewDataList);
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
