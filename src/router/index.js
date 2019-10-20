@@ -24,6 +24,7 @@ const Annotate = resolve => require(['@/components/annotation/Annotate'], resolv
 const Profile = resolve => require(['@/components/ebi/Profile'], resolve);
 const Molecules = resolve => require(['@/components/archive/Molecules'], resolve);
 const PrivateDataset = resolve => require(['@/components/archive/PrivateDataset'], resolve);
+const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
 
 Vue.use(Router)
 
@@ -94,6 +95,11 @@ export default new Router({
       path: '/peptidesearch',
       name: 'peptidesearch',
       component: PeptideSearch
+    },
+    {
+      path: '/archive/spectra',
+      name: 'spectra',
+      component: Spectra
     },
     {
       path: '/peptidedownload',
