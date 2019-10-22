@@ -305,7 +305,7 @@
                   // ellipsis:true
               },
               {
-                  title: 'Valid',
+                  title: 'Validated by PRIDE',
                   key: 'valid',
                   //sortable: true,
                   minWidth: 60,
@@ -568,7 +568,7 @@
                   // ellipsis:true
               },
               {
-                  title: 'Valid',
+                  title: 'Validated by PRIDE',
                   key: 'isValid',
                   //sortable: true,
                   minWidth: 60,
@@ -813,7 +813,7 @@
                   // ellipsis:true
               },
               {
-                  title: 'Valid',
+                  title: 'Validated by PRIDE',
                   key: 'isValid',
                   //sortable: true,
                   minWidth: 60,
