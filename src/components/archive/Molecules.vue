@@ -214,23 +214,24 @@
                                         this.proteinSequenceArray = [];
                                         this.$Message.error({content:'No protein Sequence', duration:3});
                                         this.proteinTableCollapseChange(true)
-                                        return;
-                                        // this.$nextTick(() => {
-                                        //     this.proteinTableCollapseChange(true)
-                                        //     return;
-                                        // })
                                       }
-                                      this.protienItemSelected = true;
-                                      this.proteinSequenceArray = [];
-                                      this.proteinSequenceArray = this.proteinSequence.split('').map((item)=>{
-                                          let obj = {
-                                            val:item,
-                                            des:'',
-                                            type:''
-                                          }
-                                          return obj;
-                                      });
-                                      this.proteinTableCollapseChange(false)
+                                      else{
+                                        this.protienItemSelected = true;
+                                        this.proteinSequenceArray = [];
+                                        this.proteinSequenceArray = this.proteinSequence.split('').map((item)=>{
+                                            let obj = {
+                                              val:item,
+                                              des:'',
+                                              type:''
+                                            }
+                                            return obj;
+                                        });
+                                        this.proteinTableCollapseChange(false)
+                                        this.changeNum();
+                                        this.sequenceTableHeader.accession = params.row.reportedAccession; 
+                                        this.sequenceTableHeader.coverage = params.row.sequenceCoverage
+                                      }
+                                      
                                       let query = {
                                           proteinAccession:params.row.reportedAccession,
                                           projectAccession:this.$route.params.id,
@@ -244,12 +245,7 @@
                                       if (history.pushState) {
                                           var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?reportedAccession=' + query.proteinAccession + '&assayAccession=' + query.assayAccession + '&sortConditions='+ query.sortConditions + '&sortDirection='+query.sortDirection + '&page=' + query.page +'&pageSize=' + query.pageSize ;
                                           window.history.pushState({path:newurl},'',newurl);
-                                      }
-                                      
-                                     this.changeNum();
-                                     this.sequenceTableHeader.accession = params.row.reportedAccession;
-                                     
-                                     this.sequenceTableHeader.coverage = params.row.sequenceCoverage
+                                      } 
                                   }
                                   else{
                                     this.proteinSequenceArray = [];
