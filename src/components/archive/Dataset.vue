@@ -451,7 +451,7 @@
           viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
-          proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
+          proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidegit pullnces',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
