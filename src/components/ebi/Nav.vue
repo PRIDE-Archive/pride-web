@@ -59,6 +59,8 @@
                           </a>
                           <DropdownMenu slot="list">
                               <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
+                              <DropdownItem name="goToSpectra"><router-link :to="{ name: 'spectra'}">PRIDE Archive Spectra</router-link></DropdownItem>
+
                               <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
                               <DropdownItem name="gotoSpectrumLibrary"><router-link :to="{ name: 'spectrumlibrary'}">PRIDE Spectral Libraries</router-link></DropdownItem>
                           </DropdownMenu>
@@ -275,6 +277,14 @@
             logoURL:'/static/logo/PRIDE_logo_Peptide.png',
         }
       }
+      else if(page == 'spectra'){
+        item = {
+            pageName:'spectra',
+            homePageName:'landingpage',
+            logoWidth:400,
+            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        }
+      }
       else if(page == 'landingpage'){
         item = {
             pageName:'landingpage',
@@ -437,6 +447,9 @@
             resourcesClick(name){
                 if(name=='goToArchive'){
                     this.$router.push({name:'archive'});
+                }
+                else if(name=='goToSpectra'){
+                  this.$router.push({name:"spectra"})
                 }
                 else if(name=='goToPeptidome'){
                     this.$router.push({name:'peptidome'});
