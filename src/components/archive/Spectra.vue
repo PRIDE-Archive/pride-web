@@ -628,8 +628,11 @@
                                       return x;
                                   });
                                   this.psmTableResults[params.index].select= val;
-                                  if(val)
+                                  if(val){
                                       this.psmItemSelected = true;
+                                      //console.log(params.row)
+                                      this.getSpectrum(params.row.usi);
+                                  }
                                   else
                                       this.psmItemSelected = false;
                                   
@@ -637,9 +640,11 @@
                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
                                         window.history.pushState({path:newurl},'',newurl);
                                     }
-                                  console.log('psm rows', params.row) 
+
                                   this.spectrumTableCollapseChange(!val);
-                                  this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ, params.row.variableMods)
+                                  
+
+                                  // this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ, params.row.variableMods)
                               }
                           }
                       });
@@ -864,7 +869,7 @@
                   // ellipsis:true
               },
               {
-                  title: 'usi',
+                  title: 'Usi',
                   key: 'usi',
                   width:1,
                   className:'psmPTMs'
@@ -997,37 +1002,43 @@
                         select:false,
                       }
                       //add psmlevelFDR for item
-                      for(let j=0; j<psm[i].attributes.length; j++){
-                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
-                              item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
-                              break;
+                      if(psm[i].attributes){
+                          for(let j=0; j<psm[i].attributes.length; j++){
+                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
+                                  item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
+                                  break;
+                              }
                           }
                       }
+                      
                       //add peaks for item
-                      let peaksArray = [];
-                      for(let j=0; j<psm[i].intensities.length; j++){
-                          let item = {
-                            mz:psm[i].mzs[j],
-                            intensity:psm[i].intensities[j]
-                          }
-                          peaksArray.push(item)
-                      }
-                      item.peaks = peaksArray;
-
-                      //add variableMods for item
-                      let variableModsArray = [];
-                      for(let j=0; j<psm[i].ptms.length; j++){
-                          for(let k=0; k<psm[i].ptms[j].positionMap.length; k++){
+                      if(psm[i].intensities){
+                          let peaksArray = [];
+                          for(let j=0; j<psm[i].intensities.length; j++){
                               let item = {
-                                index:psm[i].ptms[j].positionMap[k].key,
-                                modMass:parseFloat(psm[i].ptms[j].modification.value),
-                                aminoAcid: psm[i].peptideSequence.split('')[psm[i].ptms[j].positionMap[k].key-1]
-                              };
-                              variableModsArray.push(item)
+                                mz:psm[i].mzs[j],
+                                intensity:psm[i].intensities[j]
+                              }
+                              peaksArray.push(item)
                           }
+                          item.peaks = peaksArray;
                       }
-                      item.variableMods = variableModsArray;
-
+                      
+                      if(psm[i].ptms){
+                          //add variableMods for item
+                          let variableModsArray = [];
+                          for(let j=0; j<psm[i].ptms.length; j++){
+                              for(let k=0; k<psm[i].ptms[j].positionMap.length; k++){
+                                  let item = {
+                                    index:psm[i].ptms[j].positionMap[k].key,
+                                    modMass:parseFloat(psm[i].ptms[j].modification.value),
+                                    aminoAcid: psm[i].peptideSequence.split('')[psm[i].ptms[j].positionMap[k].key-1]
+                                  };
+                                  variableModsArray.push(item)
+                              }
+                          }
+                          item.variableMods = variableModsArray;
+                      }
                       this.psmTableResults.push(item);
                   }
                   //console.log('this.psmTableResults[0]',this.psmTableResults[0])
@@ -1043,8 +1054,8 @@
                   this.$Message.error({content:'No PSM', duration:3});
               });
       },
-      getSpectrum(q){
-          let query = q;
+      getSpectrum(usi){
+          let query = {usi:usi};
           this.$http
               .get(this.spectrumApi,{params: query})
               .then(function(res){
@@ -1073,31 +1084,36 @@
                               break;
                           }
                       }
-                      //add peaks for item
-                      let peaksArray = [];
-                      for(let j=0; j<psm.intensities.length; j++){
-                          let item = {
-                            mz:psm.mzs[j],
-                            intensity:psm.intensities[j]
-                          }
-                          peaksArray.push(item)
-                      }
-                      item.peaks = peaksArray;
 
-                      //add variableMods for item
-                      let variableModsArray = [];
-                      for(let j=0; j<psm.ptms.length; j++){
-                          for(let k=0; k<psm.ptms[j].positionMap.length; k++){
+                      if(psm.intensities){
+                          //add peaks for item
+                          let peaksArray = [];
+                          for(let j=0; j<psm.intensities.length; j++){
                               let item = {
-                                index:psm.ptms[j].positionMap[k].key,
-                                modMass:parseFloat(psm.ptms[j].modification.value),
-                                aminoAcid: psm.peptideSequence.split('')[psm.ptms[j].positionMap[k].key-1]
-                              };
-                              variableModsArray.push(item)
+                                mz:psm.mzs[j],
+                                intensity:psm.intensities[j]
+                              }
+                              peaksArray.push(item)
                           }
+                          item.peaks = peaksArray;
                       }
-                      item.variableMods = variableModsArray;
-
+                      
+                      if(psm.ptms){
+                          //add variableMods for item
+                          let variableModsArray = [];
+                          for(let j=0; j<psm.ptms.length; j++){
+                              for(let k=0; k<psm.ptms[j].positionMap.length; k++){
+                                  let item = {
+                                    index:psm.ptms[j].positionMap[k].key,
+                                    modMass:parseFloat(psm.ptms[j].modification.value),
+                                    aminoAcid: psm.peptideSequence.split('')[psm.ptms[j].positionMap[k].key-1]
+                                  };
+                                  variableModsArray.push(item)
+                              }
+                          }
+                          item.variableMods = variableModsArray;
+                      }
+                      
                       this.psmTableResults.push(item);
 
                       this.spectrumTableCollapseChange(!true);

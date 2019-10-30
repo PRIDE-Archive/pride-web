@@ -646,13 +646,15 @@
                                       return x;
                                   });
                                   this.psmTableResults[params.index].select= val;
-                                  if(val)
+                                  if(val){
                                       this.psmItemSelected = true;
+                                      this.getSpectrum(params.row.usi);
+                                  } 
                                   else
                                       this.psmItemSelected = false;
                                     
                                   this.spectrumTableCollapseChange(!val);
-                                  this.getSpectrum(val, params.row.usi);
+                                  
                                   
                                   //this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ, params.row.variableMods)
                               }
@@ -1162,7 +1164,7 @@
                   this.$Message.error({content:'No PSM', duration:3});
               });
       },
-      getSpectrum(val,usi){
+      getSpectrum(usi){
         let query = {
           usi:usi
         }
@@ -1206,7 +1208,7 @@
                       variableMods = variableModsArray;
                   }
                   //console.log();
-                  this.showSpectrum(val, peptideSequence, peaks, charge, precursorMZ, variableMods)
+                  this.showSpectrum(true, peptideSequence, peaks, charge, precursorMZ, variableMods)
                 }
                 else{
                   this.$Message.success({content:'No PSMs', duration:3});
