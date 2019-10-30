@@ -975,8 +975,8 @@
       getProteinEvidences(q){
           this.proteinTableLoading = true;
           let query = q || this.proteinQuery;
-          //console.log('this.proteinQuery',this.proteinQuery)
-          //console.log('query',query)
+          console.log('this.proteinQuery',this.proteinQuery)
+          console.log('query',query)
           this.$http
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
@@ -985,7 +985,7 @@
                 //this.peptideTotal = 0;
                 this.proteinTableLoading = false;
                 if(res.body && res.body._embedded){
-                  //console.log('getProteinEvidences',res.body)
+                  console.log('getProteinEvidences',res.body)
                   console.log('getProteinEvidences',res.body._embedded)
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   this.proteinTotal = res.body.page.totalElements;
