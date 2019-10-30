@@ -6,11 +6,12 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
 	state:{
-		baseURL: location.hostname.match(/localhost/)?'':'/pride',
+		baseURL: process.env.NODE_ENV == 'production'?'/pride':'',
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',  
-		baseApiURL: location.hostname.match(/localhost|wwwdev/)?'//wwwdev.ebi.ac.uk/pride/ws/archive/v2':'//ebi.ac.uk/pride/ws/archive/v2',  
+		baseApiURL: process.env.NODE_ENV.match(/production|prod-api/) ? '//www.ebi.ac.uk/pride/ws/archive/v2':'//wwwdev.ebi.ac.uk/pride/ws/archive/v2',  
 		username: '',
 		token:''
+
 	},
 	mutations:{
 		setUser(state,payload){
