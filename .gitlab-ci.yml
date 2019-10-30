@@ -1,0 +1,34 @@
+image: node:12.13.0-alpine
+
+before_script:
+  - apk add --update openssh-client bash openssl rsync gettext tzdata
+  - eval $(ssh-agent -s)
+  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+  - mkdir ~/.ssh
+  - chmod 700 ~/.ssh
+  - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
+  - chmod 600 ~/.ssh/known_hosts
+
+.deploy_script:
+  stage: deploy
+  script:
+    - npm install
+    - npm run build
+    - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
+    - ssh $SERVER_USER@$DEPLOY_SERVER "bash && mkdir -p $DEPLOY_PATH/$DEPLOY_DIR"
+    - rsync -a dist/pride/* $SERVER_USER@$DEPLOY_SERVER:$DEPLOY_PATH/$DEPLOY_DIR/
+    - ssh $SERVER_USER@$DEPLOY_SERVER "bash && cd $DEPLOY_PATH && ln -snf $DEPLOY_DIR pride"
+
+deploy_prod:
+  environment: prod
+  extends: .deploy_script
+  #  only:
+  #    - master
+  when: manual
+
+deploy_dev:
+  environment: dev
+  extends: .deploy_script
+  #  only:
+  #    - master
+  when: manual
