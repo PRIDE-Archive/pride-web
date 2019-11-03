@@ -212,13 +212,6 @@
                       });
                   }
               },
-              // {
-              //     title: 'Protein Accession',
-              //     key: 'proteinAccession',
-              //     sortable: true,
-              //     minWidth: 140,
-              //     // ellipsis:true
-              // },
               {
                   title: 'Peptide Sequence',
                   key: 'peptideSequence',
@@ -361,9 +354,15 @@
                   // ellipsis:true
               },
               {
+                  title: 'PrecursorMZ',
+                  key: 'precursorMZ',
+                  minWidth: 80,
+                  // ellipsis:true
+              },
+              {
                   title: 'Charge',
                   key: 'charge',
-                  minWidth: 60,
+                  minWidth: 40,
                   // ellipsis:true
               },
               {
@@ -412,13 +411,6 @@
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: 'PrecursorMZ',
-                  key: 'precursorMZ',
                   width:1,
                   className:'psmPTMs'
                   // ellipsis:true
