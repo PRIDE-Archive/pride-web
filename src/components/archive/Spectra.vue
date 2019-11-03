@@ -898,17 +898,18 @@
           //this.getProteinEvidences();
           let query = {
             page: this.spectraPage,
-            //pageSize: this.spectraPageSize
+            pageSize: this.spectraPageSize
           }
           this.getSpectra(query);
           
         }
         else{
           console.log(this.$route.query)
-          if('peptideSequence' in this.$route.query)
-            this.getSpectra(this.$route.query);
-          else if('usi' in this.$route.query)
+          if('usi' in this.$route.query)
             this.getSpectrum(this.$route.query.usi);
+          else //if('peptideSequence' in this.$route.query)
+            this.getSpectra(this.$route.query);
+
           //this.getProteinEvidences(this.$route.query);
         }
     },
