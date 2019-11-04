@@ -213,6 +213,24 @@
                   }
               },
               {
+                  title: 'Accession',
+                  key: 'accession',
+                  //sortable: true,
+                  minWidth: 75,
+                  render: (h, params) => {
+                      return h('div', [
+                          h('a', {
+                              on: {
+                                  click: () => {
+                                      this.$router.push({name:'dataset',params:{id:params.row.accession}});
+                                      //console.log('params',params)
+                                  }
+                              }
+                          }, params.row.accession),
+                      ]);
+                  }
+              },
+              {
                   title: 'Peptide Sequence',
                   key: 'peptideSequence',
                   //sortable: true,
@@ -509,6 +527,7 @@
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm[i].peptideSequence,
+                        accession: psm[i].usi.split(':')[1],
                         decoy: psm[i].decoy,
                         isValid: psm[i].valid,
                         charge:psm[i].charge,
