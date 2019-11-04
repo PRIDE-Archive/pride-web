@@ -212,13 +212,24 @@
                       });
                   }
               },
-              // {
-              //     title: 'Protein Accession',
-              //     key: 'proteinAccession',
-              //     sortable: true,
-              //     minWidth: 140,
-              //     // ellipsis:true
-              // },
+              {
+                  title: 'Accession',
+                  key: 'accession',
+                  //sortable: true,
+                  minWidth: 75,
+                  render: (h, params) => {
+                      return h('div', [
+                          h('a', {
+                              on: {
+                                  click: () => {
+                                      this.$router.push({name:'dataset',params:{id:params.row.accession}});
+                                      //console.log('params',params)
+                                  }
+                              }
+                          }, params.row.accession),
+                      ]);
+                  }
+              },
               {
                   title: 'Peptide Sequence',
                   key: 'peptideSequence',
@@ -361,9 +372,15 @@
                   // ellipsis:true
               },
               {
+                  title: 'PrecursorMZ',
+                  key: 'precursorMZ',
+                  minWidth: 80,
+                  // ellipsis:true
+              },
+              {
                   title: 'Charge',
                   key: 'charge',
-                  minWidth: 60,
+                  minWidth: 40,
                   // ellipsis:true
               },
               {
@@ -412,13 +429,6 @@
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: 'PrecursorMZ',
-                  key: 'precursorMZ',
                   width:1,
                   className:'psmPTMs'
                   // ellipsis:true
@@ -517,6 +527,7 @@
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm[i].peptideSequence,
+                        accession: psm[i].usi.split(':')[1],
                         decoy: psm[i].decoy,
                         isValid: psm[i].valid,
                         charge:psm[i].charge,
@@ -906,17 +917,18 @@
           //this.getProteinEvidences();
           let query = {
             page: this.spectraPage,
-            //pageSize: this.spectraPageSize
+            pageSize: this.spectraPageSize
           }
           this.getSpectra(query);
           
         }
         else{
           console.log(this.$route.query)
-          if('peptideSequence' in this.$route.query)
-            this.getSpectra(this.$route.query);
-          else if('usi' in this.$route.query)
+          if('usi' in this.$route.query)
             this.getSpectrum(this.$route.query.usi);
+          else //if('peptideSequence' in this.$route.query)
+            this.getSpectra(this.$route.query);
+
           //this.getProteinEvidences(this.$route.query);
         }
     },
