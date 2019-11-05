@@ -961,37 +961,88 @@
                   }
               },
               {
+                  title: 'More',
+                  key: 'more',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
+                          return  h('Dropdown', {
+                                    props: {
+                                      placement: 'bottom-end'
+                                    },
+                                    style: {
+                                      textAlign: 'left'
+                                    },
+                                    on: {
+                                      'on-click': (value) => {
+                                        console.log(value)
+                                      }
+                                    }
+                                }, [
+                                  h('div', {
+                                    class: {
+                                      member_operate_div: true
+                                    }
+                                  }, [
+                                      h('Icon', {
+                                          props: {
+                                            type: 'ios-list-outline',
+                                            size: 20
+                                          },
+                                          style: {
+                                            //marginLeft: '5px' 
+                                          }
+                                        })
+                                      ]),
+                                      h('DropdownMenu', {
+                                        slot: 'list'
+                                      }, 
+                                      params.row.psmMoreArray.map((obj)=>{
+                                          return h('DropdownItem', {
+                                              props: {name: obj.name}  
+                                          }, obj.value);  
+                                      }))
+                          ]);
+                      }
+                      else
+                        return h('span',{},'No Options')
+                  }
+
+              },
+              {
                   title: 'PTMs',
                   key: 'ptms',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'PrecursorMZ',
                   key: 'precursorMZ',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'VariableMods',
                   key: 'variableMods',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Usi',
                   key: 'usi',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },    
@@ -1137,7 +1188,7 @@
                               //console.log('protein2',proteinEvidences[i].additionalAttributes[j].value);
                               if(proteinEvidences[i].additionalAttributes[j].name == 'Pass submitter threshold'){
                                 found =true;
-                                item.isThreshold = proteinEvidences[i].additionalAttributes[j].value
+                                item.isThreshold = proteinEvidences[i].additionalAttributes[j].value == 'true' ? true : false
                                 //console.log('protein3',proteinEvidences[i].additionalAttributes[j].name,proteinEvidences[i].additionalAttributes[j].value);
                                 break;
                               }
@@ -1205,7 +1256,7 @@
                           //console.log(peptideevidences[i].properties[j].value)
                           if(peptideevidences[i].properties[j].name && peptideevidences[i].properties[j].name.indexOf('threshold')!=-1){
                               found = true;
-                              item.isThreshold = peptideevidences[i].properties[j].value
+                              item.isThreshold = peptideevidences[i].properties[j].value == 'true' ? true : false
                               break;
                           }
                       }
@@ -1255,6 +1306,7 @@
                         ptms:psm[i].ptms,
                         usi:psm[i].usi,
                         select:false,
+                        psmMoreArray:[]
                       }
                       //add psmlevelFDR for item
                       for(let j=0; j<psm[i].attributes.length; j++){
@@ -1275,6 +1327,15 @@
                       }
                       if(!found)
                           item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          let tempItem = {
+                            name:psm[i].attributes[j].name,
+                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
+                      }
 
                       //add peaks for item
                       if(psm[i].intensities){
