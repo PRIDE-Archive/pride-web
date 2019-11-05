@@ -368,7 +368,7 @@
                   title: 'PSM-level FDR',
                   key: 'psmlevelFDR',
                   //sortable: true,
-                  minWidth: 130,
+                  minWidth: 60,
                   // ellipsis:true
               },
               {
@@ -387,10 +387,10 @@
                   title: 'Pass submitter Threshold',
                   key: 'isThreshold',
                   //sortable: true,
-                  minWidth: 60,
+                  minWidth: 150,
                   align: 'center',
                   render: (h, params) => {
-                      var className;
+                      var className
                       var iconColor;
                       if(params.row.isThreshold){
                         className='fa fa-check';
