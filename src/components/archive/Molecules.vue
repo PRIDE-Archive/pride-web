@@ -1267,8 +1267,9 @@
                       let found = false;
                       for(let j=0; j<psm[i].attributes.length; j++){
                           if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              //console.log(psm[i].attributes[j].value);
                               found = true;
-                              item.isThreshold = psm[i].attributes[j].value
+                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
                               break;
                           }
                       }
