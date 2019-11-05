@@ -384,6 +384,42 @@
                   // ellipsis:true
               },
               {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isValid){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
+              },
+              {
                   title: 'Validated by PRIDE',
                   key: 'isValid',
                   //sortable: true,
