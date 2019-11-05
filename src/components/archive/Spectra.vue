@@ -119,7 +119,7 @@
                         <Table v-else class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                      </div>
                      <div v-if="!psmItemSelected" class="page-container">
-                       <Page :total="spectraTotal" :page-size="spectraPageSize" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
+                       <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
                      </div>
                   </Card>
               </div>
@@ -392,7 +392,7 @@
                   render: (h, params) => {
                       var className;
                       var iconColor;
-                      if(params.row.isValid){
+                      if(params.row.isThreshold){
                         className='fa fa-check';
                         iconColor='#19be6b'
                       }
@@ -491,7 +491,7 @@
           spectrumSpinShow:false,
           spectrumTableShow:false,
           spectrumTableCollapse:true,
-          spectraPage:0,
+          spectraPage:1,
           spectraPageSize:20,
           spectraTotal:0,
           spectraSortDirection:'DESC',
@@ -555,7 +555,7 @@
                 this.psmTableLoading = false;
                 if(res.body && res.body._embedded){
                   this.spectraTotal = res.body.page.totalElements;
-                  this.spectraPage = res.body.page.number;
+                  //this.spectraPage = res.body.page.number;
                   //this.spectraPageSize = res.body.page.size;
                   let psm = res.body._embedded.spectraevidences;
                   console.log('psm',res.body._embedded)
@@ -654,6 +654,17 @@
                               break;
                           }
                       }
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = psm[i].attributes[j].value
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
 
                       if(psm.intensities){
                           //add peaks for item
@@ -699,9 +710,9 @@
               });
       },
       spectraPageChange(page){
-
-          this.spectraPage = page-1;
-          console.log('spectraPageChange',this.spectraPage)
+          console.log(page)
+          this.spectraPage = page;
+          //console.log('spectraPageChange',this.spectraPage)
           // if(this.$route.query && this.$route.query.proteinAccession)
           //   return
           let query = {
@@ -710,7 +721,7 @@
             peptideSequence:this.keyword,
             sortConditions:'projectAccession',
             sortDirection:'DESC',
-            page:this.spectraPage,
+            page:this.spectraPage-1,
             pageSize :this.spectraPageSize,
           }
     
@@ -962,8 +973,20 @@
           console.log(this.$route.query)
           if('usi' in this.$route.query)
             this.getSpectrum(this.$route.query.usi);
-          else //if('peptideSequence' in this.$route.query)
-            this.getSpectra(this.$route.query);
+          else{
+              console.log(this.$route.query);
+              if(this.$route.query.page)
+                  this.spectraPage = parseInt(this.$route.query.page) + 1;
+              if(this.$route.query.pageSize){
+                  let tempPageSize = parseInt(this.$route.query.pageSize);
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.spectraPageSize = parseInt(this.$route.query.pageSize)
+                  else 
+                    this.spectraPageSize = 20
+              }
+              this.getSpectra(this.$route.query);
+          } //if('peptideSequence' in this.$route.query)
+            
 
           //this.getProteinEvidences(this.$route.query);
         }
