@@ -456,30 +456,80 @@
                   }
               },
               {
+                  title: 'More',
+                  key: 'more',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
+                          return  h('Dropdown', {
+                                    props: {
+                                      placement: 'bottom-end'
+                                    },
+                                    style: {
+                                      textAlign: 'left'
+                                    },
+                                    on: {
+                                      'on-click': (value) => {
+                                        console.log(value)
+                                      }
+                                    }
+                                }, [
+                                  h('div', {
+                                    class: {
+                                      member_operate_div: true
+                                    }
+                                  }, [
+                                      h('Icon', {
+                                          props: {
+                                            type: 'ios-list-outline',
+                                            size: 20
+                                          },
+                                          style: {
+                                            //marginLeft: '5px' 
+                                          }
+                                        })
+                                      ]),
+                                      h('DropdownMenu', {
+                                        slot: 'list'
+                                      }, 
+                                      params.row.psmMoreArray.map((obj)=>{
+                                          return h('DropdownItem', {
+                                              props: {name: obj.name}  
+                                          }, obj.value);  
+                                      }))
+                          ]);
+                      }
+                      else
+                        return h('span',{},'No Options')
+                  }
+              },
+              {
                   title: 'PTMs',
                   key: 'ptms',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'VariableMods',
                   key: 'variableMods',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Usi',
                   key: 'usi',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },  
@@ -571,6 +621,7 @@
                         ptms:psm[i].ptms,
                         usi:psm[i].usi,
                         select:false,
+                        psmMoreArray:[]
                       }
                       //add psmlevelFDR for item
                       if(psm[i].attributes){
@@ -581,9 +632,29 @@
                               }
                           }
                       }
-                      
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          let tempItem = {
+                            name:psm[i].attributes[j].name,
+                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
+                      }
+
                       //add peaks for item
-                      if(psm[i].intensities){
+                      if(psm[i].intensifties){
                           let peaksArray = [];
                           for(let j=0; j<psm[i].intensities.length; j++){
                               let item = {
@@ -634,7 +705,6 @@
                 this.psmTableLoading = false;
                 if(res.body){
                   let psm = res.body;
-
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
@@ -645,6 +715,7 @@
                         ptms:psm.ptms,
                         usi:psm.usi,
                         select:true,
+                        psmMoreArray:[]
                       }
                       this.keyword = item.peptideSequence;
                       //add psmlevelFDR for item
@@ -665,6 +736,15 @@
                       }
                       if(!found)
                           item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          let tempItem = {
+                            name:psm[i].attributes[j].name,
+                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
+                      }
 
                       if(psm.intensities){
                           //add peaks for item
