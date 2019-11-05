@@ -305,6 +305,42 @@
                   // ellipsis:true
               },
               {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
+              },
+              {
                   title: 'Validated by PRIDE',
                   key: 'valid',
                   //sortable: true,
@@ -567,6 +603,42 @@
                   minWidth: 140,
                   //align: 'center',
                   // ellipsis:true
+              },
+              {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               },
               {
                   title: 'Validated by PRIDE',
@@ -1020,7 +1092,25 @@
                         item.sequenceCoverage = ''
                       else
                         item.sequenceCoverage =  (Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000 * 100).toFixed(2) + '%'
-                        
+                       
+                      //add isThreshold
+                      if(proteinEvidences[i].additionalAttributes){
+                          let found = false;
+                          for(let j=0; j<proteinEvidences[i].additionalAttributes.length; j++){
+                              //console.log('protein1',proteinEvidences[i].additionalAttributes[j].name);
+                              //console.log('protein2',proteinEvidences[i].additionalAttributes[j].value);
+                              if(proteinEvidences[i].additionalAttributes[j].name == 'Pass submitter threshold'){
+                                found =true;
+                                item.isThreshold = proteinEvidences[i].additionalAttributes[j].value
+                                //console.log('protein3',proteinEvidences[i].additionalAttributes[j].name,proteinEvidences[i].additionalAttributes[j].value);
+                                break;
+                              }
+                          }
+                          if(!found)
+                            item.isThreshold = false
+                      } 
+                      //console.log('protein',item);
+
                       this.proteinTableResults.push(item);
                   }
                   // if(this.proteinTableResults.length>0){
@@ -1071,6 +1161,21 @@
                               break;
                           }
                       }
+
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<peptideevidences[i].properties.length; j++){
+                          //console.log(peptideevidences[i].properties[j].name)
+                          //console.log(peptideevidences[i].properties[j].value)
+                          if(peptideevidences[i].properties[j].name && peptideevidences[i].properties[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = peptideevidences[i].properties[j].value
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
                       this.peptideTableResults.push(item);
 
                   }
