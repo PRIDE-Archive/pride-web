@@ -889,6 +889,42 @@
                   // ellipsis:true
               },
               {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
+              },
+              {
                   title: 'Validated by PRIDE',
                   key: 'isValid',
                   //sortable: true,
@@ -1227,6 +1263,18 @@
                               break;
                           }
                       }
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = psm[i].attributes[j].value
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
                       //add peaks for item
                       if(psm[i].intensities){
                           let peaksArray = [];
