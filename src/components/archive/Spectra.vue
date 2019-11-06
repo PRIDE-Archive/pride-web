@@ -369,7 +369,25 @@
                   key: 'psmlevelFDR',
                   //sortable: true,
                   minWidth: 60,
-                  // ellipsis:true
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#combined_psm_fdr')
+                                }
+                              }
+                          }),
+                          h('span','PSM-level FDR')
+                      ])
+                  }
               },
               {
                   title: 'PrecursorMZ',
@@ -453,6 +471,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -705,6 +742,7 @@
                 this.psmTableLoading = false;
                 if(res.body){
                   let psm = res.body;
+                  console.log('usi',psm)
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
@@ -727,10 +765,10 @@
                       }
                       //add isThreshold
                       let found = false;
-                      for(let j=0; j<psm[i].attributes.length; j++){
-                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                      for(let j=0; j<psm.attributes.length; j++){
+                          if(psm.attributes[j].name && psm.attributes[j].name.indexOf('threshold')!=-1){
                               found = true;
-                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
+                              item.isThreshold = psm.attributes[j].value == 'true' ? true : false
                               break;
                           }
                       }
@@ -738,10 +776,10 @@
                           item.isThreshold = false
 
                       //add for More option
-                      for(let j=0; j<psm[i].attributes.length; j++){
+                      for(let j=0; j<psm.attributes.length; j++){
                           let tempItem = {
-                            name:psm[i].attributes[j].name,
-                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                            name:psm.attributes[j].name,
+                            value:psm.attributes[j].name+': '+psm.attributes[j].value
                           }
                           item.psmMoreArray.push(tempItem)
                       }
@@ -1037,9 +1075,9 @@
       },
     },
     mounted: function(){
-        //console.log('this.$route',this.$route);
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
+          console.log('111');
           //this.getPeptidesEvidences();
           //this.getProteinEvidences();
           let query = {
@@ -1047,14 +1085,12 @@
             pageSize: this.spectraPageSize
           }
           this.getSpectra(query);
-          
         }
         else{
-          console.log(this.$route.query)
-          if('usi' in this.$route.query)
+          if('usi' in this.$route.query){
             this.getSpectrum(this.$route.query.usi);
+          }
           else{
-              console.log(this.$route.query);
               if(this.$route.query.page)
                   this.spectraPage = parseInt(this.$route.query.page) + 1;
               if(this.$route.query.pageSize){
