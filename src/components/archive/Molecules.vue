@@ -266,28 +266,28 @@
                   title: 'Accession',
                   key: 'reportedAccession',
                   sortable: 'custom',
-                  minWidth: 200,
+                  minWidth: 80,
                   // ellipsis:true
               },
               {
                   title: '#Peptides',
                   key: 'numberPeptides',
                   sortable: 'custom',
-                  minWidth: 90,
+                  minWidth: 70,
                   //className:'peptideID'
               },
               {
                   title: '#PSMs',
                   key: 'numberPSMs',
                   sortable: 'custom',
-                  minWidth: 75,
+                  minWidth: 50,
                   //className:'peptideID'
               },
               {
                   title: 'Coverage',
                   key: 'sequenceCoverage',
                   sortable: 'custom',
-                  minWidth: 85,
+                  minWidth: 55,
                   //className:'peptideID'
               },
               {
@@ -301,7 +301,26 @@
                   title: 'Confidence Score',
                   key: 'bestSearchEngineScore',
                   sortable: 'custom',
-                  minWidth: 130,
+                  minWidth: 120,
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#protein_confidence_score')
+                                }
+                              }
+                          }),
+                          h('span','Confidence Score')
+                      ])
+                  }
                   // ellipsis:true
               },
               {
@@ -374,6 +393,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -601,8 +639,25 @@
                   key: 'peptidelevelFDR',
                   //sortable: true,
                   minWidth: 140,
-                  //align: 'center',
-                  // ellipsis:true
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#peptide_level_fdr')
+                                }
+                              }
+                          }),
+                          h('span','Peptide-level FDR')
+                      ])
+                  }
               },
               {
                   title: 'Pass submitter Threshold',
@@ -674,6 +729,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -880,7 +954,25 @@
                   key: 'psmlevelFDR',
                   //sortable: true,
                   minWidth: 130,
-                  // ellipsis:true
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#combined_psm_fdr')
+                                }
+                              }
+                          }),
+                          h('span','PSM-level FDR')
+                      ])
+                  }
               },
               {
                   title: 'Charge',
@@ -958,6 +1050,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -1009,7 +1120,6 @@
                       else
                         return h('span',{},'No Options')
                   }
-
               },
               {
                   title: 'PTMs',
@@ -1586,7 +1696,7 @@
                   iframe.id = 'lorikeetIframe'
                   iframe.className = 'lorikeet-iframe'
                   iframe.style.width = '100%'
-                  iframe.style.height = '720px'
+                  iframe.style.height = '940px'
                   iframe.style.borderWidth = '0';
                   document.querySelector(".spectrum-container").appendChild(iframe)
                   document.querySelector("#lorikeetIframe").onload = ()=>{
@@ -1624,7 +1734,7 @@
                   this.spectrumTableHint = "Please select one PSM"
           } 
           else{
-              document.querySelector('.spectrum-container').style.height = '730px'
+              document.querySelector('.spectrum-container').style.height = '940px'
               if(this.psmItemSelected){
                   if(document.querySelector('#lorikeetIframe'))
                     document.querySelector('#lorikeetIframe').style.display= 'block'
@@ -1976,7 +2086,7 @@
   }
   .lorikeet-iframe{
       width: 100%;
-      height: 720px;
+      height: 920px;
       border-width:0;
   }
   .table-header a{
