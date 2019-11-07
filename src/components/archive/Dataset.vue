@@ -789,7 +789,7 @@
           size:20, //TODO for queryAssayApi
           total:0, //TODO for queryAssayApi
           pageDownLoad:0,
-          pageSizeDownLoad:100,
+          pageSizeDownLoad:1000,
           totalDownLoad:0,
           selectAllfiles:false,
           msRunModalTableCol:[
@@ -927,10 +927,11 @@
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
                             url: {
-                              ftp: filesArray[i].publicFileLocations[0].value,
+                              ftp: filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
                               asp: filesArray[i].publicFileLocations[1].value
                             }
                       }
+                      console.log('file type',item.type)
                       tempArray.push(item);
                   }
 
