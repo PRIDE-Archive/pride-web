@@ -1,7 +1,7 @@
 <template>
   <div class="statistics-container">
     <Row class="row">
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="treePrideShow"></Spin>
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="linePrideShow"></Spin>
@@ -19,7 +19,16 @@
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 8}" :lg="{ span: 8}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+            <div class="item-container">
+                <div class="item">
+                      <Spin fix v-if="barHorizontalShow"></Spin>
+                      <BarHorizontalPrideSimple></BarHorizontalPrideSimple>
+                      <a class="static-more-button" @click="gotoStaticDetails">More</a>
+                </div>
+            </div>
+        </Col>
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="mapPrideShow"></Spin>
@@ -42,6 +51,7 @@
     import SankeyPrideSimple from './statistics_chart/SankeySimple.vue'
     import MapPrideSimple from './statistics_chart/MapSimple.vue'
     import TreePrideSimple from './statistics_chart/TreeSimple.vue'
+    import BarHorizontalPrideSimple from './statistics_chart/BarHorizontalSimple.vue'
     import store from "@/store/store.js"
     export default {
         data () {
@@ -51,10 +61,12 @@
                 mapPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_COUNTRY',
                 //linePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
                 linePrideApi: this.$store.state.baseApiURL + '/stats/submissions-monthly',
+                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE',
                 treePrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
                 linePrideShow:true,
+                barHorizontalShow:true,
             }
         },
         components: {
@@ -62,7 +74,8 @@
             SunburstPrideSimple,
             SankeyPrideSimple,
             MapPrideSimple,
-            TreePrideSimple
+            TreePrideSimple,
+            BarHorizontalPrideSimple
         },
         methods:{
             gotoStaticDetails(){
@@ -110,12 +123,23 @@
 
                   });
            },
+           queryBarHorizontal(){
+                this.$http
+                  .get(this.barHorizontalApi)
+                  .then(function(res){
+                    this.barHorizontalShow=false;
+                    this.$bus.$emit('show-bar-horizontal', res.body);
+                  },function(err){
+
+                  });
+           },
         },
         mounted: function(){
             this.queryTree();
             this.querySankey();
             this.queryLine();
             this.queryMap();
+            this.queryBarHorizontal()
         },
     }
 </script>
@@ -176,12 +200,12 @@
     }
     @media (min-width: 1200px) {
         .statistics-container{
-            width: 1170px;
+            width: 99%;
         }
     }
     @media (min-width: 1600px) {
         .statistics-container{
-            width: 1552px;
+            width: 99%;
         }
     }
 </style>
