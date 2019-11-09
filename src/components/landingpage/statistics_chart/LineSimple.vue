@@ -35,11 +35,14 @@ export default {
             nameGap:8,
             nameTextStyle:{
               align:'right',
+              fontSize:10,
+              padding:[0,0,10,-10],
               /*color:'red',*/
               verticalAlign:'top'
             },
             axisLabel:{
               margin:20,
+              fontSize:10
             }
         },
         yAxis: {
@@ -49,6 +52,7 @@ export default {
             nameGap:8,
             nameTextStyle:{
               align:'middle',
+              fontSize:10,
               /*color:'red',*/
               verticalAlign:'top'
             },
@@ -57,6 +61,8 @@ export default {
             },
             axisLabel:{
               margin:15,
+              rotate:90,
+              fontSize:10
             }
         },
         /*
