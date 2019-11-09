@@ -746,6 +746,7 @@
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
+                        accession: psm.usi.split(':')[1],
                         decoy: psm.decoy,
                         isValid: psm.valid,
                         charge:psm.charge,
