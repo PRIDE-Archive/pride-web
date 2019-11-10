@@ -77,7 +77,7 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
-            itemX.name='Number Protein Peptide Evidences'
+            itemX.name='Number Peptide Evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#d48265'
