@@ -16,7 +16,7 @@
                   <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                 </div>
                 <div class="tag-wrapper">
-                    <span>PRIDE Assigned Tags: </span>
+                    <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
@@ -210,15 +210,18 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-                       <!--
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                        -->
+                       <p slot="title" class="project-file-title-container">
+                        <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
+                        <span class="sort-wrapper">
+                            <span style="margin-left: 10px">Sort by: </span>
+                            <div class="sortOption">
+                                <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
+                                    <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                            </div>
+                        </span>
+                      </p>
+                      
                        <div class="download-list-wrapper">
                          <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
@@ -497,6 +500,10 @@
                       else if (params.row.type == 'SEARCH'){
                         className ='fas fa-search';
                         iconColor='#5bc0be'
+                      }
+                      else if (params.row.type == 'IMAGE DATA'){
+                        className ='far fa-image';
+                        iconColor='#fd7e14'
                       }
                       return h('div', [
 
@@ -789,6 +796,17 @@
           pageDownLoad:1,
           pageSizeDownLoad:20,
           totalDownLoad:0,
+          pageDownLoadSort:'Name',
+          sortList:[
+            {
+                value: 'Name',
+                label: 'Name'
+            },
+            {
+                value: 'Type',
+                label: 'Type'
+            }
+          ],
           selectAllfiles:false,
           msRunModalTableCol:[
               {
@@ -923,7 +941,7 @@
                       let item ={
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
-                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024)+' bit' : (filesArray[i].fileSizeBytes)+' bit',
                             url: {
                               ftp: filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
                               asp: filesArray[i].publicFileLocations[1].value
@@ -1137,6 +1155,19 @@
             pageSize :this.pageSizeDownLoad,
           }
           this.queryArchiveProjectFiles(query)
+      },
+      sortChange(type){
+        if(type == 'Name')
+          this.pageDownLoadSort = 'Name'
+        else if(type == 'Type')
+          this.pageDownLoadSort = 'Type'
+        this.$Message.error({content:'Coming soon', duration:1});
+        let query = {
+            sortConditions: this.pageDownLoadSort,
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+        }
+        //this.queryArchiveProjectFiles(query)
       },
     },
     mounted: function(){
@@ -1370,6 +1401,18 @@
   .dataset-wrapper{
       margin-left: 5px;
     }
+  .project-file-title-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  .sortOption{
+    display: flex;
+    margin-left: 5px;
+  }
+  .sort-wrapper{
+    display:flex;
+    align-items: center;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -1439,6 +1482,29 @@
   }
   .assay-detail-table .ivu-tooltip-inner{
       white-space:nowrap !important;
+  }
+  .sortOption .ivu-select-selection{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+    height: 17px !important;
+    line-height: 17px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-selection .ivu-select-selected-value{
+    font-weight: normal !important;
+
+  }
+  .sortOption .ivu-select-dropdown{
+    width:120px!important;
+  }
+  .sortOption .ivu-select-dropdown .ivu-select-item{
+    font-weight: normal !important;
+
   }
 </style>
 
