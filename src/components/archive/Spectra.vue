@@ -119,7 +119,7 @@
                         <Table v-else class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                      </div>
                      <div v-if="!psmItemSelected" class="page-container">
-                       <Page :total="spectraTotal" :page-size="spectraPageSize" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
+                       <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
                      </div>
                   </Card>
               </div>
@@ -368,8 +368,26 @@
                   title: 'PSM-level FDR',
                   key: 'psmlevelFDR',
                   //sortable: true,
-                  minWidth: 130,
-                  // ellipsis:true
+                  minWidth: 60,
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#combined_psm_fdr')
+                                }
+                              }
+                          }),
+                          h('span','PSM-level FDR')
+                      ])
+                  }
               },
               {
                   title: 'PrecursorMZ',
@@ -382,6 +400,42 @@
                   key: 'charge',
                   minWidth: 40,
                   // ellipsis:true
+              },
+              {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 150,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               },
               {
                   title: 'Validated by PRIDE',
@@ -417,33 +471,102 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
+                  }
+              },
+              {
+                  title: 'More',
+                  key: 'more',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
+                          return  h('Dropdown', {
+                                    props: {
+                                      placement: 'bottom-end'
+                                    },
+                                    style: {
+                                      textAlign: 'left'
+                                    },
+                                    on: {
+                                      'on-click': (value) => {
+                                        console.log(value)
+                                      }
+                                    }
+                                }, [
+                                  h('div', {
+                                    class: {
+                                      member_operate_div: true
+                                    }
+                                  }, [
+                                      h('Icon', {
+                                          props: {
+                                            type: 'ios-list-outline',
+                                            size: 20
+                                          },
+                                          style: {
+                                            //marginLeft: '5px' 
+                                          }
+                                        })
+                                      ]),
+                                      h('DropdownMenu', {
+                                        slot: 'list'
+                                      }, 
+                                      params.row.psmMoreArray.map((obj)=>{
+                                          return h('DropdownItem', {
+                                              props: {name: obj.name}  
+                                          }, obj.value);  
+                                      }))
+                          ]);
+                      }
+                      else
+                        return h('span',{},'No Options')
                   }
               },
               {
                   title: 'PTMs',
                   key: 'ptms',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'VariableMods',
                   key: 'variableMods',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Usi',
                   key: 'usi',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },  
@@ -455,7 +578,7 @@
           spectrumSpinShow:false,
           spectrumTableShow:false,
           spectrumTableCollapse:true,
-          spectraPage:0,
+          spectraPage:1,
           spectraPageSize:20,
           spectraTotal:0,
           spectraSortDirection:'DESC',
@@ -519,7 +642,7 @@
                 this.psmTableLoading = false;
                 if(res.body && res.body._embedded){
                   this.spectraTotal = res.body.page.totalElements;
-                  this.spectraPage = res.body.page.number;
+                  //this.spectraPage = res.body.page.number;
                   //this.spectraPageSize = res.body.page.size;
                   let psm = res.body._embedded.spectraevidences;
                   console.log('psm',res.body._embedded)
@@ -535,6 +658,7 @@
                         ptms:psm[i].ptms,
                         usi:psm[i].usi,
                         select:false,
+                        psmMoreArray:[]
                       }
                       //add psmlevelFDR for item
                       if(psm[i].attributes){
@@ -545,9 +669,29 @@
                               }
                           }
                       }
-                      
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          let tempItem = {
+                            name:psm[i].attributes[j].name,
+                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
+                      }
+
                       //add peaks for item
-                      if(psm[i].intensities){
+                      if(psm[i].intensifties){
                           let peaksArray = [];
                           for(let j=0; j<psm[i].intensities.length; j++){
                               let item = {
@@ -598,10 +742,11 @@
                 this.psmTableLoading = false;
                 if(res.body){
                   let psm = res.body;
-
+                  console.log('usi',psm)
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
+                        accession: psm.usi.split(':')[1],
                         decoy: psm.decoy,
                         isValid: psm.valid,
                         charge:psm.charge,
@@ -609,6 +754,7 @@
                         ptms:psm.ptms,
                         usi:psm.usi,
                         select:true,
+                        psmMoreArray:[]
                       }
                       this.keyword = item.peptideSequence;
                       //add psmlevelFDR for item
@@ -617,6 +763,26 @@
                               item.psmlevelFDR = parseFloat(psm.attributes[j].value).toExponential(3)
                               break;
                           }
+                      }
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm.attributes.length; j++){
+                          if(psm.attributes[j].name && psm.attributes[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = psm.attributes[j].value == 'true' ? true : false
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm.attributes.length; j++){
+                          let tempItem = {
+                            name:psm.attributes[j].name,
+                            value:psm.attributes[j].name+': '+psm.attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
                       }
 
                       if(psm.intensities){
@@ -663,9 +829,9 @@
               });
       },
       spectraPageChange(page){
-
-          this.spectraPage = page-1;
-          console.log('spectraPageChange',this.spectraPage)
+          console.log(page)
+          this.spectraPage = page;
+          //console.log('spectraPageChange',this.spectraPage)
           // if(this.$route.query && this.$route.query.proteinAccession)
           //   return
           let query = {
@@ -674,7 +840,7 @@
             peptideSequence:this.keyword,
             sortConditions:'projectAccession',
             sortDirection:'DESC',
-            page:this.spectraPage,
+            page:this.spectraPage-1,
             pageSize :this.spectraPageSize,
           }
     
@@ -910,9 +1076,9 @@
       },
     },
     mounted: function(){
-        //console.log('this.$route',this.$route);
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
+          console.log('111');
           //this.getPeptidesEvidences();
           //this.getProteinEvidences();
           let query = {
@@ -920,14 +1086,24 @@
             pageSize: this.spectraPageSize
           }
           this.getSpectra(query);
-          
         }
         else{
-          console.log(this.$route.query)
-          if('usi' in this.$route.query)
+          if('usi' in this.$route.query){
             this.getSpectrum(this.$route.query.usi);
-          else //if('peptideSequence' in this.$route.query)
-            this.getSpectra(this.$route.query);
+          }
+          else{
+              if(this.$route.query.page)
+                  this.spectraPage = parseInt(this.$route.query.page) + 1;
+              if(this.$route.query.pageSize){
+                  let tempPageSize = parseInt(this.$route.query.pageSize);
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.spectraPageSize = parseInt(this.$route.query.pageSize)
+                  else 
+                    this.spectraPageSize = 20
+              }
+              this.getSpectra(this.$route.query);
+          } //if('peptideSequence' in this.$route.query)
+            
 
           //this.getProteinEvidences(this.$route.query);
         }

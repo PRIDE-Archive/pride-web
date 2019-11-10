@@ -137,7 +137,7 @@ export default {
 
 <style>
 .echarts.map-pride  {
-  height: 600px !important;
+  height: 400px !important;
   width: auto !important;
 }
 </style>

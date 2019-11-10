@@ -266,28 +266,28 @@
                   title: 'Accession',
                   key: 'reportedAccession',
                   sortable: 'custom',
-                  minWidth: 200,
+                  minWidth: 80,
                   // ellipsis:true
               },
               {
                   title: '#Peptides',
                   key: 'numberPeptides',
                   sortable: 'custom',
-                  minWidth: 90,
+                  minWidth: 70,
                   //className:'peptideID'
               },
               {
                   title: '#PSMs',
                   key: 'numberPSMs',
                   sortable: 'custom',
-                  minWidth: 75,
+                  minWidth: 50,
                   //className:'peptideID'
               },
               {
                   title: 'Coverage',
                   key: 'sequenceCoverage',
                   sortable: 'custom',
-                  minWidth: 85,
+                  minWidth: 55,
                   //className:'peptideID'
               },
               {
@@ -301,8 +301,63 @@
                   title: 'Confidence Score',
                   key: 'bestSearchEngineScore',
                   sortable: 'custom',
-                  minWidth: 130,
+                  minWidth: 120,
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#protein_confidence_score')
+                                }
+                              }
+                          }),
+                          h('span','Confidence Score')
+                      ])
+                  }
                   // ellipsis:true
+              },
+              {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               },
               {
                   title: 'Validated by PRIDE',
@@ -338,6 +393,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -565,8 +639,61 @@
                   key: 'peptidelevelFDR',
                   //sortable: true,
                   minWidth: 140,
-                  //align: 'center',
-                  // ellipsis:true
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#peptide_level_fdr')
+                                }
+                              }
+                          }),
+                          h('span','Peptide-level FDR')
+                      ])
+                  }
+              },
+              {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               },
               {
                   title: 'Validated by PRIDE',
@@ -602,6 +729,25 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
                   }
               },
               {
@@ -808,13 +954,67 @@
                   key: 'psmlevelFDR',
                   //sortable: true,
                   minWidth: 130,
-                  // ellipsis:true
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#combined_psm_fdr')
+                                }
+                              }
+                          }),
+                          h('span','PSM-level FDR')
+                      ])
+                  }
               },
               {
                   title: 'Charge',
                   key: 'charge',
                   minWidth: 60,
                   // ellipsis:true
+              },
+              {
+                  title: 'Pass submitter Threshold',
+                  key: 'isThreshold',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.isThreshold){
+                        className='fa fa-check';
+                        iconColor='#19be6b'
+                      }
+                      else{
+                        className ='fa fa-times';
+                        iconColor='#ed3f14'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  //marginRight: '5px',
+                                  //marginLeft: '20px'
+                              },
+                          }),
+                          // h('span', {
+                          //     on: {
+                          //         click: () => {
+
+                          //         }
+                          //     }
+                          // }, params.row.type),
+                      ]);
+                  }
               },
               {
                   title: 'Validated by PRIDE',
@@ -850,40 +1050,109 @@
                           //     }
                           // }, params.row.type),
                       ]);
+                  },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                }
+                              }
+                          }),
+                          h('span','Validated by PRIDE')
+                      ])
+                  }
+              },
+              {
+                  title: 'More',
+                  key: 'more',
+                  //sortable: true,
+                  minWidth: 60,
+                  align: 'center',
+                  render: (h, params) => {
+                      if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
+                          return  h('Dropdown', {
+                                    props: {
+                                      placement: 'bottom-end'
+                                    },
+                                    style: {
+                                      textAlign: 'left'
+                                    },
+                                    on: {
+                                      'on-click': (value) => {
+                                        console.log(value)
+                                      }
+                                    }
+                                }, [
+                                  h('div', {
+                                    class: {
+                                      member_operate_div: true
+                                    }
+                                  }, [
+                                      h('Icon', {
+                                          props: {
+                                            type: 'ios-list-outline',
+                                            size: 20
+                                          },
+                                          style: {
+                                            //marginLeft: '5px' 
+                                          }
+                                        })
+                                      ]),
+                                      h('DropdownMenu', {
+                                        slot: 'list'
+                                      }, 
+                                      params.row.psmMoreArray.map((obj)=>{
+                                          return h('DropdownItem', {
+                                              props: {name: obj.name}  
+                                          }, obj.value);  
+                                      }))
+                          ]);
+                      }
+                      else
+                        return h('span',{},'No Options')
                   }
               },
               {
                   title: 'PTMs',
                   key: 'ptms',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Peaks',
                   key: 'peaks',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'PrecursorMZ',
                   key: 'precursorMZ',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'VariableMods',
                   key: 'variableMods',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },
               {
                   title: 'Usi',
                   key: 'usi',
-                  width:1,
+                  width:0.1,
                   className:'psmPTMs'
                   // ellipsis:true
               },    
@@ -1020,7 +1289,25 @@
                         item.sequenceCoverage = ''
                       else
                         item.sequenceCoverage =  (Math.round(proteinEvidences[i].sequenceCoverage * 10000)/10000 * 100).toFixed(2) + '%'
-                        
+                       
+                      //add isThreshold
+                      if(proteinEvidences[i].additionalAttributes){
+                          let found = false;
+                          for(let j=0; j<proteinEvidences[i].additionalAttributes.length; j++){
+                              //console.log('protein1',proteinEvidences[i].additionalAttributes[j].name);
+                              //console.log('protein2',proteinEvidences[i].additionalAttributes[j].value);
+                              if(proteinEvidences[i].additionalAttributes[j].name == 'Pass submitter threshold'){
+                                found =true;
+                                item.isThreshold = proteinEvidences[i].additionalAttributes[j].value == 'true' ? true : false
+                                //console.log('protein3',proteinEvidences[i].additionalAttributes[j].name,proteinEvidences[i].additionalAttributes[j].value);
+                                break;
+                              }
+                          }
+                          if(!found)
+                            item.isThreshold = false
+                      } 
+                      //console.log('protein',item);
+
                       this.proteinTableResults.push(item);
                   }
                   // if(this.proteinTableResults.length>0){
@@ -1071,6 +1358,21 @@
                               break;
                           }
                       }
+
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<peptideevidences[i].properties.length; j++){
+                          //console.log(peptideevidences[i].properties[j].name)
+                          //console.log(peptideevidences[i].properties[j].value)
+                          if(peptideevidences[i].properties[j].name && peptideevidences[i].properties[j].name.indexOf('threshold')!=-1){
+                              found = true;
+                              item.isThreshold = peptideevidences[i].properties[j].value == 'true' ? true : false
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
                       this.peptideTableResults.push(item);
 
                   }
@@ -1114,6 +1416,7 @@
                         ptms:psm[i].ptms,
                         usi:psm[i].usi,
                         select:false,
+                        psmMoreArray:[]
                       }
                       //add psmlevelFDR for item
                       for(let j=0; j<psm[i].attributes.length; j++){
@@ -1122,6 +1425,28 @@
                               break;
                           }
                       }
+                      //add isThreshold
+                      let found = false;
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                              //console.log(psm[i].attributes[j].value);
+                              found = true;
+                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
+                              break;
+                          }
+                      }
+                      if(!found)
+                          item.isThreshold = false
+
+                      //add for More option
+                      for(let j=0; j<psm[i].attributes.length; j++){
+                          let tempItem = {
+                            name:psm[i].attributes[j].name,
+                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          }
+                          item.psmMoreArray.push(tempItem)
+                      }
+
                       //add peaks for item
                       if(psm[i].intensities){
                           let peaksArray = [];
@@ -1371,7 +1696,7 @@
                   iframe.id = 'lorikeetIframe'
                   iframe.className = 'lorikeet-iframe'
                   iframe.style.width = '100%'
-                  iframe.style.height = '720px'
+                  iframe.style.height = '940px'
                   iframe.style.borderWidth = '0';
                   document.querySelector(".spectrum-container").appendChild(iframe)
                   document.querySelector("#lorikeetIframe").onload = ()=>{
@@ -1409,7 +1734,7 @@
                   this.spectrumTableHint = "Please select one PSM"
           } 
           else{
-              document.querySelector('.spectrum-container').style.height = '730px'
+              document.querySelector('.spectrum-container').style.height = '940px'
               if(this.psmItemSelected){
                   if(document.querySelector('#lorikeetIframe'))
                     document.querySelector('#lorikeetIframe').style.display= 'block'
@@ -1761,7 +2086,7 @@
   }
   .lorikeet-iframe{
       width: 100%;
-      height: 720px;
+      height: 920px;
       border-width:0;
   }
   .table-header a{

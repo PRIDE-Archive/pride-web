@@ -66,7 +66,28 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="24">
+                <Col span="12">
+                    <div class="visualization-wrapper">
+                        <Card>
+                             <p slot="title">Moleculer</p>
+                             <!--
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Modification distribution for all the PSMs within the cluster.
+                                    </div>
+                                </Tooltip>
+                             </p>
+                             -->
+                             <div class="card-content-pie">
+                                 <Spin fix v-if="barHorizontalShow"></Spin>
+                                 <BarHorizontalPride></BarHorizontalPride>
+                             </div>
+                        </Card>
+                    </div>
+                </Col>
+                <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Submitted datasets per country</p>
@@ -98,6 +119,7 @@
     import LinePride from './statistics_chart/Line.vue'
     import PiePride from './statistics_chart/Pie.vue'
     import MapPride from './statistics_chart/Map.vue'
+    import BarHorizontalPride from './statistics_chart/BarHorizontal.vue'
     import NavBar from '@/components/ebi/Nav'
     import store from "@/store/store.js"
     export default {
@@ -110,12 +132,14 @@
                 linePrideYearApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
                 //linePrideMonthApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
                 linePrideMonthApi: this.$store.state.baseApiURL + '/stats/submissions-monthly', 
+                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE',
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,
                 linePrideShow:true,
                 piePrideShow:true,
                 treePrideShow:true,
+                barHorizontalShow:true,
                 facetsType:'INSTRUMENT',
                 facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS'],
                 submissionTitle: ''
@@ -128,6 +152,7 @@
             LinePride,
             PiePride,
             MapPride,
+            BarHorizontalPride,
             NavBar,
         },
         methods: {
@@ -199,7 +224,17 @@
                   },function(err){
 
                   });
-           }
+           },
+           queryBarHorizontal(){
+                this.$http
+                  .get(this.barHorizontalApi)
+                  .then(function(res){
+                    this.barHorizontalShow=false;
+                    this.$bus.$emit('show-bar-horizontal', res.body);
+                  },function(err){
+
+                  });
+           },
         },
         computed:{
 
@@ -211,12 +246,13 @@
             this.queryLine();
             this.queryMap();
             this.facetsTypeChange('INSTRUMENT');
+            this.queryBarHorizontal();
         },
     }
 </script>
 <style scoped>
     .content-container{
-        padding: 50px 0;
+        padding-top: 50px;
     }
     .visualization-wrapper{
         padding: 0px 20px 0 20px;
@@ -276,6 +312,9 @@
     }
     .submission-options{
       border-bottom-style:none !important;
+    }
+    .code-row-bg{
+      margin-bottom: 50px;
     }
     @media (max-width: 700px) {
       .item{

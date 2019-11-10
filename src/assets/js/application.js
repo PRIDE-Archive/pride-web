@@ -49,7 +49,7 @@ var setup = function () {
     this.asperaWeb.addEventListener('transfer', fileControls.handleTransferEvents);
 };
 
-fileControls = {};
+var fileControls = {};
 
 fileControls.handleTransferEvents = function (event, obj) {
     switch (event) {

@@ -414,8 +414,10 @@
                   </Card>
               </Col>
           </Row>
-
       </div>
+
+      <!-- <Button @click= "downloadFiles">123</Button> -->
+
   </div>
 </template>
 
@@ -789,7 +791,7 @@
           size:20, //TODO for queryAssayApi
           total:0, //TODO for queryAssayApi
           pageDownLoad:0,
-          pageSizeDownLoad:100,
+          pageSizeDownLoad:1000,
           totalDownLoad:0,
           selectAllfiles:false,
           msRunModalTableCol:[
@@ -904,7 +906,7 @@
                       }
                       this.msRunModalTableData.push(item);
                   }
-                  console.log(this.msRunModalTableData);
+                  //console.log(this.msRunModalTableData);
               },function(err){
                   this.msRunTableLoading = false;
               });
@@ -927,10 +929,11 @@
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
                             url: {
-                              ftp: filesArray[i].publicFileLocations[0].value,
+                              ftp: filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
                               asp: filesArray[i].publicFileLocations[1].value
                             }
                       }
+                      //console.log('file type',item.type)
                       tempArray.push(item);
                   }
 
@@ -1018,7 +1021,7 @@
                 this.similarityLoading=false;
                 this.similarProjects=res.body._embedded.compactprojects;
 
-                console.log(this.similarProjects)
+                //console.log(this.similarProjects)
             },function(err){
 
             });
@@ -1077,6 +1080,59 @@
       },
       searchByLabel(filter){
         this.$router.push({name: 'archive', query:{filter:filter}});
+      },
+      hasPlugin(name) {
+          //用于把字符串转化为小些字母
+          name = name.toLowerCase()
+          for (let i = 0; i < navigator.plugins.length; i++) {
+              if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1) {
+                  return true
+              }
+          }
+          return false
+      },
+      initAsperaConnect() {
+          /* This SDK location should be an absolute path, it is a bit tricky since the usage examples
+           * and the install examples are both two levels down the SDK, that's why everything works
+           */
+          var CONNECT_INSTALLER =  "//d3gcli72yxqn2z.cloudfront.net/connect/v4";
+          this.asperaWeb = new AW4.Connect({sdkLocation: CONNECT_INSTALLER, minVersion: "3.6.0"});
+          var asperaInstaller = new AW4.ConnectInstaller({sdkLocation: CONNECT_INSTALLER});
+          var statusEventListener = function (eventType, data) {
+            if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.INITIALIZING) {
+              asperaInstaller.showLaunching();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.FAILED) {
+             asperaInstaller.showDownload();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.OUTDATED) {
+             asperaInstaller.showUpdate();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.RUNNING) {
+             asperaInstaller.connected();
+           }
+          };
+          this.asperaWeb.addEventListener(AW4.Connect.EVENT.STATUS, statusEventListener);
+          this.asperaWeb.initSession();
+
+          this.asperaWeb.addEventListener('transfer', fileControls.handleTransferEvents);
+          //setup();
+      },
+      downloadFiles () {
+          let transferSpec = {
+              "paths": [{"source":"aspera-test-dir-large/100MB"}],
+              "remote_host": "demo.asperasoft.com",
+              "remote_user": "aspera",
+              "remote_password": "demoaspera",
+              "direction": "receive",
+              "target_rate_kbps" : 5000,
+              "allow_dialogs" : true,
+              "resume" : "sparse_checksum"
+          };
+
+          let connectSettings = {
+              "allow_dialogs": "no"
+          };
+          var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
+
+          console.log('response',response);
       }
     },
     mounted: function(){
@@ -1086,6 +1142,10 @@
         this.querySimilarity();
         this.getMSRunTableData();
         this.getProteinEvidences();
+
+        this.initAsperaConnect();
+        //console.log(navigator.plugins)
+        //console.log('initAspera',initAspera)
     },
     computed:{//TODO for queryAssayApi
       query:function(){
