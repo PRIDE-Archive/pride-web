@@ -77,6 +77,10 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6a89e6b16c013fdfd9f3efb862517b10b824144e
             itemX.name='Number peptide evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
