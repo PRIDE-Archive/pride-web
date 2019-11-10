@@ -223,13 +223,11 @@
                          <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
                            <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
-                           <!--
-                           <div class="page-container">
-                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
-                           </div>
-                           -->
                            <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
+                       </div>
+                       <div class="page-container">
+                         <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
                        </div>
                     </Card>
                     <!-- <Card class="card">
@@ -248,7 +246,7 @@
                         <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
                         </div>
                         <div class="page-container">
-                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageAssayChange" @on-page-size-change="pageSizeAssayChange"></Page>
                         </div>
                     </Card>
                     -->
@@ -445,8 +443,8 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
+          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -787,11 +785,9 @@
               },
           ],
           assayResults:[],
-          page:0, //TODO for queryAssayApi
-          size:20, //TODO for queryAssayApi
-          total:0, //TODO for queryAssayApi
-          pageDownLoad:0,
-          pageSizeDownLoad:1000,
+          totalDownLoad:0, 
+          pageDownLoad:1,
+          pageSizeDownLoad:20,
           totalDownLoad:0,
           selectAllfiles:false,
           msRunModalTableCol:[
@@ -838,7 +834,7 @@
       queryProjectDetails(id){
            var id = id || this.$route.params.id;
            this.$http
-            .get(this.queryArchiveProjectApi + id)
+            .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
                 this.init();
                 this.accession = res.body.accession;
@@ -911,11 +907,11 @@
                   this.msRunTableLoading = false;
               });
       },
-      queryArchiveProjectFiles(id){
-           var id = id || this.$route.params.id;
+      queryArchiveProjectFiles(q){
+           let query = q || this.queryDownload
            this.fileListLoading = true;
            this.$http
-            .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
+            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
                 console.log(res.body);
                 this.fileListLoading = false;
@@ -946,11 +942,11 @@
                 this.fileListLoading = false;
             });
       },
-      pageChange(page){
+      pageAssayChange(page){
           this.page = page-1;
           //this.queryAssay();
       },
-      pageSizeChange(size){
+      pageSizeAssayChange(size){
           this.size = size;
           //this.queryAssay();
       },
@@ -994,14 +990,6 @@
       europePMC(id){
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
-      },
-      pageChangeDownload(page){
-          this.pageDownLoad = page-1;
-          this.queryArchiveProjectFiles();
-      },
-      pageSizeChangeDownload(size){
-          this.pageSizeDownLoad = size;
-          this.queryArchiveProjectFiles();
       },
       downLoadSelect(selection,row){
           console.log(selection);
@@ -1133,7 +1121,23 @@
           var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
 
           console.log('response',response);
-      }
+      },
+      downloadPageChange(page){
+          this.pageDownLoad = page;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
+      downloadPageSizeChange(size){
+          this.pageSizeDownLoad = size;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1154,9 +1158,10 @@
           return '?'+sequence+project+mod+page+size;
       },
       queryDownload:function(){
-          let pageDownLoad='page='+this.pageDownLoad+'&';
-          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
-          return '?'+pageDownLoad+pageSizeDownLoad;
+          let normalQuery = {}
+          normalQuery.page = this.pageDownLoad -1;
+          normalQuery.pageSize = this.pageSizeDownLoad;
+          return normalQuery;
       }
     },
   }
