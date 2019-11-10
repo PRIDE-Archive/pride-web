@@ -12,7 +12,7 @@ export default {
       options: {
         color:['#c23531','#2f4554', '#61a0a8'],
         title: {
-            text: 'Molecule',
+            text: 'Proteomics Evidences',
             textStyle:{
               fontSize:14,
               fontWeight:'normal',
@@ -92,7 +92,7 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
-            itemX.name='Number Protein Evidences'
+            itemX.name='Number protein evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#61a0a8'
@@ -104,7 +104,7 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
-            itemX.name='Number Protein Peptide Evidences'
+            itemX.name='Number peptide evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#d48265'
@@ -116,7 +116,7 @@ export default {
             yValue.push(itemY);
             
             let itemX = {}
-            itemX.name='Number PSM Evidences'
+            itemX.name='Number PSM evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#c23531'
