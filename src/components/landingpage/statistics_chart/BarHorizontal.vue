@@ -42,7 +42,7 @@ export default {
         // }],
         series: [
               {
-                  name:'Molecule',
+                  name:'Proteomics Evidences',
                   type:'bar',
                   barWidth: '30%',
                   data:[0,0]
@@ -65,7 +65,7 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
-            itemX.name='Number Protein Evidences'
+            itemX.name='Number protein evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#61a0a8'
@@ -77,7 +77,8 @@ export default {
             yValue.push(itemY);
 
             let itemX = {}
-            itemX.name='Number Peptide Evidences'
+
+            itemX.name='Number peptide evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#d48265'
@@ -89,7 +90,7 @@ export default {
             yValue.push(itemY);
             
             let itemX = {}
-            itemX.name='Number PSM Evidences'
+            itemX.name='Number PSM evidences'
             itemX.value = data[i].value
             itemX.itemStyle={}
             itemX.itemStyle.color='#c23531'
