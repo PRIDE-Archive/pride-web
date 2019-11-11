@@ -4,7 +4,7 @@
      <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="document-text" size="80" color="#5bc0be"></Icon></div>
+                    <div class="item-icon"><Icon type="wrench" size="75" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Tools</div>
                     </div>

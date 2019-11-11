@@ -16,7 +16,7 @@
                   <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                 </div>
                 <div class="tag-wrapper">
-                    <span>PRIDE Assigned Tags: </span>
+                    <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
@@ -210,26 +210,27 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-                       <!--
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                        -->
+                       <p slot="title" class="project-file-title-container">
+                        <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
+                        <span class="sort-wrapper">
+                            <span style="margin-left: 10px">Sort by: </span>
+                            <div class="sortOption">
+                                <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
+                                    <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                            </div>
+                        </span>
+                      </p>
+                      
                        <div class="download-list-wrapper">
                          <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
                            <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
-                           <!--
-                           <div class="page-container">
-                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
-                           </div>
-                           -->
                            <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
+                       </div>
+                       <div class="page-container">
+                         <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
                        </div>
                     </Card>
                     <!-- <Card class="card">
@@ -248,7 +249,7 @@
                         <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
                         </div>
                         <div class="page-container">
-                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageAssayChange" @on-page-size-change="pageSizeAssayChange"></Page>
                         </div>
                     </Card>
                     -->
@@ -445,8 +446,8 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
+          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -499,6 +500,10 @@
                       else if (params.row.type == 'SEARCH'){
                         className ='fas fa-search';
                         iconColor='#5bc0be'
+                      }
+                      else if (params.row.type == 'IMAGE DATA'){
+                        className ='far fa-image';
+                        iconColor='#fd7e14'
                       }
                       return h('div', [
 
@@ -787,12 +792,21 @@
               },
           ],
           assayResults:[],
-          page:0, //TODO for queryAssayApi
-          size:20, //TODO for queryAssayApi
-          total:0, //TODO for queryAssayApi
-          pageDownLoad:0,
-          pageSizeDownLoad:1000,
+          totalDownLoad:0, 
+          pageDownLoad:1,
+          pageSizeDownLoad:20,
           totalDownLoad:0,
+          pageDownLoadSort:'Name',
+          sortList:[
+            {
+                value: 'Name',
+                label: 'Name'
+            },
+            {
+                value: 'Type',
+                label: 'Type'
+            }
+          ],
           selectAllfiles:false,
           msRunModalTableCol:[
               {
@@ -838,7 +852,7 @@
       queryProjectDetails(id){
            var id = id || this.$route.params.id;
            this.$http
-            .get(this.queryArchiveProjectApi + id)
+            .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
                 this.init();
                 this.accession = res.body.accession;
@@ -911,11 +925,11 @@
                   this.msRunTableLoading = false;
               });
       },
-      queryArchiveProjectFiles(id){
-           var id = id || this.$route.params.id;
+      queryArchiveProjectFiles(q){
+           let query = q || this.queryDownload
            this.fileListLoading = true;
            this.$http
-            .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
+            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
                 console.log(res.body);
                 this.fileListLoading = false;
@@ -946,11 +960,11 @@
                 this.fileListLoading = false;
             });
       },
-      pageChange(page){
+      pageAssayChange(page){
           this.page = page-1;
           //this.queryAssay();
       },
-      pageSizeChange(size){
+      pageSizeAssayChange(size){
           this.size = size;
           //this.queryAssay();
       },
@@ -994,14 +1008,6 @@
       europePMC(id){
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
-      },
-      pageChangeDownload(page){
-          this.pageDownLoad = page-1;
-          this.queryArchiveProjectFiles();
-      },
-      pageSizeChangeDownload(size){
-          this.pageSizeDownLoad = size;
-          this.queryArchiveProjectFiles();
       },
       downLoadSelect(selection,row){
           console.log(selection);
@@ -1133,7 +1139,36 @@
           var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
 
           console.log('response',response);
-      }
+      },
+      downloadPageChange(page){
+          this.pageDownLoad = page;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
+      downloadPageSizeChange(size){
+          this.pageSizeDownLoad = size;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
+      sortChange(type){
+        if(type == 'Name')
+          this.pageDownLoadSort = 'Name'
+        else if(type == 'Type')
+          this.pageDownLoadSort = 'Type'
+        this.$Message.error({content:'Coming soon', duration:1});
+        let query = {
+            sortConditions: this.pageDownLoadSort,
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+        }
+        //this.queryArchiveProjectFiles(query)
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1154,9 +1189,10 @@
           return '?'+sequence+project+mod+page+size;
       },
       queryDownload:function(){
-          let pageDownLoad='page='+this.pageDownLoad+'&';
-          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
-          return '?'+pageDownLoad+pageSizeDownLoad;
+          let normalQuery = {}
+          normalQuery.page = this.pageDownLoad -1;
+          normalQuery.pageSize = this.pageSizeDownLoad;
+          return normalQuery;
       }
     },
   }
@@ -1365,6 +1401,18 @@
   .dataset-wrapper{
       margin-left: 5px;
     }
+  .project-file-title-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  .sortOption{
+    display: flex;
+    margin-left: 5px;
+  }
+  .sort-wrapper{
+    display:flex;
+    align-items: center;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -1434,6 +1482,29 @@
   }
   .assay-detail-table .ivu-tooltip-inner{
       white-space:nowrap !important;
+  }
+  .sortOption .ivu-select-selection{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+    height: 17px !important;
+    line-height: 17px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-selection .ivu-select-selected-value{
+    font-weight: normal !important;
+
+  }
+  .sortOption .ivu-select-dropdown{
+    width:120px!important;
+  }
+  .sortOption .ivu-select-dropdown .ivu-select-item{
+    font-weight: normal !important;
+
   }
 </style>
 

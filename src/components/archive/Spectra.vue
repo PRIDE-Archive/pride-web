@@ -857,7 +857,7 @@
             peptideSequence:this.keyword,
             sortConditions:'projectAccession',
             sortDirection:'DESC',
-            page:this.spectraPage,
+            page:this.spectraPage-1,
             pageSize :this.spectraPageSize,
           }
           this.$router.push({name: 'spectra', query: query});
@@ -1082,7 +1082,7 @@
           //this.getPeptidesEvidences();
           //this.getProteinEvidences();
           let query = {
-            page: this.spectraPage,
+            page: this.spectraPage-1,
             pageSize: this.spectraPageSize
           }
           this.getSpectra(query);
