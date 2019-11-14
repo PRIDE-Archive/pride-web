@@ -71,7 +71,7 @@ export default {
               {
                   name:'Molecule',
                   type:'bar',
-                  barWidth: '20%',
+                  barWidth: '40%',
                   data:[0,0]
               }
         ]

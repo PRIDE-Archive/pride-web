@@ -559,67 +559,109 @@
                   title: 'Download',
                   key: 'download',
                   align:'center',
-                  width:160,
-                  render: (h, params) => {
-                      return h('div', [
-                          /*
-                          h('Button', {
+                  width:100,
+                  // render: (h, params) => {
+                  //     return h('div', [
+                  //         /*
+                  //         h('Button', {
 
-                              on: {
-                                  click: () => {
-                                      this.gotoBlast(params);
-                                  }
-                              }
-                          }, 'Blast'),
-                          */
-                          h('Button', {
-                              props: {
-                                  type: 'primary',
-                                  size: 'small'
-                              },
-                              style: {
-                                  display:'inline-block',
-                                  marginRight: '5px',
-                                  paddingLeft: '22px',
-                                  paddingRight: '22px'
-                              },
-                              on: {
-                                  click: () => {
-                                      //window.location.href = params.row.url.ftp;
-                                      window.open(params.row.url.ftp)
-                                      console.log(params.row.url.ftp);
-                                      //this.gotoBlast(params);
-                                  }
-                              }
-                          }, 'FTP'),
+                  //             on: {
+                  //                 click: () => {
+                  //                     this.gotoBlast(params);
+                  //                 }
+                  //             }
+                  //         }, 'Blast'),
+                  //         */
+                  //         h('Button', {
+                  //             props: {
+                  //                 type: 'primary',
+                  //                 size: 'small'
+                  //             },
+                  //             style: {
+                  //                 display:'inline-block',
+                  //                 marginRight: '5px',
+                  //                 paddingLeft: '22px',
+                  //                 paddingRight: '22px'
+                  //             },
+                  //             on: {
+                  //                 click: () => {
+                  //                     //window.location.href = params.row.url.ftp;
+                  //                     window.open(params.row.url.ftp)
+                  //                     console.log(params.row.url.ftp);
+                  //                     //this.gotoBlast(params);
+                  //                 }
+                  //             }
+                  //         }, 'FTP'),
                           
-                          // h('i', {
-                          //     attrs: { class: 'fas fa-download'},
-                          //     style: {
-                          //         marginRight: '5px',
-                          //         marginLeft: '0px'
-                          //     },
-                          // }),
+                  //         // h('i', {
+                  //         //     attrs: { class: 'fas fa-download'},
+                  //         //     style: {
+                  //         //         marginRight: '5px',
+                  //         //         marginLeft: '0px'
+                  //         //     },
+                  //         // }),
 
 
 
-                          // h('Button', {
-                          //     props: {
-                          //         type: 'primary',
-                          //         size: 'small'
-                          //     },
-                          //     style: {
-                          //         display:'inline-block',
-                          //         marginRight: '0px'
-                          //     },
-                          //     on: {
-                          //         click: () => {
-                          //             //window.location.href = params.row.url.asp;
-                          //             window.open(params.row.url.asp)
-                          //             console.log(params.row.url.asp);
-                          //         }
-                          //     }
-                          // }, 'ASPERA'),
+                  //         // h('Button', {
+                  //         //     props: {
+                  //         //         type: 'primary',
+                  //         //         size: 'small'
+                  //         //     },
+                  //         //     style: {
+                  //         //         display:'inline-block',
+                  //         //         marginRight: '0px'
+                  //         //     },
+                  //         //     on: {
+                  //         //         click: () => {
+                  //         //             //window.location.href = params.row.url.asp;
+                  //         //             window.open(params.row.url.asp)
+                  //         //             console.log(params.row.url.asp);
+                  //         //         }
+                  //         //     }
+                  //         // }, 'ASPERA'),
+                  //     ]);
+                  // },
+                  render: (h, params) => {
+                      return  h('Dropdown', {
+                                props: {
+                                  placement: 'right-start'
+                                },
+                                style: {
+                                  textAlign: 'left'
+                                },
+                                on: {
+                                  'on-click': (value) => {
+                                      if(value.indexOf('ftp')!=-1)
+                                        window.open(value)
+                                      else if(value.indexOf('asp')!=-1)
+                                        this.$Message.success({content:'Coming Soon', duration:1});
+                                  }
+                                }
+                            }, [
+                              h('div', {
+                                class: {
+                                  member_operate_div: true
+                                }
+                              }, [
+                                  h('Icon', {
+                                      props: {
+                                        type: 'ios-cloud-download-outline',
+                                        size: 20
+                                      },
+                                      style: {
+                                        //marginLeft: '5px' 
+                                      }
+                                    })
+                                  ]),
+                                  h('DropdownMenu', {
+                                    slot: 'list'
+                                  }, 
+                                  params.row.url.map((obj)=>{
+                                      return h('DropdownItem', {
+                                          props: {name: obj.key}  
+                                      }, obj.label);  
+                                  }))
                       ]);
                   }
               }
@@ -942,10 +984,16 @@
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
-                            url: {
-                              ftp: filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
-                              asp: filesArray[i].publicFileLocations[1].value
-                            }
+                            url: [
+                              {
+                                label:'FTP',
+                                key:filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
+                              },
+                              {
+                                label:'Aspera',
+                                key:filesArray[i].publicFileLocations[1].value
+                              } 
+                            ]
                       }
                       //console.log('file type',item.type)
                       tempArray.push(item);
