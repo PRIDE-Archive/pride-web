@@ -560,6 +560,26 @@
                   key: 'download',
                   align:'center',
                   width:100,
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    let routeData = this.$router.resolve({path:'/markdownpage/pridefiledownload'});
+                                    window.open(routeData.href, '_blank');
+                                }
+                              }
+                          }),
+                          h('span','Download')
+                      ])
+                  },
                   render: (h, params) => {
                       return h('div', [
                           /*
