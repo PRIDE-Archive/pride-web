@@ -1241,7 +1241,7 @@
         this.getMSRunTableData();
         this.getProteinEvidences();
 
-        this.initAsperaConnect();
+        //this.initAsperaConnect();
         //console.log(navigator.plugins)
         //console.log('initAspera',initAspera)
     },
