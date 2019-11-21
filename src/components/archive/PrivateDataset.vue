@@ -16,7 +16,7 @@
                   <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                 </div>
                 <div class="tag-wrapper">
-                    <span>PRIDE Assigned Tags: </span>
+                    <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
@@ -210,26 +210,27 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>Project Files</p>
-                       <!--
-                       <div class="filter-wrapper">
-                           <div class="summary-content-header">Filter</div>
-                           <Select v-model="model1" size="small" style="width:100px">
-                              <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                           </Select>
-                       </div>
-                        -->
+                       <p slot="title" class="project-file-title-container">
+                        <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
+                        <span class="sort-wrapper">
+                            <span style="margin-left: 10px">Sort by: </span>
+                            <div class="sortOption">
+                                <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
+                                    <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                                </Select>
+                            </div>
+                        </span>
+                      </p>
+                      
                        <div class="download-list-wrapper">
                          <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
                            <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
-                           <!--
-                           <div class="page-container">
-                              <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" size="small" class-name="page" @on-change="pageChangeDownload" @on-page-size-change="pageSizeChangeDownload"></Page>
-                           </div>
-                           -->
                            <Button v-if="selectAllfiles" class= "download-button">Download</Button>
                          </div>
+                       </div>
+                       <div class="page-container">
+                         <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
                        </div>
                     </Card>
                     <!-- <Card class="card">
@@ -248,7 +249,7 @@
                         <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
                         </div>
                         <div class="page-container">
-                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageAssayChange" @on-page-size-change="pageSizeAssayChange"></Page>
                         </div>
                     </Card>
                     -->
@@ -414,8 +415,10 @@
                   </Card>
               </Col>
           </Row>
-
       </div>
+
+      <!-- <Button @click= "downloadFiles">123</Button> -->
+
   </div>
 </template>
 
@@ -443,8 +446,8 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects/',
+          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -497,6 +500,10 @@
                       else if (params.row.type == 'SEARCH'){
                         className ='fas fa-search';
                         iconColor='#5bc0be'
+                      }
+                      else if (params.row.type == 'IMAGE DATA'){
+                        className ='far fa-image';
+                        iconColor='#fd7e14'
                       }
                       return h('div', [
 
@@ -552,7 +559,27 @@
                   title: 'Download',
                   key: 'download',
                   align:'center',
-                  width:160,
+                  width:100,
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    let routeData = this.$router.resolve({path:'/markdownpage/pridefiledownload'});
+                                    window.open(routeData.href, '_blank');
+                                }
+                              }
+                          }),
+                          h('span','Download')
+                      ])
+                  },
                   render: (h, params) => {
                       return h('div', [
                           /*
@@ -577,44 +604,62 @@
                                   paddingRight: '22px'
                               },
                               on: {
-                                  click: () => {
+                                  click: (value) => {
+                                      console.log(value)
+                                      console.log(params.row.url[0].key);
                                       //window.location.href = params.row.url.ftp;
-                                      window.open(params.row.url.ftp)
-                                      console.log(params.row.url.ftp);
+                                      window.open(params.row.url[0].key)
+                                     
                                       //this.gotoBlast(params);
                                   }
                               }
                           }, 'FTP'),
-                          
-                          // h('i', {
-                          //     attrs: { class: 'fas fa-download'},
-                          //     style: {
-                          //         marginRight: '5px',
-                          //         marginLeft: '0px'
-                          //     },
-                          // }),
-
-
-
-                          // h('Button', {
-                          //     props: {
-                          //         type: 'primary',
-                          //         size: 'small'
-                          //     },
-                          //     style: {
-                          //         display:'inline-block',
-                          //         marginRight: '0px'
-                          //     },
-                          //     on: {
-                          //         click: () => {
-                          //             //window.location.href = params.row.url.asp;
-                          //             window.open(params.row.url.asp)
-                          //             console.log(params.row.url.asp);
-                          //         }
-                          //     }
-                          // }, 'ASPERA'),
                       ]);
-                  }
+                  },
+                  // render: (h, params) => {
+                  //     return  h('Dropdown', {
+                  //               props: {
+                  //                 placement: 'right-start'
+                  //               },
+                  //               style: {
+                  //                 textAlign: 'left'
+                  //               },
+                  //               on: {
+                  //                 'on-click': (value) => {
+                  //                     //console.log(value);
+                  //                     if(value.indexOf('ftp')!=-1)
+                  //                       window.open(value)
+                  //                     else if(value.indexOf('asp')!=-1)
+                  //                       this.downloadFiles(value);
+                  //                       //this.$Message.success({content:'Coming Soon', duration:1});
+                  //                 }
+                  //               }
+                  //           }, [
+                  //             h('div', {
+                  //               class: {
+                  //                 member_operate_div: true
+                  //               }
+                  //             }, [
+                  //                 h('Icon', {
+                  //                     props: {
+                  //                       type: 'ios-cloud-download-outline',
+                  //                       size: 20
+                  //                     },
+                  //                     style: {
+                  //                       //marginLeft: '5px' 
+                  //                     }
+                  //                   })
+                  //                 ]),
+                  //                 h('DropdownMenu', {
+                  //                   slot: 'list'
+                  //                 }, 
+                  //                 params.row.url.map((obj)=>{
+                  //                     return h('DropdownItem', {
+                  //                         props: {name: obj.key}  
+                  //                     }, obj.label);  
+                  //                 }))
+                  //     ]);
+                  // }
               }
           ],
           fileList: [],
@@ -785,12 +830,21 @@
               },
           ],
           assayResults:[],
-          page:0, //TODO for queryAssayApi
-          size:20, //TODO for queryAssayApi
-          total:0, //TODO for queryAssayApi
-          pageDownLoad:0,
-          pageSizeDownLoad:100,
+          totalDownLoad:0, 
+          pageDownLoad:1,
+          pageSizeDownLoad:20,
           totalDownLoad:0,
+          pageDownLoadSort:'Name',
+          sortList:[
+            {
+                value: 'Name',
+                label: 'Name'
+            },
+            {
+                value: 'Type',
+                label: 'Type'
+            }
+          ],
           selectAllfiles:false,
           msRunModalTableCol:[
               {
@@ -836,8 +890,11 @@
       queryProjectDetails(id){
            var id = id || this.$route.params.id;
            this.$http
-            .get(this.queryArchiveProjectApi + id)
-            .then(function(res){
+            .get(this.queryArchiveProjectApi + '/' +id,{
+              headers: {
+                'Authorization':'Bearer '+ sessionStorage.getItem('token')
+              }
+            }).then(function(res){
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -882,7 +939,7 @@
                 }
 
             },function(err){
-                this.$router.replace({name:'404'});
+                this.$Message.error({content:'No results', duration:3});
             });
       },
       getMSRunTableData(){
@@ -904,16 +961,16 @@
                       }
                       this.msRunModalTableData.push(item);
                   }
-                  console.log(this.msRunModalTableData);
+                  //console.log(this.msRunModalTableData);
               },function(err){
                   this.msRunTableLoading = false;
               });
       },
-      queryArchiveProjectFiles(id){
-           var id = id || this.$route.params.id;
+      queryArchiveProjectFiles(q){
+           let query = q || this.queryDownload
            this.fileListLoading = true;
            this.$http
-            .get(this.queryArchiveProjectFilesApi +id+ '/files'+ this.queryDownload)
+            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
                 console.log(res.body);
                 this.fileListLoading = false;
@@ -926,11 +983,35 @@
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
-                            url: {
-                              ftp: filesArray[i].publicFileLocations[0].value,
-                              asp: filesArray[i].publicFileLocations[1].value
-                            }
+                            url: [],
                       }
+                      for(let j=0; j<filesArray[i].publicFileLocations.length; j++){
+                          if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
+                              let urlItem = {
+                                  label:'FTP',
+                                  key:filesArray[i].publicFileLocations[j].value,
+                              }
+                              item.url.push(urlItem)
+                          }
+                          else if(filesArray[i].publicFileLocations[j].name.indexOf('Aspera')!=-1){
+                              let urlItem = {
+                                label:'Aspera',
+                                key:filesArray[i].publicFileLocations[j].value
+                              } 
+                              item.url.push(urlItem)
+                          }
+                      }
+                      item.url.sort((a,b)=>{
+                          let labelA=a.label.toUpperCase()
+                          let labelB=b.label. toUpperCase()
+                          if(labelA<labelB)
+                            return 1
+                          if(labelA>labelB)
+                            return -1
+
+                          return 0
+                      });
+                      //console.log('file type',item.type)
                       tempArray.push(item);
                   }
 
@@ -943,11 +1024,11 @@
                 this.fileListLoading = false;
             });
       },
-      pageChange(page){
+      pageAssayChange(page){
           this.page = page-1;
           //this.queryAssay();
       },
-      pageSizeChange(size){
+      pageSizeAssayChange(size){
           this.size = size;
           //this.queryAssay();
       },
@@ -992,14 +1073,6 @@
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
       },
-      pageChangeDownload(page){
-          this.pageDownLoad = page-1;
-          this.queryArchiveProjectFiles();
-      },
-      pageSizeChangeDownload(size){
-          this.pageSizeDownLoad = size;
-          this.queryArchiveProjectFiles();
-      },
       downLoadSelect(selection,row){
           console.log(selection);
           console.log(row);
@@ -1018,13 +1091,14 @@
                 this.similarityLoading=false;
                 this.similarProjects=res.body._embedded.compactprojects;
 
-                console.log(this.similarProjects)
+                //console.log(this.similarProjects)
             },function(err){
 
             });
       },
       gotoDetails(id){
           this.$router.push({name:'dataset',params:{id:id}});
+          window.location.reload()
       },
       gotoMolecules(){
           this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
@@ -1076,15 +1150,103 @@
       },
       searchByLabel(filter){
         this.$router.push({name: 'archive', query:{filter:filter}});
-      }
+      },
+      hasPlugin(name) {
+          //用于把字符串转化为小些字母
+          name = name.toLowerCase()
+          for (let i = 0; i < navigator.plugins.length; i++) {
+              if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1) {
+                  return true
+              }
+          }
+          return false
+      },
+      initAsperaConnect() {
+          /* This SDK location should be an absolute path, it is a bit tricky since the usage examples
+           * and the install examples are both two levels down the SDK, that's why everything works
+           */
+          var CONNECT_INSTALLER =  "//d3gcli72yxqn2z.cloudfront.net/connect/v4";
+          this.asperaWeb = new AW4.Connect({sdkLocation: CONNECT_INSTALLER, minVersion: "3.6.0"});
+          var asperaInstaller = new AW4.ConnectInstaller({sdkLocation: CONNECT_INSTALLER});
+          var statusEventListener = function (eventType, data) {
+            if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.INITIALIZING) {
+              asperaInstaller.showLaunching();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.FAILED) {
+             asperaInstaller.showDownload();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.OUTDATED) {
+             asperaInstaller.showUpdate();
+           } else if (eventType === AW4.Connect.EVENT.STATUS && data == AW4.Connect.STATUS.RUNNING) {
+             asperaInstaller.connected();
+           }
+          };
+          this.asperaWeb.addEventListener(AW4.Connect.EVENT.STATUS, statusEventListener);
+          this.asperaWeb.initSession();
+
+          //this.asperaWeb.addEventListener('transfer', fileControls.handleTransferEvents);
+          //setup();
+      },
+      downloadFiles (value) {
+          console.log('value',value);
+          let transferSpec = {
+              "paths": [{"source":value}],
+              "remote_host": "fasp.ebi.ac.uk",
+              "remote_user": "prd_ascp",
+              "authentication":"token",
+              "token":"PRIDE-Aspera-1-Token",
+              "direction": "receive",
+              "target_rate" : 10000000,
+              "resume" : "sparse_checksum",
+              "ssh_port": 33001
+          };
+
+          let connectSettings = {
+              "allow_dialogs": false
+          };
+          var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
+
+          console.log('response',response);
+      },
+      downloadPageChange(page){
+          this.pageDownLoad = page;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
+      downloadPageSizeChange(size){
+          this.pageSizeDownLoad = size;
+          let query = {
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+          }
+          this.queryArchiveProjectFiles(query)
+      },
+      sortChange(type){
+        if(type == 'Name')
+          this.pageDownLoadSort = 'Name'
+        else if(type == 'Type')
+          this.pageDownLoadSort = 'Type'
+        this.$Message.error({content:'Coming soon', duration:1});
+        let query = {
+            sortConditions: this.pageDownLoadSort,
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+        }
+        //this.queryArchiveProjectFiles(query)
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
         //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
-        this.getMSRunTableData();
-        this.getProteinEvidences();
+        //this.getMSRunTableData();
+        //this.getProteinEvidences();
+
+        //this.initAsperaConnect();
+        //console.log(navigator.plugins)
+        //console.log('initAspera',initAspera)
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1093,9 +1255,10 @@
           return '?'+sequence+project+mod+page+size;
       },
       queryDownload:function(){
-          let pageDownLoad='page='+this.pageDownLoad+'&';
-          let pageSizeDownLoad='pageSize='+this.pageSizeDownLoad;
-          return '?'+pageDownLoad+pageSizeDownLoad;
+          let normalQuery = {}
+          normalQuery.page = this.pageDownLoad -1;
+          normalQuery.pageSize = this.pageSizeDownLoad;
+          return normalQuery;
       }
     },
   }
@@ -1252,7 +1415,7 @@
     opacity: 0.5 !important;
     color: white;
   }
-   .biological-dataset-button{
+ .biological-dataset-button{
       padding: 2px 3px;
       font-size: 12px;
       margin-bottom: 0;
@@ -1304,6 +1467,18 @@
   .dataset-wrapper{
       margin-left: 5px;
     }
+  .project-file-title-container{
+    display: flex;
+    justify-content: space-between;
+  }
+  .sortOption{
+    display: flex;
+    margin-left: 5px;
+  }
+  .sort-wrapper{
+    display:flex;
+    align-items: center;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -1373,6 +1548,29 @@
   }
   .assay-detail-table .ivu-tooltip-inner{
       white-space:nowrap !important;
+  }
+  .sortOption .ivu-select-selection{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+    height: 17px !important;
+    line-height: 17px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-selection .ivu-select-selected-value{
+    font-weight: normal !important;
+
+  }
+  .sortOption .ivu-select-dropdown{
+    width:120px!important;
+  }
+  .sortOption .ivu-select-dropdown .ivu-select-item{
+    font-weight: normal !important;
+
   }
 </style>
 
