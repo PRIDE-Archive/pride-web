@@ -559,7 +559,7 @@
                  this.$http
                       .get(this.privateSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -588,7 +588,7 @@
                  this.$http
                       .get(this.publicSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         },
                         params:{
                             isPublic:true,
@@ -620,7 +620,7 @@
                 this.$http
                       .get(this.reviewSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -649,7 +649,7 @@
                 this.$http
                       .get(this.viewProfileURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -696,8 +696,8 @@
             },
             logout(){
                 this.$store.commit('setUser',{username: '', token:''});  
-                sessionStorage.setItem('username','');
-                sessionStorage.setItem('token','');
+                localStorage.setItem('username','');
+                localStorage.setItem('token','');
                 this.$router.push({name:'landingpage'})
             },
             gotoDetails(id){
@@ -738,7 +738,7 @@
                 this.$http
                     .post(this.changePasswordURL,query,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                     })
                     .then(function(res){
@@ -755,7 +755,7 @@
             },
             showPasswordModal(){
                 this.$refs['formInline'].resetFields();
-                this.formInline.email = sessionStorage.getItem('username') || '';
+                this.formInline.email = localStorage.getItem('username') || '';
                 this.resetState();
                 this.changePasswordModalBool=true;
             },
@@ -774,7 +774,7 @@
         },
         beforeRouteEnter(to,from,next){
             next(vm=>{
-              let username = sessionStorage.getItem('username') || '';
+              let username = localStorage.getItem('username') || '';
               if(!username){
                 vm.$Message.error({content:'Please Login', duration:2})
                 vm.$router.push({name:'landingpage'})

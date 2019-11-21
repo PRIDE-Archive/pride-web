@@ -521,8 +521,8 @@
                             })
                         .then(function(res){
                               this.loginModalBool=false;
-                              sessionStorage.setItem('username',this.formInline.user);
-                              sessionStorage.setItem('token',res.bodyText);
+                              localStorage.setItem('username',this.formInline.user);
+                              localStorage.setItem('token',res.bodyText);
                               //this.username = this.formInline.user;
                               this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
@@ -623,14 +623,14 @@
             },
             logout(){
               //this.$store.commit('setUser',{username: '', token:''});  
-              sessionStorage.setItem('username','');
-              sessionStorage.setItem('token','');
+              localStorage.setItem('username','');
+              localStorage.setItem('token','');
               this.$router.replace({name:'archive'});
               this.$store.commit('setUser',{username: '', token:''});    
             },
             init(){
-                let username = sessionStorage.getItem('username');
-                let token = sessionStorage.getItem('token');
+                let username = localStorage.getItem('username');
+                let token = localStorage.getItem('token');
                 if(username && token)
                   this.$store.commit('setUser',{username: username, token:token});
 

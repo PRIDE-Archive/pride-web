@@ -892,7 +892,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id,{
               headers: {
-                'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
                 this.init();
