@@ -936,7 +936,7 @@
                 }
 
             },function(err){
-                this.$router.replace({name:'404'});
+                this.$Message.error({content:'No results', duration:3});
             });
       },
       getMSRunTableData(){
