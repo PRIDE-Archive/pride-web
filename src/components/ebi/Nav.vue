@@ -313,7 +313,7 @@
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 countryListURL: this.$store.state.baseURL + '/static/country/index.csv',
                 //countryListURL:'https://github.com/PRIDE-Utilities/pride-ontology/blob/master/pride-annotations/countries.csv',
-                signupAPI: this.$store.state.baseApiURL + '/user/register',
+                signupAPI: this.$store.state.basePrivateURL + '/user/register',
                 //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
@@ -331,7 +331,7 @@
                     // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
-                tokenApi:this.$store.state.baseApiURL+'/getAAPToken',
+                tokenApi:this.$store.state.basePrivateURL+'/getAAPToken',
                 formInlineSignUp:{
                   email:'',
                   title:'',

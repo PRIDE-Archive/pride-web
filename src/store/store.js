@@ -9,6 +9,7 @@ export default new Vuex.Store({
 		baseURL: process.env.NODE_ENV == 'production'?'/pride':'',
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',  
 		baseApiURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/ws/archive/v2':'//wwwdev.ebi.ac.uk/pride/ws/archive/v2',  
+		basePrivateURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'http://www.ebi.ac.uk/pride/ws/archive/private/v2':'http://www.ebi.ac.uk/pride/ws/archive/private/v2',  
 		username: '',
 		token:''
 

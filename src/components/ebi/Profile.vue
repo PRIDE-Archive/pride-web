@@ -438,11 +438,11 @@
                 source: '',
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
-                privateSubmissionURL: this.$store.state.baseApiURL + '/projects/private',
+                privateSubmissionURL: this.$store.state.basePrivateURL + '/projects/private-submissions',
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
-                reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',  
-                changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
-                viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
+                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/private/reviewer-submissions',  
+                changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',  
+                viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[
                   {
                     label:'Edit Profile',

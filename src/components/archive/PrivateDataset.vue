@@ -446,7 +446,7 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',
+          queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects/private/reviewer-submissions',
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
