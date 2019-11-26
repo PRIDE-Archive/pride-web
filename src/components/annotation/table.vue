@@ -984,7 +984,7 @@
                   this.$http
                       .put(this.updateSampleApi,sendData,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -1025,8 +1025,8 @@
               //let sampleDataB64 = Base64.encode(sampleDataStr)  TODO for backend.
           },
           logout(){
-            sessionStorage.setItem('username','');
-            sessionStorage.setItem('token','');
+            localStorage.setItem('username','');
+            localStorage.setItem('token','');
             this.$router.push({name:'annotation'})
           },
           localStorageItemAdd(key,data){
