@@ -440,7 +440,7 @@
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.basePrivateURL + '/projects/private-submissions',
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
-                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/private/reviewer-submissions',  
+                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',  
                 changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',  
                 viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[

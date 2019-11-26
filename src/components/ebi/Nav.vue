@@ -510,6 +510,7 @@
                       ])
                     }
                   });
+                  console.log(this.tokenApi)
                   this.$http
                         //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
                         .post(this.tokenApi, 
