@@ -592,29 +592,47 @@
                               }
                           }, 'Blast'),
                           */
-                          h('Button', {
-                              props: {
-                                  type: 'primary',
-                                  size: 'small'
+                          h('a', {
+                              attrs: {
+                                  href:params.row.url[0].key,
+                                  download:params.row.url[0].download
                               },
                               style: {
                                   display:'inline-block',
-                                  marginRight: '5px',
-                                  paddingLeft: '22px',
-                                  paddingRight: '22px'
+                                  // marginRight: '5px',
+                                  // paddingLeft: '22px',
+                                  // paddingRight: '22px'
+                                  // color: '#fff',
+                                  // backgroundColor: '#5bc0be',
+                                  // borderColor: '#5bc0be',
+                                  // borderRadius: '3px',
+                                  // padding:'5px',
+                                  // fontSize:'12px',
+                                  borderBottomStyle: 'none'
                               },
                               on: {
                                   click: (value) => {
+                                      console.log(params.row.url[0]);
                                       console.log(params.row.name);
                                       console.log(params.row.url[0].key);
-                                      this.downloadFTP(params.row.name,params.row.url[0].key)
+                                      //this.downloadFTP(params.row.name,params.row.url[0].key)
                                       //window.location.href = params.row.url.ftp;
                                       //window.open(params.row.url[0].key)
                                      
                                       //this.gotoBlast(params);
                                   }
                               }
-                          }, 'FTP'),
+                          }, [
+                            h('Icon', {
+                                props: {
+                                  type: 'ios-cloud-download-outline',
+                                  size: 20
+                                },
+                                style: {
+                                  //marginLeft: '5px' 
+                                }
+                              })
+                            ]),
                       ]);
                   },
                   // render: (h, params) => {
@@ -1016,8 +1034,9 @@
                             url: [],
                       }
                       let urlItem = {
-                          label:'FTP',
-                          key:filesArray[i]._links.self.href,
+                          label:'Download',
+                          key:filesArray[i]._links.download.href,
+                          fileName:filesArray[i].fileName
                       }
                       item.url.push(urlItem)
                       //console.log('file type',item.type)
@@ -1230,9 +1249,9 @@
                 var a = document.createElement('a');
                 a.href = url;
                 a.download = filename;
-                document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
-                a.click();    
-                a.remove();  //afterwards we remove the element again 
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
             }).catch(err=>{
                 this.$Message.error({content:'Protein Check Error', duration:3});
             });
