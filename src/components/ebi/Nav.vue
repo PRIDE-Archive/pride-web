@@ -529,7 +529,8 @@
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
-                        },function(err){
+                        }).catch(err=>{
+                          console.log(err);
                           this.$Spin.hide()
                           this.$Message.error({ content: 'Invalid Username or Password'});
                         });
