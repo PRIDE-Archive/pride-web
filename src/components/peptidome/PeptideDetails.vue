@@ -536,8 +536,6 @@
                                 //for iframe
                                 this.consensusSpectrumSpinShow=false;
                                 sequence = this.sequence;
-                                //document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
-                                console.log(sequence,peaks)
                                 this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
                               },function(err){
 

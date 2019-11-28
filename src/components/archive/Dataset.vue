@@ -834,14 +834,14 @@
           pageDownLoad:1,
           pageSizeDownLoad:20,
           totalDownLoad:0,
-          pageDownLoadSort:'Name',
+          pageDownLoadSort:'name',
           sortList:[
             {
-                value: 'Name',
+                value: 'name',
                 label: 'Name'
             },
             {
-                value: 'Type',
+                value: 'type',
                 label: 'Type'
             }
           ],
@@ -1220,17 +1220,17 @@
           this.queryArchiveProjectFiles(query)
       },
       sortChange(type){
-        if(type == 'Name')
-          this.pageDownLoadSort = 'Name'
-        else if(type == 'Type')
-          this.pageDownLoadSort = 'Type'
-        this.$Message.error({content:'Coming soon', duration:1});
+        if(type == 'name')
+          this.pageDownLoadSort = 'name'
+        else if(type == 'type')
+          this.pageDownLoadSort = 'type'
+        //this.$Message.error({content:'Coming soon', duration:1});
         let query = {
             sortConditions: this.pageDownLoadSort,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
-        //this.queryArchiveProjectFiles(query)
+        this.queryArchiveProjectFiles(query)
       },
     },
     mounted: function(){
