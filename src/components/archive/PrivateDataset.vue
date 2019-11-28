@@ -98,10 +98,10 @@
                               <div class="summary-content-header">Submission Date</div>
                               <p>{{submissionDate}}</p>
                           </div>
-                          <div class="card-item-wrapper">
+                          <!-- <div class="card-item-wrapper">
                               <div class="summary-content-header">Publication Date</div>
                               <p>{{publicationDate}}</p>
-                          </div>
+                          </div> -->
                     </Card>
                     <!--
                     <Card class="card">
@@ -432,7 +432,7 @@
           accession:'',
           title:'',
           projectDescription:'',
-          publicationDate:'',
+          //publicationDate:'',
           submissionDate:'',
           sampleProcessingProtocol:'',
           dataProcessingProtocol:'',
@@ -446,8 +446,8 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects/private/reviewer-submissions',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects',
+          queryArchiveProjectFilesApi: this.$store.state.basePrivateURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -605,10 +605,11 @@
                               },
                               on: {
                                   click: (value) => {
-                                      console.log(value)
+                                      console.log(params.row.name);
                                       console.log(params.row.url[0].key);
+                                      this.downloadFTP(params.row.name,params.row.url[0].key)
                                       //window.location.href = params.row.url.ftp;
-                                      window.open(params.row.url[0].key)
+                                      //window.open(params.row.url[0].key)
                                      
                                       //this.gotoBlast(params);
                                   }
@@ -873,7 +874,7 @@
       this.queryProjectDetails(to.params.id);
       //this.queryAssay(to.params.id);
       this.queryArchiveProjectFiles(to.params.id);
-      this.querySimilarity(to.params.id);
+      //this.querySimilarity(to.params.id);
       //console.log('to query',to.query);
       /*
       let filter = to.query.split('?')[1].split('filter');
@@ -887,227 +888,11 @@
       NavBar
     },
     methods:{
-      queryProjectDetails(id){
-           var id = id || this.$route.params.id;
-           this.$http
-            .get(this.queryArchiveProjectApi + '/' +id,{
-              headers: {
-                'Authorization':'Bearer '+ localStorage.getItem('token')
-              }
-            }).then(function(res){
-                this.init();
-                this.accession = res.body.accession;
-                this.title = res.body.title;
-                this.projectDescription = res.body.projectDescription;
-                this.publicationDate = res.body.publicationDate.split('-')[2] +'/'+ res.body.publicationDate.split('-')[1] +'/'+ res.body.publicationDate.split('-')[0];
-                this.submissionDate = res.body.submissionDate.split('-')[2] +'/'+ res.body.submissionDate.split('-')[1] +'/'+ res.body.submissionDate.split('-')[0];
-                this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
-                this.dataProcessingProtocol = res.body.dataProcessingProtocol;
-                this.species = res.body.organisms || [];
-                this.tissues = res.body.organismParts || [];
-                this.diseases = res.body.diseases || [];
-                this.instrumentNames = res.body.instruments || [];
-                this.softwares = res.body.softwares || [];
-                this.quantificationMethods = res.body.quantificationMethods || [];
-                this.experimentTypes = res.body.projectTags || [];
-                this.modification = res.body.identifiedPTMStrings || [];
-                //for contactors
-                for(let i=0; i<res.body.submitters.length; i++){
-                  let item = {
-                    name: res.body.submitters[i].name,
-                    affiliation: res.body.submitters[i].affiliation,
-                    email:res.body.submitters[i].email
-                  }
-                  this.contactors.push(item);
-                }
-                for(let i=0; i<res.body.labPIs.length; i++){
-                  let item = {
-                    name: res.body.labPIs[i].name,
-                    affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
-                    email:res.body.labPIs[i].email
-                  }
-                  this.contactors.push(item);
-                }
-                //for publications
-                //console.log('res.body',res.body);
-                for(let i=0; i<res.body.references.length; i++){
-                  let item = {
-                    desc:res.body.references[i].referenceLine,
-                    pmid:res.body.references[i].pubmedId,
-                  }
-                  this.publications.push(item);
-                }
-
-            },function(err){
-                this.$Message.error({content:'No results', duration:3});
-            });
-      },
-      getMSRunTableData(){
-          this.msRunTableLoading = true;
-          this.msRunModalTableData=[];
-          let query={
-              accession: this.$route.params.id,
-          }
-          this.$http
-              .get(this.msRunApi,{params: query})
-              .then(function(res){
-                  this.msRunTableLoading = false;
-                  for(let i of res.body){
-                      let item = {
-                        accession:i.accession,
-                        name:i.fileName,
-                        size:Math.round(i.fileSizeBytes/1024/1024),
-                        //select:false,
-                      }
-                      this.msRunModalTableData.push(item);
-                  }
-                  //console.log(this.msRunModalTableData);
-              },function(err){
-                  this.msRunTableLoading = false;
-              });
-      },
-      queryArchiveProjectFiles(q){
-           let query = q || this.queryDownload
-           this.fileListLoading = true;
-           this.$http
-            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
-            .then(function(res){
-                console.log(res.body);
-                this.fileListLoading = false;
-                this.totalDownLoad = res.body.page.totalElements;
-                if(res.body._embedded && res.body._embedded.files){
-                  let filesArray = res.body._embedded.files;
-                  let tempArray = [];
-                  for(let i=0;i<filesArray.length;i++){
-                      let item ={
-                            name: filesArray[i].fileName,
-                            type: filesArray[i].fileCategory.value,
-                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
-                            url: [],
-                      }
-                      for(let j=0; j<filesArray[i].publicFileLocations.length; j++){
-                          if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
-                              let urlItem = {
-                                  label:'FTP',
-                                  key:filesArray[i].publicFileLocations[j].value,
-                              }
-                              item.url.push(urlItem)
-                          }
-                          else if(filesArray[i].publicFileLocations[j].name.indexOf('Aspera')!=-1){
-                              let urlItem = {
-                                label:'Aspera',
-                                key:filesArray[i].publicFileLocations[j].value
-                              } 
-                              item.url.push(urlItem)
-                          }
-                      }
-                      item.url.sort((a,b)=>{
-                          let labelA=a.label.toUpperCase()
-                          let labelB=b.label. toUpperCase()
-                          if(labelA<labelB)
-                            return 1
-                          if(labelA>labelB)
-                            return -1
-
-                          return 0
-                      });
-                      //console.log('file type',item.type)
-                      tempArray.push(item);
-                  }
-
-                  this.fileList=tempArray;
-                }
-                else{
-                    this.$Message.error({content:'No results', duration:1});
-                }
-            },function(err){
-                this.fileListLoading = false;
-            });
-      },
-      pageAssayChange(page){
-          this.page = page-1;
-          //this.queryAssay();
-      },
-      pageSizeAssayChange(size){
-          this.size = size;
-          //this.queryAssay();
-      },
-      queryAssay(id){
-          var id = id || this.$route.params.id;
-          this.assayResults=[];
-          this.assayLoading=true;
-          this.$http
-            .get(this.queryAssayApi + id)
-            .then(function(res){
-                this.assayLoading=false;
-                //console.log(res.body);
-                this.total = res.body.list.length;
-                for(let i=0;i<res.body.list.length; i++){
-                    let item = {
-                        accession: res.body.list[i].assayAccession,
-                        title: res.body.list[i].title,
-                        proteins: res.body.list[i].proteinCount,
-                        peptides: res.body.list[i].peptideCount,
-                        uniquepeptides:  res.body.list[i].uniquePeptideCount,
-                        spectra: res.body.list[i].totalSpectrumCount,
-                        identifiedspectra: res.body.list[i].identifiedSpectrumCount,
-
-                    }
-
-                    let button = {
-                        type:'primary',
-                        content:'Analyse',
-                        loading:false,
-                        disabled:false,
-                        token:'',
-                        api: this.viewInreactomeApi+res.body.list[i].assayAccession+'.acc'
-                    }
-                    this.viewInReactomeButtonArray.push(button);
-                    this.assayResults.push(item);
-                }
-            },function(err){
-
-            });
-      },
-      europePMC(id){
-          window.open(this.europepmcApi + id);
-          //location.href = this.europepmcApi + id;
-      },
-      downLoadSelect(selection,row){
-          console.log(selection);
-          console.log(row);
-      },
-      filesSelectAll(){
-          this.selectAllfiles =! this.selectAllfiles;
-          this.$refs.selection.selectAll(this.selectAllfiles);
-      },
-      querySimilarity(id){
-          var id = id || this.$route.params.id;
-          this.similarProjects=[];
-          this.similarityLoading=true;
-          this.$http
-            .get(this.similarityApi +id+'/similarProjects')
-            .then(function(res){
-                this.similarityLoading=false;
-                this.similarProjects=res.body._embedded.compactprojects;
-
-                //console.log(this.similarProjects)
-            },function(err){
-
-            });
-      },
-      gotoDetails(id){
-          this.$router.push({name:'dataset',params:{id:id}});
-          window.location.reload()
-      },
-      gotoMolecules(){
-          this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
-      },
       init(){
           this.accession=''
           this.title=''
           this.projectDescription=''
-          this.publicationDate=''
+          //this.publicationDate=''
           this.submissionDate=''
           this.sampleProcessingProtocol=''
           this.dataProcessingProtocol=''
@@ -1121,6 +906,196 @@
           this.experimentTypes=[]
           this.softwares=[]
           this.modification=[]
+      },
+      queryProjectDetails(id){
+           var id = id || this.$route.params.id;
+           this.$http
+            .get(this.queryArchiveProjectApi + '/' +id,{
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token')
+              }
+            }).then(function(res){
+                this.init();
+                this.accession = res.body.accession;
+                this.title = res.body.title;
+                this.projectDescription = res.body.projectDescription;
+                //this.publicationDate = res.body.publicationDate.split('-')[2] +'/'+ res.body.publicationDate.split('-')[1] +'/'+ res.body.publicationDate.split('-')[0];
+                this.submissionDate = res.body.submissionDate.split('-')[2] +'/'+ res.body.submissionDate.split('-')[1] +'/'+ res.body.submissionDate.split('-')[0];
+                this.sampleProcessingProtocol = res.body.sampleProcessingProtocol;
+                this.dataProcessingProtocol = res.body.dataProcessingProtocol;
+                this.species = res.body.organisms || [];
+                this.tissues = res.body.organismParts || [];
+                this.diseases = res.body.diseases || [];
+                this.instrumentNames = res.body.instruments || [];
+                this.softwares = res.body.softwares || [];
+                this.quantificationMethods = res.body.quantificationMethods || [];
+                this.experimentTypes = res.body.projectTags || [];
+                this.modification = res.body.identifiedPTMStrings || [];
+                //for contactors
+                if(res.body.submitters)
+                  for(let i=0; i<res.body.submitters.length; i++){
+                    let item = {
+                      name: res.body.submitters[i].name,
+                      affiliation: res.body.submitters[i].affiliation,
+                      email:res.body.submitters[i].email
+                    }
+                    this.contactors.push(item);
+                  }
+                if(res.body.labPIs)
+                  for(let i=0; i<res.body.labPIs.length; i++){
+                    let item = {
+                      name: res.body.labPIs[i].name,
+                      affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
+                      email:res.body.labPIs[i].email
+                    }
+                    this.contactors.push(item);
+                  }
+                //for publications
+                if(res.body.references)
+                  for(let i=0; i<res.body.references.length; i++){
+                    let item = {
+                      desc:res.body.references[i].referenceLine,
+                      pmid:res.body.references[i].pubmedId,
+                    }
+                    this.publications.push(item);
+                  }
+
+            },function(err){
+                console.log('err',err)
+                if(err.body.error=='TOKEN_EXPIRED'){
+                  this.$Message.error({content:'TOKEN_EXPIRED', duration:3});
+                  this.logout();
+                }
+            });
+      },
+      // getMSRunTableData(){
+      //     this.msRunTableLoading = true;
+      //     this.msRunModalTableData=[];
+      //     let query={
+      //         accession: this.$route.params.id,
+      //     }
+      //     this.$http
+      //         .get(this.msRunApi,{params: query})
+      //         .then(function(res){
+      //             this.msRunTableLoading = false;
+      //             for(let i of res.body){
+      //                 let item = {
+      //                   accession:i.accession,
+      //                   name:i.fileName,
+      //                   size:Math.round(i.fileSizeBytes/1024/1024),
+      //                   //select:false,
+      //                 }
+      //                 this.msRunModalTableData.push(item);
+      //             }
+      //             //console.log(this.msRunModalTableData);
+      //         },function(err){
+      //             this.msRunTableLoading = false;
+      //         });
+      // },
+      queryArchiveProjectFiles(q){
+           let query = q || this.queryDownload
+           this.fileListLoading = true;
+           this.$http
+            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query,
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token')
+              }
+            }).then(function(res){
+                console.log(res.body);
+                this.fileListLoading = false;
+                this.totalDownLoad = res.body.page.totalElements;
+                if(res.body._embedded && res.body._embedded.files){
+                  let filesArray = res.body._embedded.files;
+                  console.log('filesarray',filesArray)
+                  let tempArray = [];
+                  for(let i=0;i<filesArray.length;i++){
+                      let item ={
+                            name: filesArray[i].fileName,
+                            type: filesArray[i].fileCategory.value,
+                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
+                            url: [],
+                      }
+                      let urlItem = {
+                          label:'FTP',
+                          key:filesArray[i]._links.self.href,
+                      }
+                      item.url.push(urlItem)
+                      //console.log('file type',item.type)
+                      tempArray.push(item);
+                  }
+
+                  this.fileList=tempArray;
+                }
+                else{
+                    this.$Message.error({content:'No results', duration:1});
+                }
+            },function(err){
+                this.fileListLoading = false;
+            });
+      },
+      // pageAssayChange(page){
+      //     this.page = page-1;
+      //     //this.queryAssay();
+      // },
+      // pageSizeAssayChange(size){
+      //     this.size = size;
+      //     //this.queryAssay();
+      // },
+      // queryAssay(id){
+      //     var id = id || this.$route.params.id;
+      //     this.assayResults=[];
+      //     this.assayLoading=true;
+      //     this.$http
+      //       .get(this.queryAssayApi + id)
+      //       .then(function(res){
+      //           this.assayLoading=false;
+      //           //console.log(res.body);
+      //           this.total = res.body.list.length;
+      //           for(let i=0;i<res.body.list.length; i++){
+      //               let item = {
+      //                   accession: res.body.list[i].assayAccession,
+      //                   title: res.body.list[i].title,
+      //                   proteins: res.body.list[i].proteinCount,
+      //                   peptides: res.body.list[i].peptideCount,
+      //                   uniquepeptides:  res.body.list[i].uniquePeptideCount,
+      //                   spectra: res.body.list[i].totalSpectrumCount,
+      //                   identifiedspectra: res.body.list[i].identifiedSpectrumCount,
+
+      //               }
+
+      //               let button = {
+      //                   type:'primary',
+      //                   content:'Analyse',
+      //                   loading:false,
+      //                   disabled:false,
+      //                   token:'',
+      //                   api: this.viewInreactomeApi+res.body.list[i].assayAccession+'.acc'
+      //               }
+      //               this.viewInReactomeButtonArray.push(button);
+      //               this.assayResults.push(item);
+      //           }
+      //       },function(err){
+
+      //       });
+      // },
+      europePMC(id){
+          window.open(this.europepmcApi + id);
+          //location.href = this.europepmcApi + id;
+      },
+      downLoadSelect(selection,row){
+          console.log(selection);
+          console.log(row);
+      },
+      filesSelectAll(){
+          this.selectAllfiles =! this.selectAllfiles;
+          this.$refs.selection.selectAll(this.selectAllfiles);
+      },
+      gotoDetails(id){
+          this.$router.push({name:'dataset',params:{id:id}});
+          window.location.reload()
+      },
+      gotoMolecules(){
+          this.$router.push({name:'molecules',params:{id:this.$route.params.id}});
       },
       searchProperties(filter){
           let normalQuery = {}
@@ -1235,12 +1210,46 @@
         }
         //this.queryArchiveProjectFiles(query)
       },
+      downloadFTP(filename,url){
+         this.$http
+            .get(url,{
+              responseType:'blob',
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token'),
+                'Accept':'application/octet-stream'
+                //'credentials': 'include',
+              },
+              downloadProgress:(e)=>{
+                console.log(e.loaded/e.total)
+                console.log('e',e);
+              }
+            }).then(function(res){
+                return res.blob();
+            }).then(blob=>{
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = filename;
+                document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+                a.click();    
+                a.remove();  //afterwards we remove the element again 
+            }).catch(err=>{
+                this.$Message.error({content:'Protein Check Error', duration:3});
+            });
+      },
+      logout(){
+        //this.$store.commit('setUser',{username: '', token:''});  
+        localStorage.setItem('username','');
+        localStorage.setItem('token','');
+        this.$router.replace({name:'archive'});
+        this.$store.commit('setUser',{username: '', token:''});    
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
         //this.queryAssay();
         this.queryArchiveProjectFiles();
-        this.querySimilarity();
+        //this.querySimilarity();
         //this.getMSRunTableData();
         //this.getProteinEvidences();
 
