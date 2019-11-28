@@ -71,9 +71,9 @@
                       <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                     </p>
                     <p style="margin-top: 10px;">
-                        <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                        <span class="project-info">{{item.publicationDate}}</span>
+                        <!-- <span class="project-info">{{projectItemsSubmissionDate}}: </span>
+                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                        <span class="project-info">{{item.submissionDate}}</span>
                         <span>|</span>
                         <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
                             {{item.accession}}
@@ -164,9 +164,9 @@
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
-                            <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                            <span class="project-info">{{item.publicationDate}}</span>
+                            <!-- <span class="project-info">{{projectItemsSubmissionDate}}: </span>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                            <span class="project-info">{{item.submissionDate}}</span>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
@@ -258,9 +258,9 @@
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
-                            <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                            <span class="project-info">{{item.publicationDate}}</span>
+                            <!-- <span class="project-info">{{projectItemssubmissionDate}}: </span>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                            <span class="project-info">{{item.submissionDate}}</span>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
@@ -480,7 +480,7 @@
                 reviewDataList:[],
                 projectItemsSpecies:'',
                 projectItemsProjectDescription:'',
-                projectItemsPublicationDate:'',
+                projectItemsSubmissionDate:'',
                 hightlightMode:false,
                 highlightKeyword:'',
                 HighlightKeywordSensitive:false,
@@ -488,7 +488,7 @@
                     accession: "PXD009959",
                     projectDescription: "To verify if CDKA;1 phosphorylates SWI1, recombinant proteins were prepared using E.coli system and in vitro kinase reactions we",
                     title:"SWI1 in vitro phosphorylation",
-                    publicationDate:"2019-04-24",
+                    submissionDate:"2019-04-24",
                     projectTags:["Biological"],
                     species:["Arabidopsis thaliana (mouse-ear cress)","Escherichia coli"],
                     submissionType:'',
@@ -570,7 +570,7 @@
                                 accession: dataList[i].accession,
                                 title: dataList[i].title,
                                 projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                                submissionDate: dataList[i].submissionDate,
                             }
                             this.privateDataList.push(item);
                         }
@@ -602,7 +602,7 @@
                                 accession: dataList[i].accession,
                                 title: dataList[i].title,
                                 projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                                submissionDate: dataList[i].submissionDate,
                             }
                             this.publicDataList.push(item);
                         }
@@ -625,23 +625,29 @@
                       })
                       .then(function(res){
                         this.reviewLoading = false;
-                        let dataList = res.body;
-                        console.log('getReviewerSubmission1111', res.body)
-                        for(let i=0; i<dataList.length; i++){
-                            console.log('11111', res.body)
-                            let item = {
-                                accession: dataList[i].accession,
-                                title: dataList[i].title,
-                                projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                        if(res.body._embedded && res.body._embedded.projects){
+                            let dataList = res.body._embedded.projects;
+                            console.log('getReviewerSubmission1111', res.body)
+                            for(let i=0; i<dataList.length; i++){
+                                console.log('11111', res.body)
+                                let item = {
+                                    accession: dataList[i].accession,
+                                    title: dataList[i].title,
+                                    projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                                    submissionDate: dataList[i].submissionDate,
+                                }
+                                this.reviewDataList.push(item);
                             }
-                            this.reviewDataList.push(item);
                         }
+                        else{
+                            this.$Message.error({content:'No Review Data', duration:1});
+                        }
+                        
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
                         }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        this.$Message.error({content:'Review Data Error', duration:1});
                       });
             },
             getProfile(){
