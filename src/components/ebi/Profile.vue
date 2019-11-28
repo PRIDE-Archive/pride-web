@@ -83,18 +83,18 @@
                             Pride 
                         </router-link>
                     </p>
-                    <div class="action-group">
+                   <!--  <div class="action-group">
                         <div class="left">
                             <a>Cite</a>
                             <a>Watch</a>
-                            <!-- <a>Delete</a> -->
+                            <a>Delete</a>
                         </div>
                         <div class="right">
                             <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                             <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                            <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                            <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                         </div>
-                    </div>
+                    </div> -->
                    <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                            <Icon type="ios-pricetag"></Icon>
@@ -176,18 +176,18 @@
                                 Pride 
                             </router-link>
                         </p>
-                        <div class="action-group">
+                        <!--  <div class="action-group">
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <!-- <a>Delete</a> -->
+                                <a>Delete</a>
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                             </div>
-                        </div>
+                        </div> -->
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                             <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                                <Icon type="ios-pricetag"></Icon>
@@ -270,18 +270,18 @@
                                 Pride 
                             </router-link>
                         </p>
-                        <div class="action-group">
+                        <!--  <div class="action-group">
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <!-- <a>Delete</a> -->
+                                <a>Delete</a>
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                             </div>
-                        </div>
+                        </div> -->
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                             <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                                <Icon type="ios-pricetag"></Icon>
