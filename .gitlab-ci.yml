@@ -7,16 +7,16 @@ variables:
 #  - template: Dependency-Scanning.gitlab-ci.yml
 #  - template: License-Management.gitlab-ci.yml
 
-build:
-  image: docker:18.09
-  stage: build
-  services:
-    - docker:18.09-dind
-  script:
-    - docker info
-    - docker build -t $IMAGE .
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
-    - docker push $IMAGE
+#build:
+#  image: docker:18.09
+#  stage: build
+#  services:
+#    - docker:18.09-dind
+#  script:
+#    - docker info
+#    - docker build -t $IMAGE .
+#    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+#    - docker push $IMAGE
 
 kube_deploy_test:
   environment: test-env
@@ -41,8 +41,9 @@ kube_deploy_prod_hx:
   image: dtzar/helm-kubectl
   script:
     - apk add --update bash gettext tzdata coreutils
-    - mkdir -p $HOME/.kube
-    - base64 --decode $KUBE_CONFIG > $HOME/.kube/config
+    - mkdir -p ~/.kube
+    - base64 --decode $KUBE_CONFIG > ~/.kube/config
+    - kubectl config get-contexts
     - kubectl create namespace $NAMESPACE
     - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
     - envsubst < .kubernetes.yml > kubernetes.yml
