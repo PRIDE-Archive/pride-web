@@ -1,16 +1,70 @@
-image: node:12.13.0-alpine
+variables:
+  IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  DOCKER_PULL_SECRET: pride-gitlab-docker-secret
 
-before_script:
-  - apk add --update openssh-client bash openssl rsync gettext tzdata
-  - eval $(ssh-agent -s)
-  - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
-  - mkdir ~/.ssh
-  - chmod 700 ~/.ssh
-  - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
-  - chmod 600 ~/.ssh/known_hosts
+include:
+  - template: Container-Scanning.gitlab-ci.yml
+  - template: Dependency-Scanning.gitlab-ci.yml
+  - template: License-Management.gitlab-ci.yml
+
+build:
+  image: docker:18.09
+  stage: build
+  services:
+    - docker:18.09-dind
+  script:
+    - docker info
+    - docker build -t $IMAGE .
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker push $IMAGE
+
+kube_deploy_test:
+  environment: test-env
+  variables:
+    NAMESPACE: pride-web-test
+  extends: .kube_deploy_script
+
+kube_deploy_prod_hh:
+  environment: prod-hh
+  variables:
+    NAMESPACE: pride-web-prod
+  extends: .kube_deploy_script
+
+kube_deploy_prod_hx:
+  environment: prod-hx
+  variables:
+    NAMESPACE: pride-web-prod
+  extends: .kube_deploy_script
+
+.kube_deploy_script:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  script:
+    - apk add --update bash gettext tzdata coreutils
+    - mkdir -p ~/.kube
+    - echo $KUBE_CONFIG > kubeconfig
+    - base64 -d kubeconfig > ~/.kube/config
+    - kubectl config get-contexts
+    - kubectl create namespace $NAMESPACE
+    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
+    - envsubst < .kubernetes.yml > kubernetes.yml
+    - kubectl -n $NAMESPACE apply -f kubernetes.yml
+  when: manual
+
+.env_prep:
+  image: node:12.13.0-alpine
+  script:
+    - apk add --update openssh-client bash openssl rsync gettext tzdata
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
 
 .deploy_script:
   stage: deploy
+  extends: .env_prep
   script:
     - npm install
     - npm run build
