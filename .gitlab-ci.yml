@@ -41,8 +41,8 @@ kube_deploy_prod_hx:
   image: dtzar/helm-kubectl
   script:
     - apk add --update bash gettext tzdata coreutils
-    - base64 --decode $KUBE_CONFIG > kube_config.yml
-    - export KUBECONFIG=kube_config.yml
+    - mkdir -p $HOME/.kube
+    - base64 --decode $KUBE_CONFIG > $HOME/.kube/config
     - kubectl create namespace $NAMESPACE
     - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
     - envsubst < .kubernetes.yml > kubernetes.yml
