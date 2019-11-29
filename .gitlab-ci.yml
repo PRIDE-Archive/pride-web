@@ -45,8 +45,9 @@ kube_deploy_prod_hx:
     - echo $KUBE_CONFIG > kubeconfig
     - base64 -d kubeconfig > ~/.kube/config
     - kubectl config get-contexts
-    - kubectl create namespace $NAMESPACE
-    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
+    - kubectl create namespace $NAMESPACE || true
+    - kubectl -n $NAMESPACE delete secret $DOCKER_PULL_SECRET || true
+    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN
     - envsubst < .kubernetes.yml > kubernetes.yml
     - kubectl -n $NAMESPACE apply -f kubernetes.yml
   when: manual
