@@ -2,9 +2,6 @@ variables:
   IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   DOCKER_PULL_SECRET: pride-gitlab-docker-secret
 
-services:
-  - docker:18.09-dind
-
 include:
   - template: Container-Scanning.gitlab-ci.yml
   - template: Dependency-Scanning.gitlab-ci.yml
@@ -13,6 +10,8 @@ include:
 build:
   image: docker:18.09
   stage: build
+  services:
+    - docker:18.09-dind
   script:
     - docker info
     - docker build -t $IMAGE .
@@ -21,10 +20,20 @@ build:
 
 kube_deploy_test:
   environment: test-env
+  variables:
+    NAMESPACE: pride-web-test
   extends: .kube_deploy_script
 
-kube_deploy_prod:
-  environment: prod
+kube_deploy_prod_hh:
+  environment: prod-hh
+  variables:
+    NAMESPACE: pride-web-prod
+  extends: .kube_deploy_script
+
+kube_deploy_prod_hx:
+  environment: prod-hx
+  variables:
+    NAMESPACE: pride-web-prod
   extends: .kube_deploy_script
 
 .kube_deploy_script:
@@ -32,9 +41,11 @@ kube_deploy_prod:
   image: dtzar/helm-kubectl
   script:
     - apk add --update bash gettext tzdata
-    - kubectl create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
+    - echo $KUBE_CONFIG > kube_config.yml
+    - export KUBECONFIG=kube_config.yml
+    - kubectl create namespace $NAMESPACE
+    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
     - envsubst < .kubernetes.yml > kubernetes.yml
-    - cat kubernetes.yml
     - kubectl apply -f kubernetes.yml
   when: manual
 
