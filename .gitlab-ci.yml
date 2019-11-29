@@ -42,7 +42,9 @@ kube_deploy_prod_hx:
   script:
     - apk add --update bash gettext tzdata coreutils
     - mkdir -p ~/.kube
+    - echo $KUBE_CONFIG
     - base64 --decode $KUBE_CONFIG > ~/.kube/config
+    - cat ~/.kube/config
     - kubectl config get-contexts
     - kubectl create namespace $NAMESPACE
     - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN || true
