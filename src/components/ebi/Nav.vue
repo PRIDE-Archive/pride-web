@@ -2,6 +2,9 @@
     <div class="nav-container">
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
+            <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
+              {{bannerContent}}
+            </Alert>
             <div class="masthead-inner row">
               <!-- local-title -->
               <div class="columns medium-5" id="local-title"> 
@@ -310,7 +313,7 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
-                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                bannerContentURL: this.$store.state.baseURL + '/static/banner/index.txt',
                 countryListURL: this.$store.state.baseURL + '/static/country/index.csv',
                 //countryListURL:'https://github.com/PRIDE-Utilities/pride-ontology/blob/master/pride-annotations/countries.csv',
                 signupAPI: this.$store.state.basePrivateURL + '/user/register',
@@ -417,7 +420,8 @@
                 ],
                 countryList:[],
                 pageObj:{},
-                passwordType:'password'
+                passwordType:'password',
+                bannerContent:''
             }
         },
         props: ['page'],
@@ -638,6 +642,7 @@
 
                 this.pageObj = initPage(this.page)
                 this.pageObj.logoURL =  this.$store.state.baseURL +  this.pageObj.logoURL
+                this.queryBanner()
             },
             openTerms(){
               window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
@@ -700,6 +705,18 @@
               else
                 this.passwordType="password"
               //console.log(type)
+            },
+            queryBanner(){
+              this.$http
+                  .get(this.bannerContentURL)
+                  .then(function(res){
+                      this.bannerContent = res.body;
+                  },function(err){
+
+                  });
+            },
+            closeBanner(){
+              console.log('close banner');
             }
         },
         mounted() {
