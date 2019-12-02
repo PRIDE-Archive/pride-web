@@ -160,12 +160,12 @@
         data () {
             return {
                 iframeURL: this.$store.state.baseURL + '/static/lorikeet/html/pride.html',
-                clusterIDApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/' + this.$route.params.id,
-                clusterSpeciesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
-                clusterModificationApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
-                clusterPeptidesApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
-                clusterOriginalExperimentsApi:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
-                clusterConsensusSpectrum:'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
+                clusterIDApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/' + this.$route.params.id,
+                clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
+                clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
+                clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
+                clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
+                clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
                 speciesSpinShow:true,
                 modificationSpinShow:true,
@@ -515,7 +515,7 @@
                         if(this.sequence){
                             this.consensusSpectrumSpinShow=false;
                             sequence = this.sequence;
-                            this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, location.origin);
+                            this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
                         }
                         else{
                             this.$http
@@ -536,7 +536,7 @@
                                 //for iframe
                                 this.consensusSpectrumSpinShow=false;
                                 sequence = this.sequence;
-                                this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, location.origin);
+                                this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
                               },function(err){
 
                               });

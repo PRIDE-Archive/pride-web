@@ -268,7 +268,7 @@
       console.log('from',from);
       if(from.name != 'check')
         next(vm=>{
-          let username = sessionStorage.getItem('username') || '';
+          let username = localStorage.getItem('username') || '';
           if(!username){
             vm.$Message.error({content:'Please Login', duration:2})
             vm.$router.push({name:'annotation'})

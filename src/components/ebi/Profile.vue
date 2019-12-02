@@ -71,9 +71,9 @@
                       <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                     </p>
                     <p style="margin-top: 10px;">
-                        <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                        <span class="project-info">{{item.publicationDate}}</span>
+                        <!-- <span class="project-info">{{projectItemsSubmissionDate}}: </span>
+                        <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                        <span class="project-info">{{item.submissionDate}}</span>
                         <span>|</span>
                         <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
                             {{item.accession}}
@@ -83,18 +83,18 @@
                             Pride 
                         </router-link>
                     </p>
-                    <div class="action-group">
+                   <!--  <div class="action-group">
                         <div class="left">
                             <a>Cite</a>
                             <a>Watch</a>
-                            <!-- <a>Delete</a> -->
+                            <a>Delete</a>
                         </div>
                         <div class="right">
                             <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                             <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                            <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                            <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                         </div>
-                    </div>
+                    </div> -->
                    <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                            <Icon type="ios-pricetag"></Icon>
@@ -164,9 +164,9 @@
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
-                            <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                            <span class="project-info">{{item.publicationDate}}</span>
+                            <!-- <span class="project-info">{{projectItemsSubmissionDate}}: </span>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                            <span class="project-info">{{item.submissionDate}}</span>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
@@ -176,18 +176,18 @@
                                 Pride 
                             </router-link>
                         </p>
-                        <div class="action-group">
+                        <!--  <div class="action-group">
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <!-- <a>Delete</a> -->
+                                <a>Delete</a>
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                             </div>
-                        </div>
+                        </div> -->
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                             <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                                <Icon type="ios-pricetag"></Icon>
@@ -258,9 +258,9 @@
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
-                            <!-- <span class="project-info">{{projectItemsPublicationDate}}: </span>
-                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.publicationDate}}</text-highlight>-->
-                            <span class="project-info">{{item.publicationDate}}</span>
+                            <!-- <span class="project-info">{{projectItemssubmissionDate}}: </span>
+                            <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.submissionDate}}</text-highlight>-->
+                            <span class="project-info">{{item.submissionDate}}</span>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                                 {{item.accession}}
@@ -270,18 +270,18 @@
                                 Pride 
                             </router-link>
                         </p>
-                        <div class="action-group">
+                        <!--  <div class="action-group">
                             <div class="left">
                                 <a>Cite</a>
                                 <a>Watch</a>
-                                <!-- <a>Delete</a> -->
+                                <a>Delete</a>
                             </div>
                             <div class="right">
                                 <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
                                 <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <!-- <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a> -->
+                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
                             </div>
-                        </div>
+                        </div> -->
                        <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
                             <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
                                <Icon type="ios-pricetag"></Icon>
@@ -438,11 +438,11 @@
                 source: '',
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
-                privateSubmissionURL: this.$store.state.baseApiURL + '/projects/private',
+                privateSubmissionURL: this.$store.state.basePrivateURL + '/projects/private-submissions',
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
-                reviewSubmissionURL: this.$store.state.baseApiURL + '/projects/private/reviewer-submissions',  
-                changePasswordURL: this.$store.state.baseApiURL + '/user/change-password',  
-                viewProfileURL: this.$store.state.baseApiURL + '/user/view-profile',
+                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',  
+                changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',  
+                viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[
                   {
                     label:'Edit Profile',
@@ -480,7 +480,7 @@
                 reviewDataList:[],
                 projectItemsSpecies:'',
                 projectItemsProjectDescription:'',
-                projectItemsPublicationDate:'',
+                projectItemsSubmissionDate:'',
                 hightlightMode:false,
                 highlightKeyword:'',
                 HighlightKeywordSensitive:false,
@@ -488,7 +488,7 @@
                     accession: "PXD009959",
                     projectDescription: "To verify if CDKA;1 phosphorylates SWI1, recombinant proteins were prepared using E.coli system and in vitro kinase reactions we",
                     title:"SWI1 in vitro phosphorylation",
-                    publicationDate:"2019-04-24",
+                    submissionDate:"2019-04-24",
                     projectTags:["Biological"],
                     species:["Arabidopsis thaliana (mouse-ear cress)","Escherichia coli"],
                     submissionType:'',
@@ -559,7 +559,7 @@
                  this.$http
                       .get(this.privateSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -570,7 +570,7 @@
                                 accession: dataList[i].accession,
                                 title: dataList[i].title,
                                 projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                                submissionDate: dataList[i].submissionDate,
                             }
                             this.privateDataList.push(item);
                         }
@@ -588,7 +588,7 @@
                  this.$http
                       .get(this.publicSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         },
                         params:{
                             isPublic:true,
@@ -602,7 +602,7 @@
                                 accession: dataList[i].accession,
                                 title: dataList[i].title,
                                 projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                                submissionDate: dataList[i].submissionDate,
                             }
                             this.publicDataList.push(item);
                         }
@@ -620,28 +620,34 @@
                 this.$http
                       .get(this.reviewSubmissionURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
                         this.reviewLoading = false;
-                        let dataList = res.body;
-                        console.log('getReviewerSubmission1111', res.body)
-                        for(let i=0; i<dataList.length; i++){
-                            console.log('11111', res.body)
-                            let item = {
-                                accession: dataList[i].accession,
-                                title: dataList[i].title,
-                                projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                publicationDate: dataList[i].publicationDate,
+                        if(res.body._embedded && res.body._embedded.projects){
+                            let dataList = res.body._embedded.projects;
+                            console.log('getReviewerSubmission1111', res.body)
+                            for(let i=0; i<dataList.length; i++){
+                                console.log('11111', res.body)
+                                let item = {
+                                    accession: dataList[i].accession,
+                                    title: dataList[i].title,
+                                    projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                                    submissionDate: dataList[i].submissionDate,
+                                }
+                                this.reviewDataList.push(item);
                             }
-                            this.reviewDataList.push(item);
                         }
+                        else{
+                            this.$Message.error({content:'No Review Data', duration:1});
+                        }
+                        
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
                         }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        this.$Message.error({content:'Review Data Error', duration:1});
                       });
             },
             getProfile(){
@@ -649,7 +655,7 @@
                 this.$http
                       .get(this.viewProfileURL,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                       })
                       .then(function(res){
@@ -696,8 +702,8 @@
             },
             logout(){
                 this.$store.commit('setUser',{username: '', token:''});  
-                sessionStorage.setItem('username','');
-                sessionStorage.setItem('token','');
+                localStorage.setItem('username','');
+                localStorage.setItem('token','');
                 this.$router.push({name:'landingpage'})
             },
             gotoDetails(id){
@@ -738,7 +744,7 @@
                 this.$http
                     .post(this.changePasswordURL,query,{
                         headers: {
-                          'Authorization':'Bearer '+ sessionStorage.getItem('token')
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
                         }
                     })
                     .then(function(res){
@@ -755,7 +761,7 @@
             },
             showPasswordModal(){
                 this.$refs['formInline'].resetFields();
-                this.formInline.email = sessionStorage.getItem('username') || '';
+                this.formInline.email = localStorage.getItem('username') || '';
                 this.resetState();
                 this.changePasswordModalBool=true;
             },
@@ -774,7 +780,7 @@
         },
         beforeRouteEnter(to,from,next){
             next(vm=>{
-              let username = sessionStorage.getItem('username') || '';
+              let username = localStorage.getItem('username') || '';
               if(!username){
                 vm.$Message.error({content:'Please Login', duration:2})
                 vm.$router.push({name:'landingpage'})

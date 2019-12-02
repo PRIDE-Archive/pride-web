@@ -2,6 +2,9 @@
     <div class="nav-container">
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
+            <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
+              <span class="banner" v-html="bannerContent"></span>
+            </Alert>
             <div class="masthead-inner row">
               <!-- local-title -->
               <div class="columns medium-5" id="local-title"> 
@@ -310,10 +313,10 @@
                 selected: 'archive',
                 title:'',
                 subnav:[],
-                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                bannerContentURL: this.$store.state.baseURL + '/static/banner/index.txt',
                 countryListURL: this.$store.state.baseURL + '/static/country/index.csv',
                 //countryListURL:'https://github.com/PRIDE-Utilities/pride-ontology/blob/master/pride-annotations/countries.csv',
-                signupAPI: this.$store.state.baseApiURL + '/user/register',
+                signupAPI: this.$store.state.basePrivateURL + '/user/register',
                 //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
@@ -331,7 +334,7 @@
                     // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
-                tokenApi:this.$store.state.baseApiURL+'/getAAPToken',
+                tokenApi:this.$store.state.basePrivateURL+'/getAAPToken',
                 formInlineSignUp:{
                   email:'',
                   title:'',
@@ -417,7 +420,8 @@
                 ],
                 countryList:[],
                 pageObj:{},
-                passwordType:'password'
+                passwordType:'password',
+                bannerContent:''
             }
         },
         props: ['page'],
@@ -510,6 +514,7 @@
                       ])
                     }
                   });
+                  console.log(this.tokenApi)
                   this.$http
                         //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
                         .post(this.tokenApi, 
@@ -521,14 +526,15 @@
                             })
                         .then(function(res){
                               this.loginModalBool=false;
-                              sessionStorage.setItem('username',this.formInline.user);
-                              sessionStorage.setItem('token',res.bodyText);
+                              localStorage.setItem('username',this.formInline.user);
+                              localStorage.setItem('token',res.bodyText);
                               //this.username = this.formInline.user;
                               this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
-                        },function(err){
+                        }).catch(err=>{
+                          console.log(err);
                           this.$Spin.hide()
                           this.$Message.error({ content: 'Invalid Username or Password'});
                         });
@@ -623,19 +629,20 @@
             },
             logout(){
               //this.$store.commit('setUser',{username: '', token:''});  
-              sessionStorage.setItem('username','');
-              sessionStorage.setItem('token','');
+              localStorage.setItem('username','');
+              localStorage.setItem('token','');
               this.$router.replace({name:'archive'});
               this.$store.commit('setUser',{username: '', token:''});    
             },
             init(){
-                let username = sessionStorage.getItem('username');
-                let token = sessionStorage.getItem('token');
+                let username = localStorage.getItem('username');
+                let token = localStorage.getItem('token');
                 if(username && token)
                   this.$store.commit('setUser',{username: username, token:token});
 
                 this.pageObj = initPage(this.page)
                 this.pageObj.logoURL =  this.$store.state.baseURL +  this.pageObj.logoURL
+                this.queryBanner()
             },
             openTerms(){
               window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
@@ -698,6 +705,18 @@
               else
                 this.passwordType="password"
               //console.log(type)
+            },
+            queryBanner(){
+              this.$http
+                  .get(this.bannerContentURL)
+                  .then(function(res){
+                      this.bannerContent = res.body;
+                  },function(err){
+
+                  });
+            },
+            closeBanner(){
+              console.log('close banner');
             }
         },
         mounted() {
@@ -803,6 +822,7 @@
     .login-action a{
       border-bottom-style:none !important;
     }
+    
 </style>
 <style>
    .demo-spin-icon-load{
@@ -837,5 +857,8 @@
     }
     .forget-password-modal a{
       border-bottom-style:none;
+    }
+    .banner a{
+      color:#454548 !important;
     }
 </style>

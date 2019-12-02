@@ -314,7 +314,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#protein_confidence_score')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#protein_confidence_score'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),
@@ -406,7 +407,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#validated_by_pride_pipelines'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),
@@ -651,7 +653,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#peptide_level_fdr')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#peptide_level_fdr'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),
@@ -742,7 +745,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#validated_by_pride_pipelines'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),
@@ -966,7 +970,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#combined_psm_fdr')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#combined_psm_fdr'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),
@@ -1063,7 +1068,8 @@
                               },
                               on: {
                                 click: (value) => {
-                                    window.open('https://wwwdev.ebi.ac.uk/pride/markdownpage/resultpage#validated_by_pride_pipelines')
+                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#validated_by_pride_pipelines'});
+                                    window.open(routeData.href, '_blank');
                                 }
                               }
                           }),

@@ -66,11 +66,11 @@ export default new Router({
       name: 'citation',
       component: Citation
     },
-    {
-      path: '/test',
-      name: 'test',
-      component: Test
-    },
+    // {
+    //   path: '/test',
+    //   name: 'test',
+    //   component: Test
+    // },
     {
       path:'/archive/projects/:id',
       name: 'dataset',
@@ -163,6 +163,29 @@ export default new Router({
       name: 'profile',
       component: Profile,
       
+    },
+    { 
+      path: '/searchSummary.do',
+      redirect: to => {
+        let id = to.query.identificationAccessionNumber
+        if(id)
+            return { name: 'archive', query: {keyword:id} }
+        else
+            return { name: '404' }
+        //return { path: '/archive/spectra', query: null }
+        //console.log(to)
+        // if (query.to === 'foo') {
+        //   return { path: '/foo', query: null }
+        // }
+        // if (hash === '#baz') {
+        //   return { name: 'baz', hash: '' }
+        // }
+        // if (params.id) {
+        //   return '/with-params/:id'
+        // } else {
+        //   return '/bar'
+        // }
+      }
     },
     {
       path:'/404',

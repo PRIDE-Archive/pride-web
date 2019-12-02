@@ -560,110 +560,106 @@
                   key: 'download',
                   align:'center',
                   width:100,
-                  // render: (h, params) => {
-                  //     return h('div', [
-                  //         /*
-                  //         h('Button', {
-
-                  //             on: {
-                  //                 click: () => {
-                  //                     this.gotoBlast(params);
-                  //                 }
-                  //             }
-                  //         }, 'Blast'),
-                  //         */
-                  //         h('Button', {
-                  //             props: {
-                  //                 type: 'primary',
-                  //                 size: 'small'
-                  //             },
-                  //             style: {
-                  //                 display:'inline-block',
-                  //                 marginRight: '5px',
-                  //                 paddingLeft: '22px',
-                  //                 paddingRight: '22px'
-                  //             },
-                  //             on: {
-                  //                 click: () => {
-                  //                     //window.location.href = params.row.url.ftp;
-                  //                     window.open(params.row.url.ftp)
-                  //                     console.log(params.row.url.ftp);
-                  //                     //this.gotoBlast(params);
-                  //                 }
-                  //             }
-                  //         }, 'FTP'),
-                          
-                  //         // h('i', {
-                  //         //     attrs: { class: 'fas fa-download'},
-                  //         //     style: {
-                  //         //         marginRight: '5px',
-                  //         //         marginLeft: '0px'
-                  //         //     },
-                  //         // }),
-
-
-
-                  //         // h('Button', {
-                  //         //     props: {
-                  //         //         type: 'primary',
-                  //         //         size: 'small'
-                  //         //     },
-                  //         //     style: {
-                  //         //         display:'inline-block',
-                  //         //         marginRight: '0px'
-                  //         //     },
-                  //         //     on: {
-                  //         //         click: () => {
-                  //         //             //window.location.href = params.row.url.asp;
-                  //         //             window.open(params.row.url.asp)
-                  //         //             console.log(params.row.url.asp);
-                  //         //         }
-                  //         //     }
-                  //         // }, 'ASPERA'),
-                  //     ]);
-                  // },
+                  renderHeader: (h,params)=>{
+                      return h('span',[
+                          h('Icon',{
+                              props:{
+                                  type: 'information-circled'
+                              },
+                              style: {
+                                  marginRight: '5px',
+                                  cursor:'pointer'
+                              },
+                              on: {
+                                click: (value) => {
+                                    let routeData = this.$router.resolve({path:'/markdownpage/pridefiledownload'});
+                                    window.open(routeData.href, '_blank');
+                                }
+                              }
+                          }),
+                          h('span','Download')
+                      ])
+                  },
                   render: (h, params) => {
-                      return  h('Dropdown', {
-                                props: {
-                                  placement: 'right-start'
-                                },
-                                style: {
-                                  textAlign: 'left'
-                                },
-                                on: {
-                                  'on-click': (value) => {
-                                      if(value.indexOf('ftp')!=-1)
-                                        window.open(value)
-                                      else if(value.indexOf('asp')!=-1)
-                                        this.$Message.success({content:'Coming Soon', duration:1});
+                      return h('div', [
+                          /*
+                          h('Button', {
+
+                              on: {
+                                  click: () => {
+                                      this.gotoBlast(params);
                                   }
-                                }
-                            }, [
-                              h('div', {
-                                class: {
-                                  member_operate_div: true
-                                }
-                              }, [
-                                  h('Icon', {
-                                      props: {
-                                        type: 'ios-cloud-download-outline',
-                                        size: 20
-                                      },
-                                      style: {
-                                        //marginLeft: '5px' 
-                                      }
-                                    })
-                                  ]),
-                                  h('DropdownMenu', {
-                                    slot: 'list'
-                                  }, 
-                                  params.row.url.map((obj)=>{
-                                      return h('DropdownItem', {
-                                          props: {name: obj.key}  
-                                      }, obj.label);  
-                                  }))
+                              }
+                          }, 'Blast'),
+                          */
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: (value) => {
+                                      console.log(value)
+                                      console.log(params.row.url[0].key);
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.url[0].key)
+                                     
+                                      //this.gotoBlast(params);
+                                  }
+                              }
+                          }, 'FTP'),
                       ]);
-                  }
+                  },
+                  // render: (h, params) => {
+                  //     return  h('Dropdown', {
+                  //               props: {
+                  //                 placement: 'right-start'
+                  //               },
+                  //               style: {
+                  //                 textAlign: 'left'
+                  //               },
+                  //               on: {
+                  //                 'on-click': (value) => {
+                  //                     //console.log(value);
+                  //                     if(value.indexOf('ftp')!=-1)
+                  //                       window.open(value)
+                  //                     else if(value.indexOf('asp')!=-1)
+                  //                       this.downloadFiles(value);
+                  //                       //this.$Message.success({content:'Coming Soon', duration:1});
+                  //                 }
+                  //               }
+                  //           }, [
+                  //             h('div', {
+                  //               class: {
+                  //                 member_operate_div: true
+                  //               }
+                  //             }, [
+                  //                 h('Icon', {
+                  //                     props: {
+                  //                       type: 'ios-cloud-download-outline',
+                  //                       size: 20
+                  //                     },
+                  //                     style: {
+                  //                       //marginLeft: '5px' 
+                  //                     }
+                  //                   })
+                  //                 ]),
+                  //                 h('DropdownMenu', {
+                  //                   slot: 'list'
+                  //                 }, 
+                  //                 params.row.url.map((obj)=>{
+                  //                     return h('DropdownItem', {
+                  //                         props: {name: obj.key}  
+                  //                     }, obj.label);  
+                  //                 }))
+                  //     ]);
+                  // }
               }
           ],
           fileList: [],
@@ -838,14 +834,14 @@
           pageDownLoad:1,
           pageSizeDownLoad:20,
           totalDownLoad:0,
-          pageDownLoadSort:'Name',
+          pageDownLoadSort:'name',
           sortList:[
             {
-                value: 'Name',
+                value: 'name',
                 label: 'Name'
             },
             {
-                value: 'Type',
+                value: 'type',
                 label: 'Type'
             }
           ],
@@ -940,7 +936,7 @@
                 }
 
             },function(err){
-                this.$router.replace({name:'404'});
+                this.$Message.error({content:'No results', duration:3});
             });
       },
       getMSRunTableData(){
@@ -984,17 +980,34 @@
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
-                            url: [
-                              {
-                                label:'FTP',
-                                key:filesArray[i].publicFileLocations[0].name.indexOf('FTP')!=-1 ? filesArray[i].publicFileLocations[0].value : filesArray[i].publicFileLocations[1].value,
-                              },
-                              {
-                                label:'Aspera',
-                                key:filesArray[i].publicFileLocations[1].value
-                              } 
-                            ]
+                            url: [],
                       }
+                      for(let j=0; j<filesArray[i].publicFileLocations.length; j++){
+                          if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
+                              let urlItem = {
+                                  label:'FTP',
+                                  key:filesArray[i].publicFileLocations[j].value,
+                              }
+                              item.url.push(urlItem)
+                          }
+                          else if(filesArray[i].publicFileLocations[j].name.indexOf('Aspera')!=-1){
+                              let urlItem = {
+                                label:'Aspera',
+                                key:filesArray[i].publicFileLocations[j].value
+                              } 
+                              item.url.push(urlItem)
+                          }
+                      }
+                      item.url.sort((a,b)=>{
+                          let labelA=a.label.toUpperCase()
+                          let labelB=b.label. toUpperCase()
+                          if(labelA<labelB)
+                            return 1
+                          if(labelA>labelB)
+                            return -1
+
+                          return 0
+                      });
                       //console.log('file type',item.type)
                       tempArray.push(item);
                   }
@@ -1166,23 +1179,25 @@
           this.asperaWeb.addEventListener(AW4.Connect.EVENT.STATUS, statusEventListener);
           this.asperaWeb.initSession();
 
-          this.asperaWeb.addEventListener('transfer', fileControls.handleTransferEvents);
+          //this.asperaWeb.addEventListener('transfer', fileControls.handleTransferEvents);
           //setup();
       },
-      downloadFiles () {
+      downloadFiles (value) {
+          console.log('value',value);
           let transferSpec = {
-              "paths": [{"source":"aspera-test-dir-large/100MB"}],
-              "remote_host": "demo.asperasoft.com",
-              "remote_user": "aspera",
-              "remote_password": "demoaspera",
+              "paths": [{"source":value}],
+              "remote_host": "fasp.ebi.ac.uk",
+              "remote_user": "prd_ascp",
+              "authentication":"token",
+              "token":"PRIDE-Aspera-1-Token",
               "direction": "receive",
-              "target_rate_kbps" : 5000,
-              "allow_dialogs" : true,
-              "resume" : "sparse_checksum"
+              "target_rate" : 10000000,
+              "resume" : "sparse_checksum",
+              "ssh_port": 33001
           };
 
           let connectSettings = {
-              "allow_dialogs": "no"
+              "allow_dialogs": false
           };
           var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
 
@@ -1205,17 +1220,17 @@
           this.queryArchiveProjectFiles(query)
       },
       sortChange(type){
-        if(type == 'Name')
-          this.pageDownLoadSort = 'Name'
-        else if(type == 'Type')
-          this.pageDownLoadSort = 'Type'
-        this.$Message.error({content:'Coming soon', duration:1});
+        if(type == 'name')
+          this.pageDownLoadSort = 'name'
+        else if(type == 'type')
+          this.pageDownLoadSort = 'type'
+        //this.$Message.error({content:'Coming soon', duration:1});
         let query = {
             sortConditions: this.pageDownLoadSort,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
-        //this.queryArchiveProjectFiles(query)
+        this.queryArchiveProjectFiles(query)
       },
     },
     mounted: function(){
@@ -1226,7 +1241,7 @@
         this.getMSRunTableData();
         this.getProteinEvidences();
 
-        this.initAsperaConnect();
+        //this.initAsperaConnect();
         //console.log(navigator.plugins)
         //console.log('initAspera',initAspera)
     },
