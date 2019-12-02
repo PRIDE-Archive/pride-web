@@ -858,6 +858,9 @@
     .forget-password-modal a{
       border-bottom-style:none;
     }
+    .banner{
+      color:#454548 !important;
+    }
     .banner a{
       color:#454548 !important;
     }
