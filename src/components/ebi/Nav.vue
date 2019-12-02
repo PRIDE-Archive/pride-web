@@ -3,7 +3,7 @@
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
             <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
-              {{bannerContent}}
+              <span class="banner" v-html="bannerContent"></span>
             </Alert>
             <div class="masthead-inner row">
               <!-- local-title -->
@@ -822,6 +822,7 @@
     .login-action a{
       border-bottom-style:none !important;
     }
+    
 </style>
 <style>
    .demo-spin-icon-load{
@@ -856,5 +857,8 @@
     }
     .forget-password-modal a{
       border-bottom-style:none;
+    }
+    .banner a{
+      color:#454548 !important;
     }
 </style>
