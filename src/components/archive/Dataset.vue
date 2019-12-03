@@ -17,6 +17,11 @@
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
+                    <span style="display: flex;align-items: center;">Download Project: 
+                      <a :href="projectDownload" style="margin-left: 5px;border-bottom-style:none">
+                        <Icon type="ios-cloud-download-outline" size='20'></Icon>
+                      </a>
+                    </span>
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
@@ -867,6 +872,7 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
+          projectDownload:''
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -892,6 +898,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
+                console.log(res.body)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -908,6 +915,7 @@
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
+                this.projectDownload = res.body._links.self.href || '';
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -1118,6 +1126,7 @@
           this.experimentTypes=[]
           this.softwares=[]
           this.modification=[]
+          this.projectDownload=''
       },
       searchProperties(filter){
           let normalQuery = {}
