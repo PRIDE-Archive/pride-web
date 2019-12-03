@@ -15,7 +15,7 @@ build:
   script:
     - docker info
     - docker build -t $IMAGE .
-    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker push $IMAGE
 
 kube_deploy_test:
@@ -47,7 +47,7 @@ kube_deploy_prod_hx:
     - kubectl config get-contexts
     - kubectl create namespace $NAMESPACE || true
     - kubectl -n $NAMESPACE delete secret $DOCKER_PULL_SECRET || true
-    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_BUILD_TOKEN
+    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=gitlab-ci-token --docker-password=$CI_JOB_TOKEN
     - envsubst < .kubernetes.yml > kubernetes.yml
     - kubectl -n $NAMESPACE apply -f kubernetes.yml
   when: manual
