@@ -74,13 +74,6 @@ kube_deploy_prod_hx:
     - rsync -a dist/pride/* $SERVER_USER@$DEPLOY_SERVER:$DEPLOY_PATH/$DEPLOY_DIR/
     - ssh $SERVER_USER@$DEPLOY_SERVER "bash && cd $DEPLOY_PATH && ln -snf $DEPLOY_DIR pride"
 
-deploy_prod:
-  environment: prod
-  extends: .deploy_script
-  #  only:
-  #    - master
-  when: manual
-
 deploy_dev:
   environment: dev
   extends: .deploy_script

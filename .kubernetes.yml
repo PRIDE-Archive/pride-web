@@ -5,7 +5,7 @@ metadata:
   labels:
     app: pride-web
 spec:
-  replicas: 3
+  replicas: $k8s_replicas
   selector:
     matchLabels:
       app: pride-web
@@ -13,7 +13,7 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
-      maxUnavailable: 33%
+      maxUnavailable: $k8s_rollingupdate_maxUnavailable
   template:
     metadata:
       labels:

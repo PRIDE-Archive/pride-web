@@ -1,1 +1,1 @@
-<a href=“https://www.ebi.ac.uk/pride/legacy”>https://www.ebi.ac.uk/pride/legacy</a>
+Welcome to the new PRIDE. For legacy PRIDE go to <a href="https://www.ebi.ac.uk/pride/legacy" target="_blank">https://www.ebi.ac.uk/pride/legacy</a>
