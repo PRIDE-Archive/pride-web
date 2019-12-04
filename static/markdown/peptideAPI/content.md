@@ -2,7 +2,7 @@
 
 The PRIDE Cluster RESTful APIs provide programmatic access to read our cluster data. Query a particular peptide, gather general statistics, read cluster details, and more.
 
- 
+
 
 ## Browse the API
 
