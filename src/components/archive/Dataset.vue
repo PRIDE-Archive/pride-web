@@ -17,11 +17,11 @@
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
-                    <span style="display: flex;align-items: center;">Download Project: 
+                    <!-- <span style="display: flex;align-items: center;">Download Project: 
                       <a :href="projectDownload" style="margin-left: 5px;border-bottom-style:none">
                         <Icon type="ios-cloud-download-outline" size='20'></Icon>
                       </a>
-                    </span>
+                    </span> -->
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
@@ -218,20 +218,21 @@
                        <p slot="title" class="project-file-title-container">
                         <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
                         <span class="sort-wrapper">
-                            <span style="margin-left: 10px">Sort by: </span>
+                            <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button>
+                            <!-- <span style="margin-left: 10px">Sort by: </span>
                             <div class="sortOption">
                                 <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
                                     <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
-                            </div>
+                            </div> -->
                         </span>
                       </p>
                       
                        <div class="download-list-wrapper">
                          <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
-                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll"></Table>
-                           <Button v-if="selectAllfiles" class= "download-button">Download</Button>
+                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange"></Table>
+                           <!-- <Button v-if="selectAllfiles" class= "download-button">Download</Button> -->
                          </div>
                        </div>
                        <div class="page-container">
@@ -474,6 +475,7 @@
                   title: 'Name',
                   key: 'name',
                   align:'left',
+                  sortable: 'custom',
                   ellipsis:true
               },
               {
@@ -481,7 +483,7 @@
                   width: 100,
                   key: 'type',
                   align:'left',
-                  sortable: true,
+                  sortable: 'custom',
                   ellipsis:true,
                   render: (h, params) => {
                       var className;
@@ -557,7 +559,7 @@
                   title: 'Size (M)',
                   width: 80,
                   key: 'size',
-                  sortable: true,
+                  sortable: false,
                   align:'center'
               },
               {
@@ -839,7 +841,7 @@
           pageDownLoad:1,
           pageSizeDownLoad:20,
           totalDownLoad:0,
-          pageDownLoadSort:'name',
+          projectFileSortCondition:'fileName',
           sortList:[
             {
                 value: 'name',
@@ -915,7 +917,7 @@
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body._links.self.href || '';
+                this.projectDownload = res.body.additionalAttributes[0].value || '';
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -977,7 +979,7 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
-                console.log(res.body);
+                //console.log(res.body);
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
                 if(res.body._embedded && res.body._embedded.files){
@@ -1215,6 +1217,8 @@
       downloadPageChange(page){
           this.pageDownLoad = page;
           let query = {
+            sortConditions: this.projectFileSortCondition,
+            sortDirection: this.projectFileSortDirection,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
@@ -1223,19 +1227,31 @@
       downloadPageSizeChange(size){
           this.pageSizeDownLoad = size;
           let query = {
+            sortConditions: this.projectFileSortCondition,
+            sortDirection: this.projectFileSortDirection,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
           this.queryArchiveProjectFiles(query)
       },
-      sortChange(type){
-        if(type == 'name')
-          this.pageDownLoadSort = 'name'
-        else if(type == 'type')
-          this.pageDownLoadSort = 'type'
-        //this.$Message.error({content:'Coming soon', duration:1});
+      projectFtp(ftp){
+          window.open(ftp)
+      },
+      projectFilesTableSortChange(item){
+        console.log(item)
+        if(item.order == 'asc')
+            this.projectFileSortDirection = 'ASC'
+        else
+            this.projectFileSortDirection = 'DESC'
+
+        if(item.order == 'normal' || item.key == 'name')
+          this.projectFileSortCondition = 'fileName'
+        else
+          this.projectFileSortCondition = 'fileType'
+
         let query = {
-            sortConditions: this.pageDownLoadSort,
+            sortConditions: this.projectFileSortCondition,
+            sortDirection: this.projectFileSortDirection,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
@@ -1358,15 +1374,15 @@
     margin-bottom: 3px;
   }
   .download-button{
-    padding: 6px 8px;
+    padding: 0;
     font-size: 12px;
-    margin-top: 10px;
     font-weight: 700;
     background-color: #5bc0be;
     border-radius: 3px;
     color: #f8f8f8;
-    border-bottom-style:none;
     display: inline-block;
+    margin-right: 20px;
+    padding: 5px 0px;
   }
   .download-button:hover{
     opacity: .8;
@@ -1476,6 +1492,7 @@
   .project-file-title-container{
     display: flex;
     justify-content: space-between;
+    height: 30px;
   }
   .sortOption{
     display: flex;
@@ -1577,6 +1594,9 @@
   .sortOption .ivu-select-dropdown .ivu-select-item{
     font-weight: normal !important;
 
+  }
+  .download-button span{
+    margin: 10px;
   }
 </style>
 
