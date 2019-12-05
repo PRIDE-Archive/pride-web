@@ -17,6 +17,8 @@ build:
     - docker build -t $IMAGE .
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker push $IMAGE
+  only:
+    - master
 
 kube_deploy_test:
   environment: test-env
@@ -29,12 +31,16 @@ kube_deploy_prod_hh:
   variables:
     NAMESPACE: pride-web-prod
   extends: .kube_deploy_script
+  only:
+    - master
 
 kube_deploy_prod_hx:
   environment: prod-hx
   variables:
     NAMESPACE: pride-web-prod
   extends: .kube_deploy_script
+  only:
+    - master
 
 .kube_deploy_script:
   stage: deploy
