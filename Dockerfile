@@ -1,15 +1,18 @@
-FROM node:12.13.0-alpine
+FROM node:12.13.0-alpine as build-stage
 
 # Create app directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
 # where available (npm@5+)
-COPY package*.json ./
+COPY package*.json nginx.conf ./
 
 RUN npm install
-
 COPY . ./
+RUN npm run build
 
-CMD [ "npm", "run", "prod-api" ]
+FROM nginx:1.17.6
+COPY --from=build-stage /app/dist/pride/ /usr/share/pride/
+# Copy the default nginx.conf provided by tiangolo/node-frontend
+COPY --from=build-stage /app/nginx.conf /etc/nginx/nginx.conf

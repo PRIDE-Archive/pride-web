@@ -28,13 +28,13 @@ spec:
             - containerPort: 8080
           livenessProbe:
             httpGet:
-              path: /
+              path: /pride
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
           readinessProbe:
             httpGet:
-              path: /
+              path: /pride
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
