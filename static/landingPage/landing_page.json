@@ -26,7 +26,7 @@
       "four":  "Submitted datasets are 'private' by default. They will be available to you and the reviewers if you are logged-in into PRIDE",
       "five":  "After the submission, the dataset metadata is validated and different post-processing are applied. "
     },
-    "submitdatabutton":"SUBMIT DATA",
+    "submitdatabutton":"DOWNLOAD SUBMISSION TOOL",
     "moreID":{
       "one": "register_into_pride",
       "two": "prepare_submission",
