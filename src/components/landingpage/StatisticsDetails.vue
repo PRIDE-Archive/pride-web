@@ -69,7 +69,7 @@
                 <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Moleculer</p>
+                             <p slot="title">MS Evidences</p>
                              <!--
                              <p slot="extra">
                                 <Tooltip>
