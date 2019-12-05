@@ -2,10 +2,10 @@ variables:
   IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   DOCKER_PULL_SECRET: pride-gitlab-docker-secret-$CI_PIPELINE_IID
 
-include:
-  - template: Container-Scanning.gitlab-ci.yml
-  - template: Dependency-Scanning.gitlab-ci.yml
-  - template: License-Management.gitlab-ci.yml
+#include:
+#  - template: Container-Scanning.gitlab-ci.yml
+#  - template: Dependency-Scanning.gitlab-ci.yml
+#  - template: License-Management.gitlab-ci.yml
 
 build:
   image: docker:18.09
