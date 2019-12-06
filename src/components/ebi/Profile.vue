@@ -449,11 +449,11 @@
                     value:'profile',
                     icon:'ios-paper'
                   },
-                  {
-                    label:'Public Data',
-                    value:'public_data',
-                    icon:'stats-bars'
-                  },
+                  // {
+                  //   label:'Public Data',
+                  //   value:'public_data',
+                  //   icon:'stats-bars'
+                  // },
                   {
                     label:'Private Data',
                     value:'private_data',
@@ -564,18 +564,23 @@
                       })
                       .then(function(res){
                         this.privateLoading = false;
-                        let dataList = res.body;
-                        for(let i=0; i<dataList.length; i++){
-                            let item = {
-                                accession: dataList[i].accession,
-                                title: dataList[i].title,
-                                projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                submissionDate: dataList[i].submissionDate,
+                        if(res.body._embedded && res.body._embedded.projects){
+                            let dataList = res.body._embedded.projects;
+                            for(let i=0; i<dataList.length; i++){
+                                let item = {
+                                    accession: dataList[i].accession,
+                                    title: dataList[i].title,
+                                    projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                                    submissionDate: dataList[i].submissionDate,
+                                }
+                                this.privateDataList.push(item);
                             }
-                            this.privateDataList.push(item);
+                            
+                            console.log('privateDataList',this.privateDataList);
                         }
-                        
-                        //console.log(this.privateDataList);
+                        else{
+                            this.$Message.error({content:'No Private Data', duration:1});
+                        }
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -774,7 +779,7 @@
         },
         mounted:function(){
               this.getPrivateData();
-              this.getPublicData();
+              //this.getPublicData();
               this.getReviewerSubmission();
               this.getProfile();
         },
