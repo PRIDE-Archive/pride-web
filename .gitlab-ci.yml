@@ -7,7 +7,7 @@ variables:
 #  - template: Dependency-Scanning.gitlab-ci.yml
 #  - template: License-Management.gitlab-ci.yml
 
-build:
+docker_build:
   image: docker:18.09
   stage: build
   services:
@@ -58,7 +58,8 @@ kube_deploy_prod_hx:
     - kubectl -n $NAMESPACE apply -f kubernetes.yml
   when: manual
 
-.env_prep:
+.deploy_script:
+  stage: deploy
   image: node:12.13.0-alpine
   script:
     - apk add --update openssh-client bash openssl rsync gettext tzdata
@@ -68,11 +69,6 @@ kube_deploy_prod_hx:
     - chmod 700 ~/.ssh
     - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
     - chmod 600 ~/.ssh/known_hosts
-
-.deploy_script:
-  stage: deploy
-  extends: .env_prep
-  script:
     - npm install
     - npm run build
     - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
