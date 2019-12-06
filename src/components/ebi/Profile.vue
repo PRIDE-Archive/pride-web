@@ -67,7 +67,8 @@
                     <p style="margin-top: 10px;">
                         <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                         <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                        <a @click="gotoDetails(item.accession)">(More)</a>
+                        <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                        <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                       <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                     </p>
                     <p style="margin-top: 10px;">
@@ -160,7 +161,8 @@
                         <p style="margin-top: 10px;">
                             <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                            <a @click="gotoDetails(item.accession)">(More)</a>
+                            <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                            <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
@@ -254,7 +256,8 @@
                         <p style="margin-top: 10px;">
                             <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                            <a @click="gotoDetails(item.accession)">(More)</a>
+                            <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                            <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
@@ -576,10 +579,10 @@
                                 this.privateDataList.push(item);
                             }
                             
-                            console.log('privateDataList',this.privateDataList);
+                            //console.log('privateDataList',this.privateDataList);
                         }
                         else{
-                            this.$Message.error({content:'No Private Data', duration:1});
+                            //this.$Message.error({content:'No Private Data', duration:1});
                         }
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
@@ -632,20 +635,18 @@
                         this.reviewLoading = false;
                         if(res.body._embedded && res.body._embedded.projects){
                             let dataList = res.body._embedded.projects;
-                            console.log('getReviewerSubmission1111', res.body)
                             for(let i=0; i<dataList.length; i++){
-                                console.log('11111', res.body)
                                 let item = {
                                     accession: dataList[i].accession,
                                     title: dataList[i].title,
                                     projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                                     submissionDate: dataList[i].submissionDate,
                                 }
-                                this.reviewDataList.push(item);
+                                this.reviewDataList.push(item);  
                             }
                         }
                         else{
-                            this.$Message.error({content:'No Review Data', duration:1});
+                            //this.$Message.error({content:'No Review Data', duration:1});
                         }
                         
                       },function(err){
@@ -677,6 +678,7 @@
                         this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
 
                         if(this.profileData.userAuthorities == 'SUBMITTER'){
+                            this.getPrivateData();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'reviewer_submission'){
                                     this.tableList.splice(i,1)
@@ -685,6 +687,7 @@
                             }
                         }
                         else if(this.profileData.userAuthorities == 'REVIEWER'){
+                            this.getReviewerSubmission();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'private_data'){
                                     this.tableList.splice(i,1)
@@ -703,7 +706,6 @@
                         }
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
-                
             },
             logout(){
                 this.$store.commit('setUser',{username: '', token:''});  
@@ -778,9 +780,9 @@
             }
         },
         mounted:function(){
-              this.getPrivateData();
+              //this.getPrivateData();
               //this.getPublicData();
-              this.getReviewerSubmission();
+              //this.getReviewerSubmission();
               this.getProfile();
         },
         beforeRouteEnter(to,from,next){
