@@ -30,7 +30,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: location.hostname.match(/localhost/)?'':'/pride/',
+  base: location.hostname.match(/localhost/)?'/pride/':'/pride/',
   routes: [
     {
       path: '/',
@@ -42,7 +42,7 @@ export default new Router({
       name: 'markdownpage',
       component: MarkdownPage,
        /*children: [
-     
+
             {
                 path: "",
                 name: 'markdownpage',
@@ -140,7 +140,7 @@ export default new Router({
       path:'/annotation',
       name: 'annotation',
       component: Annotation,
-      
+
     },
     {
       path:'/annotation/:id/check',
@@ -151,7 +151,7 @@ export default new Router({
       path:'/annotation/:id/sample',
       name: 'sample',
       component: Sample,
-      
+
     },
     {
       path:'/annotation/:id/annotate',
@@ -162,9 +162,9 @@ export default new Router({
       path:'/profile/:id',
       name: 'profile',
       component: Profile,
-      
+
     },
-    { 
+    {
       path: '/searchSummary.do',
       redirect: to => {
         let id = to.query.identificationAccessionNumber
@@ -195,8 +195,8 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         to.replace();
         console.log(to);
-         
-        
+
+
       }*/
     },
     {
@@ -207,8 +207,8 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         to.replace();
         console.log(to);
-         
-        
+
+
       }*/
     },
   ],
