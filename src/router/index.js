@@ -30,7 +30,7 @@ Vue.use(Router)
 
 export default new Router({
   mode: 'history',
-  base: location.hostname.match(/localhost/)?'/pride':'/pride',
+  base: location.hostname.match(/localhost/)?'/pride/':'/pride/',
   routes: [
     {
       path: '/',
