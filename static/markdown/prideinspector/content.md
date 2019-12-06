@@ -2,6 +2,8 @@
 
 The GUI (Graphical User Interface) module of the PRIDE Inspector is organized in the form of several views, where each of them focuses on a particular aspect of the data.
 
+[DOWNLOAD TOOL](https://github.com/PRIDE-Toolsuite/pride-inspector/releases/download/pride-inspector-2.5.4/pride-inspector-2.5.4.zip)
+
 There are currently six views:
 
 1. ‘Overview’ view – shows experimental metadata
