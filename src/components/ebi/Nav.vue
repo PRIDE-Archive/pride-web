@@ -533,6 +533,7 @@
                               this.$Message.success({ content: 'Login Success' })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
+                              this.gotoProfile();
                         }).catch(err=>{
                           console.log(err);
                           this.$Spin.hide()
