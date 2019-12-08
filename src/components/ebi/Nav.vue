@@ -189,7 +189,7 @@
             class-name="signup-modal"
             scrollable>
             <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
-               <FormItem prop="email" label="Email">
+              <FormItem prop="email" label="Email">
                 <Input type="text" v-model="formInlineSignUp.email" placeholder="">
                 </Input>
               </FormItem>
@@ -491,8 +491,9 @@
               this.loginModalBool=true;
             },
             showSignup(){
-              this.$refs['formInlineSignUp'].resetFields();
-              this.signUpModalBool=true;
+              this.$router.push({name:'registry'});
+              //this.$refs['formInlineSignUp'].resetFields();
+              //this.signUpModalBool=true;
             },
             login(name) {
               this.$refs[name].validate((valid) => {
