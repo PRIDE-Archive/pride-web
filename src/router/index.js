@@ -195,6 +195,12 @@ export default new Router({
 
     },
     {
+      path:'/archive/registry',
+      name: 'registry',
+      component: Registry,
+
+    },
+    {
       path:'/404',
       name: '404',
       component: NotFound,
