@@ -93,7 +93,7 @@ export default new Router({
       component: Peptidome
     },
     {
-      path: '/peptidesearch',
+      path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
       component: PeptideSearch
     },
@@ -103,7 +103,7 @@ export default new Router({
       component: Spectra
     },
     {
-      path: '/peptidedownload',
+      path: '/peptidome/peptidedownload',
       name: 'peptidedownload',
       component: PeptideDownload
     },
@@ -113,7 +113,7 @@ export default new Router({
       component: SpectrumLibrary
     },
     {
-      path:'/peptidedetails/:id',
+      path:'/peptidome/peptidedetails/:id',
       name: 'peptidedetails',
       component: PeptideDetails
     },
