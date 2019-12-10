@@ -115,6 +115,7 @@
                   },
                 ],
                 countryList:[],
+                countryListURL: this.$store.state.baseURL + '/static/country/index.csv',
             }
         },
         components: {
@@ -169,9 +170,46 @@
             openTerms(){
               window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
             },
+            queryCountryList(){
+                //console.log(123)
+                this.$http
+                  .get(this.countryListURL)
+                  .then(function(res){
+                      this.countryList = [];
+                      let json = JSON.parse(this.csvJSON(res.body)) 
+                      for(let i=0; i < json.length-1; i++){
+                        
+                          json[i].value = json[i].value.replace(/^"(.*)"$/, '$1');
+                          let item = {}
+                          item.label=json[i].value
+                          item.value=json[i].id
+                          this.countryList.push(item);
+                          console.log(this.countryList);
+                        //json[i].value.replace(/['"]+/g, '')
+                        //console.log(i);
+                      }
+                  },function(err){
+
+                  });
+            },
+            csvJSON(csv){
+              var lines=csv.split("\n");
+              var result = [];
+              var headers=lines[0].split(",");
+              for(var i=1;i<lines.length;i++){
+                  var obj = {};
+                  var currentline=lines[i].split(",");
+                  for(var j=0;j<headers.length;j++){
+                      obj[headers[j]] = currentline[j];
+                  }
+                  result.push(obj);
+              }
+              //return result; //JavaScript object
+              return JSON.stringify(result); //JSON
+            },
         },
         mounted:function(){
-             
+             this.queryCountryList();
               //this.getProfile();
         },
         // beforeRouteEnter(to,from,next){
