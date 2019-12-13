@@ -26,6 +26,8 @@ const Molecules = resolve => require(['@/components/archive/Molecules'], resolve
 const PrivateDataset = resolve => require(['@/components/archive/PrivateDataset'], resolve);
 const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
 const Registry = resolve => require(['@/components/ebi/Registry'], resolve);
+const Publish = resolve => require(['@/components/archive/Publish'], resolve);
+
 
 Vue.use(Router)
 
@@ -199,6 +201,11 @@ export default new Router({
       name: 'registry',
       component: Registry,
 
+    },
+    {
+      path:'/archive/projects/:id/publish',
+      name: 'publish',
+      component: Publish
     },
     {
       path:'/404',
