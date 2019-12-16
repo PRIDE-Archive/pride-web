@@ -157,9 +157,10 @@
                         .post(this.signupAPI,query)
                         .then(function(res){
                               this.signUpModalBool=false;
-                              this.$Message.success({ content: 'Sign Up Success' })
+                              this.$Message.success({ content: 'Sign Up Success! Please Log In.',duration:7 })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
+                              this.$router.push({name:'landingpage'});
                         },function(err){
                           let errArray = err.body;
                           this.$Spin.hide()
