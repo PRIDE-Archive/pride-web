@@ -25,7 +25,7 @@ const Profile = resolve => require(['@/components/ebi/Profile'], resolve);
 const Molecules = resolve => require(['@/components/archive/Molecules'], resolve);
 const PrivateDataset = resolve => require(['@/components/archive/PrivateDataset'], resolve);
 const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
-const Registry = resolve => require(['@/components/ebi/Registry'], resolve);
+const Register = resolve => require(['@/components/ebi/Register'], resolve);
 const Publish = resolve => require(['@/components/archive/Publish'], resolve);
 
 
@@ -191,15 +191,15 @@ export default new Router({
       }
     },
     {
-      path:'/registry',
-      name: 'registry',
-      component: Registry,
+      path:'/register',
+      name: 'register',
+      component: Register,
 
     },
     {
-      path:'/archive/registry',
-      name: 'registry',
-      component: Registry,
+      path:'/archive/register',
+      name: 'register',
+      component: Register,
 
     },
     {

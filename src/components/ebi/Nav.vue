@@ -491,7 +491,7 @@
               this.loginModalBool=true;
             },
             showSignup(){
-              this.$router.push({name:'registry'});
+              this.$router.push({name:'register'});
               //this.$refs['formInlineSignUp'].resetFields();
               //this.signUpModalBool=true;
             },
