@@ -24,14 +24,14 @@
                                     <div class="info-left">
                                         <div><span class="info-item">Email</span></div>
                                         <div><span class="info-item">Affiliation</span></div>
-                                        <div><span class="info-item">ORCID</span></div>
                                         <div><span class="info-item">Country</span></div>
+                                        <div><span class="info-item">ORCID</span></div>
                                     </div>
                                     <div class="info-right">
                                         <div><span>{{profileData.email}}</span></div>
                                         <div><span>{{profileData.affiliation}}</span></div>
-                                        <div><span>{{profileData.orcid}}</span></div>
                                         <div><span>{{profileData.country}}</span></div>
+                                        <div><span>{{profileData.orcid}}</span></div>
                                     </div>
                                 </div>
                             </Col>
