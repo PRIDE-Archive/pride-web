@@ -27,7 +27,7 @@ const PrivateDataset = resolve => require(['@/components/archive/PrivateDataset'
 const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
 const Register = resolve => require(['@/components/ebi/Register'], resolve);
 const Publish = resolve => require(['@/components/archive/Publish'], resolve);
-
+const EditProfile = resolve => require(['@/components/ebi/EditProfile'], resolve);
 
 Vue.use(Router)
 
@@ -206,6 +206,11 @@ export default new Router({
       path:'/archive/projects/:id/publish',
       name: 'publish',
       component: Publish
+    },
+    {
+      path:'/archive/users/profile/edit',
+      name: 'editprofile',
+      component: EditProfile
     },
     {
       path:'/404',
