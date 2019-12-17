@@ -9,22 +9,22 @@
                 <Input type="text" v-model="formInlinePublish.accession" placeholder="" disabled>
                 </Input>
               </FormItem>
-              <FormItem prop="pubmed" label="PubMed">
+              <FormItem prop="pubmed" label="PubMedID or DOI">
                 <Input type="text" v-model="formInlinePublish.pubmed" placeholder="">
                 </Input>
               </FormItem>
-              <FormItem prop="reference" label="Reference">
+              <!-- <FormItem prop="reference" label="Reference">
                 <Input type="text" v-model="formInlinePublish.reference" placeholder="">
                 </Input>
-              </FormItem>
-              <FormItem prop="reason" label="Public Reason">
+              </FormItem> -->
+              <FormItem prop="reason" label="Reason of making dataset public">
                 <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlinePublish.reason" placeholder="">
                 </Input>
               </FormItem>
-              <FormItem prop="doi" label="DOI">
+             <!--  <FormItem prop="doi" label="DOI">
                 <Input type="text" v-model="formInlinePublish.doi" placeholder="">
                 </Input>
-              </FormItem>
+              </FormItem> -->
               <!-- <FormItem prop="terms" label="Terms of Usage" >
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
@@ -45,9 +45,9 @@
                 formInlinePublish:{
                   accession:this.$route.params.id,
                   pubmed:'',
-                  reference:'',
+                  //reference:'',
                   reason:'',
-                  doi:'',
+                  //doi:'',
                   //terms:false,
                 },
                 ruleInlinePublish:{
@@ -57,15 +57,15 @@
                   pubmed: [
                     { required: true, message: 'Please input PubMed', trigger: 'blur' }
                   ],
-                  reference: [
-                    { required: true, message: 'Please input Reference', trigger: 'blur' }
-                  ],
+                  // reference: [
+                  //   { required: true, message: 'Please input Reference', trigger: 'blur' }
+                  // ],
                   reason: [
-                    { required: true, message: 'Please input Publish Reason', trigger: 'blur' }
+                    { required: false, message: 'Please input Publish Reason', trigger: 'blur' }
                   ],
-                  doi: [
-                    { required: true, message: 'Please input DOI', trigger: 'blur' }
-                  ],
+                  // doi: [
+                  //   { required: true, message: 'Please input DOI', trigger: 'blur' }
+                  // ],
                   // terms:[
                   //   { required: true, type:'enum', enum: ["true"], transform: value => value.toString(), message: 'Please check Terms and Conditions' }
                   // ],
@@ -105,8 +105,8 @@
                     country: this.formInlinePublish.country,
                     accession: this.formInlinePublish.accession,
                     pubmed: this.formInlinePublish.pubmed,
-                    reference: this.formInlinePublish.reference,
-                    doi: this.formInlinePublish.doi,
+                    //reference: this.formInlinePublish.reference,
+                    //doi: this.formInlinePublish.doi,
                   }
                   this.$http
                         .post(this.publishAPI,query)
