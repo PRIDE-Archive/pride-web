@@ -22,12 +22,14 @@
                             <Col span="24">
                                 <div class="info-wrapper">
                                     <div class="info-left">
+                                        <div><span class="info-item">Title</span></div>
                                         <div><span class="info-item">Email</span></div>
                                         <div><span class="info-item">Affiliation</span></div>
                                         <div><span class="info-item">Country</span></div>
                                         <div><span class="info-item">ORCID</span></div>
                                     </div>
                                     <div class="info-right">
+                                        <div><span>{{profileData.title}}</span></div>
                                         <div><span>{{profileData.email}}</span></div>
                                         <div><span>{{profileData.affiliation}}</span></div>
                                         <div><span>{{profileData.country}}</span></div>
@@ -40,7 +42,8 @@
                     <!-- <div class="description">123</div> -->
                 </Card>
                 <div class="profile-button">
-                    <a @click="showPasswordModal">Change Password</a>
+                    <a @click="gotoEditProfile">Edit</a>
+                    <a @click="showPasswordModal">Change Password</a> 
                 </div>
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
@@ -448,7 +451,7 @@
                 viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[
                   {
-                    label:'Edit Profile',
+                    label:'Profile',
                     value:'profile',
                     icon:'ios-paper'
                   },
@@ -704,7 +707,7 @@
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
                         }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        this.$Message.error({content:'Get Profile Error', duration:1});
                       });
             },
             logout(){
@@ -777,6 +780,9 @@
                 this.confirmedNewPasswordState = false;
                 this.emailState = true;
                 this.passwordState = false;
+            },
+            gotoEditProfile(){
+                this.$router.push({name:'editprofile'});
             }
         },
         mounted:function(){
@@ -898,6 +904,7 @@
         align-items: center;
     }
     .profile-button{
+        display: flex;
         margin-top: 20px;
     }
     .profile-button a{
@@ -914,6 +921,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-right: 5px;
     }
     .button-icon{
         margin-right: 5px;
