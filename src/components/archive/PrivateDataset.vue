@@ -13,7 +13,8 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Private Project {{accession}}</h2>
-                  <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
+                  <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
+                  <Button class="tag-button" @click="publishData">Publish</Button>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -455,6 +456,7 @@
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
+          publishAPI: this.$store.state.basePrivateURL + '/projects/publish',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -1260,6 +1262,41 @@
         this.$router.replace({name:'archive'});
         this.$store.commit('setUser',{username: '', token:''});    
       },
+      publishData(){
+        this.$Modal.confirm({
+              title: 'Publish Data',
+              content: '<p>Do you want to publish this dataset?</p>',
+              onOk: () => {
+                  this.$Message.success({content:'Coming Soon', duration:3})
+                  // let query = {};
+                  
+
+                  // if(this.formInlinePublish.title == 'PubMedID')
+                  //   query.PublishProjectRequest.pubmedId = this.formInlinePublish.pubmed
+                  // else if(this.formInlinePublish.title == 'DOI')
+                  //   query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
+
+                  // this.$http
+                  //       .post(this.publishOtherAPI+'/'+this.accession,query,{
+                  //         headers: {
+                  //           'Authorization':'Bearer '+ localStorage.getItem('token')
+                  //         }
+                  //       }).then(function(res){
+                  //             this.publishModalBool=false;
+                  //             this.$Message.success({ content: 'Sign Up Success' })
+                  //             this.$Spin.hide()
+                  //             this.$refs[name].resetFields();
+                  //       },function(err){
+                  //         let errArray = err.body;
+                  //         this.$Spin.hide()
+                  //         this.$Message.error({ content: errArray[0].defaultMessage});
+                  //       });
+              },
+              onCancel: () => {
+                  
+              }
+          });
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
