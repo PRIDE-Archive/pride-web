@@ -194,6 +194,7 @@
                         //json[i].value.replace(/['"]+/g, '')
                         //console.log(i);
                       }
+                      this.getProfile()
                   },function(err){
 
                   });
@@ -229,7 +230,7 @@
                         this.formInlineSignUp.firstname = res.body.firstName;
                         this.formInlineSignUp.lastname = res.body.lastName;
                         this.formInlineSignUp.affiliation = res.body.affiliation;
-                        //this.formInlineSignUp.country = res.body.country;
+                        this.formInlineSignUp.country = res.body.country;
                         this.formInlineSignUp.orcid = res.body.orcid;
                         this.formInlineSignUp.terms = res.body.acceptedTermsOfUse;
                       },function(err){
@@ -245,7 +246,6 @@
         },
         mounted:function(){
             this.queryCountryList();
-            this.getProfile()
         },
         beforeRouteEnter(to,from,next){
             next(vm=>{
