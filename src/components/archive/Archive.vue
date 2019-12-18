@@ -173,7 +173,7 @@
                   <div style="text-align: center;"v-if="publicaitionList.length==0">
                     <p style="margin-top: 20px; color: #a7a7a7">Sorry, no projects found for search term <span style="color: #5bc0be">{{keyword}}</span> and the current set of active filters. Try with a different combination of search term and filters.</p>
                     <p style="margin: 20px 0; color: #a7a7a7; cursor: pointer">
-                      If you were looking for a specific project and it was not found, it may still be held private. If you think it should be public you can request its publication <a style="color: #5bc0be" @click="gotoPublish">here</a>.
+                      If you were looking for a specific project and it was not found, it may still be held private. If you think it should be public you can request its publication <a style="color: #5bc0be" @click="gotoPublishOther">here</a>.
                     </p>
 
 
@@ -848,9 +848,9 @@
         this.$router.push({name: 'archive', query: this.query});
         console.log(this.query);
       },
-      gotoPublish(){
+      gotoPublishOther(){
         if(this.keyword.match(/PXD/))
-          this.$router.push({name:'publish',params:{id:this.keyword}});
+          this.$router.push({name:'publishother',params:{id:this.keyword}});
         else
           this.$Message.error({content:'Wrong Accession', duration:1});
       }
