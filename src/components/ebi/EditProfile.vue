@@ -162,7 +162,7 @@
                         })
                         .then(function(res){
                               this.signUpModalBool=false;
-                              this.$Message.success({ content: 'Edit Success, Please Log In',duration:7 })
+                              this.$Message.success({ content: 'Edit Success',duration:7 })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
                               this.gotoProfile();
@@ -188,7 +188,7 @@
                           json[i].value = json[i].value.replace(/^"(.*)"$/, '$1');
                           let item = {}
                           item.label=json[i].value
-                          item.value=json[i].id
+                          item.value=json[i].value
                           this.countryList.push(item);
                           //console.log(this.countryList);
                         //json[i].value.replace(/['"]+/g, '')

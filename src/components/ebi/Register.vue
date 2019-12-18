@@ -183,7 +183,7 @@
                           json[i].value = json[i].value.replace(/^"(.*)"$/, '$1');
                           let item = {}
                           item.label=json[i].value
-                          item.value=json[i].id
+                          item.value=json[i].value
                           this.countryList.push(item);
                           console.log(this.countryList);
                         //json[i].value.replace(/['"]+/g, '')
