@@ -21,20 +21,22 @@
                             </Col> -->
                             <Col span="24">
                                 <div class="info-wrapper">
-                                    <div class="info-left">
-                                        <div><span class="info-item">Title</span></div>
-                                        <div><span class="info-item">Email</span></div>
-                                        <div><span class="info-item">Affiliation</span></div>
-                                        <div><span class="info-item">Country</span></div>
-                                        <div><span class="info-item">ORCID</span></div>
+                                    <div class="info-item">
+                                        <span class="info-name">Title</span><span>{{profileData.title}}</span>
                                     </div>
-                                    <div class="info-right">
-                                        <div><span>{{profileData.title}}</span></div>
-                                        <div><span>{{profileData.email}}</span></div>
-                                        <div><span>{{profileData.affiliation}}</span></div>
-                                        <div><span>{{profileData.country}}</span></div>
-                                        <div><span>{{profileData.orcid}}</span></div>
+                                    <div class="info-item">
+                                        <span class="info-name">Email</span><span>{{profileData.email}}</span>
                                     </div>
+                                    <div class="info-item">
+                                        <span class="info-name">Affiliation</span><span>{{profileData.affiliation}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-name">Country</span><span>{{profileData.country}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-name">ORCID</span><span>{{profileData.orcid}}</span>
+                                    </div>
+                                   
                                 </div>
                             </Col>
                         </Row>
@@ -944,21 +946,23 @@
     }
     .profile .content{
         padding: 10px 0;
-        margin: 20px 0;
+        margin-top: 20px;
     }
     .profile .content .info-wrapper{
         display: flex;
         text-align: left;
+        flex-direction: column;
     }
-    .profile .content .info-wrapper .info-left{
+    .profile .content .info-wrapper .info-item{
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+    }
+    .profile .content .info-wrapper .info-item .info-name{
         font-weight: bold;
-    }
-    .profile .content .info-wrapper .info-right{
-        margin-left: 20px;
-    }
-    .profile .content .info .info-item{
-        font-weight: bold;
-        margin-right: 20px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        width: 80px;
     }
     .profile .content .avatar{
         width: 120px;
