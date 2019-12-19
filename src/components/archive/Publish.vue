@@ -48,6 +48,7 @@
         data () {
             return {
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
+                publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
                 formInlinePublish:{
                   accession:this.$route.params.id,
                   pubmed:'',
@@ -125,8 +126,13 @@
                   else if(this.formInlinePublish.title == 'DOI')
                     query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
 
+                  let api;
+                  if(this.$route.query && this.$route.query.r == 'self')
+                      api = this.publishSelfAPI;
+                  else
+                      api = this.publishOtherAPI;
                   this.$http
-                        .post(this.publishOtherAPI+'/'+this.formInlinePublish.accession,query,{
+                        .post(api+'/'+this.formInlinePublish.accession,query,{
                           headers: {
                             'Authorization':'Bearer '+ localStorage.getItem('token')
                           }
@@ -135,7 +141,7 @@
                               this.$Message.success({ content: 'Publish Request Received, please wait for our response.', duration:10 })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
-                              this.$router.push({name:'archive'})
+                              //this.$router.push({name:'archive'})
                         },function(err){
                           let errArray = err.body;
                           this.$Spin.hide()
@@ -148,7 +154,7 @@
             // },
         },
         mounted:function(){
-             
+             console.log()
         },
         // beforeRouteEnter(to,from,next){
         //     next(vm=>{
