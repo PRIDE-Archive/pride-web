@@ -1267,36 +1267,13 @@
               title: 'Publish Data',
               content: '<p>Do you want to publish this dataset?</p>',
               onOk: () => {
-                  this.$Message.success({content:'Coming Soon', duration:3})
-                  // let query = {};
-                  
-
-                  // if(this.formInlinePublish.title == 'PubMedID')
-                  //   query.PublishProjectRequest.pubmedId = this.formInlinePublish.pubmed
-                  // else if(this.formInlinePublish.title == 'DOI')
-                  //   query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
-
-                  // this.$http
-                  //       .post(this.publishOtherAPI+'/'+this.accession,query,{
-                  //         headers: {
-                  //           'Authorization':'Bearer '+ localStorage.getItem('token')
-                  //         }
-                  //       }).then(function(res){
-                  //             this.publishModalBool=false;
-                  //             this.$Message.success({ content: 'Sign Up Success' })
-                  //             this.$Spin.hide()
-                  //             this.$refs[name].resetFields();
-                  //       },function(err){
-                  //         let errArray = err.body;
-                  //         this.$Spin.hide()
-                  //         this.$Message.error({ content: errArray[0].defaultMessage});
-                  //       });
+                   this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
               },
               onCancel: () => {
                   
               }
           });
-      }
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
