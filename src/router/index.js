@@ -191,6 +191,16 @@ export default new Router({
       }
     },
     {
+      path: '/simpleSearch',
+      redirect: to => {
+        let query = to.query
+        if(query.q)
+          return { name: 'archive', query: {keyword:query.q} }
+        else 
+          return { name: 'archive',query: {}}
+      }
+    },
+    {
       path:'/register',
       name: 'register',
       component: Register,
