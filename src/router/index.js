@@ -191,12 +191,12 @@ export default new Router({
       }
     },
     {
-      path: '/simpleSearch',
+      path: '/archive/simpleSearch',
       redirect: to => {
         let query = to.query
         if(query.q)
           return { name: 'archive', query: {keyword:query.q} }
-        else 
+        else
           return { name: 'archive',query: {}}
       }
     },
