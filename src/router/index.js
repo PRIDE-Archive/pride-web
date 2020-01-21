@@ -28,6 +28,7 @@ const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
 const Register = resolve => require(['@/components/ebi/Register'], resolve);
 const Publish = resolve => require(['@/components/archive/Publish'], resolve);
 const EditProfile = resolve => require(['@/components/ebi/EditProfile'], resolve);
+const Login = resolve => require(['@/components/ebi/Login'], resolve);
 
 Vue.use(Router)
 
@@ -210,6 +211,18 @@ export default new Router({
       path:'/archive/register',
       name: 'register',
       component: Register,
+
+    },
+    {
+      path:'/login',
+      name: 'login',
+      component: Login,
+
+    },
+    {
+      path:'/archive/login',
+      name: 'login',
+      component: Login,
 
     },
     {
