@@ -487,8 +487,9 @@
               this.$router.push({path:'/markdownpage/documentationpage'});
             },
             showLogin(){
-              this.$refs['formInline'].resetFields();
-              this.loginModalBool=true;
+              this.$router.push({name:'login'});
+              //this.$refs['formInline'].resetFields();
+              //this.loginModalBool=true;
             },
             showSignup(){
               this.$router.push({name:'register'});
