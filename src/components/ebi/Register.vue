@@ -210,7 +210,8 @@
             },
         },
         mounted:function(){
-             this.queryCountryList();
+            this.$refs['formInlineSignUp'].resetFields();
+            this.queryCountryList();
               //this.getProfile();
         },
         // beforeRouteEnter(to,from,next){
