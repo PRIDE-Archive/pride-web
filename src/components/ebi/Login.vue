@@ -115,7 +115,15 @@
         mounted:function(){
              this.$refs['formInline'].resetFields();
         },
-    
+        beforeRouteEnter(to,from,next){
+            next(vm=>{
+              let username = localStorage.getItem('username') || '';
+              console.log('username',username)
+              if(username){
+                vm.$router.push({name:'profile', params: {id: username.split('@')[0] }})
+              }
+            });
+        }
     }
 </script>
 <style scoped>
