@@ -708,8 +708,11 @@
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
+                            this.$router.push({name:'login'});
+                            this.$Message.error({content:'Expired, Please Login Again', duration:3});
                         }
-                        this.$Message.error({content:'Get Profile Error', duration:1});
+                        else
+                            this.$Message.error({content:'Get Profile Error', duration:3});
                       });
             },
             logout(){
@@ -798,7 +801,7 @@
               let username = localStorage.getItem('username') || '';
               if(!username){
                 vm.$Message.error({content:'Please Login', duration:2})
-                vm.$router.push({name:'landingpage'})
+                vm.$router.push({name:'login'})
               }
             });
         }
