@@ -125,7 +125,7 @@
             signup(name){
               this.$refs[name].validate((valid) => {
                   if (!valid) {
-                    this.$Message.error({ content: 'Fill all required items' });
+                    this.$Message.error({ content: 'Fill all required items',duration:3 });
                     return
                   }
                   this.$Spin.show({
@@ -157,14 +157,29 @@
                         .post(this.signupAPI,query)
                         .then(function(res){
                               this.signUpModalBool=false;
-                              this.$Message.success({ content: 'Sign Up Success! Please Log In.',duration:7 })
+                              this.$Message.success({ content: 'Sign Up Success! Please Log In.', duration:10, closable: true })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
                               this.$router.push({name:'landingpage'});
                         },function(err){
                           let errArray = err.body;
                           this.$Spin.hide()
-                          this.$Message.error({ content: errArray[0].defaultMessage});
+                          this.$Message.error({ 
+                            top: 500, 
+                            content: errArray[0].defaultMessage, 
+                            duration:10,  
+                            closable: true
+                          });
+//                           this.$Message.config({
+//     top: 50,
+//     content:'123',
+//     duration: 3
+// });
+//                           // this.$Notice.error({
+                          //     title: 'Sign Up Error',
+                          //     desc: errArray[0].defaultMessage,
+                          //     duration: 0
+                          // });
                         });
               })
             },
@@ -185,7 +200,7 @@
                           item.label=json[i].value
                           item.value=json[i].value
                           this.countryList.push(item);
-                          console.log(this.countryList);
+                          //console.log(this.countryList);
                         //json[i].value.replace(/['"]+/g, '')
                         //console.log(i);
                       }
