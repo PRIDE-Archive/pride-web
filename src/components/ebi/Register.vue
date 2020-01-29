@@ -162,11 +162,10 @@
                               this.$refs[name].resetFields();
                               this.$router.push({name:'landingpage'});
                         },function(err){
-                          let errArray = err.body;
                           this.$Spin.hide()
                           this.$Message.error({ 
                             top: 500, 
-                            content: errArray[0].defaultMessage, 
+                            content: err.body ? err.body[0].defaultMessage || "Please email: pride-support@ebi.ac.uk", 
                             duration:10,  
                             closable: true
                           });
