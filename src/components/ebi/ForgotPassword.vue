@@ -6,9 +6,10 @@
             <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
             <Form class="signUpForm" ref="formInlineSendEmail" :model="formInlineSendEmail" :rules="ruleInlineSendEmail">
                <FormItem prop="email" label="Email">
-                <Input type="email" v-model="formInlineSendEmail.email" placeholder="We can not valid your email currently, please make sure the email is correct.">
+                <Input type="email" v-model="formInlineSendEmail.email" placeholder="We can not validate your email currently, please make sure the email is correct.">
                 </Input>
               </FormItem>
+              <p><b>If the email address doesn't exist in our database, there will be no error message shown and password reset email will not be sent. So, please make sure the email address is correct.</b></p>
               <FormItem>
                 <Button class="send-email" type="primary" @click="sendEmail('formInlineSendEmail')" long>Send Email</Button>
               </FormItem>
@@ -64,7 +65,7 @@
                                 username:this.formInlineSendEmail.email,
                                 email:this.formInlineSendEmail.email
                               }).then(function(res){
-                              this.$Message.success({ content: 'Email Sent', duration:10, closable: true})
+                              this.$Message.success({ content: 'Email Sent', duration:15, closable: true})
                               this.$Spin.hide()
                         }).catch(err=>{
                           this.$Spin.hide()
