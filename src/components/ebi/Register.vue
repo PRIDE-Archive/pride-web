@@ -165,7 +165,7 @@
                           this.$Spin.hide()
                           this.$Message.error({ 
                             top: 500, 
-                            content: err.body ? err.body[0].defaultMessage || "Please email: pride-support@ebi.ac.uk", 
+                            content: err.body ? err.body[0].defaultMessage || "Error! Please email: pride-support@ebi.ac.uk", 
                             duration:10,  
                             closable: true
                           });
