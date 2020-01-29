@@ -17,8 +17,8 @@
               </FormItem>
               <div class="login-action">
                 <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <!-- <a @click="forgetPassword">Forget Password</a> -->
-                <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a>
+                <a @click="forgetPassword">Forgotten Password</a>
+                <!-- <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a> -->
               </div>
               <FormItem>
                 <Button type="primary" @click="login('formInline')" long>Log in</Button>
@@ -110,6 +110,9 @@
             },
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
+            },
+            forgetPassword(){
+                this.$router.push({ name: 'forgetpassword'});
             },
         },
         mounted:function(){
