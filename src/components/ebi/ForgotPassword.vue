@@ -2,7 +2,7 @@
     <div class="submit-data-container">
         <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="content-container">
-            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Forget Password</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Forgot Password</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
             <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
             <Form class="signUpForm" ref="formInlineSendEmail" :model="formInlineSendEmail" :rules="ruleInlineSendEmail">
                <FormItem prop="email" label="Email">
@@ -22,8 +22,8 @@
     export default {
         data () {
             return {
-                //forgetPasswordApi:this.$store.state.basePrivateURL+'/getAAPToken',
-                forgetPasswordApi:'https://api.aai.ebi.ac.uk/reset?service=pride',
+                //forgotPasswordApi:this.$store.state.basePrivateURL+'/getAAPToken',
+                forgotPasswordApi:'https://api.aai.ebi.ac.uk/reset?service=pride',
                 formInlineSendEmail:{
                   email:'',
                 },
@@ -60,7 +60,7 @@
                   });
                   console.log(this.tokenApi)
                   this.$http
-                        .post(this.forgetPasswordApi, {
+                        .post(this.forgotPasswordApi, {
                                 username:this.formInlineSendEmail.email,
                                 email:this.formInlineSendEmail.email
                               }).then(function(res){
@@ -72,7 +72,7 @@
                         });
               })
            },
-        
+
         },
         mounted:function(){
              this.$refs['formInlineSendEmail'].resetFields();
@@ -113,12 +113,12 @@
     .send-email{
       margin-top: 30px;
     }
-    @media (min-width: 768px) { 
+    @media (min-width: 768px) {
         .content-container{
             width: 750px;
         }
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .content-container{
             width: 870px;
         }

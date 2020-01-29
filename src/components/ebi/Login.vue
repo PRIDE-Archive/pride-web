@@ -17,7 +17,7 @@
               </FormItem>
               <div class="login-action">
                 <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <a @click="forgetPassword">Forgotten Password</a>
+                <a @click="forgotPassword">Forgot Password</a>
                 <!-- <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a> -->
               </div>
               <FormItem>
@@ -77,12 +77,12 @@
                   console.log(this.tokenApi)
                   this.$http
                         //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
-                        .post(this.tokenApi, 
+                        .post(this.tokenApi,
                             {Credentials:
                               {
                                 username:this.formInline.user,
                                 password:this.formInline.password
-                              } 
+                              }
                             })
                         .then(function(res){
                               this.loginModalBool=false;
@@ -111,8 +111,8 @@
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
             },
-            forgetPassword(){
-                this.$router.push({ name: 'forgetpassword'});
+            forgotPassword(){
+                this.$router.push({ name: 'forgotpassword'});
             },
         },
         mounted:function(){
@@ -151,13 +151,13 @@
     .login-action a{
       border-bottom-style:none !important;
     }
-    
-    @media (min-width: 768px) { 
+
+    @media (min-width: 768px) {
         .content-container{
             width: 750px;
         }
     }
-    @media (min-width: 992px) { 
+    @media (min-width: 992px) {
         .content-container{
             width: 870px;
         }
