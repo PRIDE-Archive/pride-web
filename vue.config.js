@@ -1,5 +1,6 @@
 module.exports = {
 	publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
+	outputDir:'dist/pride',
 	productionSourceMap: false,
 	devServer: {
 		proxy: {
