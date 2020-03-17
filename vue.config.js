@@ -1,6 +1,8 @@
 module.exports = {
-	publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
 	outputDir:'dist/pride',
+	publicPath: process.env.NODE_ENV === 'production' ? '/pride/' : '/',
+	// indexPath: process.env.NODE_ENV === 'production' ? '../dist/pride/index.html' : '/',
+	// assetsDir: process.env.NODE_ENV === 'production' ? '../dist/pride' : '/',
 	lintOnSave: false,
 	productionSourceMap: false,
 	devServer: {
