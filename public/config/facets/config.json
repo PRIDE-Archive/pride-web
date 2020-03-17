@@ -1,0 +1,45 @@
+{
+  "peptidome":{
+    "mod_synonyms":{
+        "name":"Modifications"
+    },
+    "species_names":{
+        "name":"Species"
+    }
+  },
+  "archive":{
+    "submission_date":{
+        "name":"Submission Date"
+    },
+    "instruments_facet":{
+        "name":"Instruments"
+    },
+    "organisms_part_facet":{
+        "name":"Organisms Part"
+    },
+    "project_tags_facet":{
+        "name":"Projects Tags"
+    },
+    "project_keywords_facet":{
+        "name":"Project Keywords"
+    },
+    "publication_date":{
+        "name":"Publication Date"
+    },
+    "diseases_facet":{
+        "name":"Diseases"
+    },
+    "organisms_facet":{
+        "name":"Organisms"
+    }, 
+    "project_identified_ptms_facet": {
+        "name": "Modification"
+    },
+    "countries_facet": {
+        "name": "Country"
+    },
+    "project_submission_type":{
+        "name": "Submission Type"
+    }
+  }
+}

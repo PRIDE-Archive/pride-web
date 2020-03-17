@@ -1,0 +1,128 @@
+{
+  "nav":{
+    "title":"PRIDE - Proteomics Identification Database",
+    "subnav":["Home", "Contact", "About"]
+  },
+  "resource":{
+    "title":"Find your resources today.",
+    "searchexample":["PXD005011", "cancer", "human", "P02768", "YLEVEPVSR"],
+    "peptidomebutton":"PRIDE PEPTIDOME",
+    "archivebutton":"PRIDE ARCHIVE"
+  },
+  "statistics":{},
+  "tools":{
+    "title":"How to submit data",
+    "step":{
+      "one":   "Register",
+      "two":   "Choose Submission Type",
+      "three": "Submit Dataset",
+      "four":  "Accessing Private data",
+      "five":  "Post-submission"
+    },
+    "stephovercontent":{
+      "one":   "If you do not already have a PRIDE account, create one here.",
+      "two":   "We have different type of submissions in PRIDE.",
+      "three": "The PX Submission tool allows users to perform the final submission.",
+      "four":  "Submitted datasets are 'private' by default. They will be available to you and the reviewers if you are logged-in into PRIDE",
+      "five":  "After the submission, the dataset metadata is validated and different post-processing are applied. "
+    },
+    "submitdatabutton":"DOWNLOAD SUBMISSION TOOL",
+    "moreID":{
+      "one": "register_into_pride",
+      "two": "prepare_submission",
+      "three": "submit_dataset",
+      "four": "accessing_private_data",
+      "five":"post-submission"
+    },
+    "markdownFolder":"submitdatapage"
+  },
+  "news":{
+    "tools":{
+      "section":[
+        {
+          "title":"Submission Tool",
+          "content":"PRIDE Submission Tool enables direct user submissions of protein and peptide identification or quantification data, along with the spectra to PRIDE Archive.",
+          "externalURL":"",
+          "moreID":"submission_tool",
+          "markdownFolder":"pridesubmissiontool"
+
+        },
+        {
+          "title":"PRIDE Inspector",
+          "content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data.",
+          "externalURL":"",
+          "moreID":"pride_inspector",
+          "markdownFolder":"prideinspector"
+        },
+        {
+          "title":"PRIDE Archive API",
+          "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
+          "externalURL":"https://pride-archive.github.io/PrideAPIDocs/",
+          "moreID":"pride_archive_ws",
+          "markdownFolder":""
+        },
+
+        {
+          "title":"PRIDE Utilities",
+          "content":"PRIDE Utilities is a set of libraries and commandline tools for computational proteomics.",
+          "externalURL":"",
+          "moreID":"pride_utilities",
+          "markdownFolder":"prideutilities"
+        }
+      ],
+      "button":{
+        "externalURL":"",
+        "moreID":"",
+        "markdownFolder":"toolspage"
+      }
+    },
+    "documentation":{
+      "section":[
+        {
+          "title":"How to Submit data",
+          "content":"How to submit identification and quantification results from proteomics experiments into PRIDE Archive",
+          "externalURL":"",
+          "moreID":"how_to_submit_data",
+          "markdownFolder":"submitdatapage"
+        },
+        {
+          "title":"How to review data",
+          "content":"How to review private and public experiments in PRIDE Archive",
+          "externalURL":"",
+          "moreID":"review_pride_data",
+          "markdownFolder":"reviewpridedata"
+
+        },
+        {
+          "title":"How to annotate data",
+          "content":"How to annotate the project in PRIDE Archive",
+          "externalURL":"",
+          "moreID":"",
+          "markdownFolder":"annotatepridedata"
+        },
+        {
+          "title":"Searching public datasets",
+          "content":"Searching public datasets for reanalysis and reuse in PRIDE Archive",
+          "externalURL":"",
+          "moreID":"searching_pride_data",
+          "markdownFolder":"searchpridearchive"
+        }
+      ],
+      "button":{
+        "externalURL":"",
+        "moreID":"",
+        "markdownFolder":"documentationpage"
+      }
+    },
+    "citation":{
+      "lineone": "Citing PRIDE",
+      "linetwo": "Perez-Riverol Y, Csordas A, Bai J, Bernal-Llinares M, Hewapathirana S, Kundu DJ, Inuganti A ... Jarnuczak AF, Ternent T, Brazma A, Vizcaíno JA.",
+      "linethree": "The PRIDE database and related tools and resources in 2019: improving support for quantification data.",
+      "linefour": "Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450. doi: 10.1093/nar/gky1106",
+      "button":{
+        "moreID":"",
+        "markdownFolder":"citationpage"
+      }
+    }
+  }
+}
