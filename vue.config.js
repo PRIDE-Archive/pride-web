@@ -21,10 +21,10 @@ module.exports = {
 	    		javascriptEnabled: true
 	    	}
 	    }
-	},
-	transpileDependencies: [
-		'vue-echarts',
-		'resize-detector'
-	],
-	runtimeCompiler:true
+	}
+	// transpileDependencies: [
+	// 	'vue-echarts',
+	// 	'resize-detector'
+	// ],
+	// runtimeCompiler:true
 }
