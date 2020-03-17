@@ -1,0 +1,84 @@
+variables:
+  IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
+  DOCKER_PULL_SECRET: pride-gitlab-docker-secret
+
+#include:
+#  - template: Container-Scanning.gitlab-ci.yml
+#  - template: Dependency-Scanning.gitlab-ci.yml
+#  - template: License-Management.gitlab-ci.yml
+
+docker_build:
+  image: docker:18.09
+  stage: build
+  services:
+    - docker:18.09-dind
+  script:
+    - docker info
+    - docker build -t $IMAGE .
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker push $IMAGE
+  only:
+    - master
+
+kube_deploy_test:
+  environment: test-env
+  variables:
+    NAMESPACE: pride-web-test
+  extends: .kube_deploy_script
+
+kube_deploy_prod_hh:
+  environment: prod-hh
+  variables:
+    NAMESPACE: pride-web-prod
+  extends: .kube_deploy_script
+  only:
+    - master
+
+kube_deploy_prod_hx:
+  environment: prod-hx
+  variables:
+    NAMESPACE: pride-web-prod
+  extends: .kube_deploy_script
+  only:
+    - master
+
+.kube_deploy_script:
+  stage: deploy
+  image: dtzar/helm-kubectl
+  script:
+    - apk add --update bash gettext tzdata coreutils
+    - mkdir -p ~/.kube
+    - echo $KUBE_CONFIG > kubeconfig
+    - base64 -d kubeconfig > ~/.kube/config
+    - kubectl config get-contexts
+    - kubectl create namespace $NAMESPACE || true
+    - kubectl -n $NAMESPACE delete secret $DOCKER_PULL_SECRET || true
+    - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+    - envsubst < .kubernetes.yml > kubernetes.yml
+    - kubectl -n $NAMESPACE apply -f kubernetes.yml
+  when: manual
+
+.deploy_script:
+  stage: deploy
+  image: node:12.13.0-alpine
+  script:
+    - apk add --update openssh-client bash openssl rsync gettext tzdata
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir ~/.ssh
+    - chmod 700 ~/.ssh
+    - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
+    - chmod 600 ~/.ssh/known_hosts
+    - npm install
+    - npm run build
+    - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
+    - ssh $SERVER_USER@$DEPLOY_SERVER "bash && mkdir -p $DEPLOY_PATH/$DEPLOY_DIR"
+    - rsync -a dist/pride/* $SERVER_USER@$DEPLOY_SERVER:$DEPLOY_PATH/$DEPLOY_DIR/
+    - ssh $SERVER_USER@$DEPLOY_SERVER "bash && cd $DEPLOY_PATH && ln -snf $DEPLOY_DIR pride"
+
+deploy_dev:
+  environment: dev
+  extends: .deploy_script
+  #  only:
+  #    - master
+  when: manual
