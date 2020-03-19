@@ -101,7 +101,7 @@
               <Card>
                   <p slot="title" class="resource-list-title-container">
                     <span>List of Datasets ({{total}})</span>
-                    <span class="sort-wrapper">
+                    <span v-if="publicaitionList.length>0" class="sort-wrapper">
                         <span>Order by: </span>
                         <div class="sortOption">
                             <a><Icon v-if="order=='DESC'" type="arrow-down-b" size="18" @click="orderChange('ASC')"/></a>
@@ -121,7 +121,7 @@
                     </span>
                   </p>
                   <Spin size="large" fix v-if="loading"></Spin>
-                  <Card v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
+                  <Card v-if="publicaitionList.length>0" v-for="publicationItem in publicaitionList" class="resource-item" v-bind:key = "publicationItem.accession">
                       <router-link class="resource-id" :to="{name:'dataset',  params: { id: publicationItem.accession}}"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.accession}}</text-highlight></router-link><span v-if="publicationItem.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
                       <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.title}}</text-highlight></p> 
                       <p><span class="project-info">{{projectItemsSpecies}}: </span> <span v-for="item in publicationItem.species"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>;</span><a style="margin-left: 5px"v-if= "publicationItem.organisms.length>3" @click="gotoDetails(publicationItem.accession)">(More)</a></p>
@@ -167,8 +167,16 @@
                       </Collapse>
                   </Card>
                   
-                  <div class="page-container">
+                  <div v-if="publicaitionList.length>0" class="page-container">
                     <Page :total="total" :page-size="pageSize" :current="currentPage" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
+                  </div>
+                  <div style="text-align: center;"v-if="publicaitionList.length==0">
+                    <p style="margin-top: 20px; color: #a7a7a7">Sorry, no projects found for search term <span style="color: #5bc0be">{{keyword}}</span> and the current set of active filters. Try with a different combination of search term and filters.</p>
+                    <p style="margin: 20px 0; color: #a7a7a7; cursor: pointer">
+                      If you were looking for a specific project and it was not found, it may still be held private. If you think it should be public you can request its publication <a style="color: #5bc0be" @click="gotoPublish">here</a>.
+                    </p>
+
+
                   </div>
               </Card>
           </Row>
@@ -839,6 +847,12 @@
        
         this.$router.push({name: 'archive', query: this.query});
         console.log(this.query);
+      },
+      gotoPublish(){
+        if(this.keyword.match(/PXD/))
+          this.$router.push({name:'publish',params:{id:this.keyword}, query:{r:'other'}});
+        else
+          this.$Message.error({content:'Wrong Accession', duration:1});
       }
     },
 

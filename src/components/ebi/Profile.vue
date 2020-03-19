@@ -21,18 +21,22 @@
                             </Col> -->
                             <Col span="24">
                                 <div class="info-wrapper">
-                                    <div class="info-left">
-                                        <div><span class="info-item">Email</span></div>
-                                        <div><span class="info-item">Affiliation</span></div>
-                                        <div><span class="info-item">ORCID</span></div>
-                                        <div><span class="info-item">Country</span></div>
+                                    <div class="info-item">
+                                        <span class="info-name">Title</span><span>{{profileData.title}}</span>
                                     </div>
-                                    <div class="info-right">
-                                        <div><span>{{profileData.email}}</span></div>
-                                        <div><span>{{profileData.affiliation}}</span></div>
-                                        <div><span>{{profileData.orcid}}</span></div>
-                                        <div><span>{{profileData.country}}</span></div>
+                                    <div class="info-item">
+                                        <span class="info-name">Email</span><span>{{profileData.email}}</span>
                                     </div>
+                                    <div class="info-item">
+                                        <span class="info-name">Affiliation</span><span>{{profileData.affiliation}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-name">Country</span><span>{{profileData.country}}</span>
+                                    </div>
+                                    <div class="info-item">
+                                        <span class="info-name">ORCID</span><span>{{profileData.orcid}}</span>
+                                    </div>
+                                   
                                 </div>
                             </Col>
                         </Row>
@@ -40,7 +44,8 @@
                     <!-- <div class="description">123</div> -->
                 </Card>
                 <div class="profile-button">
-                    <a @click="showPasswordModal">Change Password</a>
+                    <a @click="gotoEditProfile">Edit</a>
+                    <a @click="showPasswordModal">Change Password</a> 
                 </div>
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
@@ -67,7 +72,8 @@
                     <p style="margin-top: 10px;">
                         <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                         <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                        <a @click="gotoDetails(item.accession)">(More)</a>
+                        <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                        <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                       <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                     </p>
                     <p style="margin-top: 10px;">
@@ -160,7 +166,8 @@
                         <p style="margin-top: 10px;">
                             <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                            <a @click="gotoDetails(item.accession)">(More)</a>
+                            <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                            <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
@@ -254,7 +261,8 @@
                         <p style="margin-top: 10px;">
                             <!-- <span class="project-info">{{projectItemsProjectDescription}}: </span> -->
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.projectDescription}}</text-highlight>
-                            <a @click="gotoDetails(item.accession)">(More)</a>
+                            <router-link :to="{name:'privatedataset',  params: { id: item.accession}}">(More)</router-link>
+                            <!-- <a @click="gotoDetails(item.accession)">(More)</a> -->
                           <!--<read-more class="readMore" more-str="(More)" :text="item.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                         </p>
                         <p style="margin-top: 10px;">
@@ -445,15 +453,15 @@
                 viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[
                   {
-                    label:'Edit Profile',
+                    label:'Profile',
                     value:'profile',
                     icon:'ios-paper'
                   },
-                  {
-                    label:'Public Data',
-                    value:'public_data',
-                    icon:'stats-bars'
-                  },
+                  // {
+                  //   label:'Public Data',
+                  //   value:'public_data',
+                  //   icon:'stats-bars'
+                  // },
                   {
                     label:'Private Data',
                     value:'private_data',
@@ -564,18 +572,23 @@
                       })
                       .then(function(res){
                         this.privateLoading = false;
-                        let dataList = res.body;
-                        for(let i=0; i<dataList.length; i++){
-                            let item = {
-                                accession: dataList[i].accession,
-                                title: dataList[i].title,
-                                projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
-                                submissionDate: dataList[i].submissionDate,
+                        if(res.body._embedded && res.body._embedded.projects){
+                            let dataList = res.body._embedded.projects;
+                            for(let i=0; i<dataList.length; i++){
+                                let item = {
+                                    accession: dataList[i].accession,
+                                    title: dataList[i].title,
+                                    projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
+                                    submissionDate: dataList[i].submissionDate,
+                                }
+                                this.privateDataList.push(item);
                             }
-                            this.privateDataList.push(item);
+                            
+                            //console.log('privateDataList',this.privateDataList);
                         }
-                        
-                        //console.log(this.privateDataList);
+                        else{
+                            //this.$Message.error({content:'No Private Data', duration:1});
+                        }
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -627,20 +640,18 @@
                         this.reviewLoading = false;
                         if(res.body._embedded && res.body._embedded.projects){
                             let dataList = res.body._embedded.projects;
-                            console.log('getReviewerSubmission1111', res.body)
                             for(let i=0; i<dataList.length; i++){
-                                console.log('11111', res.body)
                                 let item = {
                                     accession: dataList[i].accession,
                                     title: dataList[i].title,
                                     projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                                     submissionDate: dataList[i].submissionDate,
                                 }
-                                this.reviewDataList.push(item);
+                                this.reviewDataList.push(item);  
                             }
                         }
                         else{
-                            this.$Message.error({content:'No Review Data', duration:1});
+                            //this.$Message.error({content:'No Review Data', duration:1});
                         }
                         
                       },function(err){
@@ -672,6 +683,7 @@
                         this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
 
                         if(this.profileData.userAuthorities == 'SUBMITTER'){
+                            this.getPrivateData();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'reviewer_submission'){
                                     this.tableList.splice(i,1)
@@ -680,6 +692,7 @@
                             }
                         }
                         else if(this.profileData.userAuthorities == 'REVIEWER'){
+                            this.getReviewerSubmission();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'private_data'){
                                     this.tableList.splice(i,1)
@@ -695,10 +708,12 @@
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
+                            this.$router.push({name:'login'});
+                            this.$Message.error({content:'Expired, Please Login Again', duration:3});
                         }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        else
+                            this.$Message.error({content:'Get Profile Error', duration:3});
                       });
-                
             },
             logout(){
                 this.$store.commit('setUser',{username: '', token:''});  
@@ -770,12 +785,15 @@
                 this.confirmedNewPasswordState = false;
                 this.emailState = true;
                 this.passwordState = false;
+            },
+            gotoEditProfile(){
+                this.$router.push({name:'editprofile'});
             }
         },
         mounted:function(){
-              this.getPrivateData();
-              this.getPublicData();
-              this.getReviewerSubmission();
+              //this.getPrivateData();
+              //this.getPublicData();
+              //this.getReviewerSubmission();
               this.getProfile();
         },
         beforeRouteEnter(to,from,next){
@@ -783,7 +801,7 @@
               let username = localStorage.getItem('username') || '';
               if(!username){
                 vm.$Message.error({content:'Please Login', duration:2})
-                vm.$router.push({name:'landingpage'})
+                vm.$router.push({name:'login'})
               }
             });
         }
@@ -891,6 +909,7 @@
         align-items: center;
     }
     .profile-button{
+        display: flex;
         margin-top: 20px;
     }
     .profile-button a{
@@ -907,6 +926,7 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        margin-right: 5px;
     }
     .button-icon{
         margin-right: 5px;
@@ -929,21 +949,23 @@
     }
     .profile .content{
         padding: 10px 0;
-        margin: 20px 0;
+        margin-top: 20px;
     }
     .profile .content .info-wrapper{
         display: flex;
         text-align: left;
+        flex-direction: column;
     }
-    .profile .content .info-wrapper .info-left{
+    .profile .content .info-wrapper .info-item{
+        display: flex;
+        font-size: 14px;
+        align-items: center;
+    }
+    .profile .content .info-wrapper .info-item .info-name{
         font-weight: bold;
-    }
-    .profile .content .info-wrapper .info-right{
-        margin-left: 20px;
-    }
-    .profile .content .info .info-item{
-        font-weight: bold;
-        margin-right: 20px;
+        margin-right: 10px;
+        margin-bottom: 5px;
+        width: 80px;
     }
     .profile .content .avatar{
         width: 120px;

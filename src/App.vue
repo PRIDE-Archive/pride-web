@@ -57,6 +57,12 @@ export default {
   .masthead{
     background-color:white !important;
   }
+  .ivu-message-notice-close{
+    border-bottom-style: none !important;
+  }
+  .ivu-message{
+    top:270px !important;
+  }
   [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea{
     margin: 0 !important;
   }

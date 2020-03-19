@@ -25,6 +25,12 @@ const Profile = resolve => require(['@/components/ebi/Profile'], resolve);
 const Molecules = resolve => require(['@/components/archive/Molecules'], resolve);
 const PrivateDataset = resolve => require(['@/components/archive/PrivateDataset'], resolve);
 const Spectra = resolve => require(['@/components/archive/Spectra'], resolve);
+const Register = resolve => require(['@/components/ebi/Register'], resolve);
+const Publish = resolve => require(['@/components/archive/Publish'], resolve);
+const EditProfile = resolve => require(['@/components/ebi/EditProfile'], resolve);
+const Login = resolve => require(['@/components/ebi/Login'], resolve);
+const Forgotpassword = resolve => require(['@/components/ebi/ForgotPassword'], resolve);
+const Resetpassword = resolve => require(['@/components/ebi/ResetPassword'], resolve);
 
 Vue.use(Router)
 
@@ -42,7 +48,7 @@ export default new Router({
       name: 'markdownpage',
       component: MarkdownPage,
        /*children: [
-     
+
             {
                 path: "",
                 name: 'markdownpage',
@@ -92,7 +98,7 @@ export default new Router({
       component: Peptidome
     },
     {
-      path: '/peptidesearch',
+      path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
       component: PeptideSearch
     },
@@ -102,7 +108,7 @@ export default new Router({
       component: Spectra
     },
     {
-      path: '/peptidedownload',
+      path: '/peptidome/peptidedownload',
       name: 'peptidedownload',
       component: PeptideDownload
     },
@@ -112,7 +118,7 @@ export default new Router({
       component: SpectrumLibrary
     },
     {
-      path:'/peptidedetails/:id',
+      path:'/peptidome/peptidedetails/:id',
       name: 'peptidedetails',
       component: PeptideDetails
     },
@@ -140,7 +146,7 @@ export default new Router({
       path:'/annotation',
       name: 'annotation',
       component: Annotation,
-      
+
     },
     {
       path:'/annotation/:id/check',
@@ -151,7 +157,7 @@ export default new Router({
       path:'/annotation/:id/sample',
       name: 'sample',
       component: Sample,
-      
+
     },
     {
       path:'/annotation/:id/annotate',
@@ -162,9 +168,9 @@ export default new Router({
       path:'/profile/:id',
       name: 'profile',
       component: Profile,
-      
+
     },
-    { 
+    {
       path: '/searchSummary.do',
       redirect: to => {
         let id = to.query.identificationAccessionNumber
@@ -188,6 +194,73 @@ export default new Router({
       }
     },
     {
+      path: '/startRegistration.do',
+      redirect: to => {
+          return { name: 'register'}
+      }
+    },
+    {
+      path: '/archive/simpleSearch',
+      redirect: to => {
+        let query = to.query
+        if(query.q)
+          return { name: 'archive', query: {keyword:query.q} }
+        else
+          return { name: 'archive',query: {}}
+      }
+    },
+    {
+      path:'/register',
+      name: 'register',
+      component: Register,
+
+    },
+    {
+      path:'/archive/register',
+      name: 'register',
+      component: Register,
+
+    },
+    {
+      path:'/login',
+      name: 'login',
+      component: Login,
+
+    },
+    {
+      path:'/archive/login',
+      name: 'login',
+      component: Login,
+
+    },
+    {
+      path:'/forgotpassword',
+      name: 'forgotpassword',
+      component: Forgotpassword,
+
+    },
+    {
+      path: '/archive/users/forgotpassword',
+      name: 'forgotpassword',
+      component: Forgotpassword,
+    },
+    {
+      path:'/resetpassword/:reference',
+      name: 'resetpassword',
+      component: Resetpassword,
+
+    },
+    {
+      path:'/archive/projects/:id/publish',
+      name: 'publish',
+      component: Publish
+    },
+    {
+      path:'/archive/users/profile/edit',
+      name: 'editprofile',
+      component: EditProfile
+    },
+    {
       path:'/404',
       name: '404',
       component: NotFound,
@@ -195,8 +268,8 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         to.replace();
         console.log(to);
-         
-        
+
+
       }*/
     },
     {
@@ -207,8 +280,8 @@ export default new Router({
       beforeEnter: (to, from, next) => {
         to.replace();
         console.log(to);
-         
-        
+
+
       }*/
     },
   ],

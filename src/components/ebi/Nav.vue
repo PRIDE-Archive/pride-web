@@ -7,7 +7,7 @@
             </Alert>
             <div class="masthead-inner row">
               <!-- local-title -->
-              <div class="columns medium-5" id="local-title"> 
+              <div class="columns medium-5" id="local-title">
                 <div class="pride-logo">
                   <a title="Back to [service-name] homepage"><img @click="gotoPage(pageObj.pageName)" :src="pageObj.logoURL" alt="logo" :width="pageObj.logoWidth"></a>
                 </div>
@@ -86,7 +86,7 @@
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown @on-click="resourcesClick">
-                          <router-link :to="{ path: '/markdownpage/documentationpage' }"> 
+                          <router-link :to="{ path: '/markdownpage/documentationpage' }">
                             <i class="fas fa-graduation-cap"></i>
                             <span class='sub-nav-title'>Docs</span>
                           </router-link>
@@ -110,7 +110,7 @@
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown>
-                          <router-link :to="{ path: '/markdownpage/citationpage' }"> 
+                          <router-link :to="{ path: '/markdownpage/citationpage' }">
                             <i class="fas fa-info-circle"></i>
                             <span class='sub-nav-title'>About</span>
                           </router-link>
@@ -128,7 +128,7 @@
                     <li v-else class="sub-nav-list">
                         <Dropdown @on-click="usernameClick">
                             <a href="javascript:void(0)">
-                              
+
                               <span class='sub-nav-title'>{{username}}</span>
                               <Icon type="chevron-down"></Icon>
                             </a>
@@ -172,7 +172,7 @@
               </FormItem>
               <div class="login-action">
                 <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <!-- <a @click="forgetPassword">Forget Password</a> -->
+                <!-- <a @click="forgotPassword">Forgot Password</a> -->
                 <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a>
               </div>
               <FormItem>
@@ -189,7 +189,7 @@
             class-name="signup-modal"
             scrollable>
             <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
-               <FormItem prop="email" label="Email">
+              <FormItem prop="email" label="Email">
                 <Input type="text" v-model="formInlineSignUp.email" placeholder="">
                 </Input>
               </FormItem>
@@ -228,12 +228,12 @@
             </Form>
         </Modal>
         <Modal
-            v-model="forgetPasswordModalBool"
-            title="Forget Password"
+            v-model="forgotPasswordModalBool"
+            title="Forgot Password"
             :mask-closable="false"
             :footer-hide="true"
             :closable="true"
-            class-name="forget-password-modal"
+            class-name="forgot-password-modal"
             scrollable>
             <Form class="signUpForm" ref="formInlineSendEmail" :model="formInlineSendEmail" :rules="ruleInlineSendEmail">
                <FormItem prop="email" label="Email">
@@ -295,7 +295,7 @@
             logoWidth:500,
             logoURL:'/static/logo/PRIDE_logo.png',
         }
-      } 
+      }
       else{
         item = {
             pageName:'archive',
@@ -320,7 +320,7 @@
                 //signupAPI :'https://wwwdev.ebi.ac.uk/pride/ws/archive/user/register',
                 loginModalBool:false,
                 signUpModalBool:false,
-                forgetPasswordModalBool:false,
+                forgotPasswordModalBool:false,
                 formInline: {
                   user: '',
                   password: ''
@@ -376,7 +376,7 @@
                   firstname:'',
                   lastname:'',
                   content:'',
-                  
+
                 },
                 ruleInlineSendEmail:{
                   email: [
@@ -487,12 +487,14 @@
               this.$router.push({path:'/markdownpage/documentationpage'});
             },
             showLogin(){
-              this.$refs['formInline'].resetFields();
-              this.loginModalBool=true;
+              this.$router.push({name:'login'});
+              //this.$refs['formInline'].resetFields();
+              //this.loginModalBool=true;
             },
             showSignup(){
-              this.$refs['formInlineSignUp'].resetFields();
-              this.signUpModalBool=true;
+              this.$router.push({name:'register'});
+              //this.$refs['formInlineSignUp'].resetFields();
+              //this.signUpModalBool=true;
             },
             login(name) {
               this.$refs[name].validate((valid) => {
@@ -517,12 +519,12 @@
                   console.log(this.tokenApi)
                   this.$http
                         //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
-                        .post(this.tokenApi, 
+                        .post(this.tokenApi,
                             {Credentials:
                               {
                                 username:this.formInline.user,
                                 password:this.formInline.password
-                              } 
+                              }
                             })
                         .then(function(res){
                               this.loginModalBool=false;
@@ -629,11 +631,11 @@
               })
             },
             logout(){
-              //this.$store.commit('setUser',{username: '', token:''});  
+              //this.$store.commit('setUser',{username: '', token:''});
               localStorage.setItem('username','');
               localStorage.setItem('token','');
               this.$router.replace({name:'archive'});
-              this.$store.commit('setUser',{username: '', token:''});    
+              this.$store.commit('setUser',{username: '', token:''});
             },
             init(){
                 let username = localStorage.getItem('username');
@@ -665,7 +667,7 @@
                   .get(this.countryListURL)
                   .then(function(res){
                       this.countryList = [];
-                      let json = JSON.parse(this.csvJSON(res.body)) 
+                      let json = JSON.parse(this.csvJSON(res.body))
                       for(let i=0; i < json.length-1; i++){
                         //console.log(json[i].value);
                           json[i].value = json[i].value.replace(/^"(.*)"$/, '$1');
@@ -695,8 +697,8 @@
               //return result; //JavaScript object
               return JSON.stringify(result); //JSON
             },
-            forgetPassword(){
-                this.forgetPasswordModalBool = true;
+            forgotPassword(){
+                this.forgotPasswordModalBool = true;
                 this.signUpModalBool = false;
                 this.loginModalBool = false;
             },
@@ -823,7 +825,7 @@
     .login-action a{
       border-bottom-style:none !important;
     }
-    
+
 </style>
 <style>
    .demo-spin-icon-load{
@@ -856,7 +858,7 @@
     .signup-modal a{
       border-bottom-style:none;
     }
-    .forget-password-modal a{
+    .forgot-password-modal a{
       border-bottom-style:none;
     }
     .banner{
