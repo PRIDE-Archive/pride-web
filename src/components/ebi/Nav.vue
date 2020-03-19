@@ -2,7 +2,7 @@
     <div class="nav-container">
         <div data-sticky-container>
           <header class="masthead ebi-masthead" data-sticky data-sticky-on="large" data-top-anchor="content:top" data-btm-anchor="content:bottom">
-            <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
+            <Alert class="alert" v-if="bannerContent" banner type="warning" @on-close="closeBanner">
               <span class="banner" v-html="bannerContent"></span>
             </Alert>
             <div class="masthead-inner row">
@@ -866,5 +866,9 @@
     }
     .banner a{
       color:#454548 !important;
+    }
+    .alert{
+      font-size: 16px;
+      padding: 10px 48px 10px 16px;
     }
 </style>

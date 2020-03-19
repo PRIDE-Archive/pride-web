@@ -1,1 +1,1 @@
-Welcome to the new PRIDE. For legacy PRIDE go to <a href="https://www.ebi.ac.uk/pride/archive/legacy" target="_blank">https://www.ebi.ac.uk/pride/archive/legacy</a>
+Proteome and Translatome of SARS-CoV-2 <a href="https://ebi.ac.uk/pride/archive/projects/PXD017710" target="_blank">Dataset</a>. Previous datasets about MERS and SARS can be found in <a href="https://ebi.ac.uk/pride/archive?keyword=coronavirus&sortDirection=DESC&page=0&pageSize=20" target="_blank">this query</a>
