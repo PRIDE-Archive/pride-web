@@ -1229,7 +1229,7 @@
             pageSize :this.pageSizeDownLoad,
           }
           if(this.fileName)
-            query.filter = 'fileName=='+this.fileName
+            query.filter = 'fileName=regex='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       downloadPageSizeChange(size){
@@ -1241,7 +1241,7 @@
             pageSize :this.pageSizeDownLoad,
           }
           if(this.fileName)
-            query.filter = 'fileName=='+this.fileName
+            query.filter = 'fileName=regex='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       projectFtp(ftp){
@@ -1266,7 +1266,7 @@
             pageSize :this.pageSizeDownLoad,
         }
         if(this.fileName)
-            query.filter = 'fileName=='+this.fileName
+            query.filter = 'fileName=regex='+this.fileName
         this.queryArchiveProjectFiles(query)
       },
       searchFile(){
@@ -1277,7 +1277,7 @@
             pageSize :this.pageSizeDownLoad,
         }
         if(this.fileName)
-            query.filter = 'fileName=='+this.fileName
+            query.filter = 'fileName=regex='+this.fileName
         this.queryArchiveProjectFiles(query)
       }
     },
