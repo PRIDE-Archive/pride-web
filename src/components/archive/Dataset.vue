@@ -216,9 +216,14 @@
                     </Card>
                     <Card class="card">
                        <p slot="title" class="project-file-title-container">
-                        <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
+                        <span>Project Files</span>
                         <span class="sort-wrapper">
-                            <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button>
+                            <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px" @on-enter="searchFile">
+                                <Button slot="append" icon="ios-search" @click="searchFile"></Button>
+                            </Input>
+                            <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
+                            <!-- <i class="fas fa-download icon-tag download-icon" @click="projectFtp(projectDownload)"></i> -->
+                            <!-- <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button> -->
                             <!-- <span style="margin-left: 10px">Sort by: </span>
                             <div class="sortOption">
                                 <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
@@ -874,7 +879,8 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
-          projectDownload:''
+          projectDownload:'',
+          fileName:'',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -979,9 +985,9 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
-                //console.log(res.body);
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
+                this.fileList=[];
                 if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
                   let tempArray = [];
@@ -1222,6 +1228,8 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          if(this.fileName)
+            query.filter = 'fileName=='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       downloadPageSizeChange(size){
@@ -1232,6 +1240,8 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          if(this.fileName)
+            query.filter = 'fileName=='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       projectFtp(ftp){
@@ -1255,8 +1265,21 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        if(this.fileName)
+            query.filter = 'fileName=='+this.fileName
         this.queryArchiveProjectFiles(query)
       },
+      searchFile(){
+        let query = {
+            sortConditions: this.projectFileSortCondition,
+            sortDirection: this.projectFileSortDirection,
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+        }
+        if(this.fileName)
+            query.filter = 'fileName=='+this.fileName
+        this.queryArchiveProjectFiles(query)
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1373,6 +1396,13 @@
   .similarity-title{
     margin-bottom: 3px;
   }
+  .download-icon{
+    color: #5bc0be;
+    cursor: pointer;
+  }
+  .download-icon:hover{
+    opacity: .8;
+  }
   .download-button{
     padding: 0;
     font-size: 12px;
@@ -1381,8 +1411,7 @@
     border-radius: 3px;
     color: #f8f8f8;
     display: inline-block;
-    margin-right: 20px;
-    padding: 5px 0px;
+    padding: 2px 0px;
   }
   .download-button:hover{
     opacity: .8;
