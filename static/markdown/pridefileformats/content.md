@@ -73,7 +73,7 @@ Peak files correspond to MS/MS files that can be used to verify the correspondin
 |  .mzData    | HUPO PSI predecessor of mzML | http://www.psidev.info/mzdata |
 |  .dta       | Sequest MS/MS peak list     | |
 
-If you are using MaxQuant, you can just zip the Andromeda folder, containing the .apl peak list files, and upload it as a PEAK file.
+If you are using MaxQuant you can just zip the Andromeda folder, containing the .apl peak list files, and upload it as a PEAK file.
 
 ## RESULT files
 
