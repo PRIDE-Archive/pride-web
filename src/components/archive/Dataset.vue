@@ -950,9 +950,19 @@
                   }
                   this.publications.push(item);
                 }
-
+                this.getMSRunTableData()
             },function(err){
-                this.$Message.error({content:'No results', duration:3});
+                if(err.bodyText.match('not in the database')){
+                    this.$Modal.warning({
+                        title: 'Not Public Project',
+                        content: '<p>The requested project is not public</p>',
+                        onOk: () => {
+                            this.$router.push({name:'archive'});
+                        },
+                    });
+                }
+                else
+                  this.$Message.error({content:'No results', duration:3});
             });
       },
       getMSRunTableData(){
@@ -1286,7 +1296,6 @@
         //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
-        this.getMSRunTableData();
         this.getProteinEvidences();
 
         //this.initAsperaConnect();
