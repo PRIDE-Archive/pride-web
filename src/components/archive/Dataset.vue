@@ -224,20 +224,12 @@
                             <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
                             <!-- <i class="fas fa-download icon-tag download-icon" @click="projectFtp(projectDownload)"></i> -->
                             <!-- <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button> -->
-                            <!-- <span style="margin-left: 10px">Sort by: </span>
-                            <div class="sortOption">
-                                <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
-                                    <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                </Select>
-                            </div> -->
                         </span>
                       </p>
                       
                        <div class="download-list-wrapper">
-                         <!--<div class="summary-content-header">List</div>-->
                          <div class="download-list">
                            <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange"></Table>
-                           <!-- <Button v-if="selectAllfiles" class= "download-button">Download</Button> -->
                          </div>
                        </div>
                        <div class="page-container">
@@ -265,43 +257,6 @@
                     </Card>
                     -->
                   </div>
-                 <!--
-                  <Tabs :animated="false">
-                    <TabPane label="Summary">
-                      <div class="tab-container">
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                      </div>
-                    </TabPane>
-                    <TabPane label="Publication">
-                      <div class="tab-container">
-                        <p>Schroeter CB, Koehler S, Kann M, Schermer B, Benzing T, Brinkkoetter PT, Rinschen MM. Protein half-life determines expression of proteostatic networks in podocyte differentiation. FASEB J. 2018:fj201701307R PubMed: 29694247</p>
-                      </div>
-                    </TabPane>
-                  </Tabs>
-                -->
               </Col>
               <Col span="8">
                   <Card class="card">
@@ -534,29 +489,6 @@
                                   }
                               }
                           }, params.row.type),
-
-                          /*
-                          h('Button', {
-                              props: {
-                                  type: 'primary',
-                                  size: 'small'
-                              },
-                              style: {
-                                  display:'inline-block',
-                                  marginRight: '5px',
-                                  paddingLeft: '22px',
-                                  paddingRight: '22px'
-                              },
-                              on: {
-                                  click: () => {
-                                      //window.location.href = params.row.url.ftp;
-                                      window.open(params.row.url.ftp)
-                                      console.log(params.row.url.ftp);
-                                      //this.gotoBlast(params);
-                                  }
-                              }
-                          }, 'FTP'),*/
-
                       ]);
                   }
               },
@@ -628,50 +560,6 @@
                           }, 'FTP'),
                       ]);
                   },
-                  // render: (h, params) => {
-                  //     return  h('Dropdown', {
-                  //               props: {
-                  //                 placement: 'right-start'
-                  //               },
-                  //               style: {
-                  //                 textAlign: 'left'
-                  //               },
-                  //               on: {
-                  //                 'on-click': (value) => {
-                  //                     //console.log(value);
-                  //                     if(value.indexOf('ftp')!=-1)
-                  //                       window.open(value)
-                  //                     else if(value.indexOf('asp')!=-1)
-                  //                       this.downloadFiles(value);
-                  //                       //this.$Message.success({content:'Coming Soon', duration:1});
-                  //                 }
-                  //               }
-                  //           }, [
-                  //             h('div', {
-                  //               class: {
-                  //                 member_operate_div: true
-                  //               }
-                  //             }, [
-                  //                 h('Icon', {
-                  //                     props: {
-                  //                       type: 'ios-cloud-download-outline',
-                  //                       size: 20
-                  //                     },
-                  //                     style: {
-                  //                       //marginLeft: '5px' 
-                  //                     }
-                  //                   })
-                  //                 ]),
-                  //                 h('DropdownMenu', {
-                  //                   slot: 'list'
-                  //                 }, 
-                  //                 params.row.url.map((obj)=>{
-                  //                     return h('DropdownItem', {
-                  //                         props: {name: obj.key}  
-                  //                     }, obj.label);  
-                  //                 }))
-                  //     ]);
-                  // }
               }
           ],
           fileList: [],
@@ -885,16 +773,8 @@
     },
     beforeRouteUpdate:function (to, from, next) {
       this.queryProjectDetails(to.params.id);
-      //this.queryAssay(to.params.id);
       this.queryArchiveProjectFiles(to.params.id);
       this.querySimilarity(to.params.id);
-      //console.log('to query',to.query);
-      /*
-      let filter = to.query.split('?')[1].split('filter');
-      if(filter.length>1)
-        filter.split("=");
-      console.log('filter',filter);*/
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
       next();
     },
     components: {
@@ -951,6 +831,7 @@
                   this.publications.push(item);
                 }
                 this.getMSRunTableData()
+                this.getProteinEvidences()
             },function(err){
                 if(err.bodyText.match('not in the database')){
                     this.$Modal.warning({
@@ -1293,14 +1174,8 @@
     },
     mounted: function(){
         this.queryProjectDetails();
-        //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
-        this.getProteinEvidences();
-
-        //this.initAsperaConnect();
-        //console.log(navigator.plugins)
-        //console.log('initAspera',initAspera)
     },
     computed:{//TODO for queryAssayApi
       query:function(){
