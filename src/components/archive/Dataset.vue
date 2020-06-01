@@ -215,26 +215,67 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title" class="project-file-title-container">
-                        <span>Project Files</span>
-                        <span class="sort-wrapper">
-                            <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px" @on-enter="searchFile">
-                                <Button slot="append" icon="ios-search" @click="searchFile"></Button>
-                            </Input>
-                            <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
-                            <!-- <i class="fas fa-download icon-tag download-icon" @click="projectFtp(projectDownload)"></i> -->
-                            <!-- <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button> -->
-                        </span>
-                      </p>
+                        <p slot="title" class="project-file-title-container">
+                          <span>Project Files</span>
+                          <span class="sort-wrapper">
+                              <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px" @on-enter="searchFile">
+                                  <Button slot="append" icon="ios-search" @click="searchFile"></Button>
+                              </Input>
+                              <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
+                              <!-- <i class="fas fa-download icon-tag download-icon" @click="projectFtp(projectDownload)"></i> -->
+                              <!-- <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button> -->
+                          </span>
+                        </p>
                       
-                       <div class="download-list-wrapper">
-                         <div class="download-list">
-                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange"></Table>
+                         <div class="download-list-wrapper">
+                           <div class="download-list">
+                             <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange" @on-row-click="fileTableRowClick"></Table>
+                           </div>
                          </div>
-                       </div>
-                       <div class="page-container">
-                         <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
-                       </div>
+                         <div class="page-container">
+                           <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
+                         </div>
+                    </Card>
+                    <Card class="card">
+                        <p slot="title" class="sdrf-file-title-container">
+                          <span>SDRF Reader</span>
+                          <span class="right">
+                              <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
+                          </span>
+                        </p>
+                        <div v-if="!sdrfTableCollapse" style="display:flex; overflow: auto; height:350px; border: 1px solid #5bc0be;">
+                            <div v-if="sdrfTableData.length == 0" class="no-data-table-wrapper">
+                                <span>No data</span>
+                            </div>
+                            <template v-else>
+                                <div style="display: flex"> 
+                                    <div class="table-col" v-for="(itemCol,i) in sdrfTableCol" :key="itemCol.key">
+                                        <div class="table-row first">{{itemCol.name}}</div>
+                                        <div class="table-row" :class="{'index':itemCol.key=='index'}" v-for="(itemRow,j) in sdrfTableData" :key="itemRow.index">
+                                              <!-- <p>{{itemRow.index}}</p> -->
+                                              <template v-if="itemCol.key!='index'">
+                                                    <p>{{itemRow[itemCol.key].value}}</p> 
+                                              </template>
+                                              <template v-else>
+                                                  <div class="index-col">
+                                                      <div>
+                                                        {{itemRow.index}}
+                                                      </div>
+                                                  </div>
+                                              </template>                
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                         <!-- <div v-if="!sdrfTableCollapse" class="sdrf-list-wrapper">
+                           <div class="sdrf-list">
+                             <Table stripe border ref="selection" :loading="sdrfTableLoading" :columns="sdrfTableCol" :data="sdrfTableData" ></Table>
+                           </div>
+                         </div> -->
+                        
+                        <Spin class="table-spin" v-if="!sdrfTableCollapse && sdrfTableLoading"></Spin>  
                     </Card>
                     <!-- <Card class="card">
                        <p slot="title"> <i class="fas fa-download icon-tag"></i>MSRun Files</p>
@@ -560,7 +601,13 @@
                           }, 'FTP'),
                       ]);
                   },
-              }
+              },
+              {
+                  title: '',
+                  key: 'accession',
+                  width:1,
+                  className:'project-files-accession'
+              },
           ],
           fileList: [],
           cityList: [
@@ -769,6 +816,15 @@
           moleculesButtonState:true,
           projectDownload:'',
           fileName:'',
+          sdrfTableCollapse:true,
+          sdrfTableLoading:false,
+          sdrfTableData:[],
+          sdrfTableCol:[],
+          sdrfTableApi:this.$store.state.baseApiURL + '/files/sdrfByAccession',
+          sdrfTableLoading:false,
+          pageSizeSdrf:200,
+          pageSdrf:1,
+          totalSdrf:400
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -786,7 +842,6 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-                console.log(res.body)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -881,9 +936,11 @@
                 this.fileList=[];
                 if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
+                  //console.log('filesArray',filesArray)
                   let tempArray = [];
                   for(let i=0;i<filesArray.length;i++){
                       let item ={
+                            accession: filesArray[i].accession,
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
@@ -1170,7 +1227,86 @@
         if(this.fileName)
             query.filter = 'fileName=regex='+this.fileName
         this.queryArchiveProjectFiles(query)
-      }
+      },
+      sdrfTableCollapseChange(val){
+        this.sdrfTableCollapse = val
+      },
+      fileTableRowClick(row){
+        //console.log(row)
+        if(row.name.match('sdrf')){
+          this.sdrfTableCollapse = false
+          this.sdrfTableLoading = true
+          let query = {accession:row.accession}
+
+          this.$http
+              .get(this.sdrfTableApi,{params: query})
+              .then(function(res){
+                  this.sdrfTableLoading = false
+                  if(res.data){
+                    this.mapSdrfFileText(res.data)
+                  }
+                  else
+                     this.$Message.error({content:'Sdrf File Error', duration:3});
+              },function(err){
+                  this.sdrfTableLoading = false
+                  this.$Message.error({content:'Sdrf File Error', duration:3});
+              });  
+        }
+      },
+      mapSdrfFileText(data){
+        let arr = data.split('\n');
+        this.totalSdrf = 0
+        this.sdrfTableData = []
+        this.sdrfTableCol = []
+        this.sampleData = []
+        this.sampleCol = []
+        this.keyList = []
+        for(let i=0; i<arr.length; i++){
+            if(i == 0){ //for first row which is the col in the table
+              let header = arr[i].split('\t');
+              this.sampleCol.push({
+                  name: '#',
+                  key: 'index',
+                  // align: 'center',
+                  required: true,
+              })
+              for(let j=0; j<header.length; j++){
+                  //console.log(header[j])
+                  let item = {
+                      name:header[j],
+                      key:header[j].replace(/\s+/g,"") + Math.floor(100000 + Math.random() * 900000),
+                  }
+                  this.keyList.push(item)
+                  this.sampleCol.push(item)
+              }
+            }
+            else{ //for the table data
+              if(!arr[i]){
+                console.log('empty row')
+                // this.$Modal.warning({
+                //       title: 'WARNING',
+                //       content: '<p>The current file has some empty lines and the end, please remove it. Check specification</p>',
+                //       onOk: () => {
+                          
+                //       },
+                //   });
+                continue
+              }
+              let body = arr[i].split('\t');
+              let item = {}
+              for(let j=0; j<body.length; j++){
+                  item.index=parseInt(i)
+                  item[this.keyList[j].key]={
+                    value:body[j],
+                  }
+              }
+              this.sampleData.push(item)
+            }  
+        }
+        this.totalSdrf = this.sampleData.length
+        this.sdrfTableData = this.sampleData
+        this.sdrfTableCol = this.sampleCol
+      },
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1234,6 +1370,7 @@
   }
   .card p{
     text-align: justify;
+    font-size: 12px;
   }
   .card .summary-content-header:first-child{
     margin-top: 0px;
@@ -1415,6 +1552,129 @@
     display:flex;
     align-items: center;
   }
+  .sdrf-file-title-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sdrf-file-title-container .right a{
+    border-bottom-style:none;
+  }
+  .table-col:first-child{
+      /*border-left: 1px solid #e9eaec;*/
+  }
+  .table-col:first-child .table-row.first{
+      padding: 10px;
+  }
+  .table-col:first-child .table-row.first:hover i{
+    display: none
+  }
+  .table-col{
+      flex:1;
+      /*min-width: 200px;*/
+      width: auto;
+      max-width: 1000px;
+  }
+   .table-col:last-child{
+      min-width: 350px;
+  }
+  .table-row:first-child{
+      min-width: 50px;
+      border-top: 1px solid #e9eaec;
+      background-color: #f8f8f9;
+      align-items: center;
+      height:45px; 
+      display: flex;
+      white-space: nowrap;
+      overflow: hidden;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+  }
+  .table-row:first-child.msrun{
+      background-color: #2d8cf0ba;
+  }
+  .table-row{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid #e9eaec;
+      padding: 10px 20px 10px 5px;
+      /*padding: 10px 5px;*/
+      position: relative;
+      height:45px;
+      border-right: 1px solid #e9eaec;
+  }
+  .table-row.first{
+    /*cursor: all-scroll;*/
+    padding:10px 30px;
+  }
+  .table-row.first i{
+    display: none
+  }
+  .table-row.first:hover i{
+    display: inline-block
+  }
+  .table-row.first i:hover{
+    opacity: 0.6
+  }
+  .table-row .copy-icon{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    display: none;
+    cursor: pointer;
+  }
+  .table-row:hover .copy-icon{
+    display: block;
+  }
+  .table-row .copy-icon:hover{
+    opacity: 0.6
+  }
+  .index-col{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+  }
+  .table-row.index{
+    padding: 10px 5px;
+    border-left: 1px solid #e9eaec;
+  }
+  .table-row.index i{
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    left: 5px;
+  }
+  .table-row.index:hover i{
+    display: inline-block;
+  }
+  .table-row.index i:hover{
+    opacity: 0.6
+  }
+  .table-col p{
+    white-space: nowrap;
+  }
+  .table-spin{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f78f;
+  }
+  .no-data-table-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
   /*
   @media (min-width: 768px) {
       .content{
@@ -1510,6 +1770,9 @@
   }
   .download-button span{
     margin: 10px;
+  }
+  .project-files-accession{
+    display: none;
   }
 </style>
 
