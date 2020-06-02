@@ -238,7 +238,7 @@
                     </Card>
                     <Card class="card">
                         <p slot="title" class="sdrf-file-title-container">
-                          <span>SDRF Reader</span>
+                          <span>Experimental Design</span>
                           <span class="right">
                               <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
@@ -274,7 +274,9 @@
                              <Table stripe border ref="selection" :loading="sdrfTableLoading" :columns="sdrfTableCol" :data="sdrfTableData" ></Table>
                            </div>
                          </div> -->
-                        
+                        <div v-if="!sdrfTableCollapse" class="page-container">
+                           <Page :total="totalSdrf" :page-size="pageSizeSdrf" :current="pageSdrf" size="small" show-sizer show-total :page-size-opts="[100,200,300,400]" @on-change="sdrfPageChange" @on-page-size-change="sdrfPageSizeChange"></Page>
+                        </div>
                         <Spin class="table-spin" v-if="!sdrfTableCollapse && sdrfTableLoading"></Spin>  
                     </Card>
                     <!-- <Card class="card">
@@ -824,7 +826,7 @@
           sdrfTableLoading:false,
           pageSizeSdrf:200,
           pageSdrf:1,
-          totalSdrf:400
+          totalSdrf:0
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1304,9 +1306,25 @@
             }  
         }
         this.totalSdrf = this.sampleData.length
-        this.sdrfTableData = this.sampleData
+        this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
         this.sdrfTableCol = this.sampleCol
       },
+      sdrfPageChange(page){
+          this.sdrfTableLoading = true
+          this.pageSdrf = page;
+          this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
+          setTimeout(()=>{
+            this.sdrfTableLoading = false
+          },500)
+      },  
+      sdrfPageSizeChange(size){
+          this.sdrfTableLoading = true
+          this.pageSizeSdrf = size;
+          this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
+          setTimeout(()=>{
+            this.sdrfTableLoading = false
+          },500)
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
