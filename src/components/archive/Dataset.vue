@@ -238,7 +238,7 @@
                     </Card>
                     <Card class="card">
                         <p slot="title" class="sdrf-file-title-container">
-                          <span>Experimental Design</span>
+                          <span>Experimental Design (Samples)</span>
                           <span class="right">
                               <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
