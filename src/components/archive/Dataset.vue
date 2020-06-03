@@ -17,7 +17,7 @@
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
-                    <!-- <span style="display: flex;align-items: center;">Download Project: 
+                    <!-- <span style="display: flex;align-items: center;">Download Project:
                       <a :href="projectDownload" style="margin-left: 5px;border-bottom-style:none">
                         <Icon type="ios-cloud-download-outline" size='20'></Icon>
                       </a>
@@ -226,7 +226,7 @@
                               <!-- <Button class= "download-button" size="large" @click="projectFtp(projectDownload)">Project FTP</Button> -->
                           </span>
                         </p>
-                      
+
                          <div class="download-list-wrapper">
                            <div class="download-list">
                              <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange" @on-row-click="fileTableRowClick"></Table>
@@ -238,7 +238,7 @@
                     </Card>
                     <Card class="card">
                         <p slot="title" class="sdrf-file-title-container">
-                          <span>Experimental Design</span>
+                          <span>Experimental Design (Samples)</span>
                           <span class="right">
                               <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
@@ -249,13 +249,13 @@
                                 <span>No data</span>
                             </div>
                             <template v-else>
-                                <div style="display: flex"> 
+                                <div style="display: flex">
                                     <div class="table-col" v-for="(itemCol,i) in sdrfTableCol" :key="itemCol.key">
                                         <div class="table-row first">{{itemCol.name}}</div>
                                         <div class="table-row" :class="{'index':itemCol.key=='index'}" v-for="(itemRow,j) in sdrfTableData" :key="itemRow.index">
                                               <!-- <p>{{itemRow.index}}</p> -->
                                               <template v-if="itemCol.key!='index'">
-                                                    <p>{{itemRow[itemCol.key].value}}</p> 
+                                                    <p>{{itemRow[itemCol.key].value}}</p>
                                               </template>
                                               <template v-else>
                                                   <div class="index-col">
@@ -263,21 +263,17 @@
                                                         {{itemRow.index}}
                                                       </div>
                                                   </div>
-                                              </template>                
+                                              </template>
                                         </div>
                                     </div>
                                 </div>
                             </template>
                         </div>
-                         <!-- <div v-if="!sdrfTableCollapse" class="sdrf-list-wrapper">
-                           <div class="sdrf-list">
-                             <Table stripe border ref="selection" :loading="sdrfTableLoading" :columns="sdrfTableCol" :data="sdrfTableData" ></Table>
-                           </div>
-                         </div> -->
+                        
                         <div v-if="!sdrfTableCollapse" class="page-container">
                            <Page :total="totalSdrf" :page-size="pageSizeSdrf" :current="pageSdrf" size="small" show-sizer show-total :page-size-opts="[100,200,300,400]" @on-change="sdrfPageChange" @on-page-size-change="sdrfPageSizeChange"></Page>
                         </div>
-                        <Spin class="table-spin" v-if="!sdrfTableCollapse && sdrfTableLoading"></Spin>  
+                        <Spin class="table-spin" v-if="!sdrfTableCollapse && sdrfTableLoading"></Spin>
                     </Card>
                     <!-- <Card class="card">
                        <p slot="title"> <i class="fas fa-download icon-tag"></i>MSRun Files</p>
@@ -596,7 +592,7 @@
                                       console.log(params.row.url[0].key);
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.url[0].key)
-                                     
+
                                       //this.gotoBlast(params);
                                   }
                               }
@@ -779,7 +775,7 @@
               },
           ],
           assayResults:[],
-          totalDownLoad:0, 
+          totalDownLoad:0,
           pageDownLoad:1,
           pageSizeDownLoad:20,
           totalDownLoad:0,
@@ -960,7 +956,7 @@
                               let urlItem = {
                                 label:'Aspera',
                                 key:filesArray[i].publicFileLocations[j].value
-                              } 
+                              }
                               item.url.push(urlItem)
                           }
                       }
@@ -1098,15 +1094,15 @@
           this.$http
               .get(this.proteinEvidencesApi,{params: query})
               .then(function(res){
-               
+
                 if(res.body && res.body._embedded){
-                 
+
                   let proteinEvidences = res.body._embedded.proteinevidences;
                   if(proteinEvidences.length>0)
                     this.moleculesButtonState = false
                   else
                     this.moleculesButtonState = true
-                  
+
                 }
               },function(err){
                   this.$Message.error({content:'Protein Check Error', duration:3});
@@ -1252,7 +1248,7 @@
               },function(err){
                   this.sdrfTableLoading = false
                   this.$Message.error({content:'Sdrf File Error', duration:3});
-              });  
+              });
         }
       },
       mapSdrfFileText(data){
@@ -1289,7 +1285,7 @@
                 //       title: 'WARNING',
                 //       content: '<p>The current file has some empty lines and the end, please remove it. Check specification</p>',
                 //       onOk: () => {
-                          
+
                 //       },
                 //   });
                 continue
@@ -1303,7 +1299,7 @@
                   }
               }
               this.sampleData.push(item)
-            }  
+            }
         }
         this.totalSdrf = this.sampleData.length
         this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
@@ -1479,7 +1475,7 @@
   }
   .title-wrapper{
     display: flex;
-    margin: 20px 0; 
+    margin: 20px 0;
     align-items: center;
     justify-content: space-between;
   }
@@ -1601,7 +1597,7 @@
       border-top: 1px solid #e9eaec;
       background-color: #f8f8f9;
       align-items: center;
-      height:45px; 
+      height:45px;
       display: flex;
       white-space: nowrap;
       overflow: hidden;
