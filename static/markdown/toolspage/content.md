@@ -2,7 +2,7 @@
 
 ## Submission Tool
 
-The [PRIDE Submission Tool](./pridesubmissiontool) is the main tool used to submit the proteomics datasets to [PRIDE Archive](wwww.ebi.ac.uk/pride/archive/). This tool has been implemented as a wizard, guiding the submitter trough a set of simple steps to complete each individual data submission.
+The [PRIDE Submission Tool](./pridesubmissiontool) is the main tool used to submit the proteomics datasets to [PRIDE Archive](www.ebi.ac.uk/pride/archive/). This tool has been implemented as a wizard, guiding the submitter trough a set of simple steps to complete each individual data submission.
 
 
 ## PRIDE Inspector Toolsuite
