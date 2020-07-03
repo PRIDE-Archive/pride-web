@@ -80,8 +80,8 @@
                         .post(this.tokenApi,
                             {Credentials:
                               {
-                                username:this.formInline.user,
-                                password:this.formInline.password
+                                username:this.formInline.user.trim(),
+                                password:this.formInline.password.trim()
                               }
                             })
                         .then(function(res){
