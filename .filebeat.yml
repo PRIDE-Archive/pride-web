@@ -1,0 +1,23 @@
+filebeat.modules:
+  - module: nginx
+    access:
+      enabled: true
+      var.paths: ["/logs/access.log*"]
+    error:
+      enabled: true
+      var.paths: ["/logs/error.log*"]
+
+setup:
+  ilm.enabled: false #this is needed for docker image from 7.x versions
+  template:
+    name: pride-web
+    pattern: pride-web
+    settings.index.number_of_shards: 3
+
+output.logstash:
+  hosts: $logstash_hosts
+  index: pride-web
+
+processors:
+  - add_host_metadata: ~
+  - add_cloud_metadata: ~

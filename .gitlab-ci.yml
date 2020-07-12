@@ -1,7 +1,7 @@
 variables:
   IMAGE: $CI_REGISTRY_IMAGE/$CI_COMMIT_REF_SLUG:$CI_COMMIT_SHA
   DOCKER_PULL_SECRET: pride-gitlab-docker-secret
-
+  FILEBEAT_CONFIG_MAP: filebeat-config
 #include:
 #  - template: Container-Scanning.gitlab-ci.yml
 #  - template: Dependency-Scanning.gitlab-ci.yml
@@ -54,6 +54,11 @@ kube_deploy_prod_hx:
     - kubectl create namespace $NAMESPACE || true
     - kubectl -n $NAMESPACE delete secret $DOCKER_PULL_SECRET || true
     - kubectl -n $NAMESPACE create secret docker-registry $DOCKER_PULL_SECRET --docker-server=$CI_REGISTRY --docker-username=$CI_DEPLOY_USER --docker-password=$CI_DEPLOY_PASSWORD
+    - envsubst < .filebeat.yml > filebeat.yml
+    # create configmap for first time
+    - kubectl -n $NAMESPACE create configmap $FILEBEAT_CONFIG_MAP --from-file=filebeat.yml || true
+    # replace configmap if it already exists
+    - kubectl -n $NAMESPACE create configmap $FILEBEAT_CONFIG_MAP --from-file=filebeat.yml -o yaml --dry-run | kubectl replace -f -
     - envsubst < .kubernetes.yml > kubernetes.yml
     - kubectl -n $NAMESPACE apply -f kubernetes.yml
   when: manual
