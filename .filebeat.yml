@@ -7,6 +7,8 @@ filebeat.modules:
       enabled: true
       var.paths: ["/logs/error.log*"]
 
+setup.dashboards.enabled: true
+
 #setup:
 #  ilm.enabled: false #this is needed for docker image from 7.x versions
 #  template:
