@@ -218,7 +218,7 @@
                         <p slot="title" class="project-file-title-container">
                           <span>Project Files</span>
                           <span class="sort-wrapper">
-                              <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px" @on-enter="searchFile">
+                              <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchFile">
                                   <Button slot="append" icon="ios-search" @click="searchFile"></Button>
                               </Input>
                               <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
