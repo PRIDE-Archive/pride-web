@@ -10,8 +10,8 @@ export default new Vuex.Store({
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',
 		// baseApiURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/ws/archive/v2':'//wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		// basePrivateURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2':'https://www.ebi.ac.uk/pride/private/ws/archive/v2',
-		baseApiURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/ws/archive/v2':'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2', 
-		basePrivateURL: process.env.NODE_ENV.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2':'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2', 
+		baseApiURL: process.env.npm_config_api.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/ws/archive/v2':'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
+		basePrivateURL: process.env.npm_config_api.match(/production|prod-api/) ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2':'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		username: '',
 		token:''
 
