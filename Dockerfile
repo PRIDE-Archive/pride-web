@@ -10,7 +10,7 @@ COPY package*.json nginx.conf ./
 
 RUN npm install
 COPY . ./
-RUN npm run build --api="production"
+RUN npm run build
 
 FROM nginx:1.17.6
 COPY --from=build-stage /app/dist/pride/ /usr/share/pride/

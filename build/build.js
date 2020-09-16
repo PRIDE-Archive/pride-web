@@ -3,6 +3,14 @@ require('./check-versions')()
 
 process.env.NODE_ENV = 'production'
 
+if ((process.env.npm_config_api == undefined) || process.env.npm_config_api.match(/prod/)) {
+  process.env.API_USE = 'production'
+} else {
+  process.env.API_USE = 'dev'
+}
+
+console.info("API : " + process.env.API_USE)
+
 const ora = require('ora')
 const rm = require('rimraf')
 const path = require('path')

@@ -75,7 +75,7 @@ kube_deploy_prod_hx:
     - ssh-keyscan $DEPLOY_SERVER >> ~/.ssh/known_hosts
     - chmod 600 ~/.ssh/known_hosts
     - npm install
-    - npm run build --api="production"
+    - npm run build --api="dev"
     - DEPLOY_DIR=$(date +"%Y%m%d_%H%M%S")
     - ssh $SERVER_USER@$DEPLOY_SERVER "bash && mkdir -p $DEPLOY_PATH/$DEPLOY_DIR"
     - rsync -a dist/pride/* $SERVER_USER@$DEPLOY_SERVER:$DEPLOY_PATH/$DEPLOY_DIR/
