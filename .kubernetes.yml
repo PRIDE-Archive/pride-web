@@ -6,6 +6,7 @@ metadata:
     app: pride-web
 spec:
   replicas: $k8s_replicas
+  revisionHistoryLimit: 1
   selector:
     matchLabels:
       app: pride-web
