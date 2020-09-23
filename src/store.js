@@ -15,6 +15,16 @@ else if(location.href.match(/www\.ebi\.ac\.uk\/pride/))
 else
 	mode = 'prodev'
 
+console.log('mode',mode)
+console.log('location.href',location.href)
+if(mode == 'dev'){
+	console.log('mode is dev')
+}
+if(mode == 'prod'){
+	console.log('mode is prod')
+}
+
+
 export default new Vuex.Store({
 	state:{
 		baseURL: mode == 'production'?'/pride':'',
