@@ -27,7 +27,7 @@ if(mode == 'prod'){
 
 export default new Vuex.Store({
 	state:{
-		baseURL: mode == 'production'?'/pride':'',
+		baseURL: (mode == 'prod' || mode == 'prodev') ?'/pride':'',
 		//baseApiURL: location.hostname.match(/localhost/)?'//ves-pg-41:9020':'//wwwdev.ebi.ac.uk/pride/ws/archive',
 		baseApiURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		basePrivateURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://www.ebi.ac.uk/pride/private/ws/archive/v2',
