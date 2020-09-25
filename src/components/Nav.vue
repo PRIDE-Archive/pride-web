@@ -379,6 +379,7 @@
     }
     .banner{
       color:#454548 !important;
+      font-size: 16px; 
     }
     .banner a{
       color:#454548 !important;
