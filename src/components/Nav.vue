@@ -314,7 +314,7 @@
         border: 0 !important;
     }
     .ebi-masthead{
-        background-image: url('/pride/image/hero-beta-banner.png');
+        background-image: url('/pride/image/hero-beta-banner.png'); /*in the local environment, we can not see the background unless we change it to '/image/hero-beta-banner.png' */
     }
     .ebi-masthead nav ul.menu li{
         border-right: 1px solid rgb(248,248,248,0.7);
