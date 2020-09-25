@@ -37,6 +37,7 @@
         data () {
             return {
                 spectrumLibraryApi: "https://www.ebi.ac.uk:443/pride/ws/cluster/spectrumLibrary/latest",
+                spectrumLibraryJsonURL: this.$store.state.baseURL + '/spectrumLibrary/index.json',
                 spinShow:true,
                 value1: '',
                 releaseDate:'',
@@ -56,7 +57,8 @@
             },
             querySpectrumLibrary(){
                 this.$http
-                  .get(this.spectrumLibraryApi)
+                  // .get(this.spectrumLibraryApi)
+                  .get(this.spectrumLibraryJsonURL)
                   .then(function(res){
                     this.spinShow = false;
                     this.releaseDate = res.body.releaseDate;
