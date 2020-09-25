@@ -78,12 +78,14 @@ export default new Router({
     {
       path: '/peptidome',
       name: 'peptidome',
-      component: Peptidome
+      // component: Peptidome
+      component: NotFound,
     },
     {
       path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
-      component: PeptideSearch
+      // component: PeptideSearch
+      component: NotFound,
     },
     {
       path: '/archive/spectra',
@@ -93,7 +95,8 @@ export default new Router({
     {
       path: '/peptidome/peptidedownload',
       name: 'peptidedownload',
-      component: PeptideDownload
+      // component: PeptideDownload
+      component: NotFound,
     },
     {
       path: '/spectrumlibrary',
@@ -103,7 +106,8 @@ export default new Router({
     {
       path:'/peptidome/peptidedetails/:id',
       name: 'peptidedetails',
-      component: PeptideDetails
+      // component: PeptideDetails
+      component: NotFound,
     },
     {
       path:'/psm/:id',
