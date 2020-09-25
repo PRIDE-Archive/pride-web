@@ -84,18 +84,18 @@
   .not-found-num{
     font-size: 220px;
     color:#979797;
-    font-family: Georgia, "Times New Roman", Times, serif;
+    font-family: 'Open Sans', sans-serif;
     line-height: 250px;
     margin-bottom: 80px;
   }
   .not-found-content{
       font-size: 50px;
     color:#979797;
-    font-family: Georgia, "Times New Roman", Times, serif;
+    font-family: 'Open Sans', sans-serif;
   }
   .not-found-reason{
     font-size: 16px;
-    font-family: Georgia, "Times New Roman", Times, serif;
+    font-family: 'Open Sans', sans-serif;
     color:#979797;
     font-weight: bold;
     text-transform: uppercase;
