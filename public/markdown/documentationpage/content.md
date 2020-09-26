@@ -12,8 +12,6 @@
 
 - [PRIDE Results Inspector](./resultpage)
 
-- [PRIDE Annotation tool](./annotatepridedata)
-
 ## Tools Help Pages
 
 - [PRIDE Inspector Toolsuite](./prideinspector)
