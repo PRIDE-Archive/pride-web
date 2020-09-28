@@ -108,100 +108,6 @@
                               <p>{{publicationDate}}</p>
                           </div>
                     </Card>
-                    <!--
-                    <Card class="card">
-                       <p slot="title">Properties</p>
-                       <div class="property">
-                          <div class="property-col">
-                            <div class="property-row">
-                                <div class="summary-content-header">Species</div>
-                                <div class="property-wrapper">
-                                  <div v-if="species.length>0">
-                                      <a v-for="item in species">{{item.name}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>Unknown</p>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Tissue</div>
-                                <div class="property-wrapper">
-                                  <div v-if="tissues.length>0">
-                                      <a v-for="item in tissues">{{item.name}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>Unknown</p>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Instrument</div>
-                                <div class="property-wrapper">
-                                  <a v-for="item in instrumentNames">{{item.name}}</a>
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Softwares</div>
-                                <div class="property-wrapper">
-                                  <div v-if="softwares.length>0">
-                                      <a v-for="item in softwares">{{item}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>Unknown</p>
-                                  </div>
-
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Diseases</div>
-                                <div class="property-wrapper">
-                                  <div v-if="diseases.length>0">
-                                      <a v-for="item in diseases">{{item.name}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>Unknown</p>
-                                  </div>
-                                </div>
-                            </div>
-                          </div>
-                          <div class="property-col">
-                            <div class="property-row">
-                                <div class="summary-content-header">Modification</div>
-                                <div class="property-wrapper">
-                                  <div v-if="modification.length>0">
-                                      <a v-for="item in modification">{{item.name}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>No PTMs are included in the dataset</p>
-                                  </div>
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Quantification</div>
-                                <div class="property-wrapper">
-                                  <div v-if="quantificationMethods.length>0">
-                                      <a v-for="item in quantificationMethods">{{item.name}}</a>
-                                  </div>
-                                  <div v-else>
-                                      <p>Unknown</p>
-                                  </div>
-                                </div>
-
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Experiment Type</div>
-                                <div class="property-wrapper">
-                                  <a v-for="item in experimentTypes">{{item}}</a>
-                                </div>
-                            </div>
-                            <div class="property-row">
-                                <div class="summary-content-header">Assay count</div>
-                                <p>{{total}}</p>
-                            </div>
-                          </div>
-                       </div>
-                        -->
                     </Card>
                     <Card class="card">
                         <p slot="title">Publication</p>
@@ -215,88 +121,65 @@
                         </div>
                     </Card>
                     <Card class="card">
-                       <p slot="title" class="project-file-title-container">
-                        <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
-                        <span class="sort-wrapper">
-                            <a class="ftp-button"  @click="projectFtp(projectDownload)">Project FTP</a>
-                            <!-- <span style="margin-left: 10px">Sort by: </span>
-                            <div class="sortOption">
-                                <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
-                                    <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                                </Select>
-                            </div> -->
-                        </span>
-                      </p>
-                      
-                       <div class="download-list-wrapper">
-                         <!--<div class="summary-content-header">List</div>-->
-                         <div class="download-list">
-                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange"></Table>
-                           <!-- <Button v-if="selectAllfiles" class= "download-button">Download</Button> -->
+                        <p slot="title" class="project-file-title-container">
+                          <span>Project Files</span>
+                          <span class="sort-wrapper">
+                              <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchFile">
+                                  <Button slot="append" icon="ios-search" @click="searchFile"></Button>
+                              </Input>
+                              <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
+                          </span>
+                        </p>
+
+                         <div class="download-list-wrapper">
+                           <div class="download-list">
+                             <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange" @on-row-click="fileTableRowClick"></Table>
+                           </div>
                          </div>
-                       </div>
-                       <div class="page-container">
-                         <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
-                       </div>
-                    </Card>
-                    <!-- <Card class="card">
-                       <p slot="title"> <i class="fas fa-download icon-tag"></i>MSRun Files</p>
-                       <div class="download-list-wrapper">
-                         <div class="summary-content-header">List</div>
-                         <div class="download-list">
-                           <Table border ref="selection" height="350" :loading="fileListLoading" :columns="msRunModalTableCol" :data="msRunModalTableData"></Table>
+                         <div class="page-container">
+                           <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
                          </div>
-                       </div>
-                    </Card> -->
-                    <!--
-                    <Card v-if="total>0" class="card">
-                        <p slot="title">Assay</p>
-                        <div class="assay-search-container">
-                        <Table class="assay-detail-table" :loading="assayLoading" border :columns="assayCol" :data="assayResults" size="small"></Table>
-                        </div>
-                        <div class="page-container">
-                          <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageAssayChange" @on-page-size-change="pageSizeAssayChange"></Page>
-                        </div>
                     </Card>
-                    -->
+                    <Card class="card">
+                        <p slot="title" class="sdrf-file-title-container">
+                          <span>Experimental Design (Samples)</span>
+                          <span class="right">
+                              <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
+                          </span>
+                        </p>
+                        <div v-if="!sdrfTableCollapse" style="display:flex; overflow: auto; height:350px; border: 1px solid #5bc0be;">
+                            <div v-if="sdrfTableData.length == 0" class="no-data-table-wrapper">
+                                <span>No data</span>
+                            </div>
+                            <template v-else>
+                                <div style="display: flex">
+                                    <div class="table-col" v-for="(itemCol,i) in sdrfTableCol" :key="itemCol.key">
+                                        <div class="table-row first">{{itemCol.name}}</div>
+                                        <div class="table-row" :class="{'index':itemCol.key=='index'}" v-for="(itemRow,j) in sdrfTableData" :key="itemRow.index">
+                                              <!-- <p>{{itemRow.index}}</p> -->
+                                              <template v-if="itemCol.key!='index'">
+                                                    <p>{{itemRow[itemCol.key].value}}</p>
+                                              </template>
+                                              <template v-else>
+                                                  <div class="index-col">
+                                                      <div>
+                                                        {{itemRow.index}}
+                                                      </div>
+                                                  </div>
+                                              </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <div v-if="!sdrfTableCollapse" class="page-container">
+                           <Page :total="totalSdrf" :page-size="pageSizeSdrf" :current="pageSdrf" size="small" show-sizer show-total :page-size-opts="[100,200,300,400]" @on-change="sdrfPageChange" @on-page-size-change="sdrfPageSizeChange"></Page>
+                        </div>
+                        <Spin class="table-spin" v-if="!sdrfTableCollapse && sdrfTableLoading"></Spin>
+                    </Card>
                   </div>
-                 <!--
-                  <Tabs :animated="false">
-                    <TabPane label="Summary">
-                      <div class="tab-container">
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                          <h2>Title</h2>
-                          <p>Analysis of isotope incorporation in differentiated and undifferentiated podocytes</p>
-                      </div>
-                    </TabPane>
-                    <TabPane label="Publication">
-                      <div class="tab-container">
-                        <p>Schroeter CB, Koehler S, Kann M, Schermer B, Benzing T, Brinkkoetter PT, Rinschen MM. Protein half-life determines expression of proteostatic networks in podocyte differentiation. FASEB J. 2018:fj201701307R PubMed: 29694247</p>
-                      </div>
-                    </TabPane>
-                  </Tabs>
-                -->
               </Col>
               <Col span="8">
                   <Card class="card">
@@ -529,29 +412,6 @@
                                   }
                               }
                           }, params.row.type),
-
-                          /*
-                          h('Button', {
-                              props: {
-                                  type: 'primary',
-                                  size: 'small'
-                              },
-                              style: {
-                                  display:'inline-block',
-                                  marginRight: '5px',
-                                  paddingLeft: '22px',
-                                  paddingRight: '22px'
-                              },
-                              on: {
-                                  click: () => {
-                                      //window.location.href = params.row.url.ftp;
-                                      window.open(params.row.url.ftp)
-                                      console.log(params.row.url.ftp);
-                                      //this.gotoBlast(params);
-                                  }
-                              }
-                          }, 'FTP'),*/
-
                       ]);
                   }
               },
@@ -623,51 +483,13 @@
                           }, 'FTP'),
                       ]);
                   },
-                  // render: (h, params) => {
-                  //     return  h('Dropdown', {
-                  //               props: {
-                  //                 placement: 'right-start'
-                  //               },
-                  //               style: {
-                  //                 textAlign: 'left'
-                  //               },
-                  //               on: {
-                  //                 'on-click': (value) => {
-                  //                     //console.log(value);
-                  //                     if(value.indexOf('ftp')!=-1)
-                  //                       window.open(value)
-                  //                     else if(value.indexOf('asp')!=-1)
-                  //                       this.downloadFiles(value);
-                  //                       //this.$Message.success({content:'Coming Soon', duration:1});
-                  //                 }
-                  //               }
-                  //           }, [
-                  //             h('div', {
-                  //               class: {
-                  //                 member_operate_div: true
-                  //               }
-                  //             }, [
-                  //                 h('Icon', {
-                  //                     props: {
-                  //                       type: 'ios-cloud-download-outline',
-                  //                       size: 20
-                  //                     },
-                  //                     style: {
-                  //                       //marginLeft: '5px' 
-                  //                     }
-                  //                   })
-                  //                 ]),
-                  //                 h('DropdownMenu', {
-                  //                   slot: 'list'
-                  //                 }, 
-                  //                 params.row.url.map((obj)=>{
-                  //                     return h('DropdownItem', {
-                  //                         props: {name: obj.key}  
-                  //                     }, obj.label);  
-                  //                 }))
-                  //     ]);
-                  // }
-              }
+              },
+              {
+                  title: '',
+                  key: 'accession',
+                  width:1,
+                  className:'project-files-accession'
+              },
           ],
           fileList: [],
           cityList: [
@@ -874,21 +696,23 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
-          projectDownload:''
+          projectDownload:'',
+          fileName:'',
+          sdrfTableCollapse:true,
+          sdrfTableLoading:false,
+          sdrfTableData:[],
+          sdrfTableCol:[],
+          sdrfTableApi:this.$store.state.baseApiURL + '/files/sdrfByAccession',
+          sdrfTableLoading:false,
+          pageSizeSdrf:200,
+          pageSdrf:1,
+          totalSdrf:0
       }
     },
     beforeRouteUpdate:function (to, from, next) {
       this.queryProjectDetails(to.params.id);
-      //this.queryAssay(to.params.id);
       this.queryArchiveProjectFiles(to.params.id);
       this.querySimilarity(to.params.id);
-      //console.log('to query',to.query);
-      /*
-      let filter = to.query.split('?')[1].split('filter');
-      if(filter.length>1)
-        filter.split("=");
-      console.log('filter',filter);*/
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
       next();
     },
     components: {
@@ -900,7 +724,6 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-                console.log(res.body)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -945,13 +768,14 @@
                   this.publications.push(item);
                 }
                 this.getMSRunTableData()
+                this.getProteinEvidences()
             },function(err){
                 if(err.bodyText.match('not in the database')){
                     this.$Modal.warning({
                         title: 'Not Public Project',
                         content: '<p>The requested project is not public</p>',
                         onOk: () => {
-                            this.$Message.info('Clicked ok');
+                            this.$router.push({name:'archive'});
                         },
                     });
                 }
@@ -989,14 +813,16 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
-                //console.log(res.body);
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
+                this.fileList=[];
                 if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
+                  //console.log('filesArray',filesArray)
                   let tempArray = [];
                   for(let i=0;i<filesArray.length;i++){
                       let item ={
+                            accession: filesArray[i].accession,
                             name: filesArray[i].fileName,
                             type: filesArray[i].fileCategory.value,
                             size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
@@ -1014,7 +840,7 @@
                               let urlItem = {
                                 label:'Aspera',
                                 key:filesArray[i].publicFileLocations[j].value
-                              } 
+                              }
                               item.url.push(urlItem)
                           }
                       }
@@ -1232,6 +1058,8 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          if(this.fileName)
+            query.filter = 'fileName=regex='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       downloadPageSizeChange(size){
@@ -1242,6 +1070,8 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          if(this.fileName)
+            query.filter = 'fileName=regex='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
       projectFtp(ftp){
@@ -1265,19 +1095,121 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        if(this.fileName)
+            query.filter = 'fileName=regex='+this.fileName
         this.queryArchiveProjectFiles(query)
       },
+      searchFile(){
+        let query = {
+            sortConditions: this.projectFileSortCondition,
+            sortDirection: this.projectFileSortDirection,
+            page:this.pageDownLoad-1,
+            pageSize :this.pageSizeDownLoad,
+        }
+        if(this.fileName)
+            query.filter = 'fileName=regex='+this.fileName
+        this.queryArchiveProjectFiles(query)
+      },
+      sdrfTableCollapseChange(val){
+        this.sdrfTableCollapse = val
+      },
+      fileTableRowClick(row){
+        //console.log(row)
+        if(row.name.match('sdrf')){
+          this.sdrfTableCollapse = false
+          this.sdrfTableLoading = true
+          let query = {accession:row.accession}
+
+          this.$http
+              .get(this.sdrfTableApi,{params: query})
+              .then(function(res){
+                  this.sdrfTableLoading = false
+                  if(res.data){
+                    this.mapSdrfFileText(res.data)
+                  }
+                  else
+                     this.$Message.error({content:'Sdrf File Error', duration:3});
+              },function(err){
+                  this.sdrfTableLoading = false
+                  this.$Message.error({content:'Sdrf File Error', duration:3});
+              });
+        }
+      },
+      mapSdrfFileText(data){
+        let arr = data.split('\n');
+        this.totalSdrf = 0
+        this.sdrfTableData = []
+        this.sdrfTableCol = []
+        this.sampleData = []
+        this.sampleCol = []
+        this.keyList = []
+        for(let i=0; i<arr.length; i++){
+            if(i == 0){ //for first row which is the col in the table
+              let header = arr[i].split('\t');
+              this.sampleCol.push({
+                  name: '#',
+                  key: 'index',
+                  // align: 'center',
+                  required: true,
+              })
+              for(let j=0; j<header.length; j++){
+                  //console.log(header[j])
+                  let item = {
+                      name:header[j],
+                      key:header[j].replace(/\s+/g,"") + Math.floor(100000 + Math.random() * 900000),
+                  }
+                  this.keyList.push(item)
+                  this.sampleCol.push(item)
+              }
+            }
+            else{ //for the table data
+              if(!arr[i]){
+                console.log('empty row')
+                // this.$Modal.warning({
+                //       title: 'WARNING',
+                //       content: '<p>The current file has some empty lines and the end, please remove it. Check specification</p>',
+                //       onOk: () => {
+
+                //       },
+                //   });
+                continue
+              }
+              let body = arr[i].split('\t');
+              let item = {}
+              for(let j=0; j<body.length; j++){
+                  item.index=parseInt(i)
+                  item[this.keyList[j].key]={
+                    value:body[j],
+                  }
+              }
+              this.sampleData.push(item)
+            }
+        }
+        this.totalSdrf = this.sampleData.length
+        this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
+        this.sdrfTableCol = this.sampleCol
+      },
+      sdrfPageChange(page){
+          this.sdrfTableLoading = true
+          this.pageSdrf = page;
+          this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
+          setTimeout(()=>{
+            this.sdrfTableLoading = false
+          },500)
+      },  
+      sdrfPageSizeChange(size){
+          this.sdrfTableLoading = true
+          this.pageSizeSdrf = size;
+          this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
+          setTimeout(()=>{
+            this.sdrfTableLoading = false
+          },500)
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
-        //this.queryAssay();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
-        this.getProteinEvidences();
-
-        //this.initAsperaConnect();
-        //console.log(navigator.plugins)
-        //console.log('initAspera',initAspera)
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1336,6 +1268,7 @@
   }
   .card p{
     text-align: justify;
+    font-size: 12px;
   }
   .card .summary-content-header:first-child{
     margin-top: 0px;
@@ -1382,6 +1315,13 @@
   .similarity-title{
     margin-bottom: 3px;
   }
+  .download-icon{
+    color: #5bc0be;
+    cursor: pointer;
+  }
+  .download-icon:hover{
+    opacity: .8;
+  }
   .download-button{
     padding: 0;
     font-size: 12px;
@@ -1390,8 +1330,7 @@
     border-radius: 3px;
     color: #f8f8f8;
     display: inline-block;
-    margin-right: 20px;
-    padding: 5px 0px;
+    padding: 2px 0px;
   }
   .download-button:hover{
     opacity: .8;
@@ -1420,7 +1359,7 @@
   }
   .title-wrapper{
     display: flex;
-    margin: 20px 0; 
+    margin: 20px 0;
     align-items: center;
     justify-content: space-between;
   }
@@ -1511,16 +1450,128 @@
     display:flex;
     align-items: center;
   }
-  .ftp-button{
-    color: white !important;
-    padding: 4px 10px;
-    font-size: 12px;
+  .sdrf-file-title-container{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sdrf-file-title-container .right a{
+    border-bottom-style:none;
+  }
+  .table-col:first-child{
+      /*border-left: 1px solid #e9eaec;*/
+  }
+  .table-col:first-child .table-row.first{
+      padding: 10px;
+  }
+  .table-col:first-child .table-row.first:hover i{
+    display: none
+  }
+  .table-col{
+      flex:1;
+      /*min-width: 200px;*/
+      width: auto;
+      max-width: 1000px;
+  }
+   .table-col:last-child{
+      min-width: 350px;
+  }
+  .table-row:first-child{
+      min-width: 50px;
+      border-top: 1px solid #e9eaec;
+      background-color: #f8f8f9;
+      align-items: center;
+      height:45px;
+      display: flex;
+      white-space: nowrap;
+      overflow: hidden;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 12px;
+  }
+  .table-row:first-child.msrun{
+      background-color: #2d8cf0ba;
+  }
+  .table-row{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-bottom: 1px solid #e9eaec;
+      padding: 10px 20px 10px 5px;
+      /*padding: 10px 5px;*/
+      position: relative;
+      height:45px;
+      border-right: 1px solid #e9eaec;
+  }
+  .table-row.first{
+    /*cursor: all-scroll;*/
+    padding:10px 30px;
+  }
+  .table-row.first i{
+    display: none
+  }
+  .table-row.first:hover i{
+    display: inline-block
+  }
+  .table-row.first i:hover{
+    opacity: 0.6
+  }
+  .table-row .copy-icon{
+    position: absolute;
+    right: 5px;
+    top: 12px;
+    display: none;
+    cursor: pointer;
+  }
+  .table-row:hover .copy-icon{
+    display: block;
+  }
+  .table-row .copy-icon:hover{
+    opacity: 0.6
+  }
+  .index-col{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 15px;
+  }
+  .table-row.index{
+    padding: 10px 5px;
+    border-left: 1px solid #e9eaec;
+  }
+  .table-row.index i{
+    cursor: pointer;
+    display: none;
+    position: absolute;
+    left: 5px;
+  }
+  .table-row.index:hover i{
+    display: inline-block;
+  }
+  .table-row.index i:hover{
+    opacity: 0.6
+  }
+  .table-col p{
+    white-space: nowrap;
+  }
+  .table-spin{
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
     width: 100%;
-    border-radius: 3px !important;
-    font-weight: 700;
-    background-color: #5bc0be;
-    border-radius: 3px;
-    border-bottom-style:none !important;
+    display: flex;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+    background-color: #f7f7f78f;
+  }
+  .no-data-table-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
   }
   /*
   @media (min-width: 768px) {
@@ -1616,7 +1667,10 @@
 
   }
   .download-button span{
-    margin: 10px;
+    margin: 0 10px;
+  }
+  .project-files-accession{
+    display: none;
   }
 </style>
 
