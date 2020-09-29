@@ -144,8 +144,8 @@
                         <p slot="title" class="sdrf-file-title-container">
                           <span>Experimental Design (Samples)</span>
                           <span class="right">
-                              <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="sdrfTableCollapseChange(false)"></Icon></a>
-                              <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
+                              <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="24" @click="sdrfTableCollapseChange(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="24" @click="sdrfTableCollapseChange(true)"></Icon></a>
                           </span>
                         </p>
                         <div v-if="!sdrfTableCollapse" style="display:flex; overflow: auto; height:350px; border: 1px solid #5bc0be;">
