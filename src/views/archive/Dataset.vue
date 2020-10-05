@@ -859,6 +859,15 @@
                   }
 
                   this.fileList=tempArray;
+                  for(let i in this.fileList){
+                    if(this.fileList[i].name.match('sdrf')){
+                      this.fileTableRowClick({
+                        name: this.fileList[i].name,
+                        accession: this.fileList[i].accession,
+                      })
+                      break
+                    }
+                  }
                 }
                 else{
                     this.$Message.error({content:'No results', duration:1});
