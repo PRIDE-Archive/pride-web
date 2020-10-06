@@ -213,14 +213,14 @@
                     <Card class="card">
                        <p slot="title" class="project-file-title-container">
                         <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
-                        <span class="sort-wrapper">
+                        <!-- <span class="sort-wrapper">
                             <span style="margin-left: 10px">Sort by: </span>
                             <div class="sortOption">
                                 <Select v-model="pageDownLoadSort" size="small" style="width:95px" @on-change="sortChange">
                                     <Option v-for="item in sortList" :value="item.value" :key="item.value">{{ item.label }}</Option>
                                 </Select>
                             </div>
-                        </span>
+                        </span> -->
                       </p>
                       
                        <div class="download-list-wrapper">
