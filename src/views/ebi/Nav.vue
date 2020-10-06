@@ -634,14 +634,16 @@
               //this.$store.commit('setUser',{username: '', token:''});
               localStorage.setItem('username','');
               localStorage.setItem('token','');
+              localStorage.setItem('type','');
               this.$router.replace({name:'archive'});
-              this.$store.commit('setUser',{username: '', token:''});
+              this.$store.commit('setUser',{username: '', token:'', type:''});
             },
             init(){
                 let username = localStorage.getItem('username');
                 let token = localStorage.getItem('token');
+                let type = localStorage.getItem('type');
                 if(username && token)
-                  this.$store.commit('setUser',{username: username, token:token});
+                  this.$store.commit('setUser',{username: username, token:token}); //only username and token, no type condition
 
                 this.pageObj = initPage(this.page)
                 this.pageObj.logoURL =  this.$store.state.baseURL +  this.pageObj.logoURL
