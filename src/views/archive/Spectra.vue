@@ -528,7 +528,7 @@
                                   }, [
                                       h('Icon', {
                                           props: {
-                                            type: 'ios-list-outline',
+                                            type: 'ios-list-box-outline',
                                             size: 20
                                           },
                                           style: {
