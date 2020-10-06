@@ -32,7 +32,8 @@ export default new Vuex.Store({
 		baseApiURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		basePrivateURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://www.ebi.ac.uk/pride/private/ws/archive/v2',
 		username: '',
-		token:''
+		token:'',
+		type:''
 
 	},
 	mutations:{
