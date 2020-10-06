@@ -767,7 +767,7 @@
                   }
                   this.publications.push(item);
                 }
-                this.getMSRunTableData()
+                // this.getMSRunTableData()
                 this.getProteinEvidences()
             },function(err){
                 if(err.bodyText.match('not in the database')){
