@@ -86,7 +86,7 @@
     </div>
 </template>
 <script>
-    import store from "@/store/store.js"
+    import store from "@/store.js"
     export default {
         data () {
             return {
@@ -120,7 +120,7 @@
                     four: '',
                     five: ''
                 },
-                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
+                landingPageJsonURL: this.$store.state.baseURL + '/landingPage/landing_page.json',
                 markdownFolder:''
             }
         },

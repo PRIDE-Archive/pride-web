@@ -1,20 +1,18 @@
 <template>
   <div id="app">
     <defaultNav/>
-    <!--<keep-alive include="archive">-->
-      <router-view/>
-    <!--/keep-alive>-->
-    <defaultFooter/>
+     <router-view/>
+    <defaultFooter/> 
   </div>
 </template>
 
 <script>
-import defaultNav from '@/components/ebi/DefaultNav'
-import defaultFooter from '@/components/ebi/DefaultFooter'
+import defaultNav from '@/components/DefaultNav'
+import defaultFooter from '@/components/DefaultFooter'
 import '@/assets/js/iconfont.js'
 export default {
   name: 'app',
-  components:{
+  components: {
     defaultNav,
     defaultFooter
   }
@@ -47,6 +45,9 @@ export default {
   .page-container .ivu-select-dropdown-list{
     margin-left: 0 !important;
   }
+  .ivu-card-head p{
+    font-size: 14px !important;
+  }
   a{
         color:#495060;
     }
@@ -66,5 +67,6 @@ export default {
   [type='text'], [type='password'], [type='date'], [type='datetime'], [type='datetime-local'], [type='month'], [type='week'], [type='email'], [type='number'], [type='search'], [type='tel'], [type='time'], [type='url'], [type='color'], textarea{
     margin: 0 !important;
   }
+</style>
 </style>
 

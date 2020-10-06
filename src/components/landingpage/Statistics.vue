@@ -46,13 +46,13 @@
   </div>
 </template>
 <script>
-    import LinePrideSimple from './statistics_chart/LineSimple.vue'
-    import SunburstPrideSimple from './statistics_chart/SunburstSimple.vue'
-    import SankeyPrideSimple from './statistics_chart/SankeySimple.vue'
-    import MapPrideSimple from './statistics_chart/MapSimple.vue'
-    import TreePrideSimple from './statistics_chart/TreeSimple.vue'
-    import BarHorizontalPrideSimple from './statistics_chart/BarHorizontalSimple.vue'
-    import store from "@/store/store.js"
+    import LinePrideSimple from '@/components/chart/LineSimple.vue'
+    // import SunburstPrideSimple from '@/components/landingpage/statistics_chart/SunburstSimple.vue'  
+    // import SankeyPrideSimple from '@/components/landingpage/statistics_chart/SankeySimple.vue'
+    import MapPrideSimple from '@/components/chart/MapSimple.vue'
+    import TreePrideSimple from '@/components/chart/TreeSimple.vue'
+    import BarHorizontalPrideSimple from '@/components/chart/BarHorizontalSimple.vue'
+    import store from "@/store.js"
     export default {
         data () {
             return {
@@ -71,8 +71,8 @@
         },
         components: {
             LinePrideSimple,
-            SunburstPrideSimple,
-            SankeyPrideSimple,
+            // SunburstPrideSimple,
+            // SankeyPrideSimple,
             MapPrideSimple,
             TreePrideSimple,
             BarHorizontalPrideSimple
@@ -173,7 +173,14 @@
         position: absolute;
         top: 5px;
         right: 10px;
-        border-bottom-style:none !important;
+        border-bottom-width: 1px;
+        border-bottom-style: dotted;
+        border-bottom-color: #444;
+        color:#444;
+    }
+    .static-more-button:hover{
+      color:#5bc0be ;
+      border-bottom-color: #5bc0be;
     }
     .button-wrapper{
         text-align: center;

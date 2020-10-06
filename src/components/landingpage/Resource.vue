@@ -59,7 +59,7 @@
   </div>
 </template>
 <script>
-    import store from "@/store/store.js"
+    import store from "@/store.js"
     export default {
         data () {
             return {
@@ -177,7 +177,7 @@
                     }
                 ],
                 searchExample:[],
-                landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json'
+                landingPageJsonURL: this.$store.state.baseURL + '/landingPage/landing_page.json'
             }
         },
         methods:{
@@ -373,6 +373,12 @@
     }
     .resource-button-content{
         font-size: 20px;
+    }
+    .example-wrapper a{
+         color: #444;
+    }
+    .example-wrapper a:hover{
+         color: #5bc0be;
     }
     @media (min-width: 768px) {
         .resource-container{

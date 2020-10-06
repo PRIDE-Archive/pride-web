@@ -22,15 +22,6 @@ spec:
     spec:
       imagePullSecrets:
         - name: $DOCKER_PULL_SECRET
-      volumes:
-        - name: filebeat-config
-          configMap:
-            name: $FILEBEAT_CONFIG_MAP
-            items:
-              - key: filebeat.yml
-                path: filebeat.yml
-        - name: logvolume
-          emptyDir: {}
       containers:
         - name: pride-web
           image: $IMAGE
@@ -48,28 +39,6 @@ spec:
               port: 8080
             initialDelaySeconds: 60
             periodSeconds: 10
-          volumeMounts:
-            - name: logvolume
-              mountPath: /logs
-        - name: filebeat-sidecar
-          image: docker.elastic.co/beats/filebeat:7.8.0
-          env:
-            - name: POD_NAMESPACE
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: metadata.namespace
-            - name: NODE_NAME
-              valueFrom:
-                fieldRef:
-                  apiVersion: v1
-                  fieldPath: spec.nodeName
-          volumeMounts:
-            - name: logvolume
-              mountPath: /logs
-            - name: filebeat-config
-              mountPath: /usr/share/filebeat/filebeat.yml
-              subPath: filebeat.yml
 ---
 apiVersion: v1
 kind: Service

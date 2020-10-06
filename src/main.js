@@ -1,14 +1,13 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import App from './App'
+import App from './App.vue'
 import router from './router'
-import store from './store/store.js'
-import iView from 'iview';
-import locale from 'iview/dist/locale/en-US';
-import './assets/my-theme/index.less';
+import store from './store'
+import ViewUI from 'view-design'
+import locale from 'view-design/dist/locale/en-US'
+import 'view-design/dist/styles/iview.css'
+import '@/assets/my-theme/index.less';
 import VueResource  from 'vue-resource'
-import TextHighlight from 'vue-text-highlight';
+import TextHighlight from 'vue-text-highlight'
 //import 'iview/dist/styles/iview.css';
 
 import ECharts from 'vue-echarts/components/ECharts'
@@ -36,26 +35,24 @@ import VueMarkdown from 'vue-markdown';
 import ReadMore from 'vue-read-more';
  
 
-import vSuggest from 'v-suggest';
-Vue.use(vSuggest);
- 
+// import vSuggest from 'v-suggest';
+// Vue.use(vSuggest);
+
 
 Vue.component('vue-markdown', VueMarkdown);
 Vue.component('text-highlight', TextHighlight);
 Vue.config.productionTip = false
-Vue.use(iView, { locale });
+Vue.use(ViewUI, { locale })
 Vue.use(VueResource);
 Vue.use(ReadMore);
 Vue.component('chart', ECharts)
 
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });
-/* eslint-disable no-new */
+
 new Vue({
-  el: '#app',
   router,
-  template: '<App/>',
   store,
   data:{bus},
-  components: { App }
-})
+  render: h => h(App)
+}).$mount('#app')

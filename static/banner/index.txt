@@ -1,1 +1,0 @@
-SARS-CoV-2 and COVID-19 <a href="https://www.ebi.ac.uk/pride/archive?filter=project_tags_facet%3D%3DSars-cov-2&sortDirection=DESC&page=0&pageSize=20" target="_blank">Datasets</a>. Previous datasets about MERS and SARS can be found in <a href="https://www.ebi.ac.uk/pride/archive?keyword=coronavirus&sortDirection=DESC&page=0&pageSize=20" target="_blank">this query</a>
