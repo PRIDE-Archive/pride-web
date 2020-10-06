@@ -683,6 +683,8 @@
                         this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
 
                         if(this.profileData.userAuthorities == 'SUBMITTER'){
+                            this.$store.commit('setUser',{type: 'SUBMITTER'});  
+                            localStorage.setItem('type','SUBMITTER');
                             this.getPrivateData();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'reviewer_submission'){
@@ -692,6 +694,8 @@
                             }
                         }
                         else if(this.profileData.userAuthorities == 'REVIEWER'){
+                            this.$store.commit('setUser',{type: 'REVIEWER'}); 
+                            localStorage.setItem('type','REVIEWER'); 
                             this.getReviewerSubmission();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'private_data'){
@@ -716,9 +720,10 @@
                       });
             },
             logout(){
-                this.$store.commit('setUser',{username: '', token:''});  
+                this.$store.commit('setUser',{username: '', token:'', type:''});  
                 localStorage.setItem('username','');
                 localStorage.setItem('token','');
+                localStorage.setItem('type','');
                 this.$router.push({name:'landingpage'})
             },
             gotoDetails(id){
