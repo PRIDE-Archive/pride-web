@@ -207,7 +207,7 @@
                           </div>
                         </div>
                         <div v-else>
-                          <p>Publication pending1</p>
+                          <p>Publication pending</p>
                         </div>
                     </Card>
                     <Card class="card">
