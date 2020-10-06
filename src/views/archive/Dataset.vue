@@ -783,30 +783,30 @@
                   this.$Message.error({content:'No results', duration:3});
             });
       },
-      getMSRunTableData(){
-          this.msRunTableLoading = true;
-          this.msRunModalTableData=[];
-          let query={
-              accession: this.$route.params.id,
-          }
-          this.$http
-              .get(this.msRunApi,{params: query})
-              .then(function(res){
-                  this.msRunTableLoading = false;
-                  for(let i of res.body){
-                      let item = {
-                        accession:i.accession,
-                        name:i.fileName,
-                        size:Math.round(i.fileSizeBytes/1024/1024),
-                        //select:false,
-                      }
-                      this.msRunModalTableData.push(item);
-                  }
-                  //console.log(this.msRunModalTableData);
-              },function(err){
-                  this.msRunTableLoading = false;
-              });
-      },
+      // getMSRunTableData(){
+      //     this.msRunTableLoading = true;
+      //     this.msRunModalTableData=[];
+      //     let query={
+      //         accession: this.$route.params.id,
+      //     }
+      //     this.$http
+      //         .get(this.msRunApi,{params: query})
+      //         .then(function(res){
+      //             this.msRunTableLoading = false;
+      //             for(let i of res.body){
+      //                 let item = {
+      //                   accession:i.accession,
+      //                   name:i.fileName,
+      //                   size:Math.round(i.fileSizeBytes/1024/1024),
+      //                   //select:false,
+      //                 }
+      //                 this.msRunModalTableData.push(item);
+      //             }
+      //             //console.log(this.msRunModalTableData);
+      //         },function(err){
+      //             this.msRunTableLoading = false;
+      //         });
+      // },
       queryArchiveProjectFiles(q){
            let query = q || this.queryDownload
            this.fileListLoading = true;
