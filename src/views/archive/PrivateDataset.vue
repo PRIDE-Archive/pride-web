@@ -14,7 +14,7 @@
                 <div class="title-wrapper">
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
-                  <Button class="tag-button" @click="publishData">Publish</Button>
+                  <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -888,6 +888,7 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
+          userType:''
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1279,6 +1280,7 @@
         this.queryProjectDetails();
         //this.queryAssay();
         this.queryArchiveProjectFiles();
+        this.userType = localStorage.getItem('type') || '';
         //this.querySimilarity();
         //this.getMSRunTableData();
         //this.getProteinEvidences();
