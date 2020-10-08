@@ -6,6 +6,7 @@ const LandingPage = resolve => require(['@/views/landingpage/LandingPage'], reso
 const Archive = resolve => require(['@/views/archive/Archive'], resolve);
 const Dataset = resolve => require(['@/views/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/views/NotFound'], resolve);
+const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
 const MarkdownPage = resolve => require(['@/views/documentation/MarkdownPage'], resolve);
 const Peptidome = resolve => require(['@/views/peptidome/Peptidome'], resolve);
 const PeptideSearch = resolve => require(['@/views/peptidome/PeptideSearch'], resolve);
@@ -158,38 +159,45 @@ export default new Router({
     {
       path:'/register',
       name: 'register',
-      component: Register,
+      // component: Register,
+      component: Maintenance,
     },
     {
       path:'/archive/register',
       name: 'register',
-      component: Register,
+      // component: Register,
+      component: Maintenance,
     },
     {
       path:'/login',
       name: 'login',
-      component: Login,
+      // component: Login,
+      component: Maintenance,
     },
     {
       path:'/archive/login',
       name: 'login',
-      component: Login,
+      // component: Login,
+      component: Maintenance,
     },
     {
       path:'/forgotpassword',
       name: 'forgotpassword',
-      component: Forgotpassword,
+      // component: Forgotpassword,
+      component: Maintenance,
 
     },
     {
       path: '/archive/users/forgotpassword',
       name: 'forgotpassword',
-      component: Forgotpassword,
+      // component: Forgotpassword,
+      component: Maintenance,
     },
     {
       path:'/resetpassword/:reference',
       name: 'resetpassword',
-      component: Resetpassword,
+      // component: Resetpassword,
+      component: Maintenance,
     },
     {
       path:'/archive/projects/:id/publish',
