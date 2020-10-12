@@ -9,7 +9,6 @@
             <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
                 <Select v-model="selected" slot="prepend" style="width: 100px">
                     <Option value="archive">Archive</Option>
-                    <Option value="peptidome">Peptidome</Option>
                 </Select>
                 <Button slot="append" @click="submitSearchCondition">Search</Button>
             </Input>
@@ -46,15 +45,15 @@
             </span>
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
-        <a class="button resource-button peptidome" @click="goToPeptidome">
-            <span>
-            <svg class="icon-peptidome" aria-hidden="true">
-                <use xlink:href="#icon-checklist"></use>
-                <!--<use xlink:href="#icon-checklist1"></use>-->
-            </svg>
-            </span>
-            <span class="resource-button-content">{{peptidomebutton}}</span>
-        </a>
+<!--        <a class="button resource-button peptidome" @click="goToPeptidome">-->
+<!--            <span>-->
+<!--            <svg class="icon-peptidome" aria-hidden="true">-->
+<!--                <use xlink:href="#icon-checklist"></use>-->
+<!--                &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt;-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="resource-button-content">{{peptidomebutton}}</span>-->
+<!--        </a>-->
     </div>
   </div>
 </template>
