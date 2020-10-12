@@ -171,14 +171,14 @@ export default new Router({
     {
       path:'/login',
       name: 'login',
-      // component: Login,
-      component: Maintenance,
+      component: Login,
+      // component: Maintenance,
     },
     {
       path:'/archive/login',
       name: 'login',
-      // component: Login,
-      component: Maintenance,
+      component: Login,
+      // component: Maintenance,
     },
     {
       path:'/forgotpassword',
