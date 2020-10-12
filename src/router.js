@@ -6,13 +6,9 @@ const LandingPage = resolve => require(['@/views/landingpage/LandingPage'], reso
 const Archive = resolve => require(['@/views/archive/Archive'], resolve);
 const Dataset = resolve => require(['@/views/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/views/NotFound'], resolve);
-const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
+//const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
 const MarkdownPage = resolve => require(['@/views/documentation/MarkdownPage'], resolve);
-const Peptidome = resolve => require(['@/views/peptidome/Peptidome'], resolve);
-const PeptideSearch = resolve => require(['@/views/peptidome/PeptideSearch'], resolve);
-const PeptideDownload = resolve => require(['@/views/peptidome/PeptideDownload'], resolve);
 const SpectrumLibrary = resolve => require(['@/views/peptidome/SpectrumLibrary'], resolve);
-const PeptideDetails = resolve => require(['@/views/peptidome/PeptideDetails'], resolve);
 const PSM = resolve => require(['@/views/peptidome/PSM'], resolve);
 //const ClusterProjects = resolve => require(['@/views/peptidome/ClusterProjects'], resolve);
 const StatisticsDetails = resolve => require(['@/views/landingpage/StatisticsDetails'], resolve);
@@ -159,45 +155,37 @@ export default new Router({
     {
       path:'/register',
       name: 'register',
-      // component: Register,
-      component: Maintenance,
+      component: Register,
     },
     {
       path:'/archive/register',
       name: 'register',
-      // component: Register,
-      component: Maintenance,
+      component: Register,
     },
     {
       path:'/login',
       name: 'login',
       component: Login,
-      // component: Maintenance,
     },
     {
       path:'/archive/login',
       name: 'login',
       component: Login,
-      // component: Maintenance,
     },
     {
       path:'/forgotpassword',
       name: 'forgotpassword',
-      // component: Forgotpassword,
-      component: Maintenance,
-
+      component: Forgotpassword,
     },
     {
       path: '/archive/users/forgotpassword',
       name: 'forgotpassword',
-      // component: Forgotpassword,
-      component: Maintenance,
+      component: Forgotpassword,
     },
     {
       path:'/resetpassword/:reference',
       name: 'resetpassword',
-      // component: Resetpassword,
-      component: Maintenance,
+      component: Resetpassword,
     },
     {
       path:'/archive/projects/:id/publish',
