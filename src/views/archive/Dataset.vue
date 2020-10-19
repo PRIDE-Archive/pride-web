@@ -290,6 +290,17 @@
                                 </div>
                               </div>
                           </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">Number of Reanalysis</div>
+                              <div class="property-wrapper">
+                                <div v-if="reanalysisReferences.length>0">
+                                    <a @click="referenceModalShow=true">{{reanalysisReferences.length}}</a>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
                      </div>
                   </Card>
                   <Card class="card" v-if="similarProjects.length>0">
@@ -307,7 +318,19 @@
       </div>
 
       <!-- <Button @click= "downloadFiles">123</Button> -->
-
+  <Modal
+      class-name="referenceModal"
+      v-model="referenceModalShow"
+      title="Reference List"
+      :footer-hide="true">
+      <div v-for="item in reanalysisReferences" style="margin: 10px 0">
+          <a @click="gotoReference">{{item.referenceLine}}</a>
+      </div>
+      
+     <!--  <div slot="footer">
+          <Button class="download-button" @click="referenceModalShow=false">OK</Button>
+      </div> -->
+  </Modal>
   </div>
 </template>
 
@@ -344,6 +367,7 @@
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
+          reanalysisApi: this.$store.state.baseApiURL + '/projects/reanalysis/',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -706,7 +730,9 @@
           sdrfTableLoading:false,
           pageSizeSdrf:200,
           pageSdrf:1,
-          totalSdrf:0
+          totalSdrf:0,
+          reanalysisReferences:[],
+          referenceModalShow:false
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -807,6 +833,17 @@
       //             this.msRunTableLoading = false;
       //         });
       // },
+      queryReanalysis(){
+          var id = id || this.$route.params.id;
+          this.$http
+            .get(this.reanalysisApi + id)
+            .then(function(res){
+                this.reanalysisReferences = res.body.references;
+                console.log(this.reanalysisReferences)
+            },function(err){
+
+            });
+      },
       queryArchiveProjectFiles(q){
            let query = q || this.queryDownload
            this.fileListLoading = true;
@@ -1213,12 +1250,16 @@
           setTimeout(()=>{
             this.sdrfTableLoading = false
           },500)
+      },
+      gotoReference(){
+          window.open('https://www.doi.org/10.1038/s41587-019-0298-5')
       }
     },
     mounted: function(){
         this.queryProjectDetails();
         this.queryArchiveProjectFiles();
         this.querySimilarity();
+        this.queryReanalysis();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1582,6 +1623,14 @@
     justify-content: center;
     width: 100%;
   }
+  .referenceModal a{
+    color: #495060;
+    border-bottom-style: dotted;
+  }
+  .referenceModal a:hover{
+    color: #5bc0be;
+  }
+  
   /*
   @media (min-width: 768px) {
       .content{
@@ -1680,6 +1729,9 @@
   }
   .project-files-accession{
     display: none;
+  }
+  .referenceModal .ivu-modal-close{
+    border-bottom-style: none;
   }
 </style>
 
