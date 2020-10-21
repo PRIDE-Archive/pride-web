@@ -291,13 +291,13 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Number of Reanalysis</div>
+                              <div class="summary-content-header">Dataset reuses</div>
                               <div class="property-wrapper">
                                 <div v-if="reanalysisReferences.length>0">
                                     <a @click="referenceModalShow=true">{{reanalysisReferences.length}}</a>
                                 </div>
                                 <div v-else>
-                                    <p>Unknown</p>
+                                    <p>Not available</p>
                                 </div>
                               </div>
                           </div>
