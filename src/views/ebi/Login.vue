@@ -116,14 +116,15 @@
             },
         },
         mounted:function(){
-             this.$refs['formInline'].resetFields();
-        },
-        beforeRouteEnter(to,from,next){
-            next(vm=>{
               if(window != window.top){
                 window.top.location.replace(window.location)
                 this.$Message.error({ content: 'Security Issue! Force Redirect!'});
               }
+             this.$refs['formInline'].resetFields();
+        },
+        beforeRouteEnter(to,from,next){
+            next(vm=>{
+
 
               let username = localStorage.getItem('username') || '';
               console.log('username',username)
