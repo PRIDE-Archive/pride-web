@@ -15,7 +15,16 @@ export default {
   components: {
     defaultNav,
     defaultFooter
-  }
+  },
+  mounted:function(){
+        console.log(33333333333)
+        console.log('window',window)
+        console.log('window.top',window.top)
+        if(window != window.top){
+          window.top.location.replace(window.location)
+          this.$Message.error({ content: 'Security Issue! Force Redirect!'});
+        }
+  },
 }
 </script>
 <style type="text/css">

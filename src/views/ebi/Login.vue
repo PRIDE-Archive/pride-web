@@ -116,10 +116,6 @@
             },
         },
         mounted:function(){
-              if(window != window.top){
-                window.top.location.replace(window.location)
-                this.$Message.error({ content: 'Security Issue! Force Redirect!'});
-              }
              this.$refs['formInline'].resetFields();
         },
         beforeRouteEnter(to,from,next){
