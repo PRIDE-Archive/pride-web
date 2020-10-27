@@ -17,13 +17,22 @@ export default {
     defaultFooter
   },
   mounted:function(){
-        console.log(33333333333)
-        console.log('window',window)
-        console.log('window.top',window.top)
+    try{
+        // console.log(33333333333)
+        // console.log('window',window)
+        // console.log('window.top',window.top)
         if(window != window.top){
+          // console.log(111)
+          
+          // this.$Message.error({ content: 'Security Issue! Force Redirect!'});
           window.top.location.replace(window.location)
-          this.$Message.error({ content: 'Security Issue! Force Redirect!'});
+          // alert('Security Issue! Force Redirect!')
         }
+    }
+    catch(e){
+      window.top.location.replace(window.location)
+    }
+        
   },
 }
 </script>
