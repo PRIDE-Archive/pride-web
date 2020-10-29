@@ -4,6 +4,8 @@
 
 - [How to submit data to PRIDE Archive](./submitdatapage)
 
+- [How to mannually upload files](./submissionupload)
+
 - [PRIDE Archive supported file formats](./pridefileformats)
 
 - [How to review proteomics data in PRIDE Archive](./reviewpridedata)
