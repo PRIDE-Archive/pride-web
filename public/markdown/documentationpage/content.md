@@ -4,7 +4,7 @@
 
 - [How to submit data to PRIDE Archive](./submitdatapage)
 
-- [How to mannually upload files](./submissionupload)
+- [How to manually upload files](./submissionupload)
 
 - [PRIDE Archive supported file formats](./pridefileformats)
 
