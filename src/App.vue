@@ -25,12 +25,14 @@ export default {
           // console.log(111)
           
           // this.$Message.error({ content: 'Security Issue! Force Redirect!'});
-          window.top.location.replace(window.location)
+          // window.top.location.replace(window.location)
           // alert('Security Issue! Force Redirect!')
+          this.$router.push({name:'404'});
         }
     }
     catch(e){
-      window.top.location.replace(window.location)
+      // window.top.location.replace(window.location)
+      this.$router.push({name:'404'});
     }
         
   },
