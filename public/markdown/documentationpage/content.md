@@ -14,6 +14,8 @@
 
 - [PRIDE Results Inspector](./resultpage)
 
+- [TRIAL](./test12)
+
 ## Tools Help Pages
 
 - [PRIDE Inspector Toolsuite](./prideinspector)
