@@ -8,93 +8,27 @@
                   <Card>
                       <p slot="title">Search Spectra</p>
                       <div class="search-container">
-                          <div class="search-input">     
+                          <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
+                              <Select v-model="selected" slot="prepend" style="width: 100px">
+                                  <Option value="usi">USI</Option>
+                                  <Option value="peptide">Peptide</Option>
+                              </Select>
+                              <Button slot="append" @click="submitSearch">Search</Button>
+                          </Input>
+                          <!-- <div class="search-input">     
                               <div class="search-input-wrapper peptidome">
                                   <div class="fake-input">
                                     <div class="tag-wrapper">
-                                        <!-- <Tag class="tag-in-search-input" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag> -->
-                                        <!-- <Select
-                                            ref="searchRef"
-                                            v-model="selectTemp"
-                                            filterable
-                                            remote
-                                            placeholder="input here"
-                                            :remote-method="searchInputChange"
-                                            :loading="searchInputLoading"
-                                            @on-open-change="searchInputLoadingDropdownOpen"
-                                            style="width:500px">
-                                            <Option v-for="(item, index) in autoCompleteArray" :value="item" :key="index">{{item}}</Option>
-                                        </Select> -->
                                         <Input class="tag-input" v-model="keyword" placeholder="input here" size="small"></Input>
                                     </div>
                                     <Icon type="ios-search"></Icon>
                                   </div>
                               </div>
-                              <!--
-                              <AutoComplete
-                                  class="archive-search-input"
-                                  v-model="keyword"
-                                  @on-search="keywordSearch"
-       
-                                  icon="ios-search"
-                                  :filter-method="autoCompleteFilter"
-                                  placeholder="input here"
-                                  style="width: 100%" 
-                                  size="large">
-                              </AutoComplete>
-                            -->
                           </div>
-
                           <div class="search-filter">
-                            <!--
-                              <div class="filter-wrapper">
-                                  <div class="filter-condition">
-                                      <Select ref="fieldRef" class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
-                                          <Option v-for="item in fieldSelectors" :value="item.value" :label="item.label" :key="item.value" >
-                                                  <span>{{ item.label }}</span>
-                                                  <span style="float:right;color:#ccc">{{item.number}}</span>
-                                          </Option>
-                                      </Select>
-                                  </div>
-                                  <span class="separator">></span>
-                                  <div class="filter-condition ">
-                                      <Select ref="containRef" class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading..." @on-open-change="containDropdownOpen" @on-query-change="queryChange">
-                                          <Option v-for="item in containSelectors" :value="item.value" :label="item.label" :key="item.value">
-                                            <span>
-                                                  <span>{{ item.label }}</span>
-                                                  <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
-                                            </span>
-                                          </Option>
-                                      </Select>
-                                  </div>
-                              </div>
-                            -->
                               <div class="search-button">
                                   <a class="button search-button" @click="submitSearch">Search</a>
                               </div>
-                          </div>
-                          <!-- <div class="search-condition-container">
-                            <div class="tag-container">
-                                <Tag type="border" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
-                            </div>
-                          </div>
-                          <div v-for="(item, index) in filterCombination" class="search-condition-container">
-                            <div class="tag-container">
-                                <Tag type="border" closable @on-close="conditionDelete(index,item)">
-                                  <Dropdown>
-                                      <a class="dropdown-action" href="javascript:void(0)">
-                                          {{item.condition}}
-                                          <Icon type="arrow-down-b"></Icon>
-                                      </a>
-                                      <DropdownMenu slot="list">
-                                          <DropdownItem @click.native="conditionChange(index,'And')">And</DropdownItem>
-                                          <DropdownItem @click.native="conditionChange(index,'Not')">Not</DropdownItem>
-                                          <DropdownItem @click.native="conditionChange(index,'Or')">Or</DropdownItem>
-                                      </DropdownMenu>
-                                  </Dropdown>
-                                  <span class="search-condition">{{item.field}} > {{item.contains}} </span>
-                                </Tag>
-                            </div>
                           </div> -->
                       </div>
                   </Card>   
@@ -182,6 +116,7 @@
                           },
                           on: {
                               'on-change': (val) => {
+                                  console.log('val',val)
                                   this.psmTableResults.map(x => {
                                       x.select= false;
                                       return x;
@@ -189,10 +124,14 @@
                                   this.psmTableResults[params.index].select= val;
                                   if(val){
                                       this.psmItemSelected = true;
-                                      //console.log(params.row)
-                                      this.getSpectrum(params.row.usi);
+                                      // console.log(params.row)
+                                      this.selected = 'usi'
+                                      this.keyword = params.row.usi
+                                      console.log('this.keyword',this.keyword)
+                                      this.getSpectrum(params.row.usi)
                                   }
                                   else{
+                                      this.keyword = ''
                                       this.psmItemSelected = false;
                                       this.getSpectra();
                                   }
@@ -631,6 +570,7 @@
           ],
           selectTemp:'',
           keyword:'',
+          selected:'',
           searchInputLoading:false,
           autoCompleteArray:[],
           //peptideSortType:'',
@@ -652,7 +592,7 @@
     },
     methods:{
       getSpectra(q){
-          console.log('getSpectra111',q)
+          // console.log('getSpectra111',q)
           let query = q || this.spectraQuery
           this.keyword = q ? q.peptideSequence : ''
           this.psmTableLoading = true;
@@ -666,7 +606,7 @@
                   //this.spectraPage = res.body.page.number;
                   //this.spectraPageSize = res.body.page.size;
                   let psm = res.body._embedded.spectraevidences;
-                  console.log('psm',res.body._embedded)
+                  // console.log('psm',res.body._embedded)
                   for(let i=0; i < psm.length; i++){
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
@@ -746,12 +686,14 @@
                   //this.showSpectrum(this.psmTableResults[0].select, this.psmTableResults[0].peptideSequence, this.psmTableResults[0].peaks);
                 }
                 else{
-                  this.$Message.success({content:'No PSMs', duration:3});
+                  this.spectrumTableCollapseChange(true);
+                  this.$Message.error({content:'No PSMs', duration:3});
                 }
               },function(err){
                   this.psmTableResults=[];
                   this.psmTableLoading = false;
-                  this.$Message.error({content:'No PSM', duration:3});
+                  this.spectrumTableCollapseChange(true);
+                  this.$Message.error({content:'No PSMs', duration:3});
               });
       },
       getSpectrum(usi){
@@ -777,7 +719,7 @@
                         select:true,
                         psmMoreArray:[]
                       }
-                      this.keyword = item.peptideSequence;
+                      // this.keyword = item.peptideSequence;
                       //add psmlevelFDR for item
                       for(let j=0; j<psm.attributes.length; j++){
                           if(psm.attributes[j].name && psm.attributes[j].name.indexOf('FDR')!=-1){
@@ -841,12 +783,14 @@
                       this.showSpectrum(true, item.peptideSequence, item.peaks, item.charge, item.precursorMZ, item.variableMods)
                 }
                 else{
+                  this.spectrumTableCollapseChange(true);
                   this.$Message.success({content:'No PSMs', duration:3});
                 }
               },function(err){
                   this.psmTableResults=[];
                   this.psmTableLoading = false;
-                  this.$Message.error({content:'No PSM', duration:3});
+                  this.spectrumTableCollapseChange(true);
+                  this.$Message.error({content:'No PSMs', duration:3});
               });
       },
       spectraPageChange(page){
@@ -1049,23 +993,58 @@
           }
       },
       submitSearch(){
-        //let temp = this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').value;
-        // if(temp && this.tagArray.length == 0){
-        //   this.$refs.searchRef.setQuery(null);
-        // }
-        let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:this.keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
+        if(!this.keyword){
+          this.$Message.error({content:'No keyword', duration:3});
+          return
         }
-        console.log('submitSearch',query);
-        if(this.keyword === this.$route.query.peptideSequence){
-          location.reload();
+        if(this.selected == 'usi'){
+            this.getSpectrum(this.keyword);
         }
-        else
-          this.$router.push({name: 'spectra', query: query});
+        else if(this.selected == 'peptide'){
+          this.spectrumTableCollapseChange(true)
+          let query = {
+              //reportedProtein:params.row.proteinAccession,
+              //peptideEvidenceAccession:params.row.accession,
+              peptideSequence:this.keyword,
+              sortConditions:'projectAccession',
+              sortDirection:'DESC',
+          }
+          console.log('submitSearch',query);
+          if(this.keyword === this.$route.query.peptideSequence){
+            location.reload();
+          }
+          else
+            this.$router.push({name: 'spectra', query: query});
+        }
+
+
+        // 'on-change': (val) => {
+        //       this.psmTableResults.map(x => {
+        //           x.select= false;
+        //           return x;
+        //       });
+        //       this.psmTableResults[params.index].select= val;
+        //       if(val){
+        //           this.psmItemSelected = true;
+        //           //console.log(params.row)
+        //           this.getSpectrum(params.row.usi);
+        //       }
+        //       else{
+        //           this.psmItemSelected = false;
+        //           this.getSpectra();
+        //       }
+                  
+              
+        //       if (history.pushState) {
+        //             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
+        //             window.history.pushState({path:newurl},'',newurl);
+        //         }
+
+        //       this.spectrumTableCollapseChange(!val);
+        //   }
+
+
+        
         //this.$Message.success({content:'new result', duration:1});
       },
     },
@@ -1082,6 +1061,12 @@
           },
           deep:true
         },
+        // selected:{
+        //   handler(){
+        //     // this.keyword = ''
+        //   },
+        //   deep:false
+        // }
     },
     computed:{
       spectraQuery:function(){
@@ -1102,6 +1087,7 @@
           console.log('111');
           //this.getPeptidesEvidences();
           //this.getProteinEvidences();
+          this.selected = 'usi'
           let query = {
             page: this.spectraPage-1,
             pageSize: this.spectraPageSize
@@ -1110,9 +1096,14 @@
         }
         else{
           if('usi' in this.$route.query){
+            this.selected = 'usi'
+            this.keyword = this.$route.query.usi
             this.getSpectrum(this.$route.query.usi);
           }
           else{
+              console.log(333333)
+              this.selected = 'peptide'
+              this.$forceUpdate()
               if(this.$route.query.page)
                   this.spectraPage = parseInt(this.$route.query.page) + 1;
               if(this.$route.query.pageSize){
@@ -1464,6 +1455,30 @@
     }
     .search-input-wrapper.peptidome .ivu-select-dropdown{
       display: none;
+    }
+    #spectra-bar-pride .ivu-input-group-prepend{
+        background-color: #5bc0be !important;
+    }
+    #spectra-bar-pride .ivu-input-group-prepend span{
+        font-weight:700;
+    }
+    #spectra-bar-pride .ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+        color: white !important;
+    }
+    #spectra-bar-pride .ivu-select{
+        color: white !important;
+    }
+    #spectra-bar-pride .ivu-input-group-append{
+        background-color: #5bc0be !important;
+        color: #f8f8f8 !important;
+        width:100px;
+    }
+    #spectra-bar-pride .ivu-input-group-append span{
+        font-weight:700;
+        /*font-size: .85714286em;*/
+    }
+    #spectra-bar-pride .ivu-select-arrow{
+        color: #f8f8f8 !important;
     }
 </style>
 
