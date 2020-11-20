@@ -7,6 +7,9 @@
               <div class="visualization-wrapper">
                   <Card>
                       <p slot="title">Search Spectra</p>
+                      <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
+                          What is USI?
+                      </a>
                       <div class="search-container">
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
                               <Select v-model="selected" slot="prepend" style="width: 100px">
@@ -15,6 +18,22 @@
                               </Select>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
+                          <div style="margin-top: 10px">
+                              <Tooltip content="YYWGGLYSWDMSK">
+                                  <a @click="gotoExamplePeptide('YYWGGLYSWDMSK')" style="color:#666">YYW**SK</a>
+                              </Tooltip>
+                              <Tooltip content="mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2" style="margin-left: 5px">
+                                <div slot="content">
+                                    <p>mzspec:PXD000966:</p>
+                                    <p>CPTAC_CompRef_00_</p>
+                                    <p>iTRAQ_12_5Feb12_Cougar</p>
+                                    <p>_11-10-11.mzML:scan</p>
+                                    <p>:11850:[UNIMOD:214]</p>
+                                    <p>YYWGGLYSWDMSK[UNIMOD:214]/2</p>
+                                </div>
+                                  <a @click="gotoExampleUSI('mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2')" style="color:#666">mzspec**4]/2</a>
+                              </Tooltip>
+                          </div>
                           <!-- <div class="search-input">     
                               <div class="search-input-wrapper peptidome">
                                   <div class="fake-input">
@@ -705,7 +724,7 @@
                 this.psmTableLoading = false;
                 if(res.body){
                   let psm = res.body;
-                  console.log('usi',psm)
+                  
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
@@ -999,6 +1018,13 @@
         }
         if(this.selected == 'usi'){
             this.getSpectrum(this.keyword);
+            if (history.pushState) {
+                  var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword;
+                  window.history.pushState({path:newurl},'',newurl);
+              }
+
+            this.spectrumTableCollapseChange(false);
+            delete this.$route.query.peptideSequence
         }
         else if(this.selected == 'peptide'){
           this.spectrumTableCollapseChange(true)
@@ -1047,6 +1073,42 @@
         
         //this.$Message.success({content:'new result', duration:1});
       },
+      gotoUSI(){
+        window.open('http://www.psidev.info/usi')
+      },
+      gotoExamplePeptide(keyword){
+        this.selected = 'peptide'
+        this.keyword = keyword
+        this.spectrumTableCollapseChange(true)
+        let query = {
+            //reportedProtein:params.row.proteinAccession,
+            //peptideEvidenceAccession:params.row.accession,
+            peptideSequence:keyword,
+            sortConditions:'projectAccession',
+            sortDirection:'DESC',
+        }
+        if(keyword === this.$route.query.peptideSequence){
+          console.log('111',keyword)
+          console.log('222',this.$route.query.peptideSequence)
+          console.log(keyword,this.$route.query)
+          // location.reload();
+        }
+        else
+          this.$router.push({name: 'spectra', query: query});
+      },
+      gotoExampleUSI(keyword){
+        this.selected = 'usi'
+        this.keyword = keyword
+        this.getSpectrum(keyword);
+        if (history.pushState) {
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
+              window.history.pushState({path:newurl},'',newurl);
+          }
+
+        this.spectrumTableCollapseChange(false);
+        delete this.$route.query.peptideSequence
+        // this.$router.replace({'query': null});
+      }
     },
     watch: {
         peptideTableResults:{
