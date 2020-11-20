@@ -14,6 +14,7 @@ docker_build:
     - docker:18.09-dind
   script:
     - docker info
+    - docker login -u $dockerhub_user -p $dockerhub_password
     - docker build -t $IMAGE .
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker push $IMAGE
