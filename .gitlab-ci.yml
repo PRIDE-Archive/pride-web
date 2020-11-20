@@ -8,6 +8,8 @@ variables:
 #  - template: License-Management.gitlab-ci.yml
 
 docker_build:
+  variables:
+    DOCKER_AUTH_CONFIG: $docker_auth_json
   image: docker:18.09
   stage: build
   services:
@@ -44,6 +46,8 @@ kube_deploy_prod_hx:
     - master
 
 .kube_deploy_script:
+  variables:
+    DOCKER_AUTH_CONFIG: $docker_auth_json
   stage: deploy
   image: dtzar/helm-kubectl
   script:
@@ -60,6 +64,8 @@ kube_deploy_prod_hx:
   when: manual
 
 .deploy_script:
+  variables:
+    DOCKER_AUTH_CONFIG: $docker_auth_json
   stage: deploy
   image: node:12.13.0-alpine
   script:
