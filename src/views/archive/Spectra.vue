@@ -7,9 +7,6 @@
               <div class="visualization-wrapper">
                   <Card>
                       <p slot="title">Search Spectra</p>
-                      <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
-                          What is USI?
-                      </a>
                       <div class="search-container">
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
                               <Select v-model="selected" slot="prepend" style="width: 100px">
@@ -18,7 +15,8 @@
                               </Select>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
-                          <div style="margin-top: 10px">
+                          <div style="margin-top: 10px; display: flex; justify-content: space-between;">
+                            <span>
                               <Tooltip content="YYWGGLYSWDMSK">
                                   <a @click="gotoExamplePeptide('YYWGGLYSWDMSK')" style="color:#666">YYW**SK</a>
                               </Tooltip>
@@ -33,6 +31,10 @@
                                 </div>
                                   <a @click="gotoExampleUSI('mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2')" style="color:#666">mzspec**4]/2</a>
                               </Tooltip>
+                            </span>
+                            <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
+                                What is USI?
+                            </a>
                           </div>
                           <!-- <div class="search-input">     
                               <div class="search-input-wrapper peptidome">
