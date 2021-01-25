@@ -1,3 +1,28 @@
+## What is PRIDE Archive
+
+The PRIDE PRoteomics IDEntifications (PRIDE) Archive database is a centralized, standards compliant, public data repository for mass spectrometry proteomics data, including protein and peptide identifications and the corresponding expression values, post-translational modifications and supporting mass spectra evidence (both as raw data and peak list files). PRIDE is a core member in the ProteomeXchange (PX) consortium, which provides a standardised way for submitting mass spectrometry based proteomics data to public-domain repositories. Datasets are submitted to ProteomeXchange via PRIDE and are handled by expert bio-curators. All PRIDE public datasets can also be searched in ProteomeCentral, the portal for all ProteomeXchange datasets.
+
+All public datasets available in PRIDE Archive in the repository can be accessed via the:
+
+Website, for users to explore through a web browser. [https://www.ebi.ac.uk/pride/archive/](https://www.ebi.ac.uk/pride/archive/)
+
+Web Service, for programmatic access, query and use PRIDE Restful API [https://pride-archive.github.io/PrideAPIDocs/](https://pride-archive.github.io/PrideAPIDocs/)
+
+PRIDE Inspector stand-alone tool. For detailed data visualisation and basic analysis capabilities. [https://www.ebi.ac.uk/pride/markdownpage/prideinspector](https://www.ebi.ac.uk/pride/markdownpage/prideinspector)
+
+If you have further queries please consult our Help FAQ or please contact us at [pride-support@ebi.ac.uk](pride-support@ebi.ac.uk) for advice.
+
+## PRIDE's mission
+
+- To archive all types of proteomics mass spectrometry data for the purpose of supporting reproducible research, allowing the application of quality control metrics and enabling the reuse of these data by other researchers.
+
+- To integrate MS-based data in a protein-centric manner to provide information on protein variants, modifications, and expression.
+
+- To provide mass spectrometry based expression data to the Expression Atlas. 
+
+- Tutorial manuscript: Ternent T, Csordas A, Qi D, Gómez-Baena G, Beynon RJ, Jones AR, Hermjakob H, Vizcaíno JA. [How to submit MS proteomics data to ProteomeXchange via the PRIDE database](http://europepmc.org/article/MED/25047258). Proteomics. 2014 Oct;14(20) 2233-2241. doi:10.1002/pmic.201400120. PubMed PMID: 25047258.
+
+- Train Online [tutorial](https://www.ebi.ac.uk/training/online/course/proteomexchange-submissions-pride).
 
 ## How to cite PRIDE Resources
 
@@ -32,3 +57,36 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 
 All manuscripts from the PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
+
+## The team behind PRIDE:
+
+The [PRIDE team](https://www.ebi.ac.uk/services/teams/pride) currently led by [Juan Antonio Vizcaino](https://www.ebi.ac.uk/about/people/juan-vizcaino), consists of software developers, biocurators, trainees/visitors and one team coordinator.
+
+## The members of the PRIDE Scientific Advisory Board:
+
+The PRIDE project receives advice and guidance from our scientific advisory board. The PRIDE SAB consists of a collection of scientists representing different groups working in the mass spectrometry proteomics field. Our current SAB members are:
+
+- Ruedi Aebersold, Swiss Federal Institute of Technology, ETH, Zurich, Switzerland
+- Jurgen Cox, Max Planck Institute of Biochemistry, Martinsried, Germany
+- Pedro R. Cutillas, Queen Mary University London, UK
+- Concha Gil , Universidad Complutense Madrid, Spain
+- Juri Rappsilber, University of Edinburgh, UK
+- Hans Vissers, Waters Corporation, Wilmslow, UK
+
+We also would like to thank all previous members of the PRIDE SAB:
+
+- Roz Banks, University of Leeds, UK
+- Angus Lamond, University of Dundee, UK
+- Kathryn Lilley, University of Cambridge, UK
+- Ioannis Xenarios, SIB Swiss Institute of Bioinformatics, Geneva, University of Lausanne, Switzerland  
+
+## Acknowledgements:
+
+The PRIDE team would like to thank all data submitters for their contributions. The PRIDE team is funded at present by the Wellcome Trust [grant number 208391/Z/17/Z],  the BBSRC grants BB/N022440/1, BB/N022432/1 and BB/P024599/1, the NIH grant R24 GM127667-01, the H2020 EU EPIC-XS grant [grant number 823839], several ELIXIR Implementation Studies and EMBL core funding. 
+
+In recent years, PRIDE has also been funded by the Wellcome Trust [grant numbers WT101477MA and WT085949MA], the EU FP7 grants 'ProteomeXchange’ [grant number 260558], ‘PRIME-XS’ [grant number 262067], and ‘LipidomicNet’ [grant number 202272], and the BBSRC grants [reference BB/I024204/1, BB/I00095X/1, BB/K01997X/1 and BB/L024225/1].
+
+
+## Clinical (potentially sensitive) clinical human datasets
+
+All datasets in PRIDE (as part of ProteomeXchange) are made fully open, once the corresponding paper is published. As such, accessed-controlled datasets are not supported at present. If you have concerns about submitting datasets to PRIDE due to legal issues, please contact [pride-support](pride-support@ebi.ac.uk). 
