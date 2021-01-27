@@ -9,7 +9,7 @@
                 <Input type="text" v-model="formInlinePublish.accession" placeholder="" disabled>
                 </Input>
               </FormItem>
-              <FormItem class="pubmed-doi-form-item" prop="pubmed" label="PubMedID or DOI">
+              <FormItem class="pubmed-doi-form-item" prop="pubmed" label="Please select either PubMedID or DOI from the dropdown & input corresponding value">
                 <div class="form-item-wrapper">
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
