@@ -63,7 +63,7 @@
                   //   { required: true, type:'accession', message: 'Please input Project Accession', trigger: 'blur' }
                   // ],
                   pubmed: [
-                    { required: true, message: 'Please input PubMed', trigger: 'blur' }
+                    { required: false, message: 'Please input PubMed or DOI', trigger: 'blur' }
                   ],
                   // reference: [
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
