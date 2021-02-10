@@ -1,9 +1,19 @@
 
-## How to submit data to PRIDE and what happens after a dataset has been submitted
+## How to submit data to PRIDE
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
 The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+
+## What happens to my data after upload
+ 
+ - Your submission reference is 1-XXXXXXXX-X. This number will be included in any e-mail communication with us.
+ - Important information: Your submission reference is not the final dataset accession number.
+ - Standard procedure once your dataset is uploaded to PRIDE -
+ - 1st Step – A curator will perform an initial assessment of the dataset including PRIDE Validation pipeline. Initial checks involve checking the metadata, type of submission
+ - 2nd Step – If data validation is successful, the submission is performed. The submitter gets an e-mail including the dataset identifier and reviewer’s credentials
+ - Please note, PRIDE receives high numbers of submitted datasets every day, so the processing of your dataset can take up to 5 working days, although it may happen earlier than that.
+
 
 The following [open access publication](https://onlinelibrary.wiley.com/doi/full/10.1002/pmic.201400120) also exemplifies the main steps of a submission to PRIDE, although some of less-important details might have changed.
 
@@ -54,6 +64,11 @@ If you have all the files ready, the next step is to Download the [PX Submission
 
 Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PX Submission Tool.
 
+## How many PX identifiers can be issued per study/manuscript, can a dataset be split into further partitions?
+
+Sometimes submitters plan to split the dataset belonging to the same study/manuscript/project into many different dataset partitions due to different reasons. In this case it is a recommended practice to contact the PRIDE Curator Team via [pride-support@ebi.ac.uk](pride-support@ebi.ac.uk) in order to agree on the structure of the dataset splits before actual data upload, desirably.
+
+By default we issue one identifier per project unless there's a strong reason to split data like samples from different species have been used, or different instrumentation has been applied. Even in case of a justified way of splitting a dataset into partitions there should be no more than 5 identifiers issued by default. If the curators know the dataset structure in advance they will make an effort to assign a continuous range of PX Identifiers to the dataset splits. However there is no guarantee that this could be achieved since ProteomeXchange has a shared identifier space and other PX partner repositories can issue identifiers too.
 
 ## Accessing private data
 
@@ -99,11 +114,13 @@ You can notify us in three different ways:
 
 - Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can click the green “Publish” buttons located next to your unpublished datasets. Here you can provide details for your dataset and submit a web form.
 
--  If you are not the original submitter, but have found that the dataset has been included in a publication, you can go directly to https://www.ebi.ac.uk/pride/archive/projects/PXDxxxxxx/publish, where 'xxxxxx' is the integer including the PXD dataset identifier.
+- If you are not the original submitter, but have found that the dataset has been included in a publication, you can go directly to https://www.ebi.ac.uk/pride/archive/projects/PXDxxxxxx/publish, where 'xxxxxx' is the integer including the PXD dataset identifier.
 
--  Contacting pride-support@ebi.ac.uk.
+- Contacting pride-support@ebi.ac.uk.
 
 Upon making the project public, a project page will be released in PRIDE and available also at ProteomeCentral (http://proteomecentral.proteomexchange.org).
 
 **Exceptions to the public release policy of the datasets**
+
 Exceptions to this policy may be only be granted in documented special cases, which will be considered in an individual case-by-case basis. If the original submitters have used or are planning to use the same dataset (that should be released) in other ongoing studies, they can request once an extension of the non-released status. This extension will be of a maximum of 6-months. An official request must be done by the data owner to PRIDE, justifying this request appropriately. It should be noted that this 6-month extension does not consider the requirements of the scientific journal where the article has been published, which may mandate that the data is released immediately anyway.
+
