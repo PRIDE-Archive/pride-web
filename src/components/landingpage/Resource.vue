@@ -45,15 +45,15 @@
             </span>
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
-<!--        <a class="button resource-button peptidome" @click="goToPeptidome">-->
-<!--            <span>-->
-<!--            <svg class="icon-peptidome" aria-hidden="true">-->
-<!--                <use xlink:href="#icon-checklist"></use>-->
-<!--                &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt;-->
-<!--            </svg>-->
-<!--            </span>-->
-<!--            <span class="resource-button-content">{{peptidomebutton}}</span>-->
-<!--        </a>-->
+        <a class="button resource-button peptidome" @click="goToPeptidome">
+            <span>
+            <svg class="icon-peptidome" aria-hidden="true">
+                <use xlink:href="#icon-checklist"></use>
+                <!-- &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt; -->
+            </svg>
+            </span>
+            <span class="resource-button-content">{{peptidomebutton}}</span>
+        </a>
     </div>
   </div>
 </template>
@@ -201,7 +201,7 @@
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
             goToPeptidome(){
-                this.$router.push({name:'peptidome'});
+                this.$router.push({name:'spectra'});
             },
             goToArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});
