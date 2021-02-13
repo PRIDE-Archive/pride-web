@@ -17,8 +17,9 @@
                           </Input>
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
+                              Examples:
                               <Tooltip content="YYWGGLYSWDMSK">
-                                  <a @click="gotoExamplePeptide('YYWGGLYSWDMSK')" style="color:#666">YYW**SK</a>
+                                  <a @click="gotoExamplePeptide('YYWGGLYSWDMSK')" style="color:#666">YYWGGLYSWDMSK</a>
                               </Tooltip>
                               <Tooltip content="mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2" style="margin-left: 5px">
                                 <div slot="content">
@@ -29,7 +30,7 @@
                                     <p>:11850:[UNIMOD:214]</p>
                                     <p>YYWGGLYSWDMSK[UNIMOD:214]/2</p>
                                 </div>
-                                  <a @click="gotoExampleUSI('mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2')" style="color:#666">mzspec**4]/2</a>
+                                  <a @click="gotoExampleUSI('mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2')" style="color:#666">USI for YYWGGLYSWDMSK</a>
                               </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
