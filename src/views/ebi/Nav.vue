@@ -61,7 +61,7 @@
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                              <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
+                              <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive111</router-link></DropdownItem>
                               <DropdownItem name="goToSpectra"><router-link :to="{ name: 'spectra'}">PRIDE Archive Spectra</router-link></DropdownItem>
 
                               <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
@@ -722,6 +722,9 @@
             },
             closeBanner(){
               console.log('close banner');
+            },
+            gotoAnnotate(){
+              window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
             }
         },
         mounted() {

@@ -30,6 +30,7 @@
                           </a>
                           <DropdownMenu slot="list">
                               <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
+                              <DropdownItem name="goToAnnotate"><a>PRIDE Archive Annotated</a></DropdownItem>
                               <DropdownItem name="goToSpectra"><router-link :to="{ name: 'spectra'}">PRIDE Archive Spectra</router-link></DropdownItem>
 
 <!--                              <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>-->
@@ -64,6 +65,14 @@
                           <router-link :to="{ path: '/markdownpage/citationpage' }">
                             <i class="fas fa-info-circle"></i>
                             <span class='sub-nav-title'>About</span>
+                          </router-link>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <router-link :to="{ path: '/markdownpage/contact' }">
+                            <i class="fas fa-user-circle"></i>
+                            <span class='sub-nav-title'>Contact</span>
                           </router-link>
                       </Dropdown>
                   </li>
@@ -170,6 +179,9 @@
             resourcesClick(name){
                 if(name=='goToArchive'){
                     this.$router.push({name:'archive'});
+                }
+                else if(name== 'goToAnnotate'){
+                  window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
                 }
                 else if(name=='goToSpectra'){
                   this.$router.push({name:"spectra"})
