@@ -31,8 +31,9 @@ import 'echarts/lib/chart/map'
 import 'echarts/map/json/world.json'
 import 'echarts/map/js/world.js'
 
-import VueMarkdown from 'vue-markdown';
-import ReadMore from 'vue-read-more';
+import VueMarkdown from 'vue-markdown'
+import ReadMore from 'vue-read-more'
+import VueMeta from 'vue-meta'
  
 
 // import vSuggest from 'v-suggest';
@@ -46,6 +47,7 @@ Vue.use(ViewUI, { locale })
 Vue.use(VueResource);
 Vue.use(ReadMore);
 Vue.component('chart', ECharts)
+Vue.use(VueMeta)
 
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });

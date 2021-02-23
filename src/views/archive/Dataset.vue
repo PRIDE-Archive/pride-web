@@ -338,7 +338,7 @@
   import NavBar from '@/components/Nav'
   import store from "@/store.js"
   export default {
-    name: 'archive',
+    name: 'archive',  
     data(){
       return {
           accession:'',
@@ -733,6 +733,14 @@
           totalSdrf:0,
           reanalysisReferences:[],
           referenceModalShow:false
+      }
+    },
+    metaInfo () {
+      return {
+        title: this.title,
+        meta: [
+          { vmid: 'description', name: 'description', content: this.projectDescription }
+        ]
       }
     },
     beforeRouteUpdate:function (to, from, next) {
