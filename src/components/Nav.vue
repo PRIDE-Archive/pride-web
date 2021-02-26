@@ -181,7 +181,14 @@
                     this.$router.push({name:'archive'});
                 }
                 else if(name== 'goToAnnotate'){
-                  window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
+                  let query = {
+                    keyword:'sdrf.tsv',
+                    sortDirection:'DESC',
+                    page:0,
+                    pageSize:20
+                  }
+                  this.$router.push({name: 'archive', query: query});
+                  // window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
                 }
                 else if(name=='goToSpectra'){
                   this.$router.push({name:"spectra"})
