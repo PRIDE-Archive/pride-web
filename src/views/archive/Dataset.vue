@@ -774,7 +774,7 @@
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'http://') || '';
+                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -877,7 +877,7 @@
                           if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
                               let urlItem = {
                                   label:'FTP',
-                                  key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "http://"),
+                                  key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "https://"),
                               }
                               item.url.push(urlItem)
                           }
