@@ -167,7 +167,7 @@
                     title: 'Submission Tool',
                     content: '<p>Do you want to download the PRIDE Submission Tool?</p>',
                     onOk: () => {
-                        window.location.href=" http://ftp.pride.ebi.ac.uk/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip"
+                        window.location.href=" https://ftp.pride.ebi.ac.uk/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip"
                        
                     },
                     onCancel: () => {
