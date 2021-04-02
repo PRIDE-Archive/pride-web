@@ -16,6 +16,12 @@ export default {
     defaultNav,
     defaultFooter
   },
+  beforeRouteUpdate:function (to, from, next) {
+    if(this.$route.path.indexOf('/archive/projects') == -1){
+          console.log(222)
+        }
+    next();
+  },
   mounted:function(){
     try{
         // console.log(33333333333)
@@ -29,12 +35,22 @@ export default {
           // alert('Security Issue! Force Redirect!')
           this.$router.push({name:'404'});
         }
+        
     }
     catch(e){
       // window.top.location.replace(window.location)
       this.$router.push({name:'404'});
     }
         
+  },
+  watch:{
+    $route(to,from){
+      if(to.path.indexOf('/archive/projects') == -1){
+          let ssr_Script = document.getElementById("ssr-script")
+          if(ssr_Script)
+            ssr_Script.remove()
+        }
+    }
   },
 }
 </script>

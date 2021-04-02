@@ -803,6 +803,7 @@
                 }
                 // this.getMSRunTableData()
                 this.getProteinEvidences()
+                this.ssr()
             },function(err){
                 if(err.bodyText.match('not in the database')){
                     this.$Modal.warning({
@@ -1261,6 +1262,25 @@
       },
       gotoReference(){
           window.open('https://www.doi.org/10.1038/s41587-019-0298-5')
+      },
+      ssr(){
+          let ssrScript = document.querySelector('#ssr-script')
+          let ld_JSON = {
+            a:'123',
+            b:'222'
+          }
+          if(ssrScript){
+            ssr_script.text = ''
+            ssr_script.text = JSON.stringify(ld_JSON)
+          }
+          else{
+            let ssr_script = document.createElement("script")
+            ssr_script.type = 'application/ld+json'
+            ssr_script.id = 'ssr-script'
+            ssr_script.text = JSON.stringify(ld_JSON)
+            console.log(ssr_script)
+            document.getElementsByTagName('head')[0].appendChild(ssr_script)
+          }
       }
     },
     mounted: function(){
