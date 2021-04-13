@@ -758,6 +758,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
+              console.log(res.body)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -775,6 +776,8 @@
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
                 this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
+                //for ssr
+                this.keywords = res.body.keywords[0]
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
@@ -792,6 +795,7 @@
                   }
                   this.contactors.push(item);
                 }
+
                 //for publications
                 //console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
@@ -1265,9 +1269,69 @@
       },
       ssr(){
           let ssrScript = document.querySelector('#ssr-script')
+          let creators = ''
+          for(let i=0; i<this.contactors.length; i++){
+            creators+=this.contactors[i].name+','
+          }
+          creators = creators.substr(0, creators.length - 1)
           let ld_JSON = {
-            a:'123',
-            b:'222'
+            "mainEntity": {
+              "creator": [
+                {
+                  "name": creators,
+                  "@type": "Person"
+                }
+              ],
+              "keywords": this.keywords,
+              "citation": {
+                "name": this.title,
+                "url": window.location.href,
+                "author": {
+                  "name": creators,
+                  "@type": "Person"
+                },
+                "publisher": {
+                  "name": "", //TODO
+                  "@type": "Organization"
+                },
+                "@type": "CreativeWork"
+              },
+              "@type": "Dataset",
+              "name": this.title,
+              "variableMeasured": "Proteomics",
+              "description": this.projectDescription,
+              "distribution": {
+                //"contentUrl": "http://www.omicsdi.org/ws/dataset/arrayexpress-repository/E-GEOD-21339.xml",
+                //"@type": "DataDownload",
+                //"encodingFormat": "XML"
+              },
+              //"sameAs": "https://www.ebi.ac.uk/arrayexpress/experiments/E-GEOD-21339"
+            },
+            "breadcrumb": {
+              "itemListElement": [
+                {
+                  "item": "https://www.ebi.ac.uk/pride",
+                  "@type": "ListItem",
+                  "name": "Pride",
+                  "position": 1
+                },
+                {
+                  "item": "https://www.ebi.ac.uk/pride/archive?keyword="+this.accession,
+                  "@type": "ListItem",
+                  "name": "Accession",
+                  "position": 2
+                },
+                {
+                  "item": "https://www.ebi.ac.uk/pride/archive/projects/"+this.accession,
+                  "@type": "ListItem",
+                  "name": this.accession,
+                  "position": 3
+                }
+              ],
+              "@type": "BreadcrumbList"
+            },
+            "@type": "ItemPage",
+            "@context": "http://schema.org"
           }
           if(ssrScript){
             ssr_script.text = ''
