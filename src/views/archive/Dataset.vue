@@ -1291,7 +1291,7 @@
                   "@type": "Person"
                 },
                 "publisher": {
-                  "name": "", //TODO
+                  "name": "PRIDE", //TODO
                   "@type": "Organization"
                 },
                 "@type": "CreativeWork"
@@ -1300,12 +1300,7 @@
               "name": this.title,
               "variableMeasured": "Proteomics",
               "description": this.projectDescription,
-              "distribution": {
-                //"contentUrl": "http://www.omicsdi.org/ws/dataset/arrayexpress-repository/E-GEOD-21339.xml",
-                //"@type": "DataDownload",
-                //"encodingFormat": "XML"
-              },
-              //"sameAs": "https://www.ebi.ac.uk/arrayexpress/experiments/E-GEOD-21339"
+              "sameAs": "http://proteomecentral.proteomexchange.org/cgi/GetDataset?ID="+this.accession
             },
             "breadcrumb": {
               "itemListElement": [
