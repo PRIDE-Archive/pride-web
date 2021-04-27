@@ -143,9 +143,20 @@
                               this.$refs[name].resetFields();
                               //this.$router.push({name:'archive'})
                         },function(err){
-                          let errArray = err.body;
                           this.$Spin.hide()
-                          this.$Message.error({ content: errArray[0].defaultMessage});
+                          if(err.body.hasOwnProperty('message')){
+                              if(err.body.message == 'Supplied Token is not a valid JWT token')
+                                 this.$Message.error({ content: 'Invalid Token, Please log in!'});
+                              else
+                                this.$Message.error({ content: 'Publish Error, contact pride-support'});
+                          }
+                          else{
+                              let errArray = err.body;
+                              if(errArray[0].hasOwnProperty('defaultMessage'))
+                                this.$Message.error({ content: errArray[0].defaultMessage});
+                              else
+                                this.$Message.error({ content: 'Unknow Error, contact pride-support'});
+                          }
                         });
               })
             },
