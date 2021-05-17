@@ -9,6 +9,6 @@ Please contact the following ProteomeXchange Partner Repository Coordinators in 
 ![Private access in PRIDE inspector](../markdown/contact/image/juan.jpeg)
 
 - **Proteomics Team Leader**
-- **juan@ebi.ac.uk**
+- **pride-support@ebi.ac.uk**
   
 
