@@ -192,7 +192,7 @@
                   ellipsis:true
               },
               {
-                  title: 'Pre Charge',
+                  title: 'Protein Accession',
                   key: 'precharge',
                   sortable: true,
                   minWidth: 150,
@@ -213,7 +213,7 @@
                   ellipsis:true
               },
               {
-                  title: 'Projects',
+                  title: '#Projects',
                   key: 'projects',
                   sortable: true,
                   minWidth: 150,
@@ -227,7 +227,7 @@
               //     ellipsis:true
               // },
               {
-                  title: 'Ratio',
+                  title: 'Best PEP value',
                   key: 'ratio',
                   sortable: true,
                   minWidth: 150,
