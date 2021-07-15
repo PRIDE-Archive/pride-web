@@ -133,8 +133,8 @@
           facetsURL: this.$store.state.baseApiURL + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
-          queryClusterListApi: 'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
-
+          // queryClusterListApi: 'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
+          queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary/peptide',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
@@ -198,13 +198,13 @@
                   minWidth: 150,
                   ellipsis:true
               },
-              {
-                  title: 'Pre m/z',
-                  key: 'premz',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
+              // {
+              //     title: 'Pre m/z',
+              //     key: 'premz',
+              //     sortable: true,
+              //     minWidth: 150,
+              //     ellipsis:true
+              // },
               {
                   title: '#Spectra',
                   key: 'spectra',
@@ -219,13 +219,13 @@
                   minWidth: 150,
                   ellipsis:true
               },
-              {
-                  title: '#Species',
-                  key: 'species',
-                  sortable: true,
-                  minWidth: 150,
-                  ellipsis:true
-              },
+              // {
+              //     title: '#Species',
+              //     key: 'species',
+              //     sortable: true,
+              //     minWidth: 150,
+              //     ellipsis:true
+              // },
               {
                   title: 'Ratio',
                   key: 'ratio',
@@ -233,13 +233,13 @@
                   minWidth: 150,
                   ellipsis:true
               },
-              {
-                  title: 'ID',
-                  key: 'ID',
-                  width:1,
-                  //maxWidth:0,
-                  className:'peptideID'
-              }
+              // {
+              //     title: 'ID',
+              //     key: 'ID',
+              //     width:1,
+              //     //maxWidth:0,
+              //     className:'peptideID'
+              // }
           ],
           peptideTableResults:[]
       }
@@ -352,7 +352,7 @@
           let newquery = '';
           for(let i in query){
               if(i == 'keyword')
-                newquery=newquery+'q='+query[i] + '&';
+                newquery=newquery+'keyword='+query[i] + '&';
               else if(i == 'page' || i == 'pageSize')
                 newquery=newquery+i+'='+query[i] + '&';
               
@@ -365,19 +365,22 @@
             .get(this.queryClusterListApi+'?'+newquery)
             .then(function(clusterRes){
                 this.loading=false;
-                this.total = clusterRes.body.totalResults;
-                //console.log('clusterRes.body',clusterRes.body);
+                // this.total = clusterRes.body.totalResults;
+                this.total = clusterRes.body.page.totalElements;
+                console.log('clusterRes.body',clusterRes.body._embedded.peptideSummaries);
                 //console.log('this.facetsMap',this.facetsMap);
-                for(let i=0; i < clusterRes.body.results.length; i++){
+                for(let i=0; i < clusterRes.body._embedded.peptideSummaries.length; i++){
+                  console.log(clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore)
                   var item = {
-                      ID:clusterRes.body.results[i].id,
-                      peptide: clusterRes.body.results[i].sequence,
-                      precharge: clusterRes.body.results[i].averagePrecursorCharge,
-                      premz: clusterRes.body.results[i].averagePrecursorMz.toFixed(2),
-                      spectra: clusterRes.body.results[i].totalNumberOfSpectra,
-                      projects: clusterRes.body.results[i].totalNumberOfProjects,
-                      species: clusterRes.body.results[i].totalNumberOfSpecies,
-                      ratio: (clusterRes.body.results[i].maxRatio*100).toFixed(1) + '%'
+                      //ID:clusterRes.body._embedded.peptideSummaries[i].id,
+                      peptide:clusterRes.body._embedded.peptideSummaries[i].peptideSequence,
+                      precharge:clusterRes.body._embedded.peptideSummaries[i].proteinAccession,
+                      ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3) + '%',
+                      spectra: clusterRes.body._embedded.peptideSummaries[i].psmsCount,
+                      projects: clusterRes.body._embedded.peptideSummaries[i].projectAccessions.length,
+                      // premz: clusterRes.body._embedded.peptideSummaries[i].averagePrecursorMz.toFixed(2),
+                      // species: clusterRes.body._embedded.peptideSummaries[i].totalNumberOfSpecies,
+                      
                   }
                   this.peptideTableResults.push(item);
                 }
