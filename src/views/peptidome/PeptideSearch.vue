@@ -375,7 +375,7 @@
                       //ID:clusterRes.body._embedded.peptideSummaries[i].id,
                       peptide:clusterRes.body._embedded.peptideSummaries[i].peptideSequence,
                       precharge:clusterRes.body._embedded.peptideSummaries[i].proteinAccession,
-                      ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3) + '%',
+                      ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3),
                       spectra: clusterRes.body._embedded.peptideSummaries[i].psmsCount,
                       projects: clusterRes.body._embedded.peptideSummaries[i].projectAccessions.length,
                       // premz: clusterRes.body._embedded.peptideSummaries[i].averagePrecursorMz.toFixed(2),
