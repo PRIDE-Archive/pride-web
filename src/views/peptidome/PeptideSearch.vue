@@ -777,6 +777,7 @@
             });
       },
       rowClick(row,index){
+        console.log('row',row)
         this.$router.push({name:'peptidedetails',params:{id:row.ID}});
       },
     },
