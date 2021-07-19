@@ -192,7 +192,7 @@
                   ellipsis:true
               },
               {
-                  title: 'Pre Charge',
+                  title: 'Protein Accession',
                   key: 'precharge',
                   sortable: true,
                   minWidth: 150,
@@ -213,7 +213,7 @@
                   ellipsis:true
               },
               {
-                  title: 'Projects',
+                  title: '#Projects',
                   key: 'projects',
                   sortable: true,
                   minWidth: 150,
@@ -227,7 +227,7 @@
               //     ellipsis:true
               // },
               {
-                  title: 'Ratio',
+                  title: 'Best PEP value',
                   key: 'ratio',
                   sortable: true,
                   minWidth: 150,
@@ -375,7 +375,7 @@
                       //ID:clusterRes.body._embedded.peptideSummaries[i].id,
                       peptide:clusterRes.body._embedded.peptideSummaries[i].peptideSequence,
                       precharge:clusterRes.body._embedded.peptideSummaries[i].proteinAccession,
-                      ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3) + '%',
+                      ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3),
                       spectra: clusterRes.body._embedded.peptideSummaries[i].psmsCount,
                       projects: clusterRes.body._embedded.peptideSummaries[i].projectAccessions.length,
                       // premz: clusterRes.body._embedded.peptideSummaries[i].averagePrecursorMz.toFixed(2),
