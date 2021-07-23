@@ -84,7 +84,7 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="12">
+                <!-- <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Peptides ({{peptidesNum}})</p>
@@ -100,16 +100,10 @@
                                  <Spin fix v-if="peptidesSpinShow"></Spin>
                                  <Table height="295" class="peptide-detail-table" border :columns="peptidesCol" :data="peptidesData" size="small"></Table>
                              </div>
-                             <!--
-                             <div class="button-wrapper">
-                                 <a><i class="fas fa-angle-double-left left"></i>Previous</a>
-                                 <a>Next<i class="fas fa-angle-double-right right"></i></a>
-                             </div>
-                             -->
                         </Card>
                     </div>
-                </Col>
-                <Col span="12">
+                </Col> -->
+                <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Original Experiments ({{originalExperimentsNum}})</p>
@@ -142,7 +136,12 @@
                              <p slot="title">Consensus Spectrum</p>
                              <Spin fix v-if="consensusSpectrumSpinShow"></Spin>
                              <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
-                             <iframe ref="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe>
+                             <div class="spectrum-container">
+                               <div style="color:#bdbdbd; text-align: center;">
+                                  <!-- {{spectrumTableHint}} -->
+                               </div>
+                             </div>
+                             <!-- <iframe ref="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe> -->
                              <!--<Lorikeet></Lorikeet>-->
                         </Card>
                     </div>
@@ -160,19 +159,19 @@
         data () {
             return {
                 iframeURL: this.$store.state.baseURL + '/lorikeet/html/pride.html',
-                clusterIDApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/' + this.$route.params.id,
+                clusterIDApi: this.$store.state.baseApiURL + '/peptidesummary/peptide',
                 clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
                 clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
                 clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
-                speciesSpinShow:true,
-                modificationSpinShow:true,
+                speciesSpinShow:false,
+                modificationSpinShow:false,
                 detailsSpinShow:true,
-                peptidesSpinShow:true,
-                originalExperimentsSpinShow:true,
-                consensusSpectrumSpinShow:true,
+                peptidesSpinShow:false,
+                originalExperimentsSpinShow:false,
+                consensusSpectrumSpinShow:false,
                 totalPeptides:0,
                 totalProjects:0,
                 peptidesCol: [
@@ -419,19 +418,71 @@
         },
         methods: {
            queryPeptideDetail(){
+                let query = {
+                    keyword: this.$route.query.keyword,
+                    proteinAccession: this.$route.query.proteinAccession
+                }
                 this.$http
-                  .get(this.clusterIDApi)
+                  .get(this.clusterIDApi,{params:query })
                   .then(function(res){
-                    this.detailsSpinShow=false;
-                    this.sequence=res.body.sequence;
-                    this.averagePrecursorCharge=res.body.averagePrecursorCharge;
-                    this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
-                    this.numberOfSpectra=res.body.numberOfSpectra;
-                    this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
-                    this.numberOfProjects=res.body.numberOfProjects;
-                    this.totalNumberOfProjects=res.body.totalNumberOfProjects;
-                    this.numberOfSpecies=res.body.numberOfSpecies;
-                    this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+                        this.detailsSpinShow=false;
+                        console.log(res.body)
+                        let body = res.body._embedded.peptideSummaries[0]
+                        this.sequence=body.peptideSequence;
+                        this.averagePrecursorCharge=body.bestSearchEngineScore;
+                        // this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
+                        // this.numberOfSpectra=res.body.numberOfSpectra;
+                        // this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
+                        // this.numberOfProjects=res.body.numberOfProjects;
+                        // this.totalNumberOfProjects=res.body.totalNumberOfProjects;
+                        // this.numberOfSpecies=res.body.numberOfSpecies;
+                        // this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+                        this.$bus.$emit('show-modifications', body.ptmsMap);
+                        this.$http
+                          .get('https://www.ebi.ac.uk/pride/ws/archive/v2/spectrum?usi='+body.bestUsis[0])
+                          .then(function(res){
+                                this.consensusSpectrumSpinShow=false;
+                                // console.log(res.body)
+                                let psm = res.body;
+                                let peptideSequence = psm.peptideSequence;
+                                let charge = psm.charge;
+                                let precursorMZ = psm.precursorMZ;
+                                let peaks;
+                                let variableMods;
+
+                                //add peaks for item
+                                if(psm.intensities){
+                                  let peaksArray = [];
+                                  for(let j=0; j<psm.intensities.length; j++){
+                                      let item = {
+                                        mz:psm.mzs[j],
+                                        intensity:psm.intensities[j]
+                                      }
+                                      peaksArray.push(item)
+                                  }
+                                  peaks = peaksArray;
+                                }
+                                //add variableMods for item
+                                if(psm.ptms){
+                                  let variableModsArray = [];
+                                  for(let j=0; j<psm.ptms.length; j++){
+                                      for(let k=0; k<psm.ptms[j].positionMap.length; k++){
+                                          let item = {
+                                            index:psm.ptms[j].positionMap[k].key,
+                                            modMass:parseFloat(psm.ptms[j].modification.value),
+                                            aminoAcid: psm.peptideSequence.split('')[psm.ptms[j].positionMap[k].key-1]
+                                          };
+                                          variableModsArray.push(item)
+                                      }
+                                  }
+                                  variableMods = variableModsArray;
+                                }
+                                // sequence = this.sequence;
+                                this.showSpectrum(true, peptideSequence, peaks, charge, precursorMZ, variableMods)
+                                // this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
+                          },function(err){
+                                this.consensusSpectrumSpinShow=false;
+                          });                               
                   },function(err){
 
                   });
@@ -504,50 +555,88 @@
 
                   });
            },
-           queryClusterConsensusSpectrum(){
-                let peaks;
-                let sequence;
-                this.$http
-                  .get(this.clusterConsensusSpectrum)
-                  .then(function(res){
-                        //console.log(res);
-                        peaks = res.body.peaks;
-                        if(this.sequence){
-                            this.consensusSpectrumSpinShow=false;
-                            sequence = this.sequence;
-                            this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
-                        }
-                        else{
-                            this.$http
-                              .get(this.clusterIDApi)
-                              .then(function(res){
-                                //request this api again
-                                this.detailsSpinShow=false;
-                                this.sequence=res.body.sequence;
-                                this.averagePrecursorCharge=res.body.averagePrecursorCharge;
-                                this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
-                                this.numberOfSpectra=res.body.numberOfSpectra;
-                                this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
-                                this.numberOfProjects=res.body.numberOfProjects;
-                                this.totalNumberOfProjects=res.body.totalNumberOfProjects;
-                                this.numberOfSpecies=res.body.numberOfSpecies;
-                                this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+           // queryClusterConsensusSpectrum(){
+           //      let peaks;
+           //      let sequence;
+           //      this.$http
+           //        .get(this.clusterConsensusSpectrum)
+           //        .then(function(res){
+           //                  this.$http
+           //                    .get(this.clusterIDApi)
+           //                    .then(function(res){
+           //                      //request this api again
+           //                      this.detailsSpinShow=false;
+           //                      this.sequence=res.body.sequence;
+           //                      this.averagePrecursorCharge=res.body.averagePrecursorCharge;
+           //                      this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
+           //                      this.numberOfSpectra=res.body.numberOfSpectra;
+           //                      this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
+           //                      this.numberOfProjects=res.body.numberOfProjects;
+           //                      this.totalNumberOfProjects=res.body.totalNumberOfProjects;
+           //                      this.numberOfSpecies=res.body.numberOfSpecies;
+           //                      this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+           //                      //for iframe
+           //                      this.$http
+           //                            .get('https://www.ebi.ac.uk/pride/archive/spectra?usi='+res.body.bestUsis[0])
+           //                            .then(function(res){
+           //                                  this.consensusSpectrumSpinShow=false;
+           //                                  console.log(res.body)
+           //                                  // sequence = this.sequence;
+           //                                  // this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
+           //                            },function(err){
+           //                                  this.consensusSpectrumSpinShow=false;
+           //                            });                               
+           //                    },function(err){
 
-                                //for iframe
-                                this.consensusSpectrumSpinShow=false;
-                                sequence = this.sequence;
-                                this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
-                              },function(err){
+           //                    });
+                       
+           //        },function(err){
 
-                              });
-                        }
-                  },function(err){
-
-                  });
-           },
+           //        });
+           // },
            gotoBlast(data){
                 location.href=this.blastUrl+data.row.peptide;
-           }
+           },
+           showSpectrum(val, peptideSequence, peaks, charge, precursorMZ,variableMods){
+              if(val){
+                  let iframeDom = document.querySelector("#lorikeetIframe");
+                  if(peptideSequence){ 
+                      if(iframeDom)
+                        iframeDom.remove();
+                      
+                      this.spectrumSpinShow = true;
+                      this.spectrumTableShow=false;
+                      let iframe = document.createElement('iframe');
+                      iframe.src = this.iframeURL;
+                      iframe.id = 'lorikeetIframe'
+                      iframe.className = 'lorikeet-iframe'
+                      iframe.style.width = '100%'
+                      iframe.style.height = '940px'
+                      iframe.style.borderWidth = '0';
+                      document.querySelector(".spectrum-container").appendChild(iframe)
+                      document.querySelector("#lorikeetIframe").onload = ()=>{
+                        this.spectrumTableShow=true;
+                        this.spectrumSpinShow = false;
+                        //console.log(peptideSequence,peaks)
+                        document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
+                      }
+                      document.querySelector("#lorikeetIframe").onerror = ()=> {
+                          this.spectrumTableShow= false;
+                          this.spectrumSpinShow = false;
+                          this.$Message.error({content:'Spectrum Error', duration:3});
+                      };
+                  }
+                  else{
+                      this.spectrumTableShow = false;
+                      this.spectrumSpinShow = false;
+                  }
+              }
+              else{
+                  this.spectrumSpinShow = false;
+                  this.spectrumTableShow=false;
+                  document.querySelector("#lorikeetIframe").remove();
+              }
+            },
         },
         computed:{
             spectraTooltip(){
@@ -562,12 +651,13 @@
        
         },
         mounted: function(){
+            console.log(this.$route)
             this.queryPeptideDetail();
             this.queryPeptideSpecies();
             this.queryPeptideModification();
             this.queryClusterPeptides();
             this.queryClusterOriginalExperiments();
-            this.queryClusterConsensusSpectrum();
+            // this.queryClusterConsensusSpectrum();
         },
     }
 </script>
