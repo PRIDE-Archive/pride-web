@@ -60,26 +60,40 @@ export default {
   },
   methods:{
     setOptions(data){
-        this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
-        data.sort(function(a,b){
-            return a.count < b.count ? 1 : -1;
-        });
-        var totalCount = 0;
-        for(let i=0; i<data.length; i++){
-            totalCount += data[i].count;
-        }
-        var legendName = [];
-        for(let i=0; i<data.length; i++){
-            legendName[i] = data[i].modificationName + ' [' + (data[i].count/totalCount*100).toFixed(1) +'%]';
-            //console.log('legendName',legendName[i]);
-            this.option.legend.data.push(legendName[i]);
-            this.option.legend.selected[legendName[i]] = i < this.visulizationNum;
-            var item = {
-                value:data[i].count,
-                name:legendName[i]
+        console.log('data',data)
+        let arr = []
+        for(let i in data){
+            let item = {
+                name:i,
+                len:data[i].length,
+                value:data[i]
             }
-            this.option.series[0].data.push(item);
+            arr.push(item)
         }
+        arr.sort(function(a,b){
+             return a.len < b.len ? 1 : -1;
+        });
+        console.log('arr',arr)
+        // this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
+        // data.sort(function(a,b){
+        //     return a.count < b.count ? 1 : -1;
+        // });
+        // var totalCount = 0;
+        // for(let i=0; i<data.length; i++){
+        //     totalCount += data[i].count;
+        // }
+        // var legendName = [];
+        // for(let i=0; i<data.length; i++){
+        //     legendName[i] = data[i].modificationName + ' [' + (data[i].count/totalCount*100).toFixed(1) +'%]';
+        //     //console.log('legendName',legendName[i]);
+        //     this.option.legend.data.push(legendName[i]);
+        //     this.option.legend.selected[legendName[i]] = i < this.visulizationNum;
+        //     var item = {
+        //         value:data[i].count,
+        //         name:legendName[i]
+        //     }
+        //     this.option.series[0].data.push(item);
+        // }
     }
   },
   created(){
