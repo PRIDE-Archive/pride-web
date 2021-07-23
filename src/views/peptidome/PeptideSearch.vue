@@ -778,7 +778,7 @@
       },
       rowClick(row,index){
         console.log('row',row)
-        this.$router.push({name:'peptidedetails',params:{id:row.ID}});
+        this.$router.push({name:'peptidedetails',query:{keyword:row.peptide, proteinAccession:row.precharge}});
       },
     },
 
