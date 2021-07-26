@@ -159,7 +159,7 @@
         data () {
             return {
                 iframeURL: this.$store.state.baseURL + '/lorikeet/html/pride.html',
-                clusterIDApi: this.$store.state.baseApiURL + '/peptidesummary/peptide',
+                clusterIDApi: this.$store.state.baseApiURL + '/peptidedetails',
                 clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
                 clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
@@ -419,7 +419,7 @@
         methods: {
            queryPeptideDetail(){
                 let query = {
-                    keyword: this.$route.query.keyword,
+                    peptideSequence: this.$route.query.keyword,
                     proteinAccession: this.$route.query.proteinAccession
                 }
                 this.$http
@@ -427,7 +427,7 @@
                   .then(function(res){
                         this.detailsSpinShow=false;
                         console.log(res.body)
-                        let body = res.body._embedded.peptideSummaries[0]
+                        let body = res.body
                         this.sequence=body.peptideSequence;
                         this.averagePrecursorCharge=body.bestSearchEngineScore;
                         // this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
