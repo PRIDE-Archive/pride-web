@@ -6,14 +6,15 @@
                 <Col span="24">
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
-                            <h2 class="project-title">Consensus Peptide</h2>
+                            <h2 class="project-title">Peptide</h2>
                             <div class="peptide-details-wrapper">
                                 <Spin fix v-if="detailsSpinShow"></Spin>
-                                <h4>{{sequence}} (Charge: {{averagePrecursorCharge}}+ @ {{averagePrecursorMz}} m/z units)</h4>
+                                <h4>{{sequence}}</h4>
+                                <h4>(Protein: {{proteinAccession}}, Best PEP: {{averagePrecursorCharge}})</h4>
                                 <div class="peptide-property-wrapper">
-                                    <span class="property-item">#Spectra 
+                                    <span class="property-item">#PSMs
                                         <Tooltip>
-                                            {{numberOfSpectra}}/{{totalNumberOfSpectra}} ({{(numberOfSpectra/totalNumberOfSpectra).toFixed(3)*100}}%)
+                                            {{numberOfSpectra}}
                                             <div class="tooltip-content" slot="content">
                                                 {{spectraTooltip}}
                                             </div>
@@ -21,7 +22,7 @@
                                     </span>
                                     <span class="property-item">#Projects
                                         <Tooltip content="Here is the prompt text">
-                                            {{numberOfProjects}}/{{totalNumberOfProjects}} ({{(numberOfProjects/totalNumberOfProjects).toFixed(3)*100}}%)
+                                            {{numberOfProjects}}
                                             <div class="tooltip-content" slot="content">
                                                 {{projectsTooltip}}
                                             </div>
@@ -31,7 +32,7 @@
                                         <Tooltip content="Here is the prompt text">
                                             {{numberOfSpecies}}/{{totalNumberOfSpecies}} ({{(numberOfSpecies/totalNumberOfSpecies).toFixed(3)*100}}%)
                                             <div class="tooltip-content" slot="content">
-                                                {{speciesTooltip}}
+                                                {{"Number of Tissues"}}
                                             </div>
                                         </Tooltip>
                                     </span>
@@ -160,10 +161,10 @@
             return {
                 iframeURL: this.$store.state.baseURL + '/lorikeet/html/pride.html',
                 clusterIDApi: this.$store.state.baseApiURL + '/peptidedetails',
-                clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
-                clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
+                // clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
+                // clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
-                clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
+                // clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
                 speciesSpinShow:false,
@@ -397,6 +398,7 @@
                 ],
                 originalExperimentsData:[],
                 sequence:'',
+                proteinAccession: '',
                 averagePrecursorCharge:'',
                 averagePrecursorMz:'',
                 numberOfSpectra:'',
@@ -429,6 +431,9 @@
                         console.log(res.body)
                         let body = res.body
                         this.sequence=body.peptideSequence;
+                        this.proteinAccession = body.proteinAccession;
+                        this.numberOfSpectra = body.psmsCount;
+                        this.numberOfProjects = body.projects.length
                         this.averagePrecursorCharge=body.bestSearchEngineScore;
                         // this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
                         // this.numberOfSpectra=res.body.numberOfSpectra;
@@ -640,15 +645,11 @@
         },
         computed:{
             spectraTooltip(){
-                return 'Number of spectra identifying the consensus peptide ('+this.numberOfSpectra+') / Total number of spectra in the cluster ('+this.totalNumberOfSpectra+')';
+                return 'Number of identified PSMs for this peptide';
             },
             projectsTooltip(){
-                return 'Number of projects identifying the consensus peptide ('+this.numberOfProjects+') / Total number of projects in the cluster ('+this.totalNumberOfProjects+')';
-            },
-            speciesTooltip(){
-                return 'Number of species assigned to the consensus peptide ('+this.numberOfSpecies+') / Total number of species in the cluster ('+this.totalNumberOfSpecies+')';
+                return 'Number of projects identifying this peptide';
             }
-       
         },
         mounted: function(){
             console.log(this.$route)
