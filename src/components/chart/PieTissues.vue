@@ -1,5 +1,5 @@
 <template>
-    <chart class="pie-species" :options="option" :auto-resize="true"></chart>
+    <chart class="pie-tissues" :options="option" :auto-resize="true"></chart>
 </template>
 <script>
 export default {
@@ -83,10 +83,10 @@ export default {
     }
   },
   created(){
-    this.$bus.$on('show-diseases', this.setOptions);
+    this.$bus.$on('show-tissues', this.setOptions);
   },
   beforeCreate:function(){
-    this.$bus.$off('show-diseases');
+    this.$bus.$off('show-tissues');
   }
 }
 </script>

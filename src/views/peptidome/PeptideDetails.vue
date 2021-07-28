@@ -28,11 +28,11 @@
                                             </div>
                                         </Tooltip>
                                     </span>
-                                    <span class="property-item">#Species 
+                                    <span class="property-item">#Diseases
                                         <Tooltip content="Here is the prompt text">
-                                            {{numberOfSpecies}}/{{totalNumberOfSpecies}} ({{(numberOfSpecies/totalNumberOfSpecies).toFixed(3)*100}}%)
+                                            {{tissuesNum}}
                                             <div class="tooltip-content" slot="content">
-                                                {{"Number of Tissues"}}
+                                                {{tissuesNum}}
                                             </div>
                                         </Tooltip>
                                     </span>
@@ -46,19 +46,19 @@
                 <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Species ({{speciesNum}})</p>
+                             <p slot="title">Diseases ({{speciesNum}})</p>
                              <p slot="extra">
                                 <Tooltip>
                                     <i class="fas fa-info-circle"></i>
                                     <div class="tooltip-content" slot="content">
-                                        Species distribution for all the PSMs within the cluster.
+                                        Diseases distribution for all the projects.
                                     </div>
                                 </Tooltip>
                                 
                              </p>
                              <div class="card-content-pie">
-                                 <Spin fix v-if="speciesSpinShow"></Spin>
-                                 <PiesSecies></PiesSecies>
+                                 <Spin fix v-if="diseasesSpinShow"></Spin>
+                                 <PieDiseases></PieDiseases>
                              </div>
                              
                         </Card>
@@ -67,18 +67,18 @@
                 <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
-                             <p slot="title">Modifications ({{modificationsNum}})</p>
+                             <p slot="title">Tissues ({{tissuesNum}})</p>
                              <p slot="extra">
                                 <Tooltip>
                                     <i class="fas fa-info-circle"></i>
                                     <div class="tooltip-content" slot="content">
-                                        Modification distribution for all the PSMs within the cluster.
+                                        Tissues distribution for all the projects.
                                     </div>
                                 </Tooltip>
                              </p>
                              <div class="card-content-pie">
-                                <Spin fix v-if="modificationSpinShow"></Spin>
-                                 <Modifications></Modifications>
+                                <Spin fix v-if="tissuesSpinShow"></Spin>
+                                 <PieTissues></PieTissues>
                              </div>
                         </Card>
                     </div>
@@ -152,10 +152,11 @@
     </div>
 </template>
 <script>
-    import PiesSecies from '@/components/chart/PieSpecies.vue'
+    import PieDiseases from '@/components/chart/PieSpecies.vue'
     import Modifications from '@/components/chart/Modifications.vue'
     import NavBar from '@/components/Nav'
     import store from "@/store.js"
+    import PieTissues from "@/components/chart/PieTissues.vue";
     export default {
         data () {
             return {
@@ -167,8 +168,8 @@
                 // clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
-                speciesSpinShow:false,
-                modificationSpinShow:false,
+                diseasesSpinShow:false,
+                tissuesSpinShow:false,
                 detailsSpinShow:true,
                 peptidesSpinShow:false,
                 originalExperimentsSpinShow:false,
@@ -421,14 +422,16 @@
                 numberOfSpecies:'',
                 totalNumberOfSpecies:'',
                 speciesNum:'',
+                tissuesNum:'',
                 modificationsNum:'',
                 peptidesNum:'',
                 originalExperimentsNum:''
             }
         },
         components: {
+            PieTissues,
             NavBar,
-            PiesSecies,
+            PieDiseases,
             Modifications
         },
         methods: {
@@ -473,10 +476,53 @@
                             this.originalExperimentsData.push(item);
                         }
 
+                    let diseases = {}
+                    let tissues  = {}
+                    for(let i=0; i< body.projects.length; i++){
+                      let project = body.projects[i]
+                      for( let j = 0; j < project.diseases.length; j++){
+                        if(project.diseases[j] in diseases){
+                          diseases[project.diseases[j]] = diseases[project.diseases[j]] + 1
+                        }else{
+                          diseases[project.diseases[j]] = 1
+                        }
+                      }
+                      for( let j = 0; j < project.tissues.length; j++){
+                        if(project.tissues[j] in tissues){
+                          tissues[project.tissues[j]] = tissues[project.tissues[j]] + 1
+                        }else{
+                          tissues[project.tissues[j]] = 1
+                        }
+                      }
+                    }
+                    console.log(diseases)
+                    console.log(tissues)
 
+                    let diseasesList = []
+                    for(var key in diseases){
+                      var item = {
+                        speciesName: key,
+                        count: diseases[key]
+                      }
+                      diseasesList.push(item)
+                    }
 
-                        this.$bus.$emit('show-modifications', body.ptmsMap);
-                        this.$http
+                    let tissuesList = []
+                    for(var key in tissues){
+                      var item = {
+                        speciesName: key,
+                        count: tissues[key]
+                      }
+                      tissuesList.push(item)
+                    }
+
+                    this.speciesNum = diseasesList.length;
+                    this.tissuesNum = tissuesList.length;
+
+                    this.$bus.$emit('show-diseases', diseasesList)
+                    this.$bus.$emit('show-tissues', tissuesList);
+
+                    this.$http
                           .get('https://www.ebi.ac.uk/pride/ws/archive/v2/spectrum?usi='+body.bestUsis[0])
                           .then(function(res){
                                 this.consensusSpectrumSpinShow=false;
@@ -522,31 +568,30 @@
                                 this.consensusSpectrumSpinShow=false;
                           });                               
                   },function(err){
-
                   });
            },
-           queryPeptideSpecies(){
-                this.$http
-                  .get(this.clusterSpeciesApi)
-                  .then(function(res){
-                    this.speciesSpinShow=false;
-                    this.speciesNum = res.body.speciesCounts.length;
-                    this.$bus.$emit('show-species', res.body.speciesCounts);
-                  },function(err){
-
-                  });
-           },
-           queryPeptideModification(){
-                this.$http
-                  .get(this.clusterModificationApi)
-                  .then(function(res){
-                    this.modificationSpinShow=false;
-                    this.modificationsNum = res.body.modificationCounts.length;
-                    this.$bus.$emit('show-modifications', res.body.modificationCounts);
-                  },function(err){
-
-                  });
-           },
+           // queryPeptideSpecies(){
+           //      this.$http
+           //        .get(this.clusterSpeciesApi)
+           //        .then(function(res){
+           //          this.diseasesSpinShow=false;
+           //          this.speciesNum = res.body.speciesCounts.length;
+           //          this.$bus.$emit('show-diseases', res.body.speciesCounts);
+           //        },function(err){
+           //
+           //        });
+           // },
+           // queryPeptideModification(){
+           //      this.$http
+           //        .get(this.clusterModificationApi)
+           //        .then(function(res){
+           //          this.modificationSpinShow=false;
+           //          this.modificationsNum = res.body.modificationCounts.length;
+           //          this.$bus.$emit('show-modifications', res.body.modificationCounts);
+           //        },function(err){
+           //
+           //        });
+           // },
            queryClusterPeptides(){
                 this.$http
                   .get(this.clusterPeptidesApi)
@@ -687,8 +732,8 @@
         mounted: function(){
             console.log(this.$route)
             this.queryPeptideDetail();
-            this.queryPeptideSpecies();
-            this.queryPeptideModification();
+            // this.queryPeptideSpecies();
+            // this.queryPeptideModification();
             this.queryClusterPeptides();
             // this.queryClusterOriginalExperiments();
             // this.queryClusterConsensusSpectrum();
