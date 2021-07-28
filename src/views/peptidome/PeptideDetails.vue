@@ -117,7 +117,7 @@
                                 </Tooltip>
                              </p>
                              <div class="card-content-table">
-                                 <Spin fix v-if="originalExperimentsSpinShow"></Spin>
+                                 <Spin fix v-if="detailsSpinShow"></Spin>
                                  <Table height="295" class="peptide-detail-table" border :columns="originalExperimentsCol" :data="originalExperimentsData" size="small"></Table>
                              </div>
                              <!--
@@ -174,7 +174,7 @@
                 originalExperimentsSpinShow:false,
                 consensusSpectrumSpinShow:false,
                 totalPeptides:0,
-                totalProjects:0,
+                // totalProjects:0,
                 peptidesCol: [
                     {
                         title: 'Peptide',
@@ -343,44 +343,55 @@
                             ]);
                         }
                     },
+                    // {
+                    //     title: '#PSM',
+                    //     key: 'psm',
+                    //     sortable: true,
+                    //     align:'center',
+                    //     sortType:'desc',
+                    //     render: (h, params) => {
+                    //         return h('div', [
+                    //             h('Tooltip',//first item
+                    //                 {
+                    //                     props: {
+                    //                         content: 'Show PSMs belong to this project',
+                    //                     },
+                    //                 },//second item
+                    //                 [
+                    //                     h('a', {
+                    //                         on: {
+                    //                             click: () => {
+                    //                                 this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{project:params.row.project}});
+                    //                             }
+                    //                         }
+                    //                     }, params.row.psm),
+                                    
+                    //                 ]//third item
+                    //             ),
+                    //             h('span', {
+                    //                 on: {
+                    //                     click: () => {
+                                            
+                    //                     }
+                    //                 }
+                    //             }, ' ('+((params.row.psm/this.totalProjects)*100).toFixed(1) + '%)'),
+                    //         ]);
+                    //     }
+                    // },
                     {
-                        title: '#PSM',
-                        key: 'psm',
+                        title: 'Title',
+                        key: 'title',
                         sortable: true,
                         align:'center',
-                        sortType:'desc',
-                        render: (h, params) => {
-                            return h('div', [
-                                h('Tooltip',//first item
-                                    {
-                                        props: {
-                                            content: 'Show PSMs belong to this project',
-                                        },
-                                    },//second item
-                                    [
-                                        h('a', {
-                                            on: {
-                                                click: () => {
-                                                    this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{project:params.row.project}});
-                                                }
-                                            }
-                                        }, params.row.psm),
-                                    
-                                    ]//third item
-                                ),
-                                h('span', {
-                                    on: {
-                                        click: () => {
-                                            
-                                        }
-                                    }
-                                }, ' ('+((params.row.psm/this.totalProjects)*100).toFixed(1) + '%)'),
-                            ]);
-                        }
                     },
                     {
-                        title: 'Species',
-                        key: 'species',
+                        title: 'Instruments',
+                        key: 'instruments',
+                        align:'center'
+                    },
+                    {
+                        title: 'Diseases',
+                        key: 'diseases',
                         sortable: true,
                         align:'center',
                     },
@@ -391,10 +402,12 @@
                         align:'center',
                     },
                     {
-                        title: 'Instruments',
-                        key: 'instruments',
-                        align:'center'
-                    }
+                        title: 'Pubmed ID',
+                        key: 'pubmedid',
+                        sortable: true,
+                        align:'center',
+                    },
+                    
                 ],
                 originalExperimentsData:[],
                 sequence:'',
@@ -442,6 +455,26 @@
                         // this.totalNumberOfProjects=res.body.totalNumberOfProjects;
                         // this.numberOfSpecies=res.body.numberOfSpecies;
                         // this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
+
+
+                        // for Original Experiments Table
+                        this.originalExperimentsNum = body.projects.length
+                        for(let i=0; i<body.projects.length; i++){
+                            var item = {
+                                project: body.projects[i].accession,
+                                title: body.projects[i].title,
+                                instruments: body.projects[i].instruments.length>0 ? body.projects[i].instruments[0] : '',
+                                diseases: body.projects[i].diseases.length>0 ? body.projects[i].diseases[0] : '',
+                                tissues: body.projects[i].tissues.length>0 ? body.projects[i].tissues[0] : '',
+                                pubmedid: body.projects[i].pubmedIds.length>0 ? body.projects[i].pubmedIds[0] : '',
+                                // psm: res.body.clusteredProjects[i].numberOfPSMs,
+                                // species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
+                            }
+                            this.originalExperimentsData.push(item);
+                        }
+
+
+
                         this.$bus.$emit('show-modifications', body.ptmsMap);
                         this.$http
                           .get('https://www.ebi.ac.uk/pride/ws/archive/v2/spectrum?usi='+body.bestUsis[0])
@@ -536,30 +569,30 @@
 
                   });
            },
-           queryClusterOriginalExperiments(){
-                 this.$http
-                  .get(this.clusterOriginalExperimentsApi)
-                  .then(function(res){
-                    //console.log(res.body.clusteredProjects);
-                    this.originalExperimentsSpinShow=false;
-                    this.originalExperimentsNum = res.body.clusteredProjects.length
-                    for(let i=0;i<res.body.clusteredProjects.length; i++){
-                        this.totalProjects += res.body.clusteredProjects[i].numberOfPSMs;
-                        var item = {
-                            project: res.body.clusteredProjects[i].accession,
-                            psm: res.body.clusteredProjects[i].numberOfPSMs,
-                            species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
-                            tissues: res.body.clusteredProjects[i].tissues.length>0 ? res.body.clusteredProjects[i].tissues[0] : '',
-                            instruments: res.body.clusteredProjects[i].instruments.length>0 ? res.body.clusteredProjects[i].instruments[0] : '',
-                        }
-                        this.originalExperimentsData.push(item);
-                    }
+           // queryClusterOriginalExperiments(){
+           //       this.$http
+           //        .get(this.clusterIDApi,)
+           //        .then(function(res){
+           //          //console.log(res.body.clusteredProjects);
+           //          this.originalExperimentsSpinShow=false;
+           //          this.originalExperimentsNum = res.body.clusteredProjects.length
+           //          for(let i=0;i<res.body.clusteredProjects.length; i++){
+           //              this.totalProjects += res.body.clusteredProjects[i].numberOfPSMs;
+           //              var item = {
+           //                  project: res.body.clusteredProjects[i].accession,
+           //                  psm: res.body.clusteredProjects[i].numberOfPSMs,
+           //                  species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
+           //                  tissues: res.body.clusteredProjects[i].tissues.length>0 ? res.body.clusteredProjects[i].tissues[0] : '',
+           //                  instruments: res.body.clusteredProjects[i].instruments.length>0 ? res.body.clusteredProjects[i].instruments[0] : '',
+           //              }
+           //              this.originalExperimentsData.push(item);
+           //          }
                     
                     
-                  },function(err){
+           //        },function(err){
 
-                  });
-           },
+           //        });
+           // },
            // queryClusterConsensusSpectrum(){
            //      let peaks;
            //      let sequence;
@@ -657,7 +690,7 @@
             this.queryPeptideSpecies();
             this.queryPeptideModification();
             this.queryClusterPeptides();
-            this.queryClusterOriginalExperiments();
+            // this.queryClusterOriginalExperiments();
             // this.queryClusterConsensusSpectrum();
         },
     }
