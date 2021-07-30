@@ -85,6 +85,27 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
+                <Col span="24">
+                    <div class="visualization-wrapper">
+                        <Card>
+                             <p slot="title">Modification</p>
+                             <p slot="extra">
+                                <Tooltip>
+                                    <i class="fas fa-info-circle"></i>
+                                    <div class="tooltip-content" slot="content">
+                                        Modifications to show PTMs
+                                    </div>
+                                </Tooltip>
+                             </p>
+                             <div class="card-content-table">
+                                 <Spin fix v-if="detailsSpinShow"></Spin>
+                                 <ScatterPTMs></ScatterPTMs>
+                             </div>
+                        </Card>
+                    </div>
+                </Col>
+            </Row>
+            <Row type="flex" justify="center" class="code-row-bg">
                 <!-- <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
@@ -156,7 +177,8 @@
     import Modifications from '@/components/chart/Modifications.vue'
     import NavBar from '@/components/Nav'
     import store from "@/store.js"
-    import PieTissues from "@/components/chart/PieTissues.vue";
+    import PieTissues from "@/components/chart/PieTissues.vue"
+    import ScatterPTMs from "@/components/chart/ScatterPTMs.vue" 
     export default {
         data () {
             return {
@@ -432,7 +454,8 @@
             PieTissues,
             NavBar,
             PieDiseases,
-            Modifications
+            Modifications,
+            ScatterPTMs
         },
         methods: {
            queryPeptideDetail(){
@@ -444,7 +467,7 @@
                   .get(this.clusterIDApi,{params:query })
                   .then(function(res){
                         this.detailsSpinShow=false;
-                        console.log(res.body)
+                        // console.log('aaaa',res.body)
                         let body = res.body
                         this.sequence=body.peptideSequence;
                         this.proteinAccession = body.proteinAccession;
@@ -475,6 +498,14 @@
                             }
                             this.originalExperimentsData.push(item);
                         }
+                        // PTMS
+                        let ptmsData = {
+                            sequence:body.peptideSequence,
+                            ptms:body.ptmsMap
+                        }
+                        this.$bus.$emit('show-scatter', ptmsData)
+
+
 
                     let diseases = {}
                     let tissues  = {}
@@ -495,8 +526,6 @@
                         }
                       }
                     }
-                    console.log(diseases)
-                    console.log(tissues)
 
                     let diseasesList = []
                     for(var key in diseases){
@@ -730,7 +759,7 @@
             }
         },
         mounted: function(){
-            console.log(this.$route)
+            // console.log(this.$route)
             this.queryPeptideDetail();
             // this.queryPeptideSpecies();
             // this.queryPeptideModification();
