@@ -95,7 +95,7 @@ export default {
 .echarts {
   /*margin: 0 auto;*/
 }
-.echarts.pie-species  {
+.echarts.pie-tissues  {
   height: 300px !important;
   width: auto !important;
 }

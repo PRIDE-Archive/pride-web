@@ -367,7 +367,7 @@
                 this.loading=false;
                 // this.total = clusterRes.body.totalResults;
                 this.total = clusterRes.body.page.totalElements;
-                console.log('clusterRes.body',clusterRes.body._embedded.peptideSummaries);
+                // console.log('clusterRes.body',clusterRes.body._embedded.peptideSummaries);
                 //console.log('this.facetsMap',this.facetsMap);
                 for(let i=0; i < clusterRes.body._embedded.peptideSummaries.length; i++){
                   console.log(clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore)
@@ -777,7 +777,7 @@
             });
       },
       rowClick(row,index){
-        console.log('row',row)
+        // console.log('row',row)
         this.$router.push({name:'peptidedetails',query:{keyword:row.peptide, proteinAccession:row.precharge}});
       },
     },

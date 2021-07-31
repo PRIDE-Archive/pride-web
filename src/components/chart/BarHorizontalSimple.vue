@@ -85,7 +85,7 @@ export default {
         let yValue = [];
         
         for(let i=0; i<data.length; i++){
-          console.log(data[i].key)
+          // console.log(data[i].key)
           if(data[i].key.indexOf('protein evidences')!=-1){
             let itemY = {}
             itemY.value='Protein'
@@ -123,8 +123,8 @@ export default {
             xValue.push(itemX);
           }
         }
-        console.log()
-        console.log(xValue,yValue)
+        // console.log()
+        // console.log(xValue,yValue)
         this.options.series[0].data = xValue;
         this.options.yAxis.data = yValue;
     }
