@@ -7,7 +7,8 @@
     "title":"Find your resources today.",
     "searchexample":["PXD005011", "cancer", "human", "P02768", "YLEVEPVSR"],
     "peptidomebutton":"PRIDE PEPTIDOME",
-    "archivebutton":"PRIDE ARCHIVE"
+    "archivebutton":"PRIDE ARCHIVE",
+    "spectraarchivebutton": "SPECTRA ARCHIVE"
   },
   "statistics":{},
   "tools":{

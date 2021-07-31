@@ -37,10 +37,10 @@
         </div>
     </div>
     <div class="button-container">
-        <a class="button resource-button" @click="goToArchive">
+        <a class="button resource-button archive" @click="goToArchive">
             <span>
             <svg class="icon-archive" aria-hidden="true">
-                <use xlink:href="#icon-data"></use>
+                <use xlink:href="#icon-checklist1"></use>
             </svg>
             </span>
             <span class="resource-button-content">{{archivebutton}}</span>
@@ -54,6 +54,14 @@
             </span>
             <span class="resource-button-content">{{peptidomebutton}}</span>
         </a>
+      <a class="button resource-button" @click="goToSpectraArchive">
+            <span>
+            <svg class="icon-spectraarchive" aria-hidden="true">
+                <use xlink:href="#icon-data"></use>
+            </svg>
+            </span>
+            <span class="resource-button-content">{{spectraarchivebutton}}</span>
+        </a>
     </div>
   </div>
 </template>
@@ -64,6 +72,7 @@
             return {
                 title:'',
                 peptidomebutton:'',
+                spectraarchivebutton:'',
                 archivebutton:'',
                 condition:'',
                 keyword:'',
@@ -201,11 +210,14 @@
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
             goToPeptidome(){
-                this.$router.push({name:'spectra'});
+                this.$router.push({name:'peptidome'});
             },
             goToArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});
                 this.$router.push({name:'archive'});
+            },
+            goToSpectraArchive(){
+              this.$router.push({name:'spectra'})
             },
             initAdvanceSearch(){
                 this.searchItems = [];
@@ -222,6 +234,7 @@
                     this.title = res.body.resource.title;
                     this.searchExample = res.body.resource.searchexample;
                     this.peptidomebutton = res.body.resource.peptidomebutton;
+                    this.spectraarchivebutton = res.body.resource.spectraarchivebutton;
                     this.archivebutton = res.body.resource.archivebutton;
                   },function(err){
 
@@ -320,6 +333,9 @@
     .resource-button.peptidome{
         background-color: #ef7831;
     }
+    .resource-button.archive{
+        background-color: #3b94d9;
+    }
     #search-bar-pride .ivu-select-single{
         /*width: 100px !important;*/
     }
@@ -357,6 +373,13 @@
         padding: 2px 0 !important;
     }
     .icon-archive {
+       width: 4em; height: 4em;
+       vertical-align: -0.15em;
+       fill: currentColor;
+       overflow: hidden;
+       margin-bottom: 20px;
+    }
+    .icon-spectraarchive {
        width: 4em; height: 4em;
        vertical-align: -0.15em;
        fill: currentColor;
