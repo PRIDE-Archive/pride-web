@@ -83,7 +83,7 @@ export default new Router({
     // },
     {
       path: '/peptidome/peptidesearch',
-      name: 'peptidome',
+      name: 'peptidesearch',
       component: PeptideSearch
       // component: NotFound,
     },
@@ -103,7 +103,7 @@ export default new Router({
       component: SpectrumLibrary
     },
     {
-      path:'/peptidome/peptidedetails/:id',
+      path:'/peptidome/peptidedetails',
       name: 'peptidedetails',
       component: PeptideDetails
     },
