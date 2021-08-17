@@ -25,15 +25,32 @@ export default {
                 axisLabel:{interval: 0},
                 data:[]
             },
-
             yAxis: {},
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a}"
+            },
             legend: {
-                data: []
+                type: 'scroll',
+                orient: 'vertical',
+                left: 5,
+                top: 10,
+                bottom: 10,
+                //itemWidth: 10,
+                data:[],
+                formatter: function (name) {
+                   // console.log( name);
+                    return name;
+
+                },
+                selected:{},
+                zlevel:-1,
             },
             grid: {
-                left: '3%',
+                left: 120,
                 right: '4%',
                 bottom: '3%',
+                top:'4%',
                 containLabel: true
             },
             series: []
