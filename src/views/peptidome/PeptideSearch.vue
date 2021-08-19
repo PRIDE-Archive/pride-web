@@ -134,7 +134,7 @@
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
           // queryClusterListApi: 'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
-          queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary/peptide',
+          queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
