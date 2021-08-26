@@ -74,13 +74,12 @@ export default new Router({
       name: 'privatedataset',
       component: PrivateDataset
     },
-    // {
-    //   path: '/peptidome',
-    //   name: 'peptidome',
-    //
-    //   component: Peptidome
-    //   component: NotFound,
-    // },
+    {
+      path: '/peptidome',
+      redirect: to => {
+           return { name: 'peptidesearch' }
+      }
+    },
     {
       path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
