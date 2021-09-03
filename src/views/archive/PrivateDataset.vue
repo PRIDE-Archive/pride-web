@@ -542,7 +542,7 @@
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.url.ftp)
                                       console.log(params.row.url.ftp);
-                                      //this.gotoBlast(params);
+                                      //this.gotoEuroPMC(params);
                                   }
                               }
                           }, 'FTP'),*/
@@ -589,7 +589,7 @@
 
                               on: {
                                   click: () => {
-                                      this.gotoBlast(params);
+                                      this.gotoEuroPMC(params);
                                   }
                               }
                           }, 'Blast'),
@@ -621,7 +621,7 @@
                                       //window.location.href = params.row.url.ftp;
                                       //window.open(params.row.url[0].key)
                                      
-                                      //this.gotoBlast(params);
+                                      //this.gotoEuroPMC(params);
                                   }
                               }
                           }, [
@@ -797,7 +797,7 @@
 
                               on: {
                                   click: () => {
-                                      this.gotoBlast(params);
+                                      this.gotoEuroPMC(params);
                                   }
                               }
                           }, 'Blast'),

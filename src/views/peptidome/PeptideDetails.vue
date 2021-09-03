@@ -189,7 +189,7 @@
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
                 // clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
-                blastUrl:'http://www.uniprot.org/blast/?blastQuery=',
+                europmcUrl:'https://europepmc.org/article/MED/',
                 diseasesSpinShow:false,
                 tissuesSpinShow:false,
                 detailsSpinShow:true,
@@ -330,7 +330,7 @@
                                    
                                     on: {
                                         click: () => {
-                                            this.gotoBlast(params);
+                                            this.gotoEuroPMC(params);
                                         }
                                     }
                                 }, 'Blast'),
@@ -429,6 +429,15 @@
                         key: 'pubmedid',
                         sortable: true,
                         align:'center',
+                        render: (h, params) => {
+                            return h('div', [
+                                h('a', {
+                                    on: {
+                                        click: () => {this.gotoEuroPMC(params.row.pubmedid);}
+                                    }
+                                }, params.row.pubmedid),
+                            ]);
+                        }
                     },
                     
                 ],
@@ -706,8 +715,8 @@
 
            //        });
            // },
-           gotoBlast(data){
-                location.href=this.blastUrl+data.row.peptide;
+           gotoEuroPMC(pubmed_id){
+                location.href=this.europmcUrl+pubmed_id;
            },
            showSpectrum(val, peptideSequence, peaks, charge, precursorMZ,variableMods){
               if(val){
