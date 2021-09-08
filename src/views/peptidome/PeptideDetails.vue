@@ -6,8 +6,8 @@
                 <Col span="24">
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
-                            <h2 class="project-title">Peptide</h2>
-                            <div class="peptide-details-wrapper">
+                            <!--<h2 class="project-title">Peptide</h2>-->
+                            <!-- <div class="peptide-details-wrapper">
                                 <Spin fix v-if="detailsSpinShow"></Spin>
                                 <h4>{{sequence}}</h4>
                                 <h4>(Protein: {{proteinAccession}}, Best PEP: {{averagePrecursorCharge}})</h4>
@@ -37,6 +37,36 @@
                                         </Tooltip>
                                     </span>
                                 </div>
+                            </div> -->
+                            <div class="peptide-details-wrapper">
+                                <div class="peptide-details-item">
+                                    <span class="name"">Peptide</span>
+                                    <span class="content" style="border-left-color: #a1cda1;">{{sequence}}</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Uniprot Accession</span>
+                                    <span class="content" style="border-left-color: #8585ff;">{{proteinAccession}}</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Gene</span>
+                                    <span class="content" style="border-left-color: #cbe4d8;">XXXXXXX</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Protein Name</span>
+                                    <span class="content" style="border-left-color: #7ecd9f;">XXXXXXX</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Organism</span>
+                                    <span class="content" style="border-left-color: #ff8585;">XXXXXXX</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Evidences</span>
+                                    <span class="content" style="border-left-color: #dcd8b2;">{{numberOfSpectra}} PSM, {{numberOfProjects}} Projects</span>
+                                </div>
+                                <div class="peptide-details-item">
+                                    <span class="name">Status</span>
+                                    <span class="content" style="border-left-color: #eca39c;">{{averagePrecursorCharge}}</span>
+                                </div>                            
                             </div>
                         </div>
                     </div>
@@ -838,7 +868,31 @@
     .tooltip-content{
         white-space: normal
     }
-    
+    .peptide-details-item{    
+        display: flex;
+        align-items: center;
+        height: 30px;
+        margin-bottom: 4px;
+    }
+    .peptide-details-item .name{
+        font-size: 16px;
+        height: 100%;
+        color: #5bc0be;
+        display: flex;
+        align-items: center;
+        width: 132px;
+        /*justify-content: flex-end;*/
+    }
+    .peptide-details-item .content{
+        border-left-width: 4px;
+        padding-left: 4px;
+        border-left-style: solid;
+        box-sizing: border-box;
+        margin-left: 4px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+    }
     @media (max-width: 700px) { 
       .item{ 
         width: calc((100% - 0px) / 1 - 1px);
