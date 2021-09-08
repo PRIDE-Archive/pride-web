@@ -49,15 +49,15 @@
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Gene</span>
-                                    <span class="content" style="border-left-color: #cbe4d8;">XXXXXXX</span>
+                                    <span class="content" style="border-left-color: #cbe4d8;">{{gene}}</span>
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Protein Name</span>
-                                    <span class="content" style="border-left-color: #7ecd9f;">XXXXXXX</span>
+                                    <span class="content" style="border-left-color: #7ecd9f;">{{proteinName}}</span>
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Organism</span>
-                                    <span class="content" style="border-left-color: #ff8585;">XXXXXXX</span>
+                                    <span class="content" style="border-left-color: #ff8585;">{{organism}}</span>
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Evidences</span>
@@ -486,7 +486,10 @@
                 tissuesNum:'',
                 modificationsNum:'',
                 peptidesNum:'',
-                originalExperimentsNum:''
+                originalExperimentsNum:'',
+                organism:'',
+                proteinName:'',
+                gene:''
             }
         },
         components: {
@@ -506,13 +509,16 @@
                   .get(this.clusterIDApi,{params:query })
                   .then(function(res){
                         this.detailsSpinShow=false;
-                        // console.log('aaaa',res.body)
+                        console.log('aaaa',res.body)
                         let body = res.body
                         this.sequence=body.peptideSequence;
                         this.proteinAccession = body.proteinAccession;
                         this.numberOfSpectra = body.psmsCount;
-                        this.numberOfProjects = body.projects.length
-                        this.averagePrecursorCharge=body.bestSearchEngineScore;
+                        this.numberOfProjects = body.projects.length;
+                        this.averagePrecursorCharge = body.bestSearchEngineScore;
+                        this.organism = body.organism;
+                        this.proteinName = body.proteinName;
+                        this.gene = body.gene || 'NULL';
                         // this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
                         // this.numberOfSpectra=res.body.numberOfSpectra;
                         // this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
