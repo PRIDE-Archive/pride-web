@@ -198,13 +198,27 @@
                   minWidth: 150,
                   ellipsis:true
               },
-              // {
-              //     title: 'Pre m/z',
-              //     key: 'premz',
-              //     sortable: true,
-              //     minWidth: 150,
-              //     ellipsis:true
-              // },
+              {
+                  title: 'Protein Name',
+                  key: 'proteinname',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Gene',
+                  key: 'gene',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
+              {
+                  title: 'Organism',
+                  key: 'organism',
+                  sortable: true,
+                  minWidth: 150,
+                  ellipsis:true
+              },
               {
                   title: '#Spectra',
                   key: 'spectra',
@@ -378,8 +392,9 @@
                       ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3),
                       spectra: clusterRes.body._embedded.peptideSummaries[i].psmsCount,
                       projects: clusterRes.body._embedded.peptideSummaries[i].projectAccessions.length,
-                      // premz: clusterRes.body._embedded.peptideSummaries[i].averagePrecursorMz.toFixed(2),
-                      // species: clusterRes.body._embedded.peptideSummaries[i].totalNumberOfSpecies,
+                      proteinname: clusterRes.body._embedded.peptideSummaries[i].proteinName,
+                      organism: clusterRes.body._embedded.peptideSummaries[i].organism,
+                      gene: clusterRes.body._embedded.peptideSummaries[i].gene,
                       
                   }
                   this.peptideTableResults.push(item);
