@@ -210,7 +210,7 @@
                 this.searchItems.push(Object.assign({}, this.defaultSearchCondition));
             },
             goToPeptidome(){
-                this.$router.push({name:'peptidesearch'});
+                this.$router.push({name:'peptidome'});
             },
             goToArchive(){
                 //this.$Message.success({content:'Archive Coming Soon', duration:1});
