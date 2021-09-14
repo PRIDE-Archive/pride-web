@@ -10,6 +10,7 @@ const NotFound = resolve => require(['@/views/NotFound'], resolve);
 const MarkdownPage = resolve => require(['@/views/documentation/MarkdownPage'], resolve);
 const SpectrumLibrary = resolve => require(['@/views/peptidome/SpectrumLibrary'], resolve);
 const PSM = resolve => require(['@/views/peptidome/PSM'], resolve);
+const Peptide = resolve => require(['@/views/peptidome/Peptidome'], resolve);
 const PeptideSearch = resolve => require(['@/views/peptidome/PeptideSearch'], resolve);
 const PeptideDetails = resolve => require(['@/views/peptidome/PeptideDetails'], resolve);
 //const ClusterProjects = resolve => require(['@/views/peptidome/ClusterProjects'], resolve);
@@ -76,10 +77,15 @@ export default new Router({
     },
     {
       path: '/peptidome',
-      redirect: to => {
-           return { name: 'peptidesearch' }
-      }
+      name: 'Peptide',
+      component: Peptide
     },
+    // {
+    //   path: '/peptidome',
+    //   redirect: to => {
+    //        return { name: 'peptidesearch' }
+    //   }
+    // },
     {
       path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
