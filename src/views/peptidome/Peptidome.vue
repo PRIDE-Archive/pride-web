@@ -25,11 +25,11 @@
                       <div>Peptidome Statistics</div>
                     </div>
                     <div class="item-content">
-                        <p><strong>1020</strong> Projects</p>
-                        <p><strong>217'845</strong> Proteins</p>
-                        <p><strong>2'464'236</strong> Peptide Evidences</p>
-                        <p><strong>1'983'383</strong> Unique Peptides</p>
-                        <p><strong>145'498'488</strong> Peptide Spectrum Matches</p>
+                        <p><strong>1294</strong> Projects</p>
+                        <p><strong>217'261</strong> Proteins</p>
+                        <p><strong>2'300'389</strong> Peptide Evidences</p>
+                        <p><strong>1'922'855</strong> Unique Peptides</p>
+                        <p><strong>150'658'201</strong> Peptide Spectrum Matches</p>
                     </div>
                    
                 </div>
