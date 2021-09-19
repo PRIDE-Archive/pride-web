@@ -7,8 +7,9 @@
     <div class="search-container">
         <div class="normal-search-wrapper" v-if="!advanceSearchDisplay">
             <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
-                <Select v-model="selected" slot="prepend" style="width: 100px">
+                <Select v-model="selected" slot="prepend" style="width: 100px" @on-change="selectChange">
                     <Option value="archive">Archive</Option>
+                    <Option value="peptidesearch">Peptide</Option>
                 </Select>
                 <Button slot="append" @click="submitSearchCondition">Search</Button>
             </Input>
@@ -200,7 +201,7 @@
             submitSearchCondition(){
                 if(this.selected == 'archive')
                     this.$router.push({name:'archive',query:{ keyword: this.keyword }});
-                else if(this.selected == 'peptidome')
+                else if(this.selected == 'peptidesearch')
                     this.$router.push({name:'peptidesearch',query:{ keyword: this.keyword }});   
             },
             advanceSearchConditoinRemove (index) {
@@ -232,14 +233,20 @@
                   .get(this.landingPageJsonURL)
                   .then(function(res){
                     this.title = res.body.resource.title;
-                    this.searchExample = res.body.resource.searchexample;
                     this.peptidomebutton = res.body.resource.peptidomebutton;
                     this.spectraarchivebutton = res.body.resource.spectraarchivebutton;
                     this.archivebutton = res.body.resource.archivebutton;
+                    this.searchpeptideexample = res.body.resource.searchpeptideexample;
+                    this.searcharchiveexample = res.body.resource.searcharchiveexample;
+
+                    this.searchExample = this.selected == 'archive' ? this.searcharchiveexample : this.searchpeptideexample
                   },function(err){
 
                   });
             },
+            selectChange(val){
+                this.searchExample = val == 'archive' ? this.searcharchiveexample : this.searchpeptideexample
+            }
         },
         mounted(){
             this.init();
