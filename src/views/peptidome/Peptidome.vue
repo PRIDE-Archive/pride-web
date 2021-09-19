@@ -20,46 +20,48 @@
         <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
-                    <div class="item-icon"><i class="fas fa-search"></i></div>
+                    <div class="item-icon"><i class="fas fa-chart-bar"></i></div>
                     <div class="item-title">
-                      <div>Search Peptide</div>
+                      <div>Peptidome Statistics</div>
                     </div>
                     <div class="item-content">
-                        <p><a @click="gotoPeptideSearch">Explore</a> high quality peptide identifications verified by our spectrum clustering pipeline.</p>
-
-                        <p>Example peptides: <a @click="gotoPeptideSearch('ELGITALHIK')">ELGITALHIK</a>, <a @click="gotoPeptideSearch('LSVDYGK')">LSVDYGK</a></p>
+                        <p><strong>1294</strong> Projects</p>
+                        <p><strong>217'261</strong> Proteins</p>
+                        <p><strong>2'300'389</strong> Peptide Evidences</p>
+                        <p><strong>1'922'855</strong> Unique Peptides</p>
+                        <p><strong>150'658'201</strong> Peptide Spectrum Matches</p>
                     </div>
                    
                 </div>
             </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
-                <div class="item-container">
-                    <div class="item-icon"><i class="fas fa-download"></i></div>
-                    <div class="item-title">
-                      <div>Libraries & Results</div>
-                    </div>
-                    <div class="item-content docs">
-                        <p><a @click="gotoSpectrumLibrary">Download</a> our spectrum libraries to use with your spectrum library searching tool, such as SpectraST. Popular spectrum libraries: <a @click="gotoSpectrumLibrary">Human</a>, <a @click="gotoSpectrumLibrary">Contaminants</a></p>
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fas fa-download"></i></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Libraries & Results</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content docs">-->
+<!--                        <p><a @click="gotoSpectrumLibrary">Download</a> our spectrum libraries to use with your spectrum library searching tool, such as SpectraST. Popular spectrum libraries: <a @click="gotoSpectrumLibrary">Human</a>, <a @click="gotoSpectrumLibrary">Contaminants</a></p>-->
 
-                        <p><a @click="gotoPeptideDownload">Download</a> our cluster results files with <a @click="gotoPeptideDownload">High-quality unidentified human clusters</a>, and <a @click="gotoPeptideDownload">Clusters more that 10 spectra and a ratio < 50%</a>.</p>
-                    </div>
-                    
-                </div>
-            </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
-                <div class="item-container">
-                    <div class="item-icon"><i class="fas fa-wrench"></i></Icon></div>
-                    <div class="item-title">
-                      <div>Access</div>
-                    </div>
-                    <div class="item-content">
-                        <p>Download original clustering result files from our <a @click="gotoFTP">FTP</a> site.</p>
+<!--                        <p><a @click="gotoPeptideDownload">Download</a> our cluster results files with <a @click="gotoPeptideDownload">High-quality unidentified human clusters</a>, and <a @click="gotoPeptideDownload">Clusters more that 10 spectra and a ratio < 50%</a>.</p>-->
+<!--                    </div>-->
+<!--                    -->
+<!--                </div>-->
+<!--            </Col>-->
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fas fa-wrench"></i></Icon></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Access</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content">-->
+<!--                        <p>Download original clustering result files from our <a @click="gotoFTP">FTP</a> site.</p>-->
 
-                        <p><a @click="gotoPeptideAPI">Web API</a> allows programatically access and search clustering results.</p>
-                    </div>
-                   
-                </div>
-            </Col>
+<!--                        <p><a @click="gotoPeptideAPI">Web API</a> allows programatically access and search clustering results.</p>-->
+<!--                    </div>-->
+<!--                   -->
+<!--                </div>-->
+<!--            </Col>-->
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
                     <div class="item-icon"><i class="fas fa-sticky-note"></i></Icon></div>
@@ -67,64 +69,15 @@
                       <div>Release Note</div>
                     </div>
                     <div class="item-content citation">
-                        <p>Release date: 04, 2015</p>
+                        <p>Release date: 11, 2021</p>
 
-                        <p>This is a beta release of spectrum clustering results on identified spectra from all PRIDE Archive public experiments by April 2015.</p>
-
+                        <p>This is a beta release of peptidome results on identified spectra from all PRIDE Archive public experiments by October 2021.</p>
                         <p>Please give us your <a @click="gotoFeedbacks">feedbacks</a>.</p>
                     </div>
                     
                 </div>
             </Col>
-        </Row>
-        <Row class="row" type="flex">
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
-                <div class="item-container">
-                    <div class="item-icon"><i class="fas fa-link"></i></div>
-                    <div class="item-title">
-                      <div>Search Peptide</div>
-                    </div>
-                    <div class="item-content">
-                        <p>Discover original mass spec projects used by PRIDE Cluster project in the submission based <a @click="gotoArchive">PRIDE Archive</a>.</p>
-
-                        <p>Explore quality checked proteome-centric view of mass spec identification results in the <a @click="gotoProteomes">PRIDE Proteomes</a>.</p>
-                    </div>
-                   
-                </div>
-            </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
-                <div class="item-container">
-                    <div class="item-icon"><i class="fab fa-envira"></i></div>
-                    <div class="item-title">
-                      <div>Libraries & Results</div>
-                    </div>
-                    <div class="item-content docs">
-                        <p>You can contribute to our development on <a @click="gotoGithub">GitHub</a>:</p>
-
-                        <p><a @click="gotoAlgorithms">Algorithms</a>: clustering algorithms and pipeline related codebase.</p>
-
-                        <p><a @click="gotoWeb">Web</a>: cluster web site and web service codebase.</p>
-                    </div>
-                    
-                </div>
-            </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
-                <div class="item-container">
-                    <div class="item-icon"><i class="fas fa-question"></i></div>
-                    <div class="item-title">
-                      <div>Access</div>
-                    </div>
-                    <div class="item-content tweet">
-                        <p>Learn how we define <a @click="gotoFaq">high quality</a> clustering results.</p>
-
-                        <p>Find out how to <a @click="gotoUnderstandCluster">interpret</a> the cluster details.</p>
-
-                        <p>Or ask for help directly though our <a @click="gotoFeedbacks">Feedback</a> page.</p>
-                    </div>
-                   
-                </div>
-            </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+          <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
                     <div class="item-icon"><i class="fas fa-eye"></i></div>
                     <div class="item-title">
@@ -135,10 +88,72 @@
 
                         <p>Griss J, Perez-Riverol Y, et. al. Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets. Nat Methods. 2016 Aug;13(8):651-656. <a @click="gotoPubmed">PubMed</a></p>
                     </div>
-                    
+
                 </div>
             </Col>
         </Row>
+<!--        <Row class="row" type="flex">-->
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fas fa-link"></i></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Search Peptide</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content">-->
+<!--                        <p>Discover original mass spec projects used by PRIDE Cluster project in the submission based <a @click="gotoArchive">PRIDE Archive</a>.</p>-->
+
+<!--                        <p>Explore quality checked proteome-centric view of mass spec identification results in the <a @click="gotoProteomes">PRIDE Proteomes</a>.</p>-->
+<!--                    </div>-->
+<!--                   -->
+<!--                </div>-->
+<!--            </Col>-->
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fab fa-envira"></i></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Libraries & Results</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content docs">-->
+<!--                        <p>You can contribute to our development on <a @click="gotoGithub">GitHub</a>:</p>-->
+
+<!--                        <p><a @click="gotoAlgorithms">Algorithms</a>: clustering algorithms and pipeline related codebase.</p>-->
+
+<!--                        <p><a @click="gotoWeb">Web</a>: cluster web site and web service codebase.</p>-->
+<!--                    </div>-->
+<!--                    -->
+<!--                </div>-->
+<!--            </Col>-->
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fas fa-question"></i></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Access</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content tweet">-->
+<!--                        <p>Learn how we define <a @click="gotoFaq">high quality</a> clustering results.</p>-->
+
+<!--                        <p>Find out how to <a @click="gotoUnderstandCluster">interpret</a> the cluster details.</p>-->
+
+<!--                        <p>Or ask for help directly though our <a @click="gotoFeedbacks">Feedback</a> page.</p>-->
+<!--                    </div>-->
+<!--                   -->
+<!--                </div>-->
+<!--            </Col>-->
+<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
+<!--                <div class="item-container">-->
+<!--                    <div class="item-icon"><i class="fas fa-eye"></i></div>-->
+<!--                    <div class="item-title">-->
+<!--                      <div>Release Note</div>-->
+<!--                    </div>-->
+<!--                    <div class="item-content citation">-->
+<!--                        <p>If you use PRIDE Cluster, please cite the following paper:</p>-->
+
+<!--                        <p>Griss J, Perez-Riverol Y, et. al. Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets. Nat Methods. 2016 Aug;13(8):651-656. <a @click="gotoPubmed">PubMed</a></p>-->
+<!--                    </div>-->
+<!--                    -->
+<!--                </div>-->
+<!--            </Col>-->
+<!--        </Row>-->
     </div>
   </div>
 </template>
