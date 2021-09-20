@@ -352,6 +352,12 @@
         margin-top: 12px;
         font-size: 14px;
     }
+    .example-wrapper a{
+         color: #444;
+    }
+    .example-wrapper a:hover{
+         color: #5bc0be;
+    }
     .example-item{
         margin-right: 5px;
     }
@@ -402,12 +408,6 @@
     }
     .resource-button-content{
         font-size: 20px;
-    }
-    .example-wrapper a{
-         color: #444;
-    }
-    .example-wrapper a:hover{
-         color: #5bc0be;
     }
     @media (min-width: 768px) {
         .resource-container{
