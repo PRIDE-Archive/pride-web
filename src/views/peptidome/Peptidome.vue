@@ -17,6 +17,7 @@
             </div>
         </div>
     </div>
+    
     <Carousel v-model="value1" loop>
         <CarouselItem>
             <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
