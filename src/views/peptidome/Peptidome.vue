@@ -17,21 +17,55 @@
             </div>
         </div>
     </div>
-    
-    <Carousel v-model="value1" loop>
-        <CarouselItem>
-            <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img :src="image1URL" height="443" width="1235"></div>
-        </CarouselItem>
-        <CarouselItem>
-            <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img :src="image2URL" height="443" width="1235"></div>
-        </CarouselItem>
-        <CarouselItem>
-            <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-            <div class="demo-carousel"><img :src="image3URL" height="443" width="1235"></div>
-        </CarouselItem>
-    </Carousel>
+    <div class="carousel-container">
+        <Carousel v-model="value1" loop>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image1URL" height="443" width="1235"></div>
+            </CarouselItem>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image2URL" height="443" width="1235"></div>
+            </CarouselItem>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image3URL" height="443" width="1235"></div>
+            </CarouselItem>
+        </Carousel>
+    </div>
+    <div class="plot-container">
+        <Row class="row">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 12}">
+                <div class="item-container">
+                    <div class="item-title">Peptide and Unique Peptide Comparison</div>
+                    <div class="item">
+                          <Spin fix v-if="chartShow"></Spin>
+                          <BarPeptide></BarPeptide>
+                          <!-- <a class="static-more-button" @click="gotoStaticDetails">More</a> -->
+                    </div>
+                </div>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 12}">
+                <div class="item-container">
+                    <div class="item-title">Organism Data</div>
+                    <div class="item">
+                          <Spin fix v-if="chartShow"></Spin>
+                          <PiePeptide></PiePeptide>
+                          <!-- <a class="static-more-button" @click="gotoStaticDetails">More</a> -->
+                    </div>
+                </div>
+            </Col>
+            <!-- <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+                <div class="item-container">
+                    <div class="item">
+                          <Spin fix v-if="chartShow"></Spin>
+                          <BarUniquePeptides></BarUniquePeptides>
+                         
+                    </div>
+                </div>
+            </Col> -->
+        </Row>
+    </div>
     <div class = "content">
         <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -161,22 +195,28 @@
 <script>
   import NavBar from '@/components/Nav'
   import store from "@/store.js"
+  import BarPeptide from '@/components/chart/BarPeptide.vue'
+  import PiePeptide from '@/components/chart/PiePeptide.vue'
   export default {
     name: 'notfound',
     components: {
       NavBar,
+      BarPeptide,
+      PiePeptide
     },
     data(){
       return {
         keyword:'',
         selected:'peptidesearch',
-        searchExample:[],
+        searchExample:['VATVSLPR','LGEDNINVVEGNEQFISASK'],
         msg: '',
         value1: 0,
         image1URL: this.$store.state.baseURL + '/peptidome/tutorial-1.png',
         image2URL: this.$store.state.baseURL + '/peptidome/tutorial-2.png',
         image3URL: this.$store.state.baseURL + '/peptidome/tutorial-3.png',
-
+        // barPeptideSimpleShow:false,
+        chartShow:true,
+        chartDataApi: this.$store.state.baseApiURL + '/stats/peptidome-stats',
       }
     },
     methods:{
@@ -233,8 +273,27 @@
             else if(this.selected == 'peptidesearch')
                 this.$router.push({name:'peptidesearch',query:{ keyword: this.keyword }});   
         },
+        setSearchKeyword(item){
+            console.log(item);
+            this.keyword = item;
+            this.submitSearchCondition();
+        },
+        queryChartData(){
+            this.$http
+              .get(this.chartDataApi)
+              .then(function(res){
+                this.chartShow=false
+                // console.log('chart',res)
+                this.$bus.$emit('show-pie-peptide', res.body[0]);
+                this.$bus.$emit('show-bar-peptide', {peptidesPerProteinsStats:res.body[1],uniquePeptidesPerProteinsStats:res.body[2]});
+                
+              },function(err){
+
+              });
+       },
     },
     mounted(){
+        this.queryChartData()
     //  console.log(document.getElementById('elixir-banner'));
      // document.getElementById('elixir-banner').attribute('display','none');
     }
@@ -247,12 +306,18 @@
 
  }
  .search-container{
-    margin: 0 auto 10px auto;
+    margin: 0 auto;
     width:100%;
     text-align: center;
     border-radius:6px;
-    padding:50px;
-    background:#fbfdff;
+    padding:100px 50px;
+    /*background:#fbfdff;*/
+    background-color: #fbfdff;
+    border-bottom: 1px solid #f3f3f3;
+ }
+ .carousel-container{
+    padding-top:50px;
+    border-bottom: 1px solid #f3f3f3;
  }
  .search-settings{
     display: flex;
@@ -292,10 +357,13 @@
     align-items: center;
     max-width: 150rem !important;
  }
- .item-container{
+.item-container{
     text-align: center;
     margin: 15px;
     padding: 2.78571429em;
+}
+.item-title{
+    margin-bottom: 20px;
 }
 .item-content{
 
@@ -329,6 +397,25 @@
     color: #5bc0be;
     border-bottom-style:dotted;
 }
+.plot-container{
+    margin: 0 auto;
+    width:100%;
+    height: 100%;
+    position: relative;
+    padding:30px 50px;
+    background-color: #fbfdff;
+    border-bottom: 1px solid #f3f3f3;
+ }
+.plot-container .item-container{
+    text-align: center;
+    margin: 10px 15px;
+}
+
+.plot-container .item{
+    position: relative;
+    border: 1px solid #ececec;
+    border-radius: 6px;
+} 
 </style>
 <style>
     #search-bar-pride .ivu-input-group-prepend{
