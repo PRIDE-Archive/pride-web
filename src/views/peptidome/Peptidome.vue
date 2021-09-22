@@ -162,9 +162,9 @@
                       <div>Access</div>
                     </div>
                     <div class="item-content tweet">
-                        <p>Learn how we define <a @click="gotoFaq">high quality</a> clustering results.</p>
+                        <p>Learn how we generate Pride Peptidome <a @click="gotoFaq">high quality</a> peptides</p>
 
-                        <p>Find out how to <a @click="gotoUnderstandCluster">interpret</a> the cluster details.</p>
+                        <p>Find out how to <a @click="gotoUnderstandCluster">interpret</a> peptidome results</p>
 
                         <p>Or ask for help directly though our <a @click="gotoFeedbacks">Feedback</a> page.</p>
                     </div>
@@ -258,7 +258,7 @@
             window.open('http://www.ncbi.nlm.nih.gov/pubmed/27493588');
         },
         gotoFaq(){
-            this.$router.push({path:'/markdownpage/faq'});
+            this.$router.push({path:'/markdownpage/peptidome'});
         },
         gotoUnderstandCluster(){
             this.$router.push({path:'/markdownpage/understandcluster'});
