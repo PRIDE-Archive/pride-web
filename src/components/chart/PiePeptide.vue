@@ -60,7 +60,7 @@ export default {
   },
   methods:{
     setOptions(data){
-        console.log('PiePeptide',data)
+        // console.log('PiePeptide',data)
         // this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
         // data.sort(function(a,b){
         //     return a.count < b.count ? 1 : -1;
@@ -72,7 +72,7 @@ export default {
         var legendName = [];
         for(let i=0; i<data.organismStats.length; i++){
             let index = data.organismStats[i].Organism.indexOf('(')
-            console.log('index',index)
+            // console.log('index',index)
             if(index>0){
                 legendName[i] = data.organismStats[i].Organism.substr(0,index)
             }
@@ -88,7 +88,7 @@ export default {
             }
             this.option.series[0].data.push(item);
         }
-        console.log('aaa',this.option.legend.data)
+        // console.log('aaa',this.option.legend.data)
     }
   },
   created(){
@@ -105,7 +105,7 @@ export default {
   /*margin: 0 auto;*/
 }
 .echarts.pie-species  {
-  height: 300px !important;
+  height: 400px !important;
   width: auto !important;
 }
 </style>
