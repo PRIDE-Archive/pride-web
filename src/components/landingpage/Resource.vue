@@ -9,7 +9,7 @@
             <Input id="search-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearchCondition">
                 <Select v-model="selected" slot="prepend" style="width: 100px" @on-change="selectChange">
                     <Option value="archive">Archive</Option>
-                    <Option value="peptidesearch">Peptide</Option>
+                    <Option value="peptidesearch">Peptidome</Option>
                 </Select>
                 <Button slot="append" @click="submitSearchCondition">Search</Button>
             </Input>
