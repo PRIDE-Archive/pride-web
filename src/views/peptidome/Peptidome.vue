@@ -17,22 +17,6 @@
             </div>
         </div>
     </div>
-    <div class="carousel-container">
-        <Carousel v-model="value1" loop>
-            <CarouselItem>
-                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-                <div class="demo-carousel"><img :src="image1URL" height="443" width="1235"></div>
-            </CarouselItem>
-            <CarouselItem>
-                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-                <div class="demo-carousel"><img :src="image2URL" height="443" width="1235"></div>
-            </CarouselItem>
-            <CarouselItem>
-                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
-                <div class="demo-carousel"><img :src="image3URL" height="443" width="1235"></div>
-            </CarouselItem>
-        </Carousel>
-    </div>
     <div class="plot-container">
         <Row class="row">
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 12}">
@@ -60,73 +44,29 @@
                     <div class="item">
                           <Spin fix v-if="chartShow"></Spin>
                           <BarUniquePeptides></BarUniquePeptides>
-                         
+
                     </div>
                 </div>
             </Col> -->
         </Row>
     </div>
+    <div class="carousel-container">
+        <Carousel v-model="value1" loop>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image1URL" height="443" width="1235"></div>
+            </CarouselItem>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image2URL" height="443" width="1235"></div>
+            </CarouselItem>
+            <CarouselItem>
+                <!--<span class="info"><i class="fas fa-info"></i> aaa  aa aa a a a  aaaaaa</span>-->
+                <div class="demo-carousel"><img :src="image3URL" height="443" width="1235"></div>
+            </CarouselItem>
+        </Carousel>
+    </div>
     <div class = "content">
-<!--        <Row class="row" type="flex">-->
-<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
-<!--                <div class="item-container">-->
-<!--                    <div class="item-icon"><i class="fas fa-search"></i></div>-->
-<!--                    <div class="item-title">-->
-<!--                      <div>Search Peptide</div>-->
-<!--                    </div>-->
-<!--                    <div class="item-content">-->
-<!--                        <p><a @click="gotoPeptideSearch">Explore</a> high quality peptide identifications verified by our spectrum clustering pipeline.</p>-->
-
-<!--                        <p>Example queries: <a @click="gotoPeptideSearch('TNEEAGDGTTTATVLAR')">TNEEAGDGTTTATVLAR</a>, <a @click="gotoPeptideSearch('P10809')">P10809</a></p>-->
-<!--                    </div>-->
-<!--                   -->
-<!--                </div>-->
-<!--            </Col>-->
-<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
-<!--                <div class="item-container">-->
-<!--                    <div class="item-icon"><i class="fas fa-download"></i></div>-->
-<!--                    <div class="item-title">-->
-<!--                      <div>Libraries & Results</div>-->
-<!--                    </div>-->
-<!--                    <div class="item-content docs">-->
-<!--                        <p><a @click="gotoSpectrumLibrary">Download</a> our spectrum libraries to use with your spectrum library searching tool, such as SpectraST. Popular spectrum libraries: <a @click="gotoSpectrumLibrary">Human</a>, <a @click="gotoSpectrumLibrary">Contaminants</a></p>-->
-
-<!--                        <p><a @click="gotoPeptideDownload">Download</a> our cluster results files with <a @click="gotoPeptideDownload">High-quality unidentified human clusters</a>, and <a @click="gotoPeptideDownload">Clusters more that 10 spectra and a ratio < 50%</a>.</p>-->
-<!--                    </div>-->
-<!--                    -->
-<!--                </div>-->
-<!--            </Col>-->
-<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
-<!--                <div class="item-container">-->
-<!--                    <div class="item-icon"><i class="fas fa-wrench"></i></Icon></div>-->
-<!--                    <div class="item-title">-->
-<!--                      <div>Access</div>-->
-<!--                    </div>-->
-<!--                    <div class="item-content">-->
-<!--                        <p>Download original clustering result files from our <a @click="gotoFTP">FTP</a> site.</p>-->
-
-<!--                        <p><a @click="gotoPeptideAPI">Web API</a> allows programatically access and search clustering results.</p>-->
-<!--                    </div>-->
-<!--                   -->
-<!--                </div>-->
-<!--            </Col>-->
-<!--            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">-->
-<!--                <div class="item-container">-->
-<!--                    <div class="item-icon"><i class="fas fa-sticky-note"></i></Icon></div>-->
-<!--                    <div class="item-title">-->
-<!--                      <div>Release Note</div>-->
-<!--                    </div>-->
-<!--                    <div class="item-content citation">-->
-<!--                        <p>Release date: 04, 2015</p>-->
-
-<!--                        <p>This is a beta release of spectrum clustering results on identified spectra from all PRIDE Archive public experiments by April 2015.</p>-->
-
-<!--                        <p>Please give us your <a @click="gotoFeedbacks">feedbacks</a>.</p>-->
-<!--                    </div>-->
-<!--                    -->
-<!--                </div>-->
-<!--            </Col>-->
-<!--        </Row>-->
         <Row class="row" type="flex">
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
@@ -314,6 +254,7 @@
  .carousel-container{
     padding-top:50px;
     border-bottom: 1px solid #f3f3f3;
+   background:#fbfdff;
  }
  .search-settings{
     display: flex;
@@ -399,7 +340,7 @@
     height: 100%;
     position: relative;
     padding:30px 50px;
-    background-color: #fbfdff;
+    /*background-color: #fbfdff;*/
     border-bottom: 1px solid #f3f3f3;
  }
 .plot-container .item-container{
