@@ -6,7 +6,7 @@
   "resource":{
     "title":"Find your resources today.",
     "searcharchiveexample":["PXD005011", "cancer", "human", "P02768", "YLEVEPVSR"],
-    "searchpeptideexample":["VATVSLPR"],
+    "searchpeptideexample":["TNEEAGDGTTTATVLAR", "HSPD1", "P10809"],
     "peptidomebutton":"PRIDE PEPTIDOME",
     "archivebutton":"PRIDE ARCHIVE",
     "spectraarchivebutton": "SPECTRA ARCHIVE"
