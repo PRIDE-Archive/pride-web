@@ -1,43 +1,11 @@
 <template>
     <div class="peptide-detail-container">
-        <NavBar page="landingpage"/>
+        <NavBar page="peptidome"/>
         <div class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="24">
                     <div class="visualization-wrapper title">
                         <div class="title-wrapper">
-                            <!--<h2 class="project-title">Peptide</h2>-->
-                            <!-- <div class="peptide-details-wrapper">
-                                <Spin fix v-if="detailsSpinShow"></Spin>
-                                <h4>{{sequence}}</h4>
-                                <h4>(Protein: {{proteinAccession}}, Best PEP: {{averagePrecursorCharge}})</h4>
-                                <div class="peptide-property-wrapper">
-                                    <span class="property-item">#PSMs
-                                        <Tooltip>
-                                            {{numberOfSpectra}}
-                                            <div class="tooltip-content" slot="content">
-                                                {{spectraTooltip}}
-                                            </div>
-                                        </Tooltip>
-                                    </span>
-                                    <span class="property-item">#Projects
-                                        <Tooltip content="Here is the prompt text">
-                                            {{numberOfProjects}}
-                                            <div class="tooltip-content" slot="content">
-                                                {{projectsTooltip}}
-                                            </div>
-                                        </Tooltip>
-                                    </span>
-                                    <span class="property-item">#Diseases
-                                        <Tooltip content="Here is the prompt text">
-                                            {{tissuesNum}}
-                                            <div class="tooltip-content" slot="content">
-                                                {{tissuesNum}}
-                                            </div>
-                                        </Tooltip>
-                                    </span>
-                                </div>
-                            </div> -->
                             <div class="peptide-details-wrapper">
                                 <div class="peptide-details-item">
                                     <span class="name"">Peptide</span>
@@ -64,7 +32,7 @@
                                     <span class="content" style="border-left-color: #dcd8b2;">{{numberOfSpectra}} PSM, {{numberOfProjects}} Projects</span>
                                 </div>
                                 <div class="peptide-details-item">
-                                    <span class="name">Status</span>
+                                    <span class="name">Best FDR-score</span>
                                     <span class="content" style="border-left-color: #eca39c;">{{averagePrecursorCharge}}</span>
                                 </div>                            
                             </div>
@@ -136,25 +104,6 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <!-- <Col span="12">
-                    <div class="visualization-wrapper">
-                        <Card>
-                             <p slot="title">Peptides ({{peptidesNum}})</p>
-                             <p slot="extra">
-                                <Tooltip>
-                                    <i class="fas fa-info-circle"></i>
-                                    <div class="tooltip-content" slot="content">
-                                        Unique peptide sequence and modification combinations within the cluster.
-                                    </div>
-                                </Tooltip>
-                             </p>
-                             <div class="card-content-table">
-                                 <Spin fix v-if="peptidesSpinShow"></Spin>
-                                 <Table height="295" class="peptide-detail-table" border :columns="peptidesCol" :data="peptidesData" size="small"></Table>
-                             </div>
-                        </Card>
-                    </div>
-                </Col> -->
                 <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
@@ -171,12 +120,6 @@
                                  <Spin fix v-if="detailsSpinShow"></Spin>
                                  <Table height="295" class="peptide-detail-table" border :columns="originalExperimentsCol" :data="originalExperimentsData" size="small"></Table>
                              </div>
-                             <!--
-                             <div class="button-wrapper">
-                                 <a><i class="fas fa-angle-double-left left"></i>Previous</a>
-                                 <a>Next<i class="fas fa-angle-double-right right"></i></a>
-                             </div>
-                             -->
                         </Card>
                     </div>
                 </Col>
@@ -190,11 +133,8 @@
                              <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
                              <div class="spectrum-container">
                                <div style="color:#bdbdbd; text-align: center;">
-                                  <!-- {{spectrumTableHint}} -->
                                </div>
                              </div>
-                             <!-- <iframe ref="lorikeetIframe" class="lorikeet-iframe" :src="iframeURL"></iframe> -->
-                             <!--<Lorikeet></Lorikeet>-->
                         </Card>
                     </div>
                 </Col>
@@ -396,41 +336,6 @@
                             ]);
                         }
                     },
-                    // {
-                    //     title: '#PSM',
-                    //     key: 'psm',
-                    //     sortable: true,
-                    //     align:'center',
-                    //     sortType:'desc',
-                    //     render: (h, params) => {
-                    //         return h('div', [
-                    //             h('Tooltip',//first item
-                    //                 {
-                    //                     props: {
-                    //                         content: 'Show PSMs belong to this project',
-                    //                     },
-                    //                 },//second item
-                    //                 [
-                    //                     h('a', {
-                    //                         on: {
-                    //                             click: () => {
-                    //                                 this.$router.push({name:'psm',params:{id:this.$route.params.id},query:{project:params.row.project}});
-                    //                             }
-                    //                         }
-                    //                     }, params.row.psm),
-                                    
-                    //                 ]//third item
-                    //             ),
-                    //             h('span', {
-                    //                 on: {
-                    //                     click: () => {
-                                            
-                    //                     }
-                    //                 }
-                    //             }, ' ('+((params.row.psm/this.totalProjects)*100).toFixed(1) + '%)'),
-                    //         ]);
-                    //     }
-                    // },
                     {
                         title: 'Title',
                         key: 'title',
@@ -519,14 +424,6 @@
                         this.organism = body.organism;
                         this.proteinName = body.proteinName;
                         this.gene = body.gene || 'NULL';
-                        // this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
-                        // this.numberOfSpectra=res.body.numberOfSpectra;
-                        // this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
-                        // this.numberOfProjects=res.body.numberOfProjects;
-                        // this.totalNumberOfProjects=res.body.totalNumberOfProjects;
-                        // this.numberOfSpecies=res.body.numberOfSpecies;
-                        // this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
-
 
                         // for Original Experiments Table
                         this.originalExperimentsNum = body.projects.length
@@ -644,28 +541,6 @@
                   },function(err){
                   });
            },
-           // queryPeptideSpecies(){
-           //      this.$http
-           //        .get(this.clusterSpeciesApi)
-           //        .then(function(res){
-           //          this.diseasesSpinShow=false;
-           //          this.speciesNum = res.body.speciesCounts.length;
-           //          this.$bus.$emit('show-diseases', res.body.speciesCounts);
-           //        },function(err){
-           //
-           //        });
-           // },
-           // queryPeptideModification(){
-           //      this.$http
-           //        .get(this.clusterModificationApi)
-           //        .then(function(res){
-           //          this.modificationSpinShow=false;
-           //          this.modificationsNum = res.body.modificationCounts.length;
-           //          this.$bus.$emit('show-modifications', res.body.modificationCounts);
-           //        },function(err){
-           //
-           //        });
-           // },
            queryClusterPeptides(){
                 this.$http
                   .get(this.clusterPeptidesApi)
@@ -688,69 +563,6 @@
 
                   });
            },
-           // queryClusterOriginalExperiments(){
-           //       this.$http
-           //        .get(this.clusterIDApi,)
-           //        .then(function(res){
-           //          //console.log(res.body.clusteredProjects);
-           //          this.originalExperimentsSpinShow=false;
-           //          this.originalExperimentsNum = res.body.clusteredProjects.length
-           //          for(let i=0;i<res.body.clusteredProjects.length; i++){
-           //              this.totalProjects += res.body.clusteredProjects[i].numberOfPSMs;
-           //              var item = {
-           //                  project: res.body.clusteredProjects[i].accession,
-           //                  psm: res.body.clusteredProjects[i].numberOfPSMs,
-           //                  species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
-           //                  tissues: res.body.clusteredProjects[i].tissues.length>0 ? res.body.clusteredProjects[i].tissues[0] : '',
-           //                  instruments: res.body.clusteredProjects[i].instruments.length>0 ? res.body.clusteredProjects[i].instruments[0] : '',
-           //              }
-           //              this.originalExperimentsData.push(item);
-           //          }
-                    
-                    
-           //        },function(err){
-
-           //        });
-           // },
-           // queryClusterConsensusSpectrum(){
-           //      let peaks;
-           //      let sequence;
-           //      this.$http
-           //        .get(this.clusterConsensusSpectrum)
-           //        .then(function(res){
-           //                  this.$http
-           //                    .get(this.clusterIDApi)
-           //                    .then(function(res){
-           //                      //request this api again
-           //                      this.detailsSpinShow=false;
-           //                      this.sequence=res.body.sequence;
-           //                      this.averagePrecursorCharge=res.body.averagePrecursorCharge;
-           //                      this.averagePrecursorMz=res.body.averagePrecursorMz.toFixed(3);
-           //                      this.numberOfSpectra=res.body.numberOfSpectra;
-           //                      this.totalNumberOfSpectra=res.body.totalNumberOfSpectra;
-           //                      this.numberOfProjects=res.body.numberOfProjects;
-           //                      this.totalNumberOfProjects=res.body.totalNumberOfProjects;
-           //                      this.numberOfSpecies=res.body.numberOfSpecies;
-           //                      this.totalNumberOfSpecies=res.body.totalNumberOfSpecies;
-           //                      //for iframe
-           //                      this.$http
-           //                            .get('https://www.ebi.ac.uk/pride/archive/spectra?usi='+res.body.bestUsis[0])
-           //                            .then(function(res){
-           //                                  this.consensusSpectrumSpinShow=false;
-           //                                  console.log(res.body)
-           //                                  // sequence = this.sequence;
-           //                                  // this.$refs.lorikeetIframe.contentWindow.postMessage({sequence: sequence, peaks:peaks}, "*");
-           //                            },function(err){
-           //                                  this.consensusSpectrumSpinShow=false;
-           //                            });                               
-           //                    },function(err){
-
-           //                    });
-                       
-           //        },function(err){
-
-           //        });
-           // },
            gotoEuroPMC(pubmed_id){
                 location.href=this.europmcUrl+pubmed_id;
            },

@@ -326,10 +326,7 @@
       <div v-for="item in reanalysisReferences" style="margin: 10px 0">
           <a @click="gotoReference">{{item.referenceLine}}</a>
       </div>
-      
-     <!--  <div slot="footer">
-          <Button class="download-button" @click="referenceModalShow=false">OK</Button>
-      </div> -->
+
   </Modal>
   </div>
 </template>

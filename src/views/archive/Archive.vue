@@ -24,24 +24,10 @@
                                       style="width:500px">
                                       <Option v-for="(item, index) in autoCompleteArray" :value="item" :key="index">{{item}}</Option>
                                   </Select>
-                                  <!--<Input class="tag-input" v-model="keyword" placeholder="input here" style="width: 500px;"></Input>-->
                               </div>
                               <Icon type="ios-search"></Icon>
                             </div>
                         </div>
-                        <!--
-                        <AutoComplete
-                            class="archive-search-input"
-                            v-model="keyword"
-                            @on-search="keywordSearch"
- 
-                            icon="ios-search"
-                            :filter-method="autoCompleteFilter"
-                            placeholder="input here"
-                            style="width: 100%" 
-                            size="large">
-                        </AutoComplete>
-                      -->
                     </div>
                     <div class="search-filter">
                         <div class="filter-wrapper">
@@ -78,18 +64,6 @@
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable @on-close="conditionDelete(index,item)">
-                            <!-- <Dropdown>
-                                <a class="dropdown-action" href="javascript:void(0)">
-                                    {{item.condition}}
-                                    <Icon type="arrow-down-b"></Icon>
-                                </a>
-                                <DropdownMenu slot="list">
-                                    <DropdownItem @click.native="conditionChange(index,'And')">And</DropdownItem>
-                                    <DropdownItem @click.native="conditionChange(index,'Not')">Not</DropdownItem>
-                                    <DropdownItem @click.native="conditionChange(index,'Or')">Or</DropdownItem>
-                                </DropdownMenu>
-                            </Dropdown>
-                            <span class="search-condition">{{item.field}} > {{item.contains}} </span> -->
                             {{item.field}} > {{item.contains}}
                           </Tag>
                       </div>
@@ -127,7 +101,6 @@
                       <p><span class="project-info">{{projectItemsSpecies}}: </span> <span v-for="item in publicationItem.species"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>;</span><a class="more-action" style="margin-left: 5px"v-if= "publicationItem.organisms.length>3" @click="gotoDetails(publicationItem.accession)">(More)</a></p>
                       <span><span class="project-info">{{projectItemsProjectDescription}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.projectDescription}}</text-highlight>
                         <a class="more-action" @click="gotoDetails(publicationItem.accession)">(More)</a>
-                        <!--<read-more class="readMore" more-str="(More)" :text="publicationItem.projectDescription" link="#" less-str="Less" :max-chars="200"></read-more>-->
                       </span>
                       <p><span class="project-info">{{projectItemsSubmitters}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.submitters}}</text-highlight></p>
                       <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
@@ -152,9 +125,6 @@
                              <Icon type="ios-pricetag"></Icon>
                               <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight>
                           </a>
-                          <!-- <DropdownMenu slot="list">
-                              <DropdownItem>{{datesetItem}}</DropdownItem>
-                          </DropdownMenu> -->
                       </Dropdown>
                       <Collapse v-if="hightlightMode" simple>
                           <Panel>

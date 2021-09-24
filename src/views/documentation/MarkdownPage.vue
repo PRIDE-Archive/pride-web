@@ -136,25 +136,6 @@
                     }
                 });
             },
-            /*
-            changeDefaultAction(){
-                var aList = this.$el.querySelectorAll('a');
-                for(let i=0; i<aList.length; i++){
-                    let path = aList[i].getAttribute('href');
-                    if(path.match(/\/markdownpage/)){
-                        aList[i].addEventListener('click',function(e){
-                            e.preventDefault();
-                            e.stopPropagation();
-                            let path = this.getAttribute('href');
-                            let subpage = actionPath.split('/')[0].split('#')[0];
-                            let id = actionPath.split('/')[0].split('#')[1];
-                            this.$router.push({path:'/markdownpage/'+subpage+'#'+id});
-                            //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
-                        }.bind(this), false);
-                    }
-                }
-            },
-            */
            
         },
         mounted:function(){

@@ -241,7 +241,7 @@
               //     ellipsis:true
               // },
               {
-                  title: 'Best PEP value',
+                  title: 'Best FDR-score',
                   key: 'ratio',
                   sortable: true,
                   minWidth: 150,
