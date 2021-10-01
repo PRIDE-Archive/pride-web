@@ -37,7 +37,7 @@
                                 </div>  
                                 <div class="peptide-details-item">
                                     <span class="name">External links</span>
-                                    <span class="content" style="border-left-color: #eca39c;"><a style="display: flex;align-items: center;color:#515a6e" @click="showPeptideAtlas()"><img :src="iconSrc">PeptideAtlas</a></span>
+                                    <span class="content" style="border-left-color: #a3a5d2;"><a style="display: flex;align-items: center;color:#515a6e" @click="showPeptideAtlas()"><img :src="iconSrc">PeptideAtlas</a></span>
                                 </div>                            
                             </div>
                         </div>
