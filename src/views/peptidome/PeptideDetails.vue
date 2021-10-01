@@ -34,6 +34,10 @@
                                 <div class="peptide-details-item">
                                     <span class="name">Best FDR-score</span>
                                     <span class="content" style="border-left-color: #eca39c;">{{averagePrecursorCharge}}</span>
+                                </div>  
+                                <div class="peptide-details-item">
+                                    <span class="name">External links</span>
+                                    <span class="content" style="border-left-color: #eca39c;"><a style="display: flex;align-items: center;color:#515a6e" @click="showPeptideAtlas()"><img :src="iconSrc">PeptideAtlas</a></span>
                                 </div>                            
                             </div>
                         </div>
@@ -394,7 +398,8 @@
                 originalExperimentsNum:'',
                 organism:'',
                 proteinName:'',
-                gene:''
+                gene:'',
+                iconSrc: this.$store.state.baseURL + '/peptideAtlasIcon.ico'
             }
         },
         components: {
@@ -605,7 +610,16 @@
                   this.spectrumTableShow=false;
                   document.querySelector("#lorikeetIframe").remove();
               }
-            },
+           },
+           showPeptideAtlas(){
+                let organism_name = this.organism.replace(/\s/ig,"+");
+                let peptideSequence = this.sequence
+                if(organism_name&&peptideSequence){
+                    let url = 'https://db.systemsbiology.net/sbeams/cgi/PeptideAtlas/GetPeptide?action=QUERY&organism_name='+organism_name+'&searchWithinThis=Peptide+Sequence&searchForThis='+ peptideSequence
+                    window.open(url)
+                }
+                
+           }
         },
         computed:{
             spectraTooltip(){
