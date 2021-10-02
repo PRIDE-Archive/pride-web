@@ -34,7 +34,7 @@
                                 <div class="peptide-details-item">
                                     <span class="name">Best FDR-score</span>
                                     <span class="content" style="border-left-color: #eca39c;">{{averagePrecursorCharge}}</span>
-                                </div>                            
+                                </div>
                             </div>
                         </div>
                     </div>
