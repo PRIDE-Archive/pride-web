@@ -37,7 +37,21 @@
                                 </div>  
                                 <div class="peptide-details-item">
                                     <span class="name">External links</span>
-                                    <span class="content" style="border-left-color: #a3a5d2;"><a style="display: flex;align-items: center;color:#515a6e" @click="showPeptideAtlas()"><img :src="iconSrc">PeptideAtlas</a></span>
+                                    <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
+                                        <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink1()">
+                                            <img :src="iconSrc1" style="width:16px; height: 16px;">PeptideAtlas
+                                        </a>
+                                    </span>
+                                    <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
+                                        <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink2()">
+                                            <img :src="iconSrc2" style="width:16px; height: 16px;">OmicsDI
+                                        </a>
+                                    </span>
+                                    <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
+                                        <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink3()">
+                                            <img :src="iconSrc3" style="width:16px; height: 16px;">Human Protein Atlas
+                                        </a>
+                                    </span>
                                 </div>                            
                             </div>
                         </div>
@@ -399,7 +413,9 @@
                 organism:'',
                 proteinName:'',
                 gene:'',
-                iconSrc: this.$store.state.baseURL + '/peptideAtlasIcon.ico'
+                iconSrc1: this.$store.state.baseURL + '/peptideIcon1.ico',
+                iconSrc2: this.$store.state.baseURL + '/peptideIcon2.png',
+                iconSrc3: this.$store.state.baseURL + '/peptideIcon3.gif'
             }
         },
         components: {
@@ -611,11 +627,28 @@
                   document.querySelector("#lorikeetIframe").remove();
               }
            },
-           showPeptideAtlas(){
+           showExternalLink1(){
                 let organism_name = this.organism.replace(/\s/ig,"+");
                 let peptideSequence = this.sequence
                 if(organism_name&&peptideSequence){
                     let url = 'https://db.systemsbiology.net/sbeams/cgi/PeptideAtlas/GetPeptide?action=QUERY&organism_name='+organism_name+'&searchWithinThis=Peptide+Sequence&searchForThis='+ peptideSequence
+                    window.open(url)
+                }
+                
+           },
+           showExternalLink2(){
+                let gene = this.gene;
+                let proteinAccession = this.proteinAccession
+                if(gene&&proteinAccession){
+                    let url = 'https://www.omicsdi.org/search?q='+gene+'-OR-'+proteinAccession
+                    window.open(url)
+                }
+                
+           },
+           showExternalLink3(){
+                let gene = this.gene;
+                if(gene){
+                    let url = 'http://www.proteinatlas.org/search/gene_name:'+gene
                     window.open(url)
                 }
                 
