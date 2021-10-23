@@ -140,7 +140,7 @@
                       <div style="width:15%; display: inline-block; position: absolute;">
                             <Poptip trigger="hover" placement="left" style="position: absolute; right: 0;">
                               <!-- <img :src="archive_logo" > -->
-                              <svgLogo></svgLogo> 
+                              <svgLogo :icon="publicationItem.icon"></svgLogo> 
                               <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
                                 <span>Omics score: 0</span>
                                 <Icon type="md-help-circle" />
@@ -153,8 +153,6 @@
                                 <div><span style="margin-right: 5px">5</span><span>Downloads</span></div>
                               </div>
                             </Poptip>
-
-
                             <!-- <span style="position:absolute;">123</span> -->
                       </div>
                   </Card>
@@ -252,6 +250,7 @@
           normalQuery:{},
           autoCompleteArray:[],
           archive_logo: this.$store.state.baseURL + '/archive_logo.png',
+          iconURL:'https://www.omicsdi.org/ws/dataset/search?query='
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -379,12 +378,12 @@
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
-              this.total = res.body.page.totalElements;
+                this.total = res.body.page.totalElements;
                 this.loading = false;
                 if(res.body._embedded && res.body._embedded.compactprojects){
-                    this.setHighlightKeywords();
-                    let projectsList = res.body._embedded.compactprojects;
-                    console.log('projectsList',projectsList);
+                      this.setHighlightKeywords();
+                      let projectsList = res.body._embedded.compactprojects;
+                      console.log('projectsList',projectsList);
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -396,6 +395,28 @@
                               projectTags: projectsList[i].projectTags,
                               submissionType: projectsList[i].submissionType,
                               hightlightItemArray:[],
+                              icon:{
+                                  id: "",
+                                  source: "",
+                                  title: "",
+                                  description: "",
+                                  keywords: [],
+                                  organisms: [],
+                                  publicationDate: "",
+                                  score: null,
+                                  omicsType: [],
+                                  citationsCount: 0,
+                                  connectionsCount: 0,
+                                  reanalysisCount: 0,
+                                  viewsCount: 0,
+                                  downloadCount: 0,
+                                  citationsCountScaled: 0,
+                                  connectionsCountScaled: 0,
+                                  reanalysisCountScaled: 0,
+                                  viewsCountScaled: 0,
+                                  downloadCountScaled: 0,
+                                  claimable: false
+                              }
                           }
                           if(item.species.length>3){
                             item.species=item.species.slice(0,4)
@@ -433,16 +454,14 @@
                           this.publicaitionList.push(item);  
                       }
                       console.log('this.publicaitionList', this.publicaitionList);
+                      this.generateIcons()
                 }
                 else{
-
                   this.$Message.error({content:'No results', duration:1});
                 }
-                
             },function(err){
 
             });
-           
       },
       queryChange(query){
         if(query === ''){
@@ -617,23 +636,23 @@
       },
       fieldChange(){
           console.log('fieldChange');
-        for(let i in this.fieldSelectors){
-          if(this.fieldSelectors[i].value == this.fieldValue){
-              /*
-              this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-                  value: '',
-                  label: '',
-                  check: false,
-                  number: ''
-              }],*/
-             //console.log('fieldChange his.fieldValue', this.fieldValue);
-              //console.log('fieldChange this.containSelectors',this.containSelectors);
-              this.containSelectors = this.fieldSelectors[i].containItems
-              this.containValue='';
-              this.$refs.containRef.setQuery(null);
-              break;
+          for(let i in this.fieldSelectors){
+            if(this.fieldSelectors[i].value == this.fieldValue){
+                /*
+                this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+                    value: '',
+                    label: '',
+                    check: false,
+                    number: ''
+                }],*/
+               //console.log('fieldChange his.fieldValue', this.fieldValue);
+                //console.log('fieldChange this.containSelectors',this.containSelectors);
+                this.containSelectors = this.fieldSelectors[i].containItems
+                this.containValue='';
+                this.$refs.containRef.setQuery(null);
+                break;
+            }
           }
-        }
       },
       containChange(){
         console.log('containChange');
@@ -849,6 +868,74 @@
           this.$router.push({name:'publish',params:{id:this.keyword}, query:{r:'other'}});
         else
           this.$Message.error({content:'Wrong Accession', duration:1});
+      },
+      generateIcons(){
+          let query = ''
+          for(let i=0; i<this.publicaitionList.length; i++){
+              if(i+1 == this.publicaitionList.length)
+                query+=this.publicaitionList[i].accession
+              else  
+                query+=this.publicaitionList[i].accession+'+OR+'
+          }
+          this.$http
+              .get(this.iconURL + query)
+              .then(function(res){
+                 let iconList = res.body.datasets
+                 console.log('resresres',res)
+                 for(let i=0;i<iconList.length; i++){
+                    console.log('id',iconList[i].id)
+                    for(let j=0;j<this.publicaitionList.length;j++){
+                      
+                      // console.log('this.publicaitionList[i].accession',this.publicaitionList[j].accession)
+                      // console.log('iconList[i].id',iconList[i].id)
+                      if(this.publicaitionList[j].accession == iconList[i].id){
+                        // console.log('iconList[i]',iconList[i])
+                        // console.log('this.publicaitionList[j]',this.publicaitionList[j])
+                        this.publicaitionList[j].icon = iconList[i]
+
+                        // if(this.publicaitionList[j].accession == 'PXD028666')
+                        //   console.log('PXD028666',this.publicaitionList[j].icon)
+                        break;
+                      }
+                    }
+                 }
+                 console.log('XXXXX',this.publicaitionList)
+
+                 for(let i=0; i<this.publicaitionList.length; i++){
+                  console.log('ididididid',this.publicaitionList[i].icon.id)
+                 }
+                 // this.publicaitionList[i].icon = {
+                 //        id: "E-GEOD-25401",
+                 //        source: "arrayexpress-repository",
+                 //        title:
+                 //          "Adipose Tissue MicroRNAs as Regulators of CCL2 Production in Human Obesity [gene expression]",
+                 //        description:
+                 //          "We used an unbiased systems biology approach to study the regulation of gene expression in human adipose tissue focusing on inflammation. We show that microRNAs play a major role as regulators of CCL2 production in obesity. Abdominal subcutaneous adipose needle biopsies were obtained from women (n=56) with a wide variation in BMI. From the biopsies we prepared and hybridised biotinylated complementary RNA to GeneChip Human Gene 1.0 ST Arrays (Affymetrix Inc., Santa Clara, CA),  labelled RNA to Affymetrix miRNA arrays, and bisulphite converted DNA to Illumina Infinium HumanMethylation27 beadchips using standardised protocols (Affymetrix Inc., Illumina Inc.) . Subsequent analyses of gene expression was performed using the Affymetrix GeneChip Operating Software version 1.4. To allow comparisons of transcript levels between samples, all samples were subjected to an all-probeset scaling-to-target signal of 100.",
+                 //        keywords: ["transcription profiling by array"],
+                 //        organisms: [
+                 //          {
+                 //            acc: "9606",
+                 //            name: "Homo sapiens"
+                 //          }
+                 //        ],
+                 //        publicationDate: "20120812",
+                 //        score: null,
+                 //        omicsType: ["Genomics"],
+                 //        citationsCount: 0,
+                 //        connectionsCount: 2,
+                 //        reanalysisCount: 0,
+                 //        viewsCount: 8,
+                 //        downloadCount: 15,
+                 //        citationsCountScaled: 0,
+                 //        connectionsCountScaled: 0.0000011610767593651,
+                 //        reanalysisCountScaled: 0,
+                 //        viewsCountScaled: 0.0024676125848241827,
+                 //        downloadCountScaled: 0.00036681094563861783,
+                 //        claimable: false
+                 // },
+              },function(err){
+
+              });
       }
     },
 
