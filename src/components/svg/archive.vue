@@ -1,9 +1,24 @@
 <template>
-	<span>
-	      <div v-html="getSVG(icon)"></div>
-	 </span>
+	<Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+      <div v-html="getSVG(icon)"></div>
+      <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
+        <span>Omics score: {{score}}</span>
+        <Icon type="md-help-circle" />
+      </div>
+      <div class="" slot="content">
+        <div><span style="margin-right: 5px">{{icon.viewsCount}}</span><span>Views</span></div>
+        <div><span style="margin-right: 5px">{{icon.connectionsCount}}</span><span>Connections</span></div>
+        <div><span style="margin-right: 5px">{{icon.citationsCount}}</span><span>Citations</span></div>
+        <div><span style="margin-right: 5px">{{icon.reanalysisCount}}</span><span>Reanalyses</span></div>
+        <div><span style="margin-right: 5px">{{icon.downloadCount}}</span><span>Downloads</span></div>
+      </div>
+    </Poptip>
+
+	      
+	
 </template>
 <script>
+	let score = 0
 	function a() {}
 	a.roundNumber = function (n, l) {
 	  return (
@@ -143,7 +158,7 @@
 	  for (let d = 0; d < t.length; d++)
 	    for (let c = 0; c < t[d].norm_leaves; c++) s.push(t[d]);
 
-	  let score = Math.round(
+	  score = Math.round(
 	    t.reduce(function (n, l) {
 	      return n + 1e3 * l.scale;
 	    }, 0)
@@ -214,6 +229,7 @@
 		props: ['icon'],
 		data() {
 		    return {
+		      score:0,
 		      list: [
 			        // {
 			        //   id: "E-GEOD-25401",
@@ -251,7 +267,10 @@
 	  	methods:{
 		    getSVG(t){
 		      let svg = new n(t)
-		      return svg.initialize()
+		      let svgInt = svg.initialize()
+		      this.score = score
+		      // console.log('score',this.icon.id, score)
+		      return svgInt
 		    }
 	  	},
 	  	mounted () {
