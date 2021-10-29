@@ -138,19 +138,19 @@
                             </Collapse>
                       </div>
                       <div style="width:15%; display: inline-block; position: absolute;">
-                            <Poptip trigger="hover" placement="left" style="position: absolute; right: 0;">
-                              <!-- <img :src="archive_logo" > -->
-                              <svgLogo :icon="publicationItem.icon"></svgLogo> 
+                            <svgLogo v-if="publicationItem.icon.id" :icon="publicationItem.icon"></svgLogo> 
+                            <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+                              <img :src="archive_logo" width="60px" height="60px">
                               <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
                                 <span>Omics score: 0</span>
                                 <Icon type="md-help-circle" />
                               </div>
                               <div class="" slot="content">
-                                <div><span style="margin-right: 5px">1</span><span>Views</span></div>
-                                <div><span style="margin-right: 5px">2</span><span>Connections</span></div>
-                                <div><span style="margin-right: 5px">3</span><span>Citations</span></div>
-                                <div><span style="margin-right: 5px">4</span><span>Reanalyses</span></div>
-                                <div><span style="margin-right: 5px">5</span><span>Downloads</span></div>
+                                <div><span style="margin-right: 5px">0</span><span>Views</span></div>
+                                <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
+                                <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
+                                <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
+                                <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
                               </div>
                             </Poptip>
                             <!-- <span style="position:absolute;">123</span> -->
@@ -383,7 +383,7 @@
                 if(res.body._embedded && res.body._embedded.compactprojects){
                       this.setHighlightKeywords();
                       let projectsList = res.body._embedded.compactprojects;
-                      console.log('projectsList',projectsList);
+                      // console.log('projectsList',projectsList);
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -453,7 +453,7 @@
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);  
                       }
-                      console.log('this.publicaitionList', this.publicaitionList);
+                      // console.log('this.publicaitionList', this.publicaitionList);
                       this.generateIcons()
                 }
                 else{
