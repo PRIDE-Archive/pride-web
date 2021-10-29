@@ -137,24 +137,28 @@
                                 </Panel>
                             </Collapse>
                       </div>
+                      
                       <div style="width:15%; display: inline-block; position: absolute;">
-                            <svgLogo v-if="publicationItem.icon.id" :icon="publicationItem.icon"></svgLogo> 
-                            <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
-                              <img :src="archive_logo" width="60px" height="60px">
-                              <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
-                                <span>Omics score: 0</span>
-                                <Icon type="md-help-circle" />
-                              </div>
-                              <div class="" slot="content">
-                                <div><span style="margin-right: 5px">0</span><span>Views</span></div>
-                                <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
-                                <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
-                                <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
-                                <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
-                              </div>
-                            </Poptip>
-                            <!-- <span style="position:absolute;">123</span> -->
+                            <Spin style="position: absolute; right: 30px; top: 30px;"   size="small" v-if="iconLoading"></Spin>
+                            <span v-else>
+                                <svgLogo v-if="publicationItem.icon.id" :icon="publicationItem.icon"></svgLogo> 
+                                <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+                                  <img :src="archive_logo" width="60px" height="60px">
+                                  <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
+                                    <span>Omics score: 0</span>
+                                    <Icon type="md-help-circle" />
+                                  </div>
+                                  <div class="" slot="content">
+                                    <div><span style="margin-right: 5px">0</span><span>Views</span></div>
+                                    <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
+                                    <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
+                                    <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
+                                    <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
+                                  </div>
+                                </Poptip>
+                            </span>
                       </div>
+
                   </Card>
                   
                   <div v-if="publicaitionList.length>0" class="page-container">
@@ -250,7 +254,8 @@
           normalQuery:{},
           autoCompleteArray:[],
           archive_logo: this.$store.state.baseURL + '/archive_logo.png',
-          iconURL:'https://www.omicsdi.org/ws/dataset/search?query='
+          iconURL:'https://www.omicsdi.org/ws/dataset/search?query=',
+          iconLoading:false
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -877,9 +882,11 @@
               else  
                 query+=this.publicaitionList[i].accession+'+OR+'
           }
+          this.iconLoading = true
           this.$http
               .get(this.iconURL + query)
               .then(function(res){
+                 this.iconLoading =false
                  let iconList = res.body.datasets
                  console.log('resresres',res)
                  for(let i=0;i<iconList.length; i++){
@@ -934,7 +941,7 @@
                  //        claimable: false
                  // },
               },function(err){
-
+                this.iconLoading =false
               });
       }
     },
