@@ -146,7 +146,7 @@
                                   <img :src="archive_logo" width="60px" height="60px">
                                   <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
                                     <span>Omics score: 0</span>
-                                    <Icon type="md-help-circle" />
+                                    <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
                                   </div>
                                   <div class="" slot="content">
                                     <div><span style="margin-right: 5px">0</span><span>Views</span></div>
@@ -943,6 +943,9 @@
               },function(err){
                 this.iconLoading =false
               });
+      },
+      gotoIconHelpPage(){
+        window.open('http://blog.omicsdi.org/post/rosette-chart/')
       }
     },
 
