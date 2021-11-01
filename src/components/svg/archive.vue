@@ -3,7 +3,7 @@
       <div v-html="getSVG(icon)"></div>
       <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
         <span>Omics score: {{score}}</span>
-        <Icon type="md-help-circle" />
+        <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
       </div>
       <div class="" slot="content">
         <div><span style="margin-right: 5px">{{icon.viewsCount}}</span><span>Views</span></div>
@@ -271,6 +271,9 @@
 		      this.score = score
 		      // console.log('score',this.icon.id, score)
 		      return svgInt
+		    },
+		    gotoIconHelpPage(){
+		    	window.open('http://blog.omicsdi.org/post/rosette-chart/')
 		    }
 	  	},
 	  	mounted () {
