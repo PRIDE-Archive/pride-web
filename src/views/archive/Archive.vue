@@ -888,9 +888,9 @@
               .then(function(res){
                  this.iconLoading =false
                  let iconList = res.body.datasets
-                 console.log('resresres',res)
+                 // console.log('resresres',res)
                  for(let i=0;i<iconList.length; i++){
-                    console.log('id',iconList[i].id)
+                    // console.log('id',iconList[i].id)
                     for(let j=0;j<this.publicaitionList.length;j++){
                       
                       // console.log('this.publicaitionList[i].accession',this.publicaitionList[j].accession)
@@ -906,11 +906,11 @@
                       }
                     }
                  }
-                 console.log('XXXXX',this.publicaitionList)
+                 // console.log('XXXXX',this.publicaitionList)
 
-                 for(let i=0; i<this.publicaitionList.length; i++){
-                  console.log('ididididid',this.publicaitionList[i].icon.id)
-                 }
+                 // for(let i=0; i<this.publicaitionList.length; i++){
+                 //  console.log('ididididid',this.publicaitionList[i].icon.id)
+                 // }
                  // this.publicaitionList[i].icon = {
                  //        id: "E-GEOD-25401",
                  //        source: "arrayexpress-repository",
