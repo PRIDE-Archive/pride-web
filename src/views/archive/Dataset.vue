@@ -12,7 +12,22 @@
                 </Breadcrumb>
                 -->
                 <div class="title-wrapper">
-                  <h2 class="project-title">Project {{accession}}</h2>
+                  <h2 class="project-title">Project {{accession}}</h2>  
+                  <svgLogo v-if="iconFound" :icon="iconData"></svgLogo>  
+                  <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+                    <img :src="archive_logo" width="60px" height="60px">
+                    <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
+                      <span>Omics score: 0</span>
+                      <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
+                    </div>
+                    <div class="" slot="content">
+                      <div><span style="margin-right: 5px">0</span><span>Views</span></div>
+                      <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
+                      <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
+                      <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
+                      <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
+                    </div>
+                  </Poptip>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -336,6 +351,7 @@
 <script>
   import NavBar from '@/components/Nav'
   import store from "@/store.js"
+  import svgLogo from "@/components/svg/archive"
   export default {
     name: 'archive',  
     data(){
@@ -731,7 +747,12 @@
           pageSdrf:1,
           totalSdrf:0,
           reanalysisReferences:[],
-          referenceModalShow:false
+          referenceModalShow:false,
+          archive_logo: this.$store.state.baseURL + '/archive_logo.png',
+          iconURL:'https://www.omicsdi.org/ws/dataset/search?query=',
+          iconLoading:false,
+          iconFound:false,
+          iconData:{}
       }
     },
     metaInfo () {
@@ -749,7 +770,8 @@
       next();
     },
     components: {
-      NavBar
+      NavBar,
+      svgLogo
     },
     methods:{
       queryProjectDetails(id){
@@ -807,6 +829,7 @@
                 // this.getMSRunTableData()
                 this.getProteinEvidences()
                 this.ssr()
+                this.generateIcons(id)
             },function(err){
                 if(err.bodyText.match('not in the database')){
                     this.$Modal.warning({
@@ -1339,6 +1362,30 @@
             console.log(ssr_script)
             document.getElementsByTagName('head')[0].appendChild(ssr_script)
           }
+      },
+      generateIcons(accession){
+          this.iconLoading = true
+          this.iconFound = false
+
+          this.$http
+              .get(this.iconURL + accession)
+              .then(function(res){
+                 this.iconLoading = false
+                 let iconList = res.body.datasets
+                 console.log('resresres',res)
+                 for(let i=0;i<iconList.length; i++){
+                    if(accession == iconList[i].id){
+                        this.iconFound = true
+                        this.iconData = iconList[i]
+                        break;
+                      }
+                 }
+              },function(err){
+                this.iconLoading =false
+              });
+      },
+      gotoIconHelpPage(){
+        window.open('http://blog.omicsdi.org/post/rosette-chart/')
       }
     },
     mounted: function(){
