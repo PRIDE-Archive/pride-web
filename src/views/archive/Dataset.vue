@@ -13,7 +13,6 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>
-                  <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -54,7 +53,10 @@
               <Col span="16">
                   <div>
                     <Card class="card">
-                          <p slot="title">Summary</p>
+                          <p slot="title" style="display:flex;justify-content: space-between;">
+                              <span>Summary </span>
+                              <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button>
+                          </p>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Title</div>
                               <p>{{title}}</p>
@@ -1499,13 +1501,14 @@
   }
   .tag-button{
       color: white;
-      padding: 8px 10px;
+      padding: 0px 5px;
       font-size: 12px;
-      width: 150px;
+      /*width: 150px;*/
       text-align: center;
       font-weight: 700;
       background-color: #5bc0be;
       border-radius: 3px;
+      height: auto;
   }
   .tag-button:hover{
     opacity: 0.8 !important;
