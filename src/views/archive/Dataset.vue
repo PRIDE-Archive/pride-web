@@ -13,21 +13,24 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>  
-                  <svgLogo v-if="iconFound" :icon="iconData"></svgLogo>  
-                  <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
-                    <img :src="archive_logo" width="60px" height="60px">
-                    <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
-                      <span>Omics score: 0</span>
-                      <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
-                    </div>
-                    <div class="" slot="content">
-                      <div><span style="margin-right: 5px">0</span><span>Views</span></div>
-                      <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
-                      <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
-                      <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
-                      <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
-                    </div>
-                  </Poptip>
+                  <Spin style="position: absolute; right: 30px; top: 70px;"   size="small" v-if="iconLoading || queryProjectDetailsLoading"></Spin>
+                  <span v-else>
+                      <svgLogo v-if="iconFound" :icon="iconData"></svgLogo>  
+                      <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+                        <img :src="archive_logo" width="60px" height="60px">
+                        <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
+                          <span>Omics score: 0</span>
+                          <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
+                        </div>
+                        <div class="" slot="content">
+                          <div><span style="margin-right: 5px">0</span><span>Views</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
+                        </div>
+                      </Poptip>
+                  </span>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -752,7 +755,8 @@
           iconURL:'https://www.omicsdi.org/ws/dataset/search?query=',
           iconLoading:false,
           iconFound:false,
-          iconData:{}
+          iconData:{},
+          queryProjectDetailsLoading:false,
       }
     },
     metaInfo () {
@@ -775,11 +779,13 @@
     },
     methods:{
       queryProjectDetails(id){
+           this.queryProjectDetailsLoading = true;
            var id = id || this.$route.params.id;
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
               console.log(res.body)
+                this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -831,6 +837,7 @@
                 this.ssr()
                 this.generateIcons(id)
             },function(err){
+                this.queryProjectDetailsLoading = false;
                 if(err.bodyText.match('not in the database')){
                     this.$Modal.warning({
                         title: 'Not Public Project',
