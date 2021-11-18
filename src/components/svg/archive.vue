@@ -151,7 +151,7 @@
 	      }
 	    : void 0;
 	};
-	n.prototype.initialize = function () {
+	n.prototype.initialize = function (height, width) {
 	  let t = this.convertData();
 	  this.normalise_number_leaves(t, 12);
 	  let s = [];
@@ -165,7 +165,7 @@
 	  );
 	  
 	  let SVG = `
-	  <svg viewBox="0 0 720 720" class="rosette-chart" height="65" width="65">
+	  <svg viewBox="0 0 720 720" class="rosette-chart" height="${height}" width="${width}">
 	    <defs>
 	  `;
 	  for (let d = 0; d < 12; d++) {
@@ -226,7 +226,7 @@
 	  return SVG
 	};
 	export default {
-		props: ['icon'],
+		props: ['icon','height','width'],
 		data() {
 		    return {
 		      score:0,
@@ -267,7 +267,10 @@
 	  	methods:{
 		    getSVG(t){
 		      let svg = new n(t)
-		      let svgInt = svg.initialize()
+		      let height = this.height || 65
+		      let width = this.width || 65
+		      console.log('height width', this.height, this.width)
+		      let svgInt = svg.initialize(height, width)
 		      this.score = score
 		      // console.log('score',this.icon.id, score)
 		      return svgInt
@@ -278,6 +281,7 @@
 	  	},
 	  	mounted () {
 	  		// if(this.icon.id=='PXD028666')
+	  		console.log('111height width', this.height, this.width)
     		console.log('iconiconiconicon',this.icon.id)
   		}
 	};

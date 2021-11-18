@@ -255,7 +255,7 @@
           autoCompleteArray:[],
           archive_logo: this.$store.state.baseURL + '/archive_logo.png',
           iconURL:'https://www.omicsdi.org/ws/dataset/search?query=',
-          iconLoading:false
+          iconLoading:false,
       }
     },
     beforeRouteUpdate:function (to, from, next) {
