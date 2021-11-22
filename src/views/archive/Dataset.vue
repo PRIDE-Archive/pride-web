@@ -3,7 +3,7 @@
       <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="content">
           <Row>
-            <Col span="24">
+            <Col span="20">
                 <!--
                 <Breadcrumb separator=">">
                     <BreadcrumbItem to="/">Home</BreadcrumbItem>
@@ -13,24 +13,6 @@
                 -->
                 <div class="title-wrapper">
                   <h2 class="project-title">Project {{accession}}</h2>  
-                  <Spin style="position: absolute; right: 30px; top: 70px;"   size="small" v-if="iconLoading || queryProjectDetailsLoading"></Spin>
-                  <span v-else>
-                      <svgLogo v-if="iconFound" :icon="iconData"></svgLogo>  
-                      <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
-                        <img :src="archive_logo" width="60px" height="60px">
-                        <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
-                          <span>Omics score: 0</span>
-                          <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
-                        </div>
-                        <div class="" slot="content">
-                          <div><span style="margin-right: 5px">0</span><span>Views</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
-                        </div>
-                      </Poptip>
-                  </span>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -65,6 +47,26 @@
                         </DropdownMenu> -->
                     </span>
                 </div>
+            </Col>
+            <Col span= "4">
+                <Spin style="position: absolute; right: 30px; top: 70px;"   size="small" v-if="iconLoading || queryProjectDetailsLoading"></Spin>
+                  <span v-else>
+                      <svgLogo v-if="iconFound" :icon="iconData" :height="100" :width="100"></svgLogo>  
+                      <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
+                        <img :src="archive_logo" width="60px" height="60px">
+                        <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
+                          <span>Omics score: 0</span>
+                          <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
+                        </div>
+                        <div class="" slot="content">
+                          <div><span style="margin-right: 5px">0</span><span>Views</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
+                          <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
+                        </div>
+                      </Poptip>
+                  </span>
             </Col>
           </Row>
           <Row :gutter="48">
