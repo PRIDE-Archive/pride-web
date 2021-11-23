@@ -804,7 +804,7 @@
                 this.quantificationMethods = res.body.quantificationMethods || [];
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
+                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'http://') || '';
                 //for ssr
                 this.keywords = res.body.keywords[0]
                 //for contactors
@@ -913,7 +913,7 @@
                           if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
                               let urlItem = {
                                   label:'FTP',
-                                  key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "https://"),
+                                  key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "http://"),
                               }
                               item.url.push(urlItem)
                           }
