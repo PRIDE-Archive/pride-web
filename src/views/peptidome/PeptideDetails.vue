@@ -1,7 +1,7 @@
 <template>
     <div class="peptide-detail-container">
         <NavBar page="peptidome"/>
-        <div class="content-container">
+        <div v-if="queryPeptideDetailBool" class="content-container">
             <Row type="flex" justify="center" class="code-row-bg">
                 <Col span="24">
                     <div class="visualization-wrapper title">
@@ -29,7 +29,9 @@
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Evidences</span>
-                                    <span class="content" style="border-left-color: #dcd8b2;">{{numberOfSpectra}} PSM, {{numberOfProjects}} Projects</span>
+                                    <span class="content" style="border-left-color: #dcd8b2;">
+                                        <span v-if="queryPeptideDetailBool">{{numberOfSpectra}} PSM, {{numberOfProjects}} Projects</span>
+                                    </span>
                                 </div>
                                 <div class="peptide-details-item">
                                     <span class="name">Best FDR-score</span>
@@ -38,16 +40,16 @@
                                 <div class="peptide-details-item">
                                     <span class="name">External links</span>
                                     <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
-                                        <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink1()">
+                                        <a v-if="queryPeptideDetailBool" style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink1()">
                                             <img :src="iconSrc1" style="width:16px; height: 16px;">PeptideAtlas
                                         </a>
                                     </span>
-                                    <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
+                                    <span v-if="queryPeptideDetailBool" class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
                                         <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink2()">
                                             <img :src="iconSrc2" style="width:16px; height: 16px;">OmicsDI
                                         </a>
                                     </span>
-                                    <span class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
+                                    <span v-if="queryPeptideDetailBool" class="content" style="border-left-color: #a3a5d2; margin-right: 10px; height: 30px; display: flex; align-items: center;">
                                         <a style="display: flex;align-items: center;color:#515a6e" @click="showExternalLink3()">
                                             <img :src="iconSrc3" style="width:16px; height: 16px;">Human Protein Atlas
                                         </a>
@@ -157,6 +159,9 @@
                     </div>
                 </Col>
             </Row>
+        </div>
+        <div v-else style="display: flex;height: 300px;align-items: center;justify-content: center;">
+           The peptide is not in Peptidome
         </div>
     </div>
 </template>
@@ -415,7 +420,8 @@
                 gene:'',
                 iconSrc1: this.$store.state.baseURL + '/peptideIcon1.ico',
                 iconSrc2: this.$store.state.baseURL + '/peptideIcon2.png',
-                iconSrc3: this.$store.state.baseURL + '/peptideIcon3.gif'
+                iconSrc3: this.$store.state.baseURL + '/peptideIcon3.gif',
+                queryPeptideDetailBool:false
             }
         },
         components: {
@@ -431,10 +437,12 @@
                     peptideSequence: this.$route.query.keyword,
                     proteinAccession: this.$route.query.proteinAccession
                 }
+                this.queryPeptideDetailBool = false
                 this.$http
                   .get(this.clusterIDApi,{params:query })
                   .then(function(res){
                         this.detailsSpinShow=false;
+                        this.queryPeptideDetailBool = true
                         console.log('aaaa',res.body)
                         let body = res.body
                         this.sequence=body.peptideSequence;
@@ -560,6 +568,10 @@
                                 this.consensusSpectrumSpinShow=false;
                           });                               
                   },function(err){
+                    console.log('errerrerr',err)
+                    this.detailsSpinShow=false
+                    this.queryPeptideDetailBool = false
+                    this.$Message.error({content:'No Peptide Available', duration:3});
                   });
            },
            queryClusterPeptides(){
@@ -633,8 +645,7 @@
                 if(organism_name&&peptideSequence){
                     let url = 'https://db.systemsbiology.net/sbeams/cgi/PeptideAtlas/GetPeptide?action=QUERY&organism_name='+organism_name+'&searchWithinThis=Peptide+Sequence&searchForThis='+ peptideSequence
                     window.open(url)
-                }
-                
+                } 
            },
            showExternalLink2(){
                 let gene = this.gene;
@@ -643,7 +654,6 @@
                     let url = 'https://www.omicsdi.org/search?q='+gene+'-OR-'+proteinAccession
                     window.open(url)
                 }
-                
            },
            showExternalLink3(){
                 let gene = this.gene;
@@ -651,7 +661,6 @@
                     let url = 'http://www.proteinatlas.org/search/gene_name:'+gene
                     window.open(url)
                 }
-                
            }
         },
         computed:{
