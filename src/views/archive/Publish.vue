@@ -39,6 +39,16 @@
               </FormItem>
             </Form>
         </div>
+        <Modal
+            v-model="publishModel"
+            title="Publish Hint"
+            :closable="false">
+            <p style="margin-bottom: 5px;">Publication request has been submitted.</p>
+            <p>If you do not receive a successful publication email of your dataset within 5 working days, please contact <a <a href="mailto:pride-support@ebi.ac.uk" style="color:#495060">pride-support@ebi.ac.uk</a></p>
+            <div slot="footer">
+                <Button  @click="publishModalOk">OK</Button>
+            </div>
+        </Modal>
     </div>
 </template>
 <script>
@@ -88,94 +98,112 @@
                     value:'DOI'
                   },
                 ],
+                publishModel:false,
             }
         },
         components: {
             NavBar,
         },
         methods:{
+
             publish(name){
-              // this.$Message.success({ content: 'Coming Soon' });
-              // return;
-              this.$refs[name].validate((valid) => {
-                  if (!valid) {
-                    this.$Message.error({ content: 'Fill all required items' });
-                    return
-                  }
-                  this.$Spin.show({
-                    render: (h) => {
-                      return h('div', [
-                        h('Icon', {
-                          'class': 'demo-spin-icon-load',
-                          props: {
-                            type: 'load-b',
-                            size: 18
-                          }
-                        }),
-                        h('div', 'Please wait...')
-                      ])
+                this.$Modal.confirm({
+                    title: 'Publish Data',
+                    content: '<p>Do you want to publish this dataset?</p>',
+                    onOk: () => {
+                         this.submit(name)
+                    },
+                    onCancel: () => {
+                        
                     }
-                  });
-                  let query = {};
-                  query.PublishProjectRequest = {
-                    publishJustification: this.formInlinePublish.reason,
-                  }
-
-                  if(this.formInlinePublish.title == 'PubMedID')
-                    query.PublishProjectRequest.pubmedId = this.formInlinePublish.pubmed
-                  else if(this.formInlinePublish.title == 'DOI')
-                    query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
-
-                  let api;
-                  if(this.$route.query && this.$route.query.r == 'self')
-                      api = this.publishSelfAPI;
-                  else
-                      api = this.publishOtherAPI;
-                  this.$http
-                        .post(api+'/'+this.formInlinePublish.accession,query,{
-                          headers: {
-                            'Authorization':'Bearer '+ localStorage.getItem('token')
-                          }
-                        })
-                        .then(function(res){
-                              this.$Message.success({ content: 'Publish Request Received, please wait for our response.', duration:10 })
-                              this.$Spin.hide()
-                              this.$refs[name].resetFields();
-                              //this.$router.push({name:'archive'})
-                        },function(err){
-                          this.$Spin.hide()
-                          if(err.body.hasOwnProperty('message')){
-                              if(err.body.message == 'Supplied Token is not a valid JWT token')
-                                 this.$Message.error({ content: 'Invalid Token, Please log in!'});
-                              else
-                                this.$Message.error({ content: 'Publish Error, contact pride-support'});
-                          }
-                          else{
-                              let errArray = err.body;
-                              if(errArray[0].hasOwnProperty('defaultMessage'))
-                                this.$Message.error({ content: errArray[0].defaultMessage});
-                              else
-                                this.$Message.error({ content: 'Unknow Error, contact pride-support'});
-                          }
-                        });
-              })
+                });
             },
-            // openTerms(){
-            //   window.open('https://www.ebi.ac.uk/data-protection/privacy-notice/pride-new');
-            // },
-        },
-        mounted:function(){
-             console.log()
-        },
-        // beforeRouteEnter(to,from,next){
-        //     next(vm=>{
-        //       let username = localStorage.getItem('username') || '';
-        //       if(!username){
-        //         vm.$Message.error({content:'Please Login', duration:2})
-        //         vm.$router.push({name:'landingpage'})
-        //       }
-        //     });
-        // }
+            submit(name){
+                this.$refs[name].validate((valid) => {
+                      if (!valid) {
+                        this.$Message.error({ content: 'Fill all required items' });
+                        return
+                      }
+                      this.$Spin.show({
+                        render: (h) => {
+                          return h('div', [
+                            h('Icon', {
+                              'class': 'demo-spin-icon-load',
+                              props: {
+                                type: 'load-b',
+                                size: 18
+                              }
+                            }),
+                            h('div', 'Please wait...')
+                          ])
+                        }
+                      });
+                      let query = {};
+                      query.PublishProjectRequest = {
+                        publishJustification: this.formInlinePublish.reason,
+                      }
+
+                      if(this.formInlinePublish.title == 'PubMedID')
+                        query.PublishProjectRequest.pubmedId = this.formInlinePublish.pubmed
+                      else if(this.formInlinePublish.title == 'DOI')
+                        query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
+
+                      let api;
+                      if(this.$route.query && this.$route.query.r == 'self')
+                          api = this.publishSelfAPI;
+                      else
+                          api = this.publishOtherAPI;
+                      this.$http
+                            .post(api+'/'+this.formInlinePublish.accession,query,{
+                              headers: {
+                                'Authorization':'Bearer '+ localStorage.getItem('token')
+                              }
+                            })
+                            .then(function(res){
+                                  this.$Spin.hide()
+                                  this.$refs[name].resetFields();
+                                  this.publishModel = true
+                                  //this.$router.push({name:'archive'})
+                            },function(err){
+                                console.log('errerrerr',err)
+                                this.$Spin.hide()
+                                if(err.body){
+                                    if(err.body.hasOwnProperty('message')){
+                                        if(err.body.message == 'Supplied Token is not a valid JWT token')
+                                           this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
+                                        else
+                                          this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
+                                    }
+                                    else{
+                                        let errArray = err.body;
+                                        if(errArray[0].hasOwnProperty('defaultMessage'))
+                                          this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
+                                        else
+                                          this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
+                                    }
+                                }
+                                else{
+                                    this.$Message.error({ content: err.bodyText, duration:'10'});
+                                }
+                            });
+                })
+            },
+            publishModalOk(){
+              this.publishModel=false
+            }
+          },
+          mounted:function(){
+               console.log()
+          },
+          // beforeRouteEnter(to,from,next){
+          //     next(vm=>{
+          //       let username = localStorage.getItem('username') || '';
+          //       if(!username){
+          //         vm.$Message.error({content:'Please Login', duration:2})
+          //         vm.$router.push({name:'landingpage'})
+          //       }
+          //     });
+          // }
     }
 </script>
 <style scoped>
