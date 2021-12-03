@@ -1264,16 +1264,7 @@
         this.$store.commit('setUser',{username: '', token:''});    
       },
       publishData(){
-        this.$Modal.confirm({
-              title: 'Publish Data',
-              content: '<p>Do you want to publish this dataset?</p>',
-              onOk: () => {
-                   this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
-              },
-              onCancel: () => {
-                  
-              }
-          });
+        this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
     },
     mounted: function(){
