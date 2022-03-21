@@ -70,8 +70,13 @@ export default new Router({
       name: 'molecules',
       component: Molecules
     },
+    // {
+    //   path:'/archive/projects/:id/private',
+    //   name: 'privatedataset',
+    //   component: PrivateDataset
+    // },
     {
-      path:'/archive/projects/:id/private',
+      path:'/archive/projects/private/a',
       name: 'privatedataset',
       component: PrivateDataset
     },
