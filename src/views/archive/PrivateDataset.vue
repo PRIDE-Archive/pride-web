@@ -14,7 +14,10 @@
                 <div class="title-wrapper">
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
-                  <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
+                  <span>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
+                  </span>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -1448,6 +1451,10 @@
   .tag-button.notActive:hover{
     opacity: 0.5 !important;
     color: white;
+  }
+  .tag-button.edit{
+    background: none;
+    color:  #5bc0be
   }
  .biological-dataset-button{
       padding: 2px 3px;
