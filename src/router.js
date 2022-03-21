@@ -18,6 +18,7 @@ const StatisticsDetails = resolve => require(['@/views/landingpage/StatisticsDet
 const Profile = resolve => require(['@/views/ebi/Profile'], resolve);
 const Molecules = resolve => require(['@/views/archive/Molecules'], resolve);
 const PrivateDataset = resolve => require(['@/views/archive/PrivateDataset'], resolve);
+const EditDataset = resolve => require(['@/views/archive/EditDataset'], resolve);
 const Spectra = resolve => require(['@/views/archive/Spectra'], resolve);
 const Register = resolve => require(['@/views/ebi/Register'], resolve);
 const Publish = resolve => require(['@/views/archive/Publish'], resolve);
@@ -70,16 +71,21 @@ export default new Router({
       name: 'molecules',
       component: Molecules
     },
-    // {
-    //   path:'/archive/projects/:id/private',
-    //   name: 'privatedataset',
-    //   component: PrivateDataset
-    // },
     {
-      path:'/archive/projects/private/a',
+      path:'/archive/projects/:id/private',
       name: 'privatedataset',
       component: PrivateDataset
     },
+    {
+      path:'/archive/projects/edit/a',
+      name: 'privatedataset',
+      component: PrivateDataset
+    },
+    // {
+    //   path:'/archive/projects/:id/edit',
+    //   name: 'privatedataset',
+    //   component: PrivateDataset
+    // },
     {
       path: '/peptidome',
       name: 'peptidome',
