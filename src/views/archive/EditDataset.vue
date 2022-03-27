@@ -1267,6 +1267,7 @@
         this.$store.commit('setUser',{username: '', token:''});    
       },
       saveData(){
+        this.$Message.error({content:'Coming Soon', duration:3});
         // this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
     },
