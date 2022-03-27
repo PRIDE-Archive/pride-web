@@ -14,10 +14,8 @@
                 <div class="title-wrapper">
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
-                  <span>
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
-                  </span>
+                  
+                  <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="saveData">Save</Button>
                 </div>
                 <div class="tag-wrapper">
                     <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
@@ -56,16 +54,16 @@
                           <p slot="title">Summary</p>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Title</div>
-                              <p>{{title}}</p>
+                              <Input v-model="title" type="textarea" :autosize="true" placeholder="Enter something..." />
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Description</div>
-                              <read-more class="readMore" more-str="Read more" :text="projectDescription" link="#" less-str="Read less" :max-chars="400"></read-more>
+                              <Input v-model="projectDescription" type="textarea" :autosize="true" placeholder="Enter something..." />
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Sample Processing Protocol</div>
                               <div v-if="sampleProcessingProtocol != 'Not available'">
-                                <read-more class="readMore" more-str="Read more" :text="sampleProcessingProtocol" link="#" less-str="Read less" :max-chars="400"></read-more>
+                                <Input v-model="sampleProcessingProtocol" type="textarea" :autosize="true" placeholder="Enter something..." />
                               </div>
                               <div v-else>
                                   <div v-if="publications.length == 0">
@@ -81,7 +79,7 @@
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Data Processing Protocol</div>
                               <div v-if="dataProcessingProtocol != 'Not available'">
-                                <read-more class="readMore" more-str="Read more" :text="dataProcessingProtocol" link="#" less-str="Read less" :max-chars="400"></read-more>
+                                <Input v-model="dataProcessingProtocol" type="textarea" :autosize="true" placeholder="Enter something..." />
                               </div>
                               <div v-else>
                                   <div v-if="publications.length == 0">
@@ -1268,8 +1266,8 @@
         this.$router.replace({name:'archive'});
         this.$store.commit('setUser',{username: '', token:''});    
       },
-      publishData(){
-        this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
+      saveData(){
+        // this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
     },
     mounted: function(){
