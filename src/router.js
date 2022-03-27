@@ -77,15 +77,10 @@ export default new Router({
       component: PrivateDataset
     },
     {
-      path:'/archive/projects/edit/a',
-      name: 'privatedataset',
+      path:'/archive/projects/:id/edit',
+      name: 'editdataset',
       component: EditDataset
     },
-    // {
-    //   path:'/archive/projects/:id/edit',
-    //   name: 'privatedataset',
-    //   component: PrivateDataset
-    // },
     {
       path: '/peptidome',
       name: 'peptidome',
