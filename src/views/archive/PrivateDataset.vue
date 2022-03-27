@@ -1269,6 +1269,9 @@
       publishData(){
         this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
+      editData(){
+        this.$router.push({name:'editdataset',params:{id:this.$route.params.id}});
+      }
     },
     mounted: function(){
         this.queryProjectDetails();
