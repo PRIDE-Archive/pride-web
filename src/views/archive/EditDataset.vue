@@ -448,8 +448,7 @@
           experimentTypes:[],
           softwares:[],
           modification:[],
-          // queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects',
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects',
           queryArchiveProjectFilesApi: this.$store.state.basePrivateURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
@@ -931,13 +930,12 @@
           this.modification=[]
       },
       queryProjectDetails(id){
-           // var id = id || this.$route.params.id;
-           var id = 'PXD032349'
+           var id = id || this.$route.params.id;
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id,{
-              // headers: {
-              //   'Authorization':'Bearer '+ localStorage.getItem('token')
-              // }
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token')
+              }
             }).then(function(res){
                 this.init();
                 this.accession = res.body.accession;
@@ -1274,7 +1272,7 @@
     mounted: function(){
         this.queryProjectDetails();
         //this.queryAssay();
-        // this.queryArchiveProjectFiles();
+        this.queryArchiveProjectFiles();
         this.userType = localStorage.getItem('type') || '';
         //this.querySimilarity();
         //this.getMSRunTableData();
