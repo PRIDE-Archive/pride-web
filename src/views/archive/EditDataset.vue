@@ -458,6 +458,7 @@
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           publishAPI: this.$store.state.basePrivateURL + '/projects/publish',
+          updateDatesetApi: this.$store.state.basePrivateURL + '/projects/update/metadata/',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -979,7 +980,7 @@
                       desc:res.body.references[i].referenceLine,
                       pmid:res.body.references[i].pubmedId,
                     }
-                    this.publications.push(item);
+                    this.publications.push(item);  
                   }
 
             },function(err){
@@ -1265,7 +1266,32 @@
         this.$store.commit('setUser',{username: '', token:''});    
       },
       saveData(){
-        this.$Message.error({content:'Coming Soon', duration:3});
+        let dataset = {}
+        dataset.metadata = {
+          
+          title: this.title,
+          projectDescription: this.projectDescription,
+          sampleProcessingProtocol: this.sampleProcessingProtocol,
+          dataProcessingProtocol: this.dataProcessingProtocol
+          // labHeadAffiliation: this.contactors 
+          // labHeadEmail: this.contactors 
+          // doi: "string",
+          // pubMedId: this.publications
+          
+        }
+
+
+        this.$http
+            .post(this.updateDatesetApi + this.accession,dataset,
+              {headers: {'Authorization':'Bearer '+ localStorage.getItem('token')} 
+            })
+            .then(function(res){
+                console.log('update metadata',res)
+                this.$Message.success({content:'Update Successfully', duration:3});
+            },function(err){
+              console.log(err)
+                this.$Message.error({content:'Update Failed', duration:3});
+            });
         // this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
     },
