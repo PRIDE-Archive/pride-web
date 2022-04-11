@@ -60,7 +60,7 @@ All manuscripts from the PRIDE team can be found in [PRIDE Team GoogleScholar](h
 
 ## The team behind PRIDE:
 
-The [PRIDE team](https://www.ebi.ac.uk/services/teams/pride) currently led by [Juan Antonio Vizcaino](https://www.ebi.ac.uk/about/people/juan-vizcaino), consists of software developers, biocurators, trainees/visitors and one team coordinator.
+The [PRIDE team](https://www.ebi.ac.uk/about/teams/proteomics/members/) currently led by [Juan Antonio Vizcaino](https://www.ebi.ac.uk/about/people/juan-vizcaino), consists of software developers, biocurators, trainees/visitors and one team coordinator.
 
 ## The members of the PRIDE Scientific Advisory Board:
 
