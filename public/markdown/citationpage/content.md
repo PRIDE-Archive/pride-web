@@ -28,7 +28,7 @@ If you have further queries please consult our Help FAQ or please contact us at 
 
 All PRIDE Archive and PX identifiers for a dataset.
 
-## Citing PRIDE Resources:
+## Citing PRIDE Resources
 
 - **Citing the PRIDE database generally**: Perez-Riverol Y, Csordas A, Bai J, Bernal-Llinares M, Hewapathirana S, Kundu DJ, Inuganti A, Griss J, Mayer G, Eisenacher M, Pérez E, Uszkoreit J, Pfeuffer J, Sachsenberg T, Yilmaz S, Tiwary S, Cox J, Audain E, Walzer M, Jarnuczak AF, Ternent T, Brazma A, Vizcaíno JA. [The PRIDE database and related tools and resources in 2019: improving support for quantification data.](https://academic.oup.com/nar/article/47/D1/D442/5160986). Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450. doi: 10.1093/nar/gky1106. PubMed ID:30395289.
 
@@ -45,11 +45,11 @@ All PRIDE Archive and PX identifiers for a dataset.
 
   See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission](https://www.frontiersin.org/articles/10.3389/fmicb.2018.00680/full).
 
-## Citing PRIDE Peptidome/PRIDE Cluster:
+## Citing PRIDE Peptidome/PRIDE Cluster
 
 - **Citing PRIDE Cluster**: Griss J, Perez-Riverol Y, Lewis S, Tabb DL, Dianes JA, Del-Toro N, Rurik M, Walzer MW, Kohlbacher O, Hermjakob H, Wang R, Vizcaíno JA. [Recognizing millions of consistently unidentified spectra across hundreds of shotgun proteomics datasets](https://www.ncbi.nlm.nih.gov/pubmed/27493588). Nat Methods. 2016 Aug;13(8):651-656. PubMed ID: 27493588.
 
-## Citing PRIDE Tools:
+## Citing PRIDE Tools
 
 - **PRIDE Inspector Toolsuite**: Perez-Riverol Y, Xu QW, Wang R, Uszkoreit J, Griss J, Sanchez A, Reisinger F, Csordas A, Ternent T, del Toro N, Dianes JA, Eisenacher M, Hermjakob H, Vizcaíno JA. [PRIDE Inspector Toolsuite: moving towards a universal visualization tool for proteomics data standard formats and quality assessment of ProteomeXchange datasets.](http://www.mcponline.org/content/15/1/305.long). Mol Cell Proteomics 2016 Jan; 15(1):305-17. PubMed ID: 26545397.
 
@@ -58,11 +58,11 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 All manuscripts from the PRIDE team can be found in [PRIDE Team GoogleScholar](https://scholar.google.co.uk/citations?user=tzHv1ZcAAAAJ&hl=en)
 
-## The team behind PRIDE:
+## The team behind PRIDE
 
 The [PRIDE team](https://www.ebi.ac.uk/about/teams/proteomics/members/) currently led by [Juan Antonio Vizcaino](https://www.ebi.ac.uk/about/people/juan-vizcaino), consists of software developers, biocurators, trainees/visitors and one team coordinator.
 
-## The members of the PRIDE Scientific Advisory Board:
+## The members of the PRIDE Scientific Advisory Board
 
 The PRIDE project receives advice and guidance from our scientific advisory board. The PRIDE SAB consists of a collection of scientists representing different groups working in the mass spectrometry proteomics field. Our current SAB members are:
 
@@ -80,7 +80,7 @@ We also would like to thank all previous members of the PRIDE SAB:
 - Kathryn Lilley, University of Cambridge, UK
 - Ioannis Xenarios, SIB Swiss Institute of Bioinformatics, Geneva, University of Lausanne, Switzerland  
 
-## Acknowledgements:
+## Acknowledgements
 
 The PRIDE team would like to thank all data submitters for their contributions. The PRIDE team is funded at present by the Wellcome Trust [grant number 208391/Z/17/Z],  the BBSRC grants BB/N022440/1, BB/N022432/1 and BB/P024599/1, the NIH grant R24 GM127667-01, the H2020 EU EPIC-XS grant [grant number 823839], several ELIXIR Implementation Studies and EMBL core funding. 
 
