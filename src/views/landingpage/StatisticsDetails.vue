@@ -101,6 +101,11 @@
                                 </Tooltip>
                              </p>
                              -->
+                             <p slot="extra">
+                                  <Select v-model="countryName" size="small" style="width:180px" @on-change="countrySelect">
+                                      <Option v-for="item in countryList" :value="item" :key="item">{{ item }}</Option>
+                                  </Select>
+                             </p>
                              <div class="card-content-pie">
                                  <Spin fix v-if="mapPrideShow"></Spin>
                                  <MapPride></MapPride>
@@ -142,7 +147,9 @@
                 barHorizontalShow:true,
                 facetsType:'INSTRUMENT',
                 facetsTypeList:['INSTRUMENT','DISEASES','ORGANISM','ORGANISM_PART','MODIFICATIONS'],
-                submissionTitle: ''
+                submissionTitle: '',
+                countryName:'',
+                countryList:[],
             }
         },
         components: {
@@ -210,6 +217,20 @@
                   .then(function(res){
                     this.mapPrideShow=false;
                     this.$bus.$emit('show-map', res.body);
+
+
+                    //for map sort
+                    let tempCountryList = [...res.body]
+                    // console.log('beforemap',res.body)
+                    tempCountryList.sort((a,b) => (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0))
+                    console.log('aftermap',tempCountryList)
+                    let tempLength = tempCountryList.length<10?tempCountryList.length:10
+                    for(let i=0; i< tempLength; i++){
+                      console.log('tempCountryList[i]',tempCountryList[i])
+                      this.countryList.push(tempCountryList[i].key+': '+tempCountryList[i].value)
+                    }
+                    this.countryName = this.countryList[0]
+                    console.log('this.countryList',this.countryList)
                   },function(err){
 
                   });
@@ -235,6 +256,9 @@
 
                   });
            },
+           countrySelect(){
+            //TODO
+           }
         },
         computed:{
 
