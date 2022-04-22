@@ -1272,10 +1272,11 @@
           title: this.title,
           projectDescription: this.projectDescription,
           sampleProcessingProtocol: this.sampleProcessingProtocol,
-          dataProcessingProtocol: this.dataProcessingProtocol
+          dataProcessingProtocol: this.dataProcessingProtocol,
+          // doi: "string",
           // labHeadAffiliation: this.contactors 
           // labHeadEmail: this.contactors 
-          // doi: "string",
+          
           // pubMedId: this.publications
           
         }
