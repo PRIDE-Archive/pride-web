@@ -488,9 +488,13 @@
                     this.$router.push({path:'/markdownpage/pridepeptidomews'});
                 }
             },
+            gotoLicense(){
+              this.$router.push({path:'/markdownpage/license'});
+            },
             gotoAbout(){
               this.$router.push({path:'/markdownpage/citationpage'});
             },
+
             gotoDocs(){
               this.$router.push({path:'/markdownpage/documentationpage'});
             },

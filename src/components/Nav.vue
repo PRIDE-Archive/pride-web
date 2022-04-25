@@ -61,6 +61,14 @@
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown>
+                          <router-link :to="{ path: '/markdownpage/license' }">
+                            <i class="fas fa fa-copyright"></i>
+                            <span class='sub-nav-title'>License</span>
+                          </router-link>
+                      </Dropdown>
+                  </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
                           <router-link :to="{ path: '/markdownpage/citationpage' }">
                             <i class="fas fa-info-circle"></i>
                             <span class='sub-nav-title'>About</span>
@@ -219,6 +227,9 @@
             },
             gotoAbout(){
               this.$router.push({path:'/markdownpage/citationpage'});
+            },
+            gotoLicense(){
+              this.$router.push({path:'/markdownpage/license'});
             },
             gotoDocs(){
               this.$router.push({path:'/markdownpage/documentationpage'});
