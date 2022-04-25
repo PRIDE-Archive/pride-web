@@ -1,6 +1,6 @@
 ## Usage Policies
 
-Data files contained in the [PRIDE Archive](ftp://ftp.pride.ebi.ac.uk/pride/data/archive/) are free of all copyright restrictions and made fully and freely available for both non-commercial and commercial use. PRIDE Archive datasets are available under a [CC0 license](https://creativecommons.org/publicdomain/zero/1.0/). Attribution should be given to the authors of the datasets by citing their ProteomeXchange dataset accession number, for example:
+Data files contained in the [PRIDE Archive](https://www.ebi.ac.uk/pride/archive) are free of all copyright restrictions and made fully and freely available for both non-commercial and commercial use, [PRIDE license agreement](./license). PRIDE Archive datasets are available under a [CC0 license](https://creativecommons.org/publicdomain/zero/1.0/). Attribution should be given to the authors of the datasets by citing their ProteomeXchange dataset accession number, for example:
 
 > These results correspond to the reanalysis of public dataset PXD000603, downloaded from PRIDE.
 

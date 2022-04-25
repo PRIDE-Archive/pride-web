@@ -116,6 +116,14 @@
                           </router-link>
                       </Dropdown>
                   </li>
+                  <li class="sub-nav-list">
+                      <Dropdown>
+                          <router-link :to="{ path: '/markdownpage/license' }">
+                            <i class="fas fa fa-copyright"></i>
+                            <span class='sub-nav-title'>License</span>
+                          </router-link>
+                      </Dropdown>
+                  </li>
                 </ul>
                 <ul class="user-action dropdown menu float-right" data-description="navigational">
                     <li v-if="!username" class="sub-nav-list">
