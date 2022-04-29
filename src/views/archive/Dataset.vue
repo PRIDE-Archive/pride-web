@@ -328,6 +328,14 @@
                                 </div>
                               </div>
                           </div>
+                          <div class="property-row">
+                              <div class="summary-content-header">License</div>
+                              <div class="property-wrapper">
+                                <div>
+                                    <a @click="gotoLink(licenseURL)">{{license}}</a>
+                                </div>
+                              </div>
+                          </div>
                      </div>
                   </Card>
                   <Card class="card" v-if="similarProjects.length>0">
@@ -812,6 +820,11 @@
                 this.experimentTypes = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
                 this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
+                this.license = res.body.license
+                this.licenseURL = 'https://www.ebi.ac.uk/about/terms-of-use/';
+                if (this.license == 'Creative Commons Public Domain (CC0)'){
+                  this.licenseURL = 'https://creativecommons.org/share-your-work/public-domain/cc0/';
+                }
                 //for ssr
                 this.keywords = res.body.keywords[0]
                 //for contactors
@@ -1343,6 +1356,9 @@
       },
       gotoReference(){
           window.open('https://www.doi.org/10.1038/s41587-019-0298-5')
+      },
+      gotoLink(link){
+        window.open(link, "_blank");
       },
       ssr(){
           let ssrScript = document.querySelector('#ssr-script')
