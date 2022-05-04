@@ -1,1 +1,1 @@
-PRIDE storage system if facing some major issues since April 29/2022 affecting submissions and publication jobs. The PRIDE team is working actively with EMBL-EBI system to solve these problems.
+PRIDE storage system is facing some major issues since April 29/2022 affecting submissions and publication jobs. The PRIDE team is working actively with EMBL-EBI system to solve these problems.
