@@ -1,0 +1,47 @@
+= PRIDE data policy
+
+May 2022
+
+== General guidelines
+
+Submitters of proteomics data to the PRIDE database should be aware of the following:
+
+. The PRIDE database has a uniform policy of free and unrestricted access to all the datasets deposited in the PRIDE Archive.
+
+. All database records submitted to PRIDE will remain permanently accessible as part of the scientific record.
+
+. Submitted datasets will remain private until the submitters request their publication. Users can request the publication of the dataset if the corresponding publication in PubMed is available. 
+
+. Private datasets can be modified (files can be added or removed from the submissions) before their publication. Private datasets will be only available to the submitter and the reviewers using the credentials provided to the user. 
+
+. *Release/Publication date*: Dataset can remain private up to 2 years after being submitted (average time observed over 15 years of PRIDE submissions). After this period, the submitter will need to define a tentative date for the release of the data, the submitter will be able to extend this date every time the deadline is approaching. Reminders about dataset release dates will be sent to submitters 7, 30, and 60 days before the current release date.
+ *Note*: The release date can be changed using this Web access control page and the submitter credentials. If the user does not extend the release date, the dataset will be released to the public on the date previously selected. 
+
+. After publication, corrections in the metadata of the records including the title, and abstract can be requested to the PRIDE team. 
+
+. PRIDE's general policy is that data that has been released into the public domain should remain public and not be modified from its original version. As a submitter, you should make sure the data is consistent, valuable, and correct before publication. Once the data has been fully released, the availability of the data is then managed at PRIDE and you must contact the team in the event of there being an issue with the public availability.
+
+. Removing and updates from the Public domain: Submitters should contact the PRIDE team to remove a dataset from the resource in the event that: 
+
+* You realize that your data is incorrect, with no immediate opportunity to be updated.
+* Data are found to have been submitted to the databases without the permission of the rightful owner. This is expected to be extremely rare and requires formal institutional contact with the submitting institution.
+* In any case, where the data has been distributed as public, the PRIDE database cannot exercise any control on the resultant use of the data by third parties, even if it is subsequently removed from the service.
+*Note*: Datasets from PRIDE are automatically reused and metadata synchronized from multiple resources including ProteomeXchange partners including MassIVE, PeptideAtlas, OmicsDI, and others. In addition, files are transferred to a tape-based storage system that does not allow reusing the space of the “obsolete” files. Then, updates on public datasets should be performed based on exceptional reasons.
+. *Preprints policy*: The PRIDE database does not encourage releasing of datasets of pre-print manuscripts until the final publication is accepted. Pre-print datasets are usually extensively modified during the review process, and PRIDE does not have the storage capacity to keep track of all the versions of the dataset.
+
+. Dataset License: The terms of the Creative Commons Public Domain (CC0) License apply to all PRIDE datasets submitted from June-2018. In this case, all submitters have specifically agreed to these terms during the submission step. All submitted datasets before that date (June-2018) are subject to the EBI terms of use. 
+
+== PRIDE complementary information
+
+The PRIDE database during the submission and post-submission steps can attach to the submission a set of additional files to help the users to understand, retrieve and reuse the datasets. These files do not modify in any way the original submitted files​, but increase the value of the deposited datasets. 
+
+Some examples of additional files are: 
+
+. SDRF annotations (Sample and Data Relationship File) contain the relation between the samples analyzed and the data files deposited.
+. mzTab exported from mzIdentML: Some users and pipelines prefer to read tab-delimited file formats instead of XML-base files. The PRIDE database provides a pipeline that converts automatically mzIdMLs into mzTab
+
+== Data reuse guidelines
+
+Users that reuse the deposited datasets in PRIDE should be aware of the following:
+
+Appropriate credit is given by citing the original submission, following the practices of scientists utilizing published scientific literature.
