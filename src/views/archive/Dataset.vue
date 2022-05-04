@@ -155,7 +155,8 @@
 
                          <div class="download-list-wrapper">
                            <div class="download-list">
-                             <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange" @on-row-click="fileTableRowClick"></Table>
+                             <!-- <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange" @on-row-click="fileTableRowClick"></Table> -->
+                             <Table border ref="selection" height="350" :loading="fileListLoading" :columns="fileListCol" :data="fileList" @on-select="downLoadSelect" @on-select-all="filesSelectAll" @on-sort-change="projectFilesTableSortChange"></Table>
                            </div>
                          </div>
                          <div class="page-container">
@@ -165,14 +166,18 @@
                     <Card class="card">
                         <p slot="title" class="sdrf-file-title-container">
                           <span>Experimental Design (Samples)</span>
-                          <span class="right">
+                          <span class="right" style="display: flex;">
+                              <Select v-model="sdrfFile" size="small" style="width:225px" @on-change="sdrfFileChange">
+                                  <Option v-for="item in sdrfFileList" :value="item.name" :key="item.accession">{{ item.name }}</Option>
+                              </Select>
                               <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="24" @click="sdrfTableCollapseChange(false)"></Icon></a>
-                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="24" @click="sdrfTableCollapseChange(true)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
                           </span>
                         </p>
                         <div v-if="!sdrfTableCollapse" style="display:flex; overflow: auto; height:350px; border: 1px solid #5bc0be;">
                             <div v-if="sdrfTableData.length == 0" class="no-data-table-wrapper">
-                                <span>No data</span>
+                                <p>No data</p>
+                                <!-- <p>No data for the files in the above table, Try to query more files!</p> -->
                             </div>
                             <template v-else>
                                 <div style="display: flex">
@@ -767,6 +772,8 @@
           iconFound:false,
           iconData:{},
           queryProjectDetailsLoading:false,
+          sdrfFile:'',  
+          sdrfFileList:[]
       }
     },
     metaInfo () {
@@ -794,7 +801,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-              console.log(res.body)
+              // console.log(res.body)
                 this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
@@ -902,6 +909,7 @@
             });
       },
       queryArchiveProjectFiles(q){
+        // console.log('queryArchiveProjectFilesqueryArchiveProjectFiles')
            let query = q || this.queryDownload
            this.fileListLoading = true;
            this.$http
@@ -913,55 +921,7 @@
                 if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
                   //console.log('filesArray',filesArray)
-                  let tempArray = [];
-                  for(let i=0;i<filesArray.length;i++){
-                      let item ={
-                            accession: filesArray[i].accession,
-                            name: filesArray[i].fileName,
-                            type: filesArray[i].fileCategory.value,
-                            size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
-                            url: [],
-                      }
-                      for(let j=0; j<filesArray[i].publicFileLocations.length; j++){
-                          if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
-                              let urlItem = {
-                                  label:'FTP',
-                                  key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "https://"),
-                              }
-                              item.url.push(urlItem)
-                          }
-                          else if(filesArray[i].publicFileLocations[j].name.indexOf('Aspera')!=-1){
-                              let urlItem = {
-                                label:'Aspera',
-                                key:filesArray[i].publicFileLocations[j].value
-                              }
-                              item.url.push(urlItem)
-                          }
-                      }
-                      item.url.sort((a,b)=>{
-                          let labelA=a.label.toUpperCase()
-                          let labelB=b.label. toUpperCase()
-                          if(labelA<labelB)
-                            return 1
-                          if(labelA>labelB)
-                            return -1
-
-                          return 0
-                      });
-                      //console.log('file type',item.type)
-                      tempArray.push(item);
-                  }
-
-                  this.fileList=tempArray;
-                  for(let i in this.fileList){
-                    if(this.fileList[i].name.match('sdrf')){
-                      this.fileTableRowClick({
-                        name: this.fileList[i].name,
-                        accession: this.fileList[i].accession,
-                      })
-                      break
-                    }
-                  }
+                  this.fileList = this.createFileList(filesArray)
                 }
                 else{
                     this.$Message.error({content:'No results', duration:1});
@@ -969,6 +929,47 @@
             },function(err){
                 this.fileListLoading = false;
             });
+      },
+      createFileList(filesArray){
+         let tempArray = [];
+         for(let i=0;i<filesArray.length;i++){
+              let item ={
+                    accession: filesArray[i].accession,
+                    name: filesArray[i].fileName,
+                    type: filesArray[i].fileCategory.value,
+                    size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
+                    url: [],
+              }
+              for(let j=0; j<filesArray[i].publicFileLocations.length; j++){
+                  if(filesArray[i].publicFileLocations[j].name.indexOf('FTP')!=-1){
+                      let urlItem = {
+                          label:'FTP',
+                          key:filesArray[i].publicFileLocations[j].value.replace("ftp://", "https://"),
+                      }
+                      item.url.push(urlItem)
+                  }
+                  else if(filesArray[i].publicFileLocations[j].name.indexOf('Aspera')!=-1){
+                      let urlItem = {
+                        label:'Aspera',
+                        key:filesArray[i].publicFileLocations[j].value
+                      }
+                      item.url.push(urlItem)
+                  }
+              }
+              item.url.sort((a,b)=>{
+                  let labelA=a.label.toUpperCase()
+                  let labelB=b.label. toUpperCase()
+                  if(labelA<labelB)
+                    return 1
+                  if(labelA>labelB)
+                    return -1
+
+                  return 0
+              });
+              //console.log('file type',item.type)
+              tempArray.push(item);
+          }
+         return tempArray
       },
       pageAssayChange(page){
           this.page = page-1;
@@ -1216,13 +1217,57 @@
       sdrfTableCollapseChange(val){
         this.sdrfTableCollapse = val
       },
-      fileTableRowClick(row){
+      querySdrfFiles(){
+         this.sdrfTableCollapse = true
+         this.sdrfTableLoading = true
+         let query = {
+            page:0,
+            pageSize:100000//in order to query all the files and find the sdrf in it
+         }
+         this.$http
+          .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
+          .then(function(res){
+              // this.sdrfTableLoading = false; // We need to let the showSamples function to decide loading state
+              this.sdrfFileList = []
+              let tempFilelist = []
+              if(res.body._embedded && res.body._embedded.files){
+                let filesArray = res.body._embedded.files;
+                tempFilelist = this.createFileList(filesArray)
+                for(let i=0;i<tempFilelist.length;i++){
+                    if(tempFilelist[i].name.match('sdrf')){
+                      let item = {
+                        name: tempFilelist[i].name,
+                        accession: tempFilelist[i].accession,
+                      }
+                      this.sdrfFileList.push(item)
+                    }
+                }
+                if(this.sdrfFileList.length>0){
+                    this.sdrfFile = this.sdrfFileList[0].name
+                    this.showSamples(this.sdrfFileList[0])
+                }
+                else{
+                    this.sdrfTableCollapse = true
+                    this.sdrfTableLoading = false
+                }
+              }
+              else{
+                  this.$Message.error({content:'No Samples Data', duration:1});
+              }
+          },function(err){
+              this.sdrfTableLoading = false;
+          });
+          
+      },
+      sdrfFileChange(){
+
+      },
+      showSamples(row){
         //console.log(row)
         if(row.name.match('sdrf')){
           this.sdrfTableCollapse = false
           this.sdrfTableLoading = true
           let query = {accession:row.accession}
-
           this.$http
               .get(this.sdrfTableApi,{params: query})
               .then(function(res){
@@ -1231,10 +1276,10 @@
                     this.mapSdrfFileText(res.data)
                   }
                   else
-                     this.$Message.error({content:'Sdrf File Error', duration:3});
+                     this.$Message.error({content:'No Samples Data', duration:1});
               },function(err){
                   this.sdrfTableLoading = false
-                  this.$Message.error({content:'Sdrf File Error', duration:3});
+                  this.$Message.error({content:'Sample Data Error', duration:3});
               });
         }
       },
@@ -1288,6 +1333,7 @@
               this.sampleData.push(item)
             }
         }
+        // console.log('this.sampleData',this.sampleData)
         this.totalSdrf = this.sampleData.length
         this.sdrfTableData = this.sampleData.slice((this.pageSdrf-1)*this.pageSizeSdrf, (this.pageSdrf-1)*this.pageSizeSdrf + this.pageSizeSdrf)
         this.sdrfTableCol = this.sampleCol
@@ -1384,7 +1430,7 @@
             ssr_script.type = 'application/ld+json'
             ssr_script.id = 'ssr-script'
             ssr_script.text = JSON.stringify(ld_JSON)
-            console.log(ssr_script)
+            // console.log(ssr_script)
             document.getElementsByTagName('head')[0].appendChild(ssr_script)
           }
       },
@@ -1397,7 +1443,7 @@
               .then(function(res){
                  this.iconLoading = false
                  let iconList = res.body.datasets
-                 console.log('resresres',res)
+                 // console.log('resresres',res)
                  for(let i=0;i<iconList.length; i++){
                     if(accession == iconList[i].id){
                         this.iconFound = true
@@ -1416,6 +1462,7 @@
     mounted: function(){
         this.queryProjectDetails();
         this.queryArchiveProjectFiles();
+        this.querySdrfFiles();
         this.querySimilarity();
         this.queryReanalysis();
     },
@@ -1663,6 +1710,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    height: 26px;
+    line-height: 26px;
   }
   .sdrf-file-title-container .right a{
     border-bottom-style:none;
