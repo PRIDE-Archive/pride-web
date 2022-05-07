@@ -20,9 +20,9 @@ If you have further queries please consult our Help FAQ or please contact us at 
 
 - To provide mass spectrometry based expression data to the Expression Atlas. 
 
-- Tutorial manuscript: Ternent T, Csordas A, Qi D, Gómez-Baena G, Beynon RJ, Jones AR, Hermjakob H, Vizcaíno JA. [How to submit MS proteomics data to ProteomeXchange via the PRIDE database](http://europepmc.org/article/MED/25047258). Proteomics. 2014 Oct;14(20) 2233-2241. doi:10.1002/pmic.201400120. PubMed PMID: 25047258.
+## PRIDE data policy 
 
-- Train Online [tutorial](https://www.ebi.ac.uk/training/online/course/proteomexchange-submissions-pride).
+PRIDE data policy can be read [here](./datapolicy) 
 
 ## How to cite PRIDE Resources
 

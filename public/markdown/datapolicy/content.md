@@ -49,7 +49,6 @@ C) Publicly available datasets
 
 * **Pre-prints policy**. By default, we do not encourage the public release of datasets available in pre-print manuscripts until the final publication is accepted. Datasets in this situation can often be extensively modified during the peer-review review process, and PRIDE does not have the storage capacity to keep track of all the versions of a given dataset. As mentioned above, changes to published datasets should only happen in exceptional circumstances.
 
-
 D) Sensitive datasets
 
 PRIDE (as part of ProteomeXchange) supports fully open data. At the moment, PRIDE  cannot support appropriately datasets that contain sensitive human data, meaning all those datasets that for legal reasons cannot be made publicly available without further restrictions (e.g. datasets that must be made available under controlled-access). Submitters wanting to submit this type of dataset are recommended to find an alternative to PRIDE.
