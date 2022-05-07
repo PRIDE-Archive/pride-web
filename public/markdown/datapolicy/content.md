@@ -47,7 +47,7 @@ C) Publicly available datasets
 
 **Note**: Datasets from PRIDE are automatically downloaded and often reused, and the corresponding metadata is synchronized between  several  resources including ProteomeXchange partners (e.g. MassIVE, PeptideAtlas), OmicsDI, and others.
 
-- Pre-prints policy. By default, we do not encourage the public release of datasets available in pre-print manuscripts until the final publication is accepted. Datasets in this situation can often be extensively modified during the peer-review review process, and PRIDE does not have the storage capacity to keep track of all the versions of a given dataset. As mentioned above, changes to published datasets should only happen in exceptional circumstances.
+* **Pre-prints policy**. By default, we do not encourage the public release of datasets available in pre-print manuscripts until the final publication is accepted. Datasets in this situation can often be extensively modified during the peer-review review process, and PRIDE does not have the storage capacity to keep track of all the versions of a given dataset. As mentioned above, changes to published datasets should only happen in exceptional circumstances.
 
 
 D) Sensitive datasets
@@ -63,10 +63,8 @@ During the submission and post-submission steps, the PRIDE team can attach to a 
 
 Some examples of additional files are:
 
-- SDRF-Proteomics files  (Sample and Data Relationship Files), which contain additional annotations, including the mapping between the samples analyzed and the data files deposited. These files are often produced by third parties (either members of the PRIDE team or by other members of the community). More information about SDRF-Proteomics files and how they are handled by PRIDE is available in this publication (https://www.nature.com/articles/s41467-021-26111-3).
-- mzTab files exported from mzIdentML files. Some users prefer to read tab-delimited file formats instead of XML-based files. The PRIDE database can convert automatically mzIdentML files into mzTab.
-
-
+* SDRF-Proteomics files  (Sample and Data Relationship Files), which contain additional annotations, including the mapping between the samples analyzed and the data files deposited. These files are often produced by third parties (either members of the PRIDE team or by other members of the community). More information about SDRF-Proteomics files and how they are handled by PRIDE is available in this publication (https://www.nature.com/articles/s41467-021-26111-3).
+* mzTab files exported from mzIdentML files. Some users prefer to read tab-delimited file formats instead of XML-based files. The PRIDE database can convert automatically mzIdentML files into mzTab.
 
 ### Data reuse guidelines
 
