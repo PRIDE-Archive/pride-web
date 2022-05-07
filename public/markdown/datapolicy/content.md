@@ -2,7 +2,6 @@
 ## PRIDE data policy
 Version 1.0 (May 2022)
 
-
 ### General guidelines for submitted datasets
 
 Submitters of proteomics datasets to the PRIDE database should be aware of the following aspects of our data policy.
