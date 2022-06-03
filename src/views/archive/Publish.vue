@@ -10,7 +10,7 @@
                 </Input>
               </FormItem>
               <FormItem class="pubmed-doi-form-item" prop="pubmed" label="Please select either PubMedID or DOI from the dropdown & input corresponding value.
-               <br/>  If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.">
+               <br/> NOTE: If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.">
                 <div class="form-item-wrapper">
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
