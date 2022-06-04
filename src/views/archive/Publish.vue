@@ -9,8 +9,7 @@
                 <Input type="text" v-model="formInlinePublish.accession" placeholder="" disabled>
                 </Input>
               </FormItem>
-              <FormItem class="pubmed-doi-form-item" prop="pubmed" label="Please select either PubMedID or DOI from the dropdown & input corresponding value.
-               NOTE: If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.">
+              <FormItem class="pubmed-doi-form-item" prop="pubmed" label="Please select either PubMedID or DOI from the dropdown & input corresponding value.">
                 <div class="form-item-wrapper">
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
@@ -27,6 +26,9 @@
               <FormItem prop="reason" label="Reason for making the dataset public">
                 <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlinePublish.reason" placeholder="">
                 </Input>
+              </FormItem>
+              <FormItem>
+              <span style="color: gray; line-height: 14px">**NOTE: If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.**</span>
               </FormItem>
              <!--  <FormItem prop="doi" label="DOI">
                 <Input type="text" v-model="formInlinePublish.doi" placeholder="">
@@ -139,7 +141,7 @@
                           ])
                         }
                       });
-                      let query = {};
+                      let query = {}; //two items: publishJustification and pubmedId/doi
                       query.PublishProjectRequest = {
                         publishJustification: this.formInlinePublish.reason,
                       }
