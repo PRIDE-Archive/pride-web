@@ -163,7 +163,8 @@
                                   this.$Spin.hide()
                                   this.$refs[name].resetFields();
                                   this.publishModel = true
-                                  //this.$router.push({name:'archive'})
+                                  this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
+                                  // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                             },function(err){
                                 console.log('errerrerr',err)
                                 this.$Spin.hide()
@@ -183,7 +184,7 @@
                                     }
                                 }
                                 else{
-                                    this.$Message.error({ content: err.bodyText, duration:'10'});
+                                    this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
                                 }
                             });
                 })
