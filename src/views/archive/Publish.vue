@@ -15,6 +15,7 @@
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
                     <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.pubmed" placeholder="">
+                    <Button slot="append" icon="md-checkmark" @click="validateCheck()"></Button>
                     </Input>
                 </div>
               </FormItem>
@@ -59,6 +60,17 @@
     import store from "@/store.js"
     export default {
         data () {
+             const validatePass = async (rule, value, callback) => {
+                if (value === '') {  
+                    callback(new Error('Please input PubMed or DOI'));
+                } else {
+                    let result = await this.validateCheck()
+                    if(result)
+                      callback();
+                    else
+                      callback(new Error('Invalid Info'))
+                }
+            };
             return {
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
                 publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
@@ -76,7 +88,7 @@
                   //   { required: true, type:'accession', message: 'Please input Project Accession', trigger: 'blur' }
                   // ],
                   pubmed: [
-                    { required: false, message: 'Please input PubMed or DOI', trigger: 'blur' }
+                    { validator: validatePass, trigger: 'blur' }
                   ],
                   // reference: [
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
@@ -108,7 +120,6 @@
             NavBar,
         },
         methods:{
-
             publish(name){
                 this.$Modal.confirm({
                     title: 'Publish Data',
@@ -123,24 +134,25 @@
             },
             submit(name){
                 this.$refs[name].validate((valid) => {
+                      console.log('valid',valid)
                       if (!valid) {
                         this.$Message.error({ content: 'Fill all required items' });
                         return
                       }
-                      this.$Spin.show({
-                        render: (h) => {
-                          return h('div', [
-                            h('Icon', {
-                              'class': 'demo-spin-icon-load',
-                              props: {
-                                type: 'load-b',
-                                size: 18
-                              }
-                            }),
-                            h('div', 'Please wait...')
-                          ])
-                        }
-                      });
+                      // this.$Spin.show({
+                      //   render: (h) => {
+                      //     return h('div', [
+                      //       h('Icon', {
+                      //         'class': 'demo-spin-icon-load',
+                      //         props: {
+                      //           type: 'load-b',
+                      //           size: 18
+                      //         }
+                      //       }),
+                      //       h('div', 'Please wait...')
+                      //     ])
+                      //   }
+                      // });
                       let query = {}; //two items: publishJustification and pubmedId/doi
                       query.PublishProjectRequest = {
                         publishJustification: this.formInlinePublish.reason,
@@ -156,44 +168,60 @@
                           api = this.publishSelfAPI;
                       else
                           api = this.publishOtherAPI;
-                      this.$http
-                            .post(api+'/'+this.formInlinePublish.accession,query,{
-                              headers: {
-                                'Authorization':'Bearer '+ localStorage.getItem('token')
-                              }
-                            })
-                            .then(function(res){
-                                  this.$Spin.hide()
-                                  this.$refs[name].resetFields();
-                                  this.publishModel = true
-                                  this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
-                                  // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
-                            },function(err){
-                                console.log('errerrerr',err)
-                                this.$Spin.hide()
-                                if(err.body){
-                                    if(err.body.hasOwnProperty('message')){
-                                        if(err.body.message == 'Supplied Token is not a valid JWT token')
-                                           this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
-                                        else
-                                          this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
-                                    }
-                                    else{
-                                        let errArray = err.body;
-                                        if(errArray[0].hasOwnProperty('defaultMessage'))
-                                          this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
-                                        else
-                                          this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
-                                    }
-                                }
-                                else{
-                                    this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
-                                }
-                            });
+                       // this.$http
+                       //      .post(api+'/'+this.formInlinePublish.accession,query,{
+                       //        headers: {
+                       //          'Authorization':'Bearer '+ localStorage.getItem('token')
+                       //        }
+                       //      })
+                       //      .then(function(res){
+                       //            this.$Spin.hide()
+                       //            this.$refs[name].resetFields();
+                       //            this.publishModel = true
+                       //            this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
+                       //            // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
+                       //      },function(err){
+                       //          console.log('errerrerr',err)
+                       //          this.$Spin.hide()
+                       //          if(err.body){
+                       //              if(err.body.hasOwnProperty('message')){
+                       //                  if(err.body.message == 'Supplied Token is not a valid JWT token')
+                       //                     this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
+                       //                  else
+                       //                    this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
+                       //              }
+                       //              else{
+                       //                  let errArray = err.body;
+                       //                  if(errArray[0].hasOwnProperty('defaultMessage'))
+                       //                    this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
+                       //                  else
+                       //                    this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
+                       //              }
+                       //          }
+                       //          else{
+                       //              this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
+                       //          }
+                       //      });
                 })
             },
             publishModalOk(){
               this.publishModel=false
+            },
+            validatePubmedID(callback){
+              console.log('validatePubmedID')
+              // callback(new Error('validatePubmedID'))
+            },
+            validateDOI(callback){
+              console.log('validateDOI')
+              // callback(new Error('validateDOI'))
+            },
+            async validateCheck(){
+              let result = ''
+              if(this.formInlinePublish.title == 'PubMedID')
+                result = await this.validatePubmedID()
+              else if(this.formInlinePublish.title == 'DOI')
+                result = await this.validateDOI()
+              return result
             }
           },
           mounted:function(){
