@@ -14,7 +14,7 @@
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
-                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.pubmed" placeholder="">
+                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder="">
                     <Button slot="append" icon="md-checkmark" @click="validateCheck()"></Button>
                     </Input>
                 </div>
@@ -74,9 +74,10 @@
             return {
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
                 publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
-                formInlinePublish:{
+                validatePubmedIDAPI:'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi',
+                formInlinePublish:{ 
                   accession:this.$route.params.id,
-                  pubmed:'',
+                  id:'',
                   title:'PubMedID',
                   //reference:'',
                   reason:'',
@@ -88,7 +89,7 @@
                   //   { required: true, type:'accession', message: 'Please input Project Accession', trigger: 'blur' }
                   // ],
                   pubmed: [
-                    { validator: validatePass, trigger: 'blur' }
+                    { validator: validatePass }
                   ],
                   // reference: [
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
@@ -159,9 +160,9 @@
                       }
 
                       if(this.formInlinePublish.title == 'PubMedID')
-                        query.PublishProjectRequest.pubmedId = this.formInlinePublish.pubmed
+                        query.PublishProjectRequest.pubmedId = this.formInlinePublish.id 
                       else if(this.formInlinePublish.title == 'DOI')
-                        query.PublishProjectRequest.doi = this.formInlinePublish.pubmed //the value is the same, only the obj name is different
+                        query.PublishProjectRequest.doi = this.formInlinePublish.id //the value is the same, only the obj name is different
 
                       let api;
                       if(this.$route.query && this.$route.query.r == 'self')
@@ -208,7 +209,26 @@
               this.publishModel=false
             },
             validatePubmedID(callback){
-              console.log('validatePubmedID')
+                let query = {
+                    db:'pubmed',
+                    retmode:'json',
+                    id:this.formInlinePublish.id
+                }
+                this.$http
+                    .get(this.validatePubmedIDAPI,{params: query})
+                    .then(function(res){
+                        if(res.body.result[query.id].hasOwnProperty("error"))
+                          console.log('Error: ',res.body.result[query.id].error)
+                        else
+                          console.log('Success: ', res.body)
+                      
+                    },function(err){
+                        
+                    });
+
+
+              'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=22807455&retmode=json'
+              
               // callback(new Error('validatePubmedID'))
             },
             validateDOI(callback){
