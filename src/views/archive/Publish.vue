@@ -15,9 +15,11 @@
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
                     <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder="">
-                    <Button slot="append" icon="md-checkmark" @click="validateCheck()"></Button>
+                        <!-- <Icon v-if="checkValid" type="ios-search" slot="suffix" /> -->
                     </Input>
+                    <!-- <Icon type="md-checkmark" /> -->
                 </div>
+
               </FormItem>
 
               <!-- <FormItem prop="reference" label="Reference">
@@ -63,12 +65,23 @@
              const validatePass = async (rule, value, callback) => {
                 if (value === '') {  
                     callback(new Error('Please input PubMed or DOI'));
-                } else {
-                    let result = await this.validateCheck()
-                    if(result)
+                } 
+                else {
+                  try{
+                      let result = await this.validateCheck()
+                      // this.$nextTick(() => {
+                      //   console.log(123)
+                      //   this.checkValid = true
+                      //   this.$forceUpdate()
+                      // });
+                      // this.checkValid = true
+                      // this.$forceUpdate()
                       callback();
-                    else
-                      callback(new Error('Invalid Info'))
+                  }
+                  catch(e){
+                      callback(new Error(e))
+                  }
+                    
                 }
             };
             return {
@@ -89,7 +102,7 @@
                   //   { required: true, type:'accession', message: 'Please input Project Accession', trigger: 'blur' }
                   // ],
                   pubmed: [
-                    { validator: validatePass }
+                    { validator: validatePass, trigger: 'blur' }
                   ],
                   // reference: [
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
@@ -115,6 +128,7 @@
                   },
                 ],
                 publishModel:false,
+                // checkValid:false
             }
         },
         components: {
@@ -208,37 +222,33 @@
             publishModalOk(){
               this.publishModel=false
             },
-            validatePubmedID(callback){
-                let query = {
-                    db:'pubmed',
-                    retmode:'json',
-                    id:this.formInlinePublish.id
-                }
-                this.$http
-                    .get(this.validatePubmedIDAPI,{params: query})
-                    .then(function(res){
-                        if(res.body.result[query.id].hasOwnProperty("error"))
-                          console.log('Error: ',res.body.result[query.id].error)
-                        else
-                          console.log('Success: ', res.body)
-                      
-                    },function(err){
-                        
-                    });
-
-
-              'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=22807455&retmode=json'
-              
-              // callback(new Error('validatePubmedID'))
-            },
             validateDOI(callback){
               console.log('validateDOI')
               // callback(new Error('validateDOI'))
             },
             async validateCheck(){
               let result = ''
-              if(this.formInlinePublish.title == 'PubMedID')
-                result = await this.validatePubmedID()
+              if(this.formInlinePublish.title == 'PubMedID'){
+                return new Promise((resolve,reject)=>{
+                    let query = {
+                        db:'pubmed',
+                        retmode:'json',
+                        id:this.formInlinePublish.id
+                    }
+                    this.$http
+                        .get(this.validatePubmedIDAPI,{params: query})
+                        .then(function(res){
+                            if(res.body.result[query.id].hasOwnProperty("error"))
+                              reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
+                            else
+                              resolve(res.body);
+                            
+                        },function(err){
+                            reject('PubMedID Check Failed')
+                        });
+                })
+                
+              }
               else if(this.formInlinePublish.title == 'DOI')
                 result = await this.validateDOI()
               return result
