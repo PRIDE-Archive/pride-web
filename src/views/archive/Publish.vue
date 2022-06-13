@@ -11,7 +11,7 @@
               </FormItem>
               <FormItem class="pubmed-doi-form-item" prop="pubmed" label="Please select either PubMedID or DOI from the dropdown & input corresponding value.">
                 <div class="form-item-wrapper">
-                    <Select class="pubmed-doi-select" v-model="formInlinePublish.title">
+                    <Select class="pubmed-doi-select" v-model="formInlinePublish.title" @on-change="validTypeChange">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
                     <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder="">
@@ -63,7 +63,8 @@
     export default {
         data () {
              const validatePass = async (rule, value, callback) => {
-                if (value === '') {  
+              console.log("value",value)
+                if (!value) {  
                     callback(new Error('Please input PubMed or DOI'));
                 } 
                 else {
@@ -88,6 +89,7 @@
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
                 publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
                 validatePubmedIDAPI:'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi',
+                validateDOIAPI:'https://www.ebi.ac.uk/europepmc/webservices/rest/search',
                 formInlinePublish:{ 
                   accession:this.$route.params.id,
                   id:'',
@@ -222,10 +224,6 @@
             publishModalOk(){
               this.publishModel=false
             },
-            validateDOI(callback){
-              console.log('validateDOI')
-              // callback(new Error('validateDOI'))
-            },
             async validateCheck(){
               let result = ''
               if(this.formInlinePublish.title == 'PubMedID'){
@@ -238,20 +236,46 @@
                     this.$http
                         .get(this.validatePubmedIDAPI,{params: query})
                         .then(function(res){
-                            if(res.body.result[query.id].hasOwnProperty("error"))
-                              reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
-                            else
-                              resolve(res.body);
-                            
+                            console.log(res)
+                            if(Object.keys(res.body.result).length!=2){
+                                reject('PubMedID Invalid')
+                            }
+                            else{
+                                if(res.body.result[query.id].hasOwnProperty("error"))
+                                  reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
+                                else
+                                  resolve(res.body);
+                            }
                         },function(err){
                             reject('PubMedID Check Failed')
                         });
                 })
                 
               }
-              else if(this.formInlinePublish.title == 'DOI')
-                result = await this.validateDOI()
+              else if(this.formInlinePublish.title == 'DOI'){
+                return new Promise((resolve,reject)=>{
+                    let query = {
+                        query: 'doi:'+this.formInlinePublish.id,
+                        format:'json',
+                    }
+                    this.$http
+                        .get(this.validateDOIAPI,{params: query})
+                        .then(function(res){
+                            console.log(res)
+                            // if(res.body.result[query.id].hasOwnProperty("error"))
+                            //   reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
+                            // else
+                            //   resolve(res.body);
+                            
+                        },function(err){
+                            reject('PubMedID Check Failed')
+                        });
+                })  
+              }
               return result
+            },
+            validTypeChange(){
+              console.log('validTypeChange',this.formInlinePublish.title)
             }
           },
           mounted:function(){
