@@ -140,23 +140,30 @@
         },
         methods:{
             publish(name){
-              if(!this.idCheckPass)
-                this.$refs[name].validate((valid) => {
-                    if (!valid) {
-                      this.$Message.error({ content: 'Fill all required items' });
-                      return
-                    }
-                    this.$Modal.confirm({
-                        title: 'Publish Data',
-                        content: '<p>Do you want to publish this dataset?</p>',
-                        onOk: () => {
-                             this.submit(name)
-                        },
-                        onCancel: () => {
+              if(this.idCheckPass)
+                this.showModal(name)
+              
+              else{
+                  this.$refs[name].validate((valid) => {
+                      if (!valid) {
+                        this.$Message.error({ content: 'Fill all required items' });
+                        return
+                      }
+                      this.showModal(name)
+                  })
+              }
+            },
+            showModal(name){
+                this.$Modal.confirm({
+                      title: 'Publish Data',
+                      content: '<p>Do you want to publish this dataset?</p>',
+                      onOk: () => {
+                           this.submit(name)
+                      },
+                      onCancel: () => {
 
-                        }
-                    });
-                })
+                      }
+                  });
             },
             submit(name){
                 // this.$Spin.show({
@@ -243,19 +250,19 @@
                         .get(this.validatePubmedIDAPI,{params: query})
                         .then(function(res){
                             console.log(res)
-                            if(Object.keys(res.body.result).length!=2){
-                                reject('PubMedID Invalid')
-                            }
+                            if(res.body.hasOwnProperty("error"))
+                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
+                            else if(Object.keys(res.body.result).length!=2)
+                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
+                            else if(res.body.result[query.id].hasOwnProperty("error"))
+                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
                             else{
-                                if(res.body.result[query.id].hasOwnProperty("error"))
-                                  reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
-                                else{
-                                  this.idCheckPass = true;
-                                  resolve(res.body);
-                                }
+                              this.idCheckPass = true;
+                              resolve(res.body);
                             }
+                            
                         },function(err){
-                            reject('PubMedID Check Failed')
+                            reject('PubMedID Check Failed, try again.')
                         });
                 })
                 
@@ -270,11 +277,12 @@
                         .get(this.validateDOIAPI,{params: query})
                         .then(function(res){
                             console.log('DOI',res)
-                            if(res.body.resultList.result.length == 0)
-                              reject('DOI Check Failed') // check the error in "res.body.result[query.id].error"
-                            else{
+                            if(res.body.resultList.result.length == 0){
                               this.idCheckPass = true;
-                              resolve(res.body);
+                              resolve(res.body);// DOI not found, but it is not preprint.
+                            }
+                            else{// for preprint
+                              reject('Preprint DOIs, you could do FORCE SUBMIT but submission files are not changable ') 
                             }
                             
                         },function(err){
