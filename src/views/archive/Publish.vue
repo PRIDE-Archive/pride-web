@@ -131,6 +131,7 @@
                   },
                 ],
                 publishModel:false,
+                idCheckPass: false,
                 // checkValid:false
             }
         },
@@ -139,22 +140,23 @@
         },
         methods:{
             publish(name){
-              this.$refs[name].validate((valid) => {
-                  if (!valid) {
-                    this.$Message.error({ content: 'Fill all required items' });
-                    return
-                  }
-                  this.$Modal.confirm({
-                      title: 'Publish Data',
-                      content: '<p>Do you want to publish this dataset?</p>',
-                      onOk: () => {
-                           this.submit(name)
-                      },
-                      onCancel: () => {
+              if(!this.idCheckPass)
+                this.$refs[name].validate((valid) => {
+                    if (!valid) {
+                      this.$Message.error({ content: 'Fill all required items' });
+                      return
+                    }
+                    this.$Modal.confirm({
+                        title: 'Publish Data',
+                        content: '<p>Do you want to publish this dataset?</p>',
+                        onOk: () => {
+                             this.submit(name)
+                        },
+                        onCancel: () => {
 
-                      }
-                  });
-              })
+                        }
+                    });
+                })
             },
             submit(name){
                 // this.$Spin.show({
@@ -197,10 +199,12 @@
                  //            this.$refs[name].resetFields();
                  //            this.publishModel = true
                  //            this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
+                 //            this.idCheckPass = false
                  //            // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                  //      },function(err){
                  //          console.log('errerrerr',err)
                  //          this.$Spin.hide()
+                 //          this.idCheckPass = false
                  //          if(err.body){
                  //              if(err.body.hasOwnProperty('message')){
                  //                  if(err.body.message == 'Supplied Token is not a valid JWT token')
@@ -227,6 +231,7 @@
             },
             async validateCheck(){
               let result = ''
+              console.log('this.formInlinePublish.title',this.formInlinePublish.title)
               if(this.formInlinePublish.title == 'PubMedID'){
                 return new Promise((resolve,reject)=>{
                     let query = {
@@ -244,8 +249,10 @@
                             else{
                                 if(res.body.result[query.id].hasOwnProperty("error"))
                                   reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
-                                else
+                                else{
+                                  this.idCheckPass = true;
                                   resolve(res.body);
+                                }
                             }
                         },function(err){
                             reject('PubMedID Check Failed')
@@ -262,20 +269,23 @@
                     this.$http
                         .get(this.validateDOIAPI,{params: query})
                         .then(function(res){
-                            console.log(res)
-                            // if(res.body.result[query.id].hasOwnProperty("error"))
-                            //   reject('PubMedID Check Failed') // check the error in "res.body.result[query.id].error"
-                            // else
-                            //   resolve(res.body);
+                            console.log('DOI',res)
+                            if(res.body.resultList.result.length == 0)
+                              reject('DOI Check Failed') // check the error in "res.body.result[query.id].error"
+                            else{
+                              this.idCheckPass = true;
+                              resolve(res.body);
+                            }
                             
                         },function(err){
-                            reject('PubMedID Check Failed')
+                            reject('DOI Check Failed')
                         });
                 })  
               }
               return result
             },
             async validTypeChange(){
+                this.idCheckPass = false;
                 // if (this.formInlinePublish.id) {  
                 //     await validatePass()
                 // } 
