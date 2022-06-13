@@ -195,42 +195,42 @@
                     api = this.publishSelfAPI;
                 else
                     api = this.publishOtherAPI;
-                 // this.$http
-                 //      .post(api+'/'+this.formInlinePublish.accession,query,{
-                 //        headers: {
-                 //          'Authorization':'Bearer '+ localStorage.getItem('token')
-                 //        }
-                 //      })
-                 //      .then(function(res){
-                 //            this.$Spin.hide()
-                 //            this.$refs[name].resetFields();
-                 //            this.publishModel = true
-                 //            this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
-                 //            this.idCheckPass = false
-                 //            // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
-                 //      },function(err){
-                 //          console.log('errerrerr',err)
-                 //          this.$Spin.hide()
-                 //          this.idCheckPass = false
-                 //          if(err.body){
-                 //              if(err.body.hasOwnProperty('message')){
-                 //                  if(err.body.message == 'Supplied Token is not a valid JWT token')
-                 //                     this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
-                 //                  else
-                 //                    this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
-                 //              }
-                 //              else{
-                 //                  let errArray = err.body;
-                 //                  if(errArray[0].hasOwnProperty('defaultMessage'))
-                 //                    this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
-                 //                  else
-                 //                    this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
-                 //              }
-                 //          }
-                 //          else{
-                 //              this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
-                 //          }
-                 //      });
+                 this.$http
+                      .post(api+'/'+this.formInlinePublish.accession,query,{
+                        headers: {
+                          'Authorization':'Bearer '+ localStorage.getItem('token')
+                        }
+                      })
+                      .then(function(res){
+                            this.$Spin.hide()
+                            this.$refs[name].resetFields();
+                            this.publishModel = true
+                            this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
+                            this.idCheckPass = false
+                            // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
+                      },function(err){
+                          console.log('errerrerr',err)
+                          this.$Spin.hide()
+                          this.idCheckPass = false
+                          if(err.body){
+                              if(err.body.hasOwnProperty('message')){
+                                  if(err.body.message == 'Supplied Token has been expired')
+                                     this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
+                                  else
+                                    this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
+                              }
+                              else{
+                                  let errArray = err.body;
+                                  if(errArray[0].hasOwnProperty('defaultMessage'))
+                                    this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
+                                  else
+                                    this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
+                              }
+                          }
+                          else{
+                              this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
+                          }
+                      });
               
             },
             publishModalOk(){
