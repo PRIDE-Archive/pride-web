@@ -63,9 +63,9 @@
     export default {
         data () {
              const validatePass = async (rule, value, callback) => {
-              console.log("value",value)
                 if (!value) {  
-                    callback(new Error('Please input PubMed or DOI'));
+                    let err = this.formInlinePublish.title == 'PubMedID' ? 'Please input PubMed' : 'Please input DOI'
+                    callback(new Error(err));
                 } 
                 else {
                   try{
