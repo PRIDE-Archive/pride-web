@@ -57,7 +57,7 @@ Optionally other files can be included in any dataset submission to facilitate t
 
 ## Submit your dataset
 
-If you have all the files ready, the next step is to Download the [PX Submission Tool](./pridesubmissiontool). The PX Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File.pdf). The submission.px file contains 2 types of crucial information:
+If you have all the files ready, the next step is to Download the [PX Submission Tool](./pridesubmissiontool). The PX Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File_Format.pdf). The submission.px file contains 2 types of crucial information:
 
 **Metadata**: Required experimental metadata like experiment description, sample taxonomy information, instruments and protein modifications used.
 **Mappings between the uploaded files**: for instance between the RAW files and the corresponding 'RESULT' or search engine output ('SEARCH') files.
