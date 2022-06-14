@@ -4,7 +4,7 @@
 
 - [PRIDE data policy](./datapolicy)
 
-- [How to submit data to PRIDE s](./submitdatapage)
+- [How to submit data to PRIDE](./submitdatapage)
 
 - [Guideline for file formats for specific softwares used](./specificsoftwareformats)
 
