@@ -31,7 +31,7 @@
                 </Input>
               </FormItem>
               <FormItem>
-              <span style="color: gray; line-height: 14px">**NOTE: If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.**</span>
+              <span style="color: gray; line-height: 14px">**NOTE: If the PubmedID/DOI doesn't exist in EUPMC/Pubmed or if it's a preprint, the request to make it public will fail. In those cases please contact directly pride-support@ebi.ac.uk.**</span>
               </FormItem>
              <!--  <FormItem prop="doi" label="DOI">
                 <Input type="text" v-model="formInlinePublish.doi" placeholder="">
@@ -256,11 +256,11 @@
                         .then(function(res){
                             console.log(res)
                             if(res.body.hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else if(Object.keys(res.body.result).length!=2)
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else if(res.body.result[query.id].hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else{
                               this.idCheckPass = true;
                               resolve(res.body);
@@ -287,7 +287,7 @@
                                 resolve(res.body);// DOI not found, but it is not preprint.
                             }  
                             else{ //preprint
-                                reject('Invalid Preprint DOIs, please contact pride-support@ebi.ac.uk') 
+                                reject('The DOI is recognized as a pre-print in EuroPMC, in order to perform the publication please contact pride-support@ebi.ac.uk')
                             }
                             
                         },function(err){
