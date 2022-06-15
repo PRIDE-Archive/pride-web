@@ -41,7 +41,7 @@
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
               <FormItem>
-                <Button class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
+                <Button :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
               </FormItem>
             </Form>
         </div>
@@ -111,7 +111,7 @@
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
                   // ],
                   reason: [
-                    { required: false, message: 'Please input Publish Reason', trigger: 'blur' }
+                    { required: true, message: 'Please input Publish Reason', trigger: 'blur' }
                   ],
                   // doi: [
                   //   { required: true, message: 'Please input DOI', trigger: 'blur' }
@@ -132,6 +132,7 @@
                 ],
                 publishModel:false,
                 idCheckPass: false,
+                validateLoading:false
                 // checkValid:false
             }
         },
@@ -140,16 +141,19 @@
         },
         methods:{
             publish(name){
-              if(this.idCheckPass)
+              if(this.idCheckPass && this.formInlinePublish.reason !='')
                 this.showModal(name)
-              
               else{
+                  this.validateLoading = true
                   this.$refs[name].validate((valid) => {
                       if (!valid) {
-                        this.$Message.error({ content: 'Fill all required items' });
-                        return
+                        this.validateLoading = false
+                        // this.$Message.error({ content: 'Fill all required items correctly!' });
+                      }else{
+                        this.showModal(name)
+                        this.validateLoading = false
                       }
-                      this.showModal(name)
+                      return
                   })
               }
             },
@@ -238,6 +242,7 @@
             },
             async validateCheck(){
               let result = ''
+              this.idCheckPass = false;
               console.log('this.formInlinePublish.title',this.formInlinePublish.title)
               if(this.formInlinePublish.title == 'PubMedID'){
                 return new Promise((resolve,reject)=>{
@@ -251,11 +256,11 @@
                         .then(function(res){
                             console.log(res)
                             if(res.body.hasOwnProperty("error"))
-                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
+                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
                             else if(Object.keys(res.body.result).length!=2)
-                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
+                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
                             else if(res.body.result[query.id].hasOwnProperty("error"))
-                                reject('PubMedID Invalid, you could do FORCE SUBMIT if necessary')
+                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
                             else{
                               this.idCheckPass = true;
                               resolve(res.body);
@@ -277,12 +282,12 @@
                         .get(this.validateDOIAPI,{params: query})
                         .then(function(res){
                             console.log('DOI',res)
-                            if(res.body.resultList.result.length == 0){
-                              this.idCheckPass = true;
-                              resolve(res.body);// DOI not found, but it is not preprint.
-                            }
-                            else{// for preprint
-                              reject('Preprint DOIs, you could do FORCE SUBMIT but submission files are not changable ') 
+                            if(res.body.resultList.result.length == 0){// not preprint
+                                this.idCheckPass = true;
+                                resolve(res.body);// DOI not found, but it is not preprint.
+                            }  
+                            else{ //preprint
+                                reject('Invalid Preprint DOIs, please contact pride-support@ebi.ac.uk') 
                             }
                             
                         },function(err){
