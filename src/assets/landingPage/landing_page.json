@@ -58,7 +58,7 @@
         {
           "title":"PRIDE Archive API",
           "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
-          "externalURL":"https://pride-archive.github.io/PrideAPIDocs/",
+          "externalURL":"https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html",
           "moreID":"pride_archive_ws",
           "markdownFolder":""
         },

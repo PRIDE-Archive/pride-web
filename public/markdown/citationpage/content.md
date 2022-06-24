@@ -6,7 +6,7 @@ All public datasets available in PRIDE Archive in the repository can be accessed
 
 Website, for users to explore through a web browser. [https://www.ebi.ac.uk/pride/archive/](https://www.ebi.ac.uk/pride/archive/)
 
-Web Service, for programmatic access, query and use PRIDE Restful API [https://pride-archive.github.io/PrideAPIDocs/](https://pride-archive.github.io/PrideAPIDocs/)
+Web Service, for programmatic access, query and use PRIDE Restful API [https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html)
 
 PRIDE Inspector stand-alone tool. For detailed data visualisation and basic analysis capabilities. [https://www.ebi.ac.uk/pride/markdownpage/prideinspector](https://www.ebi.ac.uk/pride/markdownpage/prideinspector)
 

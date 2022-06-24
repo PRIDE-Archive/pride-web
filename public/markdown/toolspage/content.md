@@ -29,4 +29,4 @@ Next to the previous six layers, a generic application management framework main
 
 ## PRIDE Archive API
 
-The [PRIDE Archive API](www.ebi.ac.uk/pride/ws/archive) (Restful WS Service) provides a way to retrieve the data from PRIDE Archive programatically. The corresponding documentation can be [found here](http://pride-archive.github.io/PrideAPIDocs).
+The [PRIDE Archive API](www.ebi.ac.uk/pride/ws/archive) (Restful WS Service) provides a way to retrieve the data from PRIDE Archive programatically. The corresponding documentation can be [found here](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html).
