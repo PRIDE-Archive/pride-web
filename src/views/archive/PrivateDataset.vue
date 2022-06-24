@@ -1026,11 +1026,16 @@
               }
             }).then(function(res){
                 console.log(res.body);
+                // console.log(res.body.page)
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
                 if(res.body._embedded && res.body._embedded.files){
                   let filesArray = res.body._embedded.files;
-                  console.log('filesarray',filesArray)
+                  // let tArray = filesArray.slice(res.body.page.number*10,(res.body.page.number+1)*10)
+                  // let tArray = filesArray.slice(0,res.body.page.number*10)
+                  // for(let k=0; k<tArray.length; k++){
+                  //   console.log(tArray[k].fileName)
+                  // }
                   let tempArray = [];
                   for(let i=0;i<filesArray.length;i++){
                       let item ={

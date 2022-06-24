@@ -41,7 +41,8 @@
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
               <FormItem>
-                <Button :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
+                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="error" @click="publish('formInlinePublish')" long>Force Submit</Button>
+                <Button v-else :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
               </FormItem>
             </Form>
         </div>
@@ -90,7 +91,7 @@
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
                 publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
                 validatePubmedIDAPI:'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi',
-                validateDOIAPI:'https://www.ebi.ac.uk/europepmc/webservices/rest/search',
+                validateDOIAPI:'https://www.ebi.ac.uk/europepmc/webservices/rest/search', 
                 formInlinePublish:{ 
                   accession:this.$route.params.id,
                   id:'',
@@ -132,6 +133,7 @@
                 ],
                 publishModel:false,
                 idCheckPass: false,
+                forceSubmitBool: false,
                 validateLoading:false
                 // checkValid:false
             }
@@ -193,7 +195,10 @@
                   query.PublishProjectRequest.pubmedId = this.formInlinePublish.id 
                 else if(this.formInlinePublish.title == 'DOI')
                   query.PublishProjectRequest.doi = this.formInlinePublish.id //the value is the same, only the obj name is different
-
+                if(this.forceSubmitBool)//for force submit
+                  query.PublishProjectRequest.ignorePubmedDoiErrors = true
+                else
+                  query.PublishProjectRequest.ignorePubmedDoiErrors = false
                 let api;
                 if(this.$route.query && this.$route.query.r == 'self')
                     api = this.publishSelfAPI;
@@ -209,30 +214,32 @@
                             this.$Spin.hide()
                             this.$refs[name].resetFields();
                             this.publishModel = true
-                            this.$Message.success({ content: 'Publish Successfully!',duration:'5'});
+                            this.$Message.success({ content: 'Publish Successfully!',duration:5});
                             this.idCheckPass = false
+                            this.forceSubmitBool = false
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                       },function(err){
                           console.log('errerrerr',err)
                           this.$Spin.hide()
                           this.idCheckPass = false
+                          this.forceSubmitBool = false
                           if(err.body){
                               if(err.body.hasOwnProperty('message')){
                                   if(err.body.message == 'Supplied Token has been expired')
-                                     this.$Message.error({ content: 'Invalid Token, Please log in!',duration:'10'});
+                                     this.$Message.error({ content: 'Invalid Token, Please log in!',duration:10});
                                   else
-                                    this.$Message.error({ content: 'Publish Error, contact pride-support',duration:'10'});
+                                    this.$Message.error({ content: 'Publish Error, contact pride-support',duration:10});
                               }
                               else{
                                   let errArray = err.body;
                                   if(errArray[0].hasOwnProperty('defaultMessage'))
-                                    this.$Message.error({ content: errArray[0].defaultMessage,duration:'10'});
+                                    this.$Message.error({ content: errArray[0].defaultMessage,duration:10});
                                   else
-                                    this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:'10'});
+                                    this.$Message.error({ content: 'Unknow Error, contact pride-support',duration:10});
                               }
                           }
                           else{
-                              this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:'10'});
+                              this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:10});
                           }
                       });
               
@@ -256,11 +263,11 @@
                         .then(function(res){
                             console.log(res)
                             if(res.body.hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
                             else if(Object.keys(res.body.result).length!=2)
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
                             else if(res.body.result[query.id].hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please contact pride-support@ebi.ac.uk')
+                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
                             else{
                               this.idCheckPass = true;
                               resolve(res.body);
@@ -282,12 +289,19 @@
                         .get(this.validateDOIAPI,{params: query})
                         .then(function(res){
                             console.log('DOI',res)
-                            if(res.body.resultList.result.length == 0){// not preprint
+                            if(res.body.resultList.result.length == 0){// No DOI in EuropePMC, counld force submit
                                 this.idCheckPass = true;
-                                resolve(res.body);// DOI not found, but it is not preprint.
+                                this.forceSubmitBool = true;
+                                reject('No DOIs found, could force to submit if necessary. But the change will be difficult in future')
                             }  
-                            else{ //preprint
-                                reject('Invalid Preprint DOIs, please contact pride-support@ebi.ac.uk') 
+                            else{ 
+                                //pubType: 'preprint', not publish. please read our data policy to pride. or contact our support; if pubType != 'preprint', normally publish; 
+                                if(res.body.resultList.result[0].pubType.indexOf('preprint') != -1) //preprint
+                                  reject('Invalid Preprint DOIs, please contact pride-support@ebi.ac.uk') 
+                                else { //normal submit
+                                  this.idCheckPass = true;
+                                  resolve(res.body);
+                                }
                             }
                             
                         },function(err){
