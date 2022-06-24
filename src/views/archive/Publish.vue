@@ -263,11 +263,11 @@
                         .then(function(res){
                             console.log(res)
                             if(res.body.hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else if(Object.keys(res.body.result).length!=2)
-                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else if(res.body.result[query.id].hasOwnProperty("error"))
-                                reject('PubMedID Invalid, please check the PubMedID format or contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
                             else{
                               this.idCheckPass = true;
                               resolve(res.body);
@@ -292,12 +292,11 @@
                             if(res.body.resultList.result.length == 0){// No DOI in EuropePMC, counld force submit
                                 this.idCheckPass = true;
                                 this.forceSubmitBool = true;
-                                reject('No DOIs found, could force to submit if necessary. But the change will be difficult in future')
+                                reject('Invalid DOIs! Force submit is allowed but the change will be difficult in future. ')
                             }  
                             else{ 
-                                //pubType: 'preprint', not publish. please read our data policy to pride. or contact our support; if pubType != 'preprint', normally publish; 
                                 if(res.body.resultList.result[0].pubType.indexOf('preprint') != -1) //preprint
-                                  reject('Invalid Preprint DOIs, please contact pride-support@ebi.ac.uk') 
+                                  reject('The DOI is recognized as a pre-print in EuroPMC, in order to perform the publication please contact pride-support@ebi.ac.uk') 
                                 else { //normal submit
                                   this.idCheckPass = true;
                                   resolve(res.body);
