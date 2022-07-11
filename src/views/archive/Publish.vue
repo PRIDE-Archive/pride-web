@@ -41,7 +41,7 @@
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
               <FormItem>
-                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="error" @click="publish('formInlinePublish')" long>Force Submit</Button>
+                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="error" @click="showForcePublishModal('formInlinePublish')" long>Force Submit</Button>
                 <Button v-else :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
               </FormItem>
             </Form>
@@ -63,15 +63,19 @@
     import store from "@/store.js"
     export default {
         data () {
-             const validatePass = async (rule, value, callback) => {
-              // console.log('value',value)
-                if (!this.formInlinePublish.id) {  
-                    let err = this.formInlinePublish.title == 'PubMedID' ? 'Please input PubMed' : 'Please input DOI'
-                    callback(new Error(err));
-                } 
-                else {
+            const validatePassPubmed = async (rule, value, callback) => {
+                // if(!this.formInlinePublish.reason){ //for reason validate
+                //     callback(new Error('Please input Publish Reason'))
+                // }
+                // else if (!this.formInlinePublish.id) {  //for PubMed and DOI empty validate
+                //     let err = this.formInlinePublish.title == 'PubMedID' ? 'No PubMed! ' : 'No DOI! '
+                //     let des = "Forced publishing is allowed on the risk!"
+                //     this.forceSubmitBool = true
+                //     callback(new Error(err+des))
+                // } 
+                // else {
                   try{
-                      let result = await this.validateCheck()
+                      let result = await this.validatePassPubmedCheck()
                       // this.$nextTick(() => {
                       //   console.log(123)
                       //   this.checkValid = true
@@ -85,7 +89,13 @@
                       callback(new Error(e))
                   }
                     
-                }
+                // }
+            };
+            const validatePassReason = async (rule, value, callback) => {
+                if(!this.formInlinePublish.reason)
+                    callback(new Error('Please input Publish Reason'))
+                else
+                    callback();
             };
             return {
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
@@ -106,13 +116,13 @@
                   //   { required: true, type:'accession', message: 'Please input Project Accession', trigger: 'blur' }
                   // ],
                   pubmed: [
-                    { validator: validatePass, trigger: 'blur' }
+                    { validator: validatePassPubmed ,trigger: 'none'}
                   ],
                   // reference: [
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
                   // ],
                   reason: [
-                    { required: true, message: 'Please input Publish Reason', trigger: 'blur' }
+                    { required: true, validator: validatePassReason ,trigger: 'blur' }
                   ],
                   // doi: [
                   //   { required: true, message: 'Please input DOI', trigger: 'blur' }
@@ -143,9 +153,9 @@
         },
         methods:{
             publish(name){
-              if(this.idCheckPass && this.formInlinePublish.reason !='')
-                this.showModal(name)
-              else{
+              // if(this.idCheckPass && this.formInlinePublish.reason !='')
+              //   this.showModal(name)
+              // else{
                   this.validateLoading = true
                   this.$refs[name].validate((valid) => {
                       if (!valid) {
@@ -157,7 +167,20 @@
                       }
                       return
                   })
-              }
+              // }
+            },
+            showForcePublishModal(){
+                if(this.formInlinePublish.reason)
+                  this.$Modal.confirm({
+                        title: 'Force Publish Data',
+                        content: '<p>Do you want to <span style="font-weight: bold;">FORCE</span> publish this dataset?</p>',
+                        onOk: () => {
+                             this.submit(name)
+                        },
+                        onCancel: () => {
+
+                        }
+                    });
             },
             showModal(name){
                 this.$Modal.confirm({
@@ -241,16 +264,23 @@
                           else{
                               this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:10});
                           }
-                      });
-              
+                      }); 
             },
             publishModalOk(){
               this.publishModel=false
             },
-            async validateCheck(){
+            async validatePassPubmedCheck(){
               let result = ''
-              this.idCheckPass = false;
-              console.log('this.formInlinePublish.title',this.formInlinePublish.title)
+              this.idCheckPass = false;     
+              if (!this.formInlinePublish.id) {  //for PubMed and DOI empty validate
+                  let err = this.formInlinePublish.title == 'PubMedID' ? 'No PubMed! ' : 'No DOI! '
+                  let des = "Forced publishing is allowed on the risk!"
+                  if(this.formInlinePublish.reason)
+                    this.forceSubmitBool = true
+                  return new Promise((resolve,reject)=>{
+                      reject(err+des)
+                  })
+              }            
               if(this.formInlinePublish.title == 'PubMedID'){
                 return new Promise((resolve,reject)=>{
                     let query = {
@@ -277,7 +307,6 @@
                             reject('PubMedID Check Failed, try again.')
                         });
                 })
-                
               }
               else if(this.formInlinePublish.title == 'DOI'){
                 return new Promise((resolve,reject)=>{
@@ -311,11 +340,19 @@
               return result
             },
             async validTypeChange(){
-                this.idCheckPass = false;
+                // this.idCheckPass = false;
                 // if (this.formInlinePublish.id) {  
                 //     await validatePass()
                 // } 
             }
+          },
+          watch:{
+              formInlinePublish:{
+                handler(val) {
+                  this.forceSubmitBool = false
+                },
+                deep: true
+              },
           },
           mounted:function(){
                console.log()
