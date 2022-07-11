@@ -204,6 +204,12 @@ export default new Router({
       name: 'publish',
       component: Publish
     },
+    // for publish test
+    // {
+    //   path:'/archive/projects/PXD12311/publish',
+    //   name: 'publish',
+    //   component: Publish
+    // },
     {
       path:'/archive/users/profile/edit',
       name: 'editprofile',
