@@ -1267,7 +1267,7 @@
       },
       saveData(){
         let dataset = {}
-        dataset.metadata = {
+        dataset.Metadata = {
           
           title: this.title,
           projectDescription: this.projectDescription,
