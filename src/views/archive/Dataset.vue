@@ -135,7 +135,12 @@
                         <p slot="title">Publication</p>
                         <div v-if="publications.length>0">
                           <div v-for="item in publications">
-                            <p>{{item.desc}}<span>, PubMed: </span><a @click="europePMC(item.pmid)">{{item.pmid}}</a></p>
+                            <p>
+                              <span>DOI: </span>
+                              <a @click="doiDirect(item.doi)">{{item.doi}}</a>
+                              <span>, PubMed: </span>
+                              <a @click="europePMC(item.pmid)">{{item.pmid}}</a>
+                            </p>
                           </div>
                         </div>
                         <div v-else>
@@ -395,6 +400,7 @@
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
+          doiApi:'https://dx.doi.org/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
@@ -846,10 +852,10 @@
                 }
 
                 //for publications
-                //console.log('res.body',res.body);
+                // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
                   let item = {
-                    desc:res.body.references[i].referenceLine,
+                    doi:res.body.references[i].doi,
                     pmid:res.body.references[i].pubmedId,
                   }
                   this.publications.push(item);
@@ -1019,6 +1025,9 @@
       europePMC(id){
           window.open(this.europepmcApi + id);
           //location.href = this.europepmcApi + id;
+      },
+      doiDirect(id){
+          window.open(this.doiApi + id);
       },
       downLoadSelect(selection,row){
           console.log(selection);
