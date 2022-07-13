@@ -237,9 +237,13 @@
                             this.$Spin.hide()
                             this.$refs[name].resetFields();
                             this.publishModel = true
-                            this.$Message.success({ content: 'Publish Successfully!',duration:5});
+                            if(this.forceSubmitBool)
+                              this.$Message.success({ content: 'Force Publish Successfully! Do not publish repeatly!',duration:5});
+                            else
+                               this.$Message.success({ content: 'Publish Successfully!',duration:5});
                             this.idCheckPass = false
                             this.forceSubmitBool = false
+                            this.gotoProfile()
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                       },function(err){
                           console.log('errerrerr',err)
@@ -344,7 +348,10 @@
                 // if (this.formInlinePublish.id) {  
                 //     await validatePass()
                 // } 
-            }
+            },
+            gotoProfile(){
+              this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
+            },
           },
           watch:{
               formInlinePublish:{
