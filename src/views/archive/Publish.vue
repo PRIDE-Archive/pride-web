@@ -30,9 +30,9 @@
                 <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlinePublish.reason" placeholder="">
                 </Input>
               </FormItem>
-              <FormItem>
+             <!--  <FormItem>
               <span style="color: gray; line-height: 14px">**NOTE: If the PubmedID/DOI doesn't exist in EUPMC or if it's a preprint, the request to make it public will fail. In such cases it's better to omit this.**</span>
-              </FormItem>
+              </FormItem> -->
              <!--  <FormItem prop="doi" label="DOI">
                 <Input type="text" v-model="formInlinePublish.doi" placeholder="">
                 </Input>
