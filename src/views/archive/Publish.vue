@@ -92,9 +92,9 @@
                 // }
             };
             const validatePassReason = async (rule, value, callback) => {
-                if(!this.formInlinePublish.reason)
-                    callback(new Error('Please input Publish Reason'))
-                else
+                // if(!this.formInlinePublish.reason)
+                //     callback(new Error('Please input Publish Reason'))
+                // else
                     callback();
             };
             return {
@@ -122,7 +122,7 @@
                   //   { required: true, message: 'Please input Reference', trigger: 'blur' }
                   // ],
                   reason: [
-                    { required: true, validator: validatePassReason ,trigger: 'blur' }
+                    { validator: validatePassReason ,trigger: 'none' }
                   ],
                   // doi: [
                   //   { required: true, message: 'Please input DOI', trigger: 'blur' }
@@ -170,7 +170,7 @@
               // }
             },
             showForcePublishModal(){
-                if(this.formInlinePublish.reason)
+                // if(this.formInlinePublish.reason)
                   this.$Modal.confirm({
                         title: 'Force Publish Data',
                         content: '<p>Do you want to <span style="font-weight: bold;">FORCE</span> publish this dataset?</p>',
@@ -275,7 +275,7 @@
               if (!this.formInlinePublish.id) {  //for PubMed and DOI empty validate
                   let err = this.formInlinePublish.title == 'PubMedID' ? 'No PubMed! ' : 'No DOI! '
                   let des = "Forced publishing is allowed on the risk!"
-                  if(this.formInlinePublish.reason)
+                  // if(this.formInlinePublish.reason)
                     this.forceSubmitBool = true
                   return new Promise((resolve,reject)=>{
                       reject(err+des)
