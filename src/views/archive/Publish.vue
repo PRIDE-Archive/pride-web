@@ -169,7 +169,7 @@
                   })
               // }
             },
-            showForcePublishModal(){
+            showForcePublishModal(name){
                 // if(this.formInlinePublish.reason)
                   this.$Modal.confirm({
                         title: 'Force Publish Data',
@@ -234,6 +234,7 @@
                         }
                       })
                       .then(function(res){
+                          console.log('publish success')
                             this.$Spin.hide()
                             this.$refs[name].resetFields();
                             this.publishModel = true
