@@ -136,6 +136,7 @@
                         <div v-if="publications.length>0">
                           <div v-for="item in publications">
                             <p>
+                              {{item.desc}},
                               <span>DOI: </span>
                               <a @click="doiDirect(item.doi)">{{item.doi}}</a>
                               <span>, PubMed: </span>
@@ -855,6 +856,7 @@
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
                   let item = {
+                    desc:res.body.references[i].referenceLine,
                     doi:res.body.references[i].doi,
                     pmid:res.body.references[i].pubmedId,
                   }
