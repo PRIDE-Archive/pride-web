@@ -136,10 +136,17 @@
                         <div v-if="publications.length>0">
                           <div v-for="item in publications">
                             <p>
-                              <span>DOI: </span>
-                              <a @click="doiDirect(item.doi)">{{item.doi}}</a>
-                              <span>, PubMed: </span>
-                              <a @click="europePMC(item.pmid)">{{item.pmid}}</a>
+                              <template v-if="item.doi">
+                                <span>DOI: </span>
+                                <a @click="doiDirect(item.doi)">{{item.doi}}</a>
+                              </template>
+                              <template v-if="item.pmid">
+                                <span>, PubMed: </span>
+                                <a @click="europePMC(item.pmid)">{{item.pmid}}</a>
+                              </template>
+                              <template v-if="item.desc">
+                                <span>, Des: {{item.desc}}</span>
+                              </template>
                             </p>
                           </div>
                         </div>
@@ -779,7 +786,8 @@
           iconData:{},
           queryProjectDetailsLoading:false,
           sdrfFile:'',  
-          sdrfFileList:[]
+          sdrfFileList:[],
+          license:''
       }
     },
     metaInfo () {
@@ -807,7 +815,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-              // console.log(res.body)
+              console.log('queryProjectDetails',res.body)
                 this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
@@ -854,10 +862,13 @@
                 //for publications
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
-                  let item = {
-                    doi:res.body.references[i].doi,
-                    pmid:res.body.references[i].pubmedId,
-                  }
+                  let item = {}
+                  if(res.body.references[i].doi)
+                    item.doi = res.body.references[i].doi
+                  if(res.body.references[i].pubmedId)
+                    item.pmid = res.body.references[i].pubmedId
+                  if(res.body.references[i].referenceLine)
+                    item.desc = res.body.references[i].referenceLine
                   this.publications.push(item);
                 }
                 // this.getMSRunTableData()
