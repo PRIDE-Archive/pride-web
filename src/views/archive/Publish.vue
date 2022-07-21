@@ -239,10 +239,10 @@
                             this.$refs[name].resetFields();
                             this.publishModel = true
                             if(this.forceSubmitBool)
-                              this.$Message.success({ content: 'Force Publish Successfully! Do not publish repeatly!',duration:5});
+                              this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
                             else
-                               this.$Message.success({ content: 'Publish Successfully!',duration:5});
-                            this.idCheckPass = false
+                              this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
+                        this.idCheckPass = false
                             this.forceSubmitBool = false
                             this.gotoProfile()
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
