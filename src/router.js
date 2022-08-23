@@ -6,14 +6,12 @@ const LandingPage = resolve => require(['@/views/landingpage/LandingPage'], reso
 const Archive = resolve => require(['@/views/archive/Archive'], resolve);
 const Dataset = resolve => require(['@/views/archive/Dataset'], resolve);
 const NotFound = resolve => require(['@/views/NotFound'], resolve);
-//const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
 const MarkdownPage = resolve => require(['@/views/documentation/MarkdownPage'], resolve);
 const SpectrumLibrary = resolve => require(['@/views/peptidome/SpectrumLibrary'], resolve);
 const PSM = resolve => require(['@/views/peptidome/PSM'], resolve);
 const Peptidome = resolve => require(['@/views/peptidome/Peptidome'], resolve);
 const PeptideSearch = resolve => require(['@/views/peptidome/PeptideSearch'], resolve);
 const PeptideDetails = resolve => require(['@/views/peptidome/PeptideDetails'], resolve);
-//const ClusterProjects = resolve => require(['@/views/peptidome/ClusterProjects'], resolve);
 const StatisticsDetails = resolve => require(['@/views/landingpage/StatisticsDetails'], resolve);
 const Profile = resolve => require(['@/views/ebi/Profile'], resolve);
 const Molecules = resolve => require(['@/views/archive/Molecules'], resolve);
@@ -26,6 +24,8 @@ const EditProfile = resolve => require(['@/views/ebi/EditProfile'], resolve);
 const Login = resolve => require(['@/views/ebi/Login'], resolve);
 const Forgotpassword = resolve => require(['@/views/ebi/ForgotPassword'], resolve);
 const Resetpassword = resolve => require(['@/views/ebi/ResetPassword'], resolve);
+//const ClusterProjects = resolve => require(['@/views/peptidome/ClusterProjects'], resolve);
+//const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
 
 Vue.use(Router)
 
@@ -42,7 +42,7 @@ export default new Router({
       path: '/markdownpage/:subpage',
       name: 'markdownpage',
       component: MarkdownPage,
-       /*children: [
+      /*children: [
             {
                 path: "",
                 name: 'markdownpage',
@@ -96,7 +96,6 @@ export default new Router({
       path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
       component: PeptideSearch
-      // component: NotFound,
     },
     {
       path: '/archive/spectra',
@@ -123,11 +122,6 @@ export default new Router({
       name: 'psm',
       component: PSM
     },
-    // {
-    //   path:'/clusterprojects/:id',
-    //   name: 'clusterprojects',
-    //   component: ClusterProjects
-    // },
     {
       path:'/statisticsdetails',
       name: 'statisticsdetails',
@@ -219,21 +213,11 @@ export default new Router({
       path:'/404',
       name: '404',
       component: NotFound,
-      /*
-      beforeEnter: (to, from, next) => {
-        to.replace();
-        console.log(to);
-      }*/
     },
     {
       path:'*',
       name: 'notfound',
       component: NotFound,
-      /*
-      beforeEnter: (to, from, next) => {
-        to.replace();
-        console.log(to);
-      }*/
     },
   ],
 })
