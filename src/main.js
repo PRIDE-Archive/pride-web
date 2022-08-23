@@ -7,11 +7,17 @@ import locale from 'view-design/dist/locale/en-US'
 import 'view-design/dist/styles/iview.css'
 import '@/assets/my-theme/index.less';
 import VueResource  from 'vue-resource'
-import TextHighlight from 'vue-text-highlight'
-//import 'iview/dist/styles/iview.css';
-
+/**
+ * import third part module
+ */
 import ECharts from 'vue-echarts/components/ECharts'
-// import ECharts modules manually to reduce bundle size
+import VueMarkdown from 'vue-markdown'
+import ReadMore from 'vue-read-more'
+import VueMeta from 'vue-meta'
+import TextHighlight from 'vue-text-highlight'
+/**
+ * import ECharts modules manually to reduce bundle size
+ */
 import 'echarts/lib/chart/bar'
 import 'echarts/lib/component/tooltip'
 import 'echarts/lib/chart/line'
@@ -31,15 +37,8 @@ import 'echarts/lib/component/dataZoom.js'
 import 'echarts/lib/chart/map'
 import 'echarts/map/json/world.json'
 import 'echarts/map/js/world.js'
-
-import VueMarkdown from 'vue-markdown'
-import ReadMore from 'vue-read-more'
-import VueMeta from 'vue-meta'
- 
-
 // import vSuggest from 'v-suggest';
 // Vue.use(vSuggest);
-
 
 Vue.component('vue-markdown', VueMarkdown);
 Vue.component('text-highlight', TextHighlight);
