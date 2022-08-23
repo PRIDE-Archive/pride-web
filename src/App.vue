@@ -5,7 +5,6 @@
     <defaultFooter/> 
   </div>
 </template>
-
 <script>
 import defaultNav from '@/components/DefaultNav'
 import defaultFooter from '@/components/DefaultFooter'
@@ -18,32 +17,25 @@ export default {
   },
   beforeRouteUpdate:function (to, from, next) {
     if(this.$route.path.indexOf('/archive/projects') == -1){
-          console.log(222)
+        //TODO: for some more logic
         }
     next();
   },
   mounted:function(){
     try{
-        // console.log(33333333333)
-        // console.log('window',window)
-        // console.log('window.top',window.top)
         if(window != window.top){
-          // console.log(111)
-          
-          // this.$Message.error({ content: 'Security Issue! Force Redirect!'});
-          // window.top.location.replace(window.location)
-          // alert('Security Issue! Force Redirect!')
           this.$router.push({name:'404'});
         }
         
     }
     catch(e){
-      // window.top.location.replace(window.location)
       this.$router.push({name:'404'});
     }
-        
   },
   watch:{
+    /**
+     * Use ssr for SEO optimizing
+     */
     $route(to,from){
       if(to.path.indexOf('/archive/projects') == -1){
           let ssr_Script = document.getElementById("ssr-script")
