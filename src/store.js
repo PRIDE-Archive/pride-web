@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-//只要是plugin,都可以用这种use的方法去应用。
+//use only for importing plugin
 Vue.use(Vuex);
 
-console.log(process.env.NODE_ENV)
-console.log(location.href)
-
+/**
+ * for mode management
+ */
 let mode = ''
 if(process.env.NODE_ENV == 'development')
 	mode = 'dev'
@@ -15,8 +15,6 @@ else if(location.href.match(/www\.ebi\.ac\.uk\/pride/))
 else
 	mode = 'prodev'
 
-console.log('mode',mode)
-console.log('location.href',location.href)
 if(mode == 'dev'){
 	console.log('mode is dev')
 }
