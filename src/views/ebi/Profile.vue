@@ -420,7 +420,7 @@
 
                 else{
                     if(this.formInline.confirmedNewPassword!=''){
-                        console.log(22222);
+                        // console.log(22222);
                         this.$refs['formInline'].validateField('confirmedNewPassword');
                     }
                 
@@ -430,7 +430,7 @@
             };
             const newPasswordRecheck = (rule, value, callback) => {
                 var pattern = /^.{1,}$/;
-                console.log('newPasswordRecheck')
+                // console.log('newPasswordRecheck')
                 if(!pattern.test(this.formInline.confirmedNewPassword)){
                     this.confirmedNewPasswordState = false;
                     return callback(new Error(errorInfo.password.nonePassword));
@@ -549,7 +549,7 @@
         methods:{
             menuSlect(name){
                 this.activeName = name;
-                console.log(name)
+                // console.log(name)
 
             },
             pageChange(page){
@@ -670,7 +670,7 @@
                         }
                       })
                       .then(function(res){
-                        console.log('res.body',res.body)
+                        // console.log('res.body',res.body)
                         this.profileLoading = false;
                         this.profileData.userAuthorities = res.body.userAuthorities[0];
                         this.profileData.email = res.body.email;
@@ -708,7 +708,7 @@
                                 }
                             }
                         }
-                        console.log('this.profileData',this.profileData)
+                        // console.log('this.profileData',this.profileData)
                       },function(err){
                         if(err.body.error == 'TOKEN_EXPIRED'){
                             this.logout();
@@ -788,7 +788,7 @@
             resetState(){
                 this.newPasswordState = false;
                 this.confirmedNewPasswordState = false;
-                this.emailState = true;
+                this.emailState = false;
                 this.passwordState = false;
             },
             gotoEditProfile(){
