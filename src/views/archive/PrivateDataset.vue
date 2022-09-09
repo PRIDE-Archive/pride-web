@@ -15,7 +15,7 @@
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
                   <span>
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="transferData" style="margin-right: 10px">Transfer</Button>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="showTransferDataModal" style="margin-right: 10px">Transfer</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
                   </span>
@@ -423,7 +423,24 @@
       </div>
 
       <!-- <Button @click= "downloadFiles">123</Button> -->
-
+      <Modal
+            v-model="transferBool"
+            title="Transer Dataset"
+            :mask-closable="true"
+            :footer-hide="true"
+            :closable="false"
+            scrollable>
+            <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+              <FormItem prop="email">
+                <Input type="text" v-model="formInline.email" placeholder="Email">
+                <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                </Input>
+              </FormItem>
+              <FormItem>
+                <Button type="primary" @click="transferData('formInline')" long>Confirm</Button>
+              </FormItem>
+            </Form>
+        </Modal>
   </div>
 </template>
 
@@ -433,6 +450,28 @@
   export default {
     name: 'archive',
     data(){
+      const errorInfo = {
+          email:{
+              noneEmail:'Can not be empty',
+              unRegEmail:'Wrong Email Format',
+          },
+      };
+      const emailCheck = (rule, value, callback) => {
+          var pattern = /^.{1,}$/;
+          console.log('emailCheck')
+          if(!pattern.test(this.formInline.email)){
+              this.emailState = false;
+              return callback(new Error(errorInfo.email.noneEmail));
+          }
+          
+          var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+          if(!pattern.test(this.formInline.email)){
+              this.emailState = false;
+              return callback(new Error(errorInfo.email.unRegEmail));
+          }
+          this.emailState = true;
+          callback();
+      };
       return {
           accession:'',
           title:'',
@@ -461,6 +500,7 @@
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           publishAPI: this.$store.state.basePrivateURL + '/projects/publish',
+          transferAPI: this.$store.state.basePrivateURL + '/projects/change-owner',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -618,9 +658,9 @@
                               },
                               on: {
                                   click: (value) => {
-                                      console.log(params.row.url[0]);
-                                      console.log(params.row.name);
-                                      console.log(params.row.url[0].key);
+                                      // console.log(params.row.url[0]);
+                                      // console.log(params.row.name);
+                                      // console.log(params.row.url[0].key);
                                       //this.downloadFTP(params.row.name,params.row.url[0].key)
                                       //window.location.href = params.row.url.ftp;
                                       //window.open(params.row.url[0].key)
@@ -892,7 +932,17 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
-          userType:''
+          userType:'',
+          transferBool:false,
+          emailState:false,
+          formInline: {
+            email: '',
+          },
+          ruleInline: {
+             email: [
+               { required: true, validator: emailCheck, trigger: 'on-change' }
+             ]
+          },
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1026,7 +1076,7 @@
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
-                console.log(res.body);
+                // console.log(res.body);
                 // console.log(res.body.page)
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
@@ -1114,8 +1164,8 @@
           //location.href = this.europepmcApi + id;
       },
       downLoadSelect(selection,row){
-          console.log(selection);
-          console.log(row);
+          // console.log(selection);
+          // console.log(row);
       },
       filesSelectAll(){
           this.selectAllfiles =! this.selectAllfiles;
@@ -1131,7 +1181,7 @@
       searchProperties(filter){
           let normalQuery = {}
           normalQuery.filter = filter;
-          console.log(filter)
+          // console.log(filter)
           this.$router.push({name: 'archive', query: normalQuery});
       },
       getProteinEvidences(q){
@@ -1192,7 +1242,7 @@
           //setup();
       },
       downloadFiles (value) {
-          console.log('value',value);
+          // console.log('value',value);
           let transferSpec = {
               "paths": [{"source":value}],
               "remote_host": "fasp.ebi.ac.uk",
@@ -1210,7 +1260,7 @@
           };
           var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
 
-          console.log('response',response);
+          // console.log('response',response);
       },
       downloadPageChange(page){
           this.pageDownLoad = page;
@@ -1248,8 +1298,8 @@
                 //'credentials': 'include',
               },
               downloadProgress:(e)=>{
-                console.log(e.loaded/e.total)
-                console.log('e',e);
+                // console.log(e.loaded/e.total)
+                // console.log('e',e);
               }
             }).then(function(res){
                 return res.blob();
@@ -1278,26 +1328,64 @@
       editData(){
         this.$router.push({name:'editdataset',params:{id:this.$route.params.id}});
       },
-      transferData(){
-
+      showTransferDataModal(){
+        this.transferBool = true
+      },
+      transferData(name){
+         this.$refs[name].validate((valid) => {
+                if (valid) {
+                      this.$Spin.show({
+                          render: (h) => {
+                            return h('div', [
+                              h('Icon', {
+                                'class': 'demo-spin-icon-load',
+                                props: {
+                                  type: 'ios-loading',
+                                  size: 18
+                                }
+                              }),
+                              h('div', 'Loading')
+                            ])
+                          }
+                      });
+                      this.transfer()
+                      console.log('valid pass')
+                }
+                else{
+                  console.log('valid error')
+                }
+          })
       },
       transfer(){
+          let query = {}
+          query.accession = this.$route.params.id
+          query.newOwnerEmail = this.formInline.email
           this.$http
-            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query,
+            .post(this.transferAPI,query,{ 
               headers: {
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
-               
                 if(res.body._embedded && res.body._embedded.files){
-                  
+                    this.transferBool=false;
+                    this.$Message.success({ content: 'Transfer Successfully!',duration:3 })
+                    this.$Spin.hide()
+                    this.$refs['formInline'].resetFields();
+                    this.resetState();
+                    this.$router.push({name:'profile'});
                 }
                 else{
-                    this.$Message.error({content:'No results', duration:1});
+                    this.$Spin.hide()
+                    this.$Message.error({content:'Transfer Failed', duration:3});
                 }
             },function(err){
-                
+                console.log('eeeee',err)
+                this.$Spin.hide()
+                this.$Message.error({content:'Transfer Failed', duration:3});
             });
+      },
+      resetState(){
+        this.emailState = false;
       }
     },
     mounted: function(){
