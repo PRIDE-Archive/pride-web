@@ -345,7 +345,7 @@ export default {
             },
         }]
 
-        console.log('array',array);
+        // console.log('array',array);
         this.options.series.data = array;
 
 

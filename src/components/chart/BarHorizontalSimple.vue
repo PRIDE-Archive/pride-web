@@ -80,7 +80,7 @@ export default {
   },
   methods:{
       setOptions(data){
-        console.log('data',data)
+        // console.log('data',data)
         let xValue = [];
         let yValue = [];
         
