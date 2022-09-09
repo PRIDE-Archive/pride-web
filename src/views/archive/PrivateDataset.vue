@@ -15,6 +15,7 @@
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
                   <span>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="transferData" style="margin-right: 10px">Transfer</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
                   </span>
@@ -1276,6 +1277,27 @@
       },
       editData(){
         this.$router.push({name:'editdataset',params:{id:this.$route.params.id}});
+      },
+      transferData(){
+
+      },
+      transfer(){
+          this.$http
+            .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query,
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token')
+              }
+            }).then(function(res){
+               
+                if(res.body._embedded && res.body._embedded.files){
+                  
+                }
+                else{
+                    this.$Message.error({content:'No results', duration:1});
+                }
+            },function(err){
+                
+            });
       }
     },
     mounted: function(){
