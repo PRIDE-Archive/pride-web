@@ -15,7 +15,7 @@
                   <h2 class="project-title">Private Project {{accession}}</h2>
                   <!-- <Button class="tag-button" :disabled="moleculesButtonState" :class="{notActive:moleculesButtonState}" @click="gotoMolecules">Identification Results</Button> -->
                   <span>
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="showTransferDataModal" style="margin-right: 10px">Transfer</Button>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="showTransferDataModal" style="margin-right: 10px">Transfer Ownership</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
                   </span>
@@ -425,19 +425,24 @@
       <!-- <Button @click= "downloadFiles">123</Button> -->
       <Modal
             v-model="transferBool"
-            title="Transer Dataset"
+            title="Transfer Ownership"
             :mask-closable="true"
             :footer-hide="true"
             :closable="false"
+            @on-cancel="modalClose"
             scrollable>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
               <FormItem prop="email">
-                <Input type="text" v-model="formInline.email" placeholder="Email">
+                <Input type="text" v-model="formInline.email" placeholder="Email" :disabled="emailInput">
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
-              <FormItem>
-                <Button type="primary" @click="transferData('formInline')" long>Confirm</Button>
+              <FormItem v-if="!clickTransfer">
+                <Button type="primary" @click="transferData('formInline')" long>Transfer</Button>
+              </FormItem>
+              <FormItem v-else>
+                <Button type="success" @click="transfer()" long>Confirm</Button>
+                <Button style="margin-top: 10px; margin-bottom: -20px" type="error" @click="cancelTransfer()" long>Cancel</Button>
               </FormItem>
             </Form>
         </Modal>
@@ -460,16 +465,16 @@
           var pattern = /^.{1,}$/;
           console.log('emailCheck')
           if(!pattern.test(this.formInline.email)){
-              this.emailState = false;
+              this.emailValidateState = false;
               return callback(new Error(errorInfo.email.noneEmail));
           }
           
           var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
           if(!pattern.test(this.formInline.email)){
-              this.emailState = false;
+              this.emailValidateState = false;
               return callback(new Error(errorInfo.email.unRegEmail));
           }
-          this.emailState = true;
+          this.emailValidateState = true;
           callback();
       };
       return {
@@ -934,7 +939,7 @@
           moleculesButtonState:true,
           userType:'',
           transferBool:false,
-          emailState:false,
+          emailValidateState:false,
           formInline: {
             email: '',
           },
@@ -943,6 +948,8 @@
                { required: true, validator: emailCheck, trigger: 'on-change' }
              ]
           },
+          clickTransfer:false,
+          emailInput:false
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1334,21 +1341,8 @@
       transferData(name){
          this.$refs[name].validate((valid) => {
                 if (valid) {
-                      this.$Spin.show({
-                          render: (h) => {
-                            return h('div', [
-                              h('Icon', {
-                                'class': 'demo-spin-icon-load',
-                                props: {
-                                  type: 'ios-loading',
-                                  size: 18
-                                }
-                              }),
-                              h('div', 'Loading')
-                            ])
-                          }
-                      });
-                      this.transfer()
+                      this.clickTransfer = true
+                      this.emailInput = true
                       console.log('valid pass')
                 }
                 else{
@@ -1357,6 +1351,20 @@
           })
       },
       transfer(){
+          this.$Spin.show({
+              render: (h) => {
+                return h('div', [
+                  h('Icon', {
+                    'class': 'demo-spin-icon-load',
+                    props: {
+                      type: 'ios-loading',
+                      size: 18
+                    }
+                  }),
+                  h('div', 'Loading')
+                ])
+              }
+          });
           let query = {}
           query.accession = this.$route.params.id
           query.newOwnerEmail = this.formInline.email
@@ -1385,8 +1393,26 @@
             });
       },
       resetState(){
-        this.emailState = false;
-      }
+        this.$refs['formInline'].resetFields();
+        this.emailValidateState = false
+        this.emailInput = false
+        this.clickTransfer = false
+      },
+
+      cancelTransfer(){
+        this.clickTransfer = false
+        this.emailInput = false
+      },
+      modalClose(){
+        console.log('modalClose')
+        this.resetState()
+      },
+      // testCancel(){
+      //   console.log('close')
+      // },
+      // modalVisibility(a){
+      //   console.log('modalVisibility',a)
+      // }
     },
     mounted: function(){
         this.queryProjectDetails();
