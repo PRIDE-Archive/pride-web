@@ -1366,10 +1366,10 @@
               }
           });
           let query = {}
-          query.accession = this.$route.params.id
-          query.newOwnerEmail = this.formInline.email
+          // query.accession = this.$route.params.id
+          // query.newOwnerEmail = this.formInline.email
           this.$http
-            .post(this.transferAPI,query,{ 
+            .post(this.transferAPI + '?accession=' + this.$route.params.id + '&newOwnerEmail=' + this.formInline.email, query, { 
               headers: {
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
