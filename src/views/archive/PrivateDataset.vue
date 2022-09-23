@@ -425,6 +425,7 @@
       <!-- <Button @click= "downloadFiles">123</Button> -->
       <Modal
             v-model="transferBool"
+            width="600"
             title="Transfer Ownership"
             :mask-closable="true"
             :footer-hide="true"
@@ -436,6 +437,10 @@
                 <Input type="text" v-model="formInline.email" placeholder="Email" :disabled="emailInput">
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
+                <template v-if="clickTransfer">
+                    <p style="margin-top: 5px; color: #ed4014">Are you sure about transferring ownership of <span style="font-weight: bold;">{{accession}}</span> to <span style="font-weight: bold;">{{formInline.email}}</span>?</p>
+                    <p style="margin-top: 5px 0 -10px 0; color: #ed4014">Warning: You will permanently loose access to <span style="font-weight: bold;">{{accession}}</span></p>
+                </template>  
               </FormItem>
               <FormItem v-if="!clickTransfer">
                 <Button type="primary" @click="transferData('formInline')" long>Transfer</Button>
@@ -997,6 +1002,7 @@
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
+              // console.log('1111111',res.status)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -1374,7 +1380,7 @@
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
-                if(res.body._embedded && res.body._embedded.files){
+                if(res.status == 200){
                     this.transferBool=false;
                     this.$Message.success({ content: 'Transfer Successfully!',duration:3 })
                     this.$Spin.hide()
