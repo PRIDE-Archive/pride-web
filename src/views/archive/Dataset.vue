@@ -12,17 +12,12 @@
                 </Breadcrumb>
                 -->
                 <div class="title-wrapper">
-                  <h2 class="project-title">Project {{accession}}</h2>  
+                  <h3 class="project-title">Project {{accession}}</h3>  
                 </div>
                 <div class="tag-wrapper">
-                    <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
-                    <!-- <span style="display: flex;align-items: center;">Download Project: 
-                      <a :href="projectDownload" style="margin-left: 5px;border-bottom-style:none">
-                        <Icon type="ios-cloud-download-outline" size='20'></Icon>
-                      </a>
-                    </span> -->
+                    <!-- <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span> -->
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
-                        <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
+                        <!-- <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
                             {{datesetItem}}
                         </a>
@@ -41,10 +36,15 @@
                         <a v-else class="button gray-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
                             {{datesetItem}}
-                        </a>
+                        </a> -->
                         <!-- <DropdownMenu slot="list">
                             <DropdownItem>{{datesetItem}}</DropdownItem>
                         </DropdownMenu> -->
+                        <Tag color="blue" v-if="datesetItem == 'Biological'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
+                        <Tag color="cyan" v-else-if="datesetItem == 'Biomedical'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
+                        <Tag color="geekblue" v-else-if="datesetItem == 'Highlighted'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
+                        <Tag color="purple" v-else-if="datesetItem == 'Technical'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
+                        <Tag color="volcano" v-else @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
                     </span>
                 </div>
             </Col>
@@ -1520,7 +1520,7 @@
     margin-top: 30px;
   }
   .project-title{
-      color:rgb(100, 102, 100);
+      color:rgb(23, 35, 61);
   }
   .tags{
     font-size: 16px;
@@ -1713,6 +1713,9 @@
   .dataset-wrapper{
       margin-left: 5px;
     }
+  .dataset-wrapper:first-child{
+    margin-left: 0 !important;
+  }
   .project-file-title-container{
     display: flex;
     justify-content: space-between;
