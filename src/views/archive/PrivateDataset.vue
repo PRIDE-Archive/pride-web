@@ -1380,6 +1380,7 @@
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
+                console.log('res',res)
                 if(res.status == 200){
                     this.transferBool=false;
                     this.$Message.success({ content: 'Transfer Successfully!',duration:3 })
