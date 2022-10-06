@@ -42,7 +42,8 @@
                 value1: '',
                 releaseDate:'',
                 version:'',
-                spectrumLibraries: []
+                spectrumLibraries: [],
+                tempFtp: 'https://ftp.pride.ebi.ac.uk/pub/databases/pride/resources/cluster'
             }
         },
         components: {
@@ -60,10 +61,20 @@
                   // .get(this.spectrumLibraryApi)
                   .get(this.spectrumLibraryJsonURL)
                   .then(function(res){
+                    // console.log('1111',res.body)
                     this.spinShow = false;
                     this.releaseDate = res.body.releaseDate;
                     this.version = res.body.version;
-                    this.spectrumLibraries = res.body.spectrumLibraries;
+                    let temp = res.body.spectrumLibraries;
+                    for(let i=0; i<temp.length; i++){
+                        for(let j=0;j<temp[i].downloadURLs.length;j++){
+                            if(temp[i].downloadURLs[j].protocol =='FTP'){
+                                let tempName = temp[i].downloadURLs[j].url.split('cluster')[1]
+                                temp[i].downloadURLs[j].url = this.tempFtp + tempName;
+                            }
+                        }
+                    }
+                    this.spectrumLibraries = temp
                   },function(err){
 
                   });
