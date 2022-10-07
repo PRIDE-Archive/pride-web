@@ -256,9 +256,6 @@
         color: #0bb1b1b5;
         /*width: 50px;*/
     }
-    {
-
-    }
     .detailed-step-more-button{
         background: none;
         border: 1px solid #d3d3d3 !important;
