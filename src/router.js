@@ -163,31 +163,31 @@ export default new Router({
       name: 'register',
       component: Register,
     },
-    {
-      path:'/archive/register',
-      name: 'register',
-      component: Register,
-    },
+    // {
+    //   path:'/archive/register',
+    //   name: 'register',
+    //   component: Register,
+    // },
     {
       path:'/login',
       name: 'login',
       component: Login,
     },
-    {
-      path:'/archive/login',
-      name: 'login',
-      component: Login,
-    },
+    // {
+    //   path:'/archive/login',
+    //   name: 'login',
+    //   component: Login,
+    // },
     {
       path:'/forgotpassword',
       name: 'forgotpassword',
       component: Forgotpassword,
     },
-    {
-      path: '/archive/users/forgotpassword',
-      name: 'forgotpassword',
-      component: Forgotpassword,
-    },
+    // {
+    //   path: '/archive/users/forgotpassword',
+    //   name: 'forgotpassword',
+    //   component: Forgotpassword,
+    // },
     {
       path:'/resetpassword/:reference',
       name: 'resetpassword',
