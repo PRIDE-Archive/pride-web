@@ -17,7 +17,8 @@
                   <span>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="showTransferDataModal" style="margin-right: 10px">Transfer Ownership</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
+                     <!--  <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button> -->
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button disable" @click="publishDataDisable">Publish</Button>
                   </span>
                 </div>
                 <div class="tag-wrapper">
@@ -1338,6 +1339,14 @@
       publishData(){
         this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
+      publishDataDisable(){
+        this.$Modal.confirm({
+            title: 'Important Information',
+            content: '<p>EMBL-EBI storage system is facing some major issues, then automatic publication jobs are currently disable</p>' +'<br>' + '<p>Please contact pride-support@ebi.ac.uk for urgent requests.</p>' ,
+            okText: 'OK',
+            cancelText: 'Cancel'
+        });
+      },
       editData(){
         this.$router.push({name:'editdataset',params:{id:this.$route.params.id}});
       },
@@ -1604,6 +1613,11 @@
   .tag-button.edit{
     background: none;
     color:  #5bc0be
+  }
+  .tag-button.disable{
+    background: none;
+    background-color: #b3b3b3;
+    border-color:#b3b3b3;
   }
  .biological-dataset-button{
       padding: 2px 3px;
