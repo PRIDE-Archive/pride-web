@@ -1342,7 +1342,7 @@
       publishDataDisable(){
         this.$Modal.confirm({
             title: 'Important Information',
-            content: '<p>EMBL-EBI storage system is facing some major issues, then automatic publication jobs are currently disable</p>' +'<br>' + '<p>Please contact pride-support@ebi.ac.uk for urgent requests.</p>' ,
+            content: '<p>EMBL-EBI storage system is facing some major issues. So, automatic publication jobs are currently disabled</p>' +'<br>' + '<p>Please contact pride-support@ebi.ac.uk for urgent requests.</p>' ,
             okText: 'OK',
             cancelText: 'Cancel'
         });
