@@ -1,0 +1,1 @@
+EMBL-EBI storage system is facing some major issues affecting our submissions and publications jobs. The PRIDE team is working actively with EMBL-EBI storage team to solve these problems. Please email pride team support-pride@ebi.ac.uk
