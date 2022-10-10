@@ -76,6 +76,11 @@ export default new Router({
       name: 'privatedataset',
       component: PrivateDataset
     },
+    // {
+    //   path:'/archive/projects/aaa/private',
+    //   name: 'privatedataset',
+    //   component: PrivateDataset
+    // },
     {
       path:'/archive/projects/:id/edit',
       name: 'editdataset',
