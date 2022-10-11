@@ -3,7 +3,7 @@
       <div class="panel nav"><NavBar page="archive"/></div>
       <div class="browse-data-container">
           <Row class="search-row">
-              <Card>
+              <Card style="width:100%">
                 <p slot="title">Search</p>
                 <div class="search-container">
                     <div class="search-input">
