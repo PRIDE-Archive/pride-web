@@ -17,8 +17,8 @@
                   <span>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="showTransferDataModal" style="margin-right: 10px">Transfer Ownership</Button>
                       <Button :disabled = "userType=='REVIEWER'" class="tag-button edit" @click="editData" style="margin-right: 10px">Edit</Button>
-                     <!--  <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button> -->
-                      <Button :disabled = "userType=='REVIEWER'" class="tag-button disable" @click="publishDataDisable">Publish</Button>
+                      <Button :disabled = "userType=='REVIEWER'" class="tag-button" @click="publishData">Publish</Button>
+<!--                      <Button :disabled = "userType=='REVIEWER'" class="tag-button disable" @click="publishDataDisable">Publish</Button>-->
                   </span>
                 </div>
                 <div class="tag-wrapper">
