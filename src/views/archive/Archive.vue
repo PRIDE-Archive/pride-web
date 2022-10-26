@@ -393,12 +393,12 @@
                           let item = {
                               accession: projectsList[i].accession,
                               title: projectsList[i].title,
-                              organisms: projectsList[i].organisms, //for show more species link in UI
-                              species: projectsList[i].organisms,
+                              organisms: projectsList[i].organisms || [], //for show more species link in UI
+                              species: projectsList[i].organisms || [],
                               projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                               publicationDate: projectsList[i].publicationDate,
-                              projectTags: projectsList[i].projectTags,
-                              submissionType: projectsList[i].submissionType,
+                              projectTags: projectsList[i].projectTags || [],
+                              submissionType: projectsList[i].submissionType || '',
                               hightlightItemArray:[],
                               icon:{
                                   id: "",
