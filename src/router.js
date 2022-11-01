@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-//import Index from '@/components/landingpage/Index'
 
 const LandingPage = resolve => require(['@/views/landingpage/LandingPage'], resolve);
 const Archive = resolve => require(['@/views/archive/Archive'], resolve);
@@ -24,8 +23,6 @@ const EditProfile = resolve => require(['@/views/ebi/EditProfile'], resolve);
 const Login = resolve => require(['@/views/ebi/Login'], resolve);
 const Forgotpassword = resolve => require(['@/views/ebi/ForgotPassword'], resolve);
 const Resetpassword = resolve => require(['@/views/ebi/ResetPassword'], resolve);
-//const ClusterProjects = resolve => require(['@/views/peptidome/ClusterProjects'], resolve);
-//const Maintenance = resolve => require(['@/views/Maintenance'], resolve);
 
 Vue.use(Router)
 
@@ -76,11 +73,6 @@ export default new Router({
       name: 'privatedataset',
       component: PrivateDataset
     },
-    // {
-    //   path:'/archive/projects/aaa/private',
-    //   name: 'privatedataset',
-    //   component: PrivateDataset
-    // },
     {
       path:'/archive/projects/:id/edit',
       name: 'editdataset',
@@ -168,31 +160,16 @@ export default new Router({
       name: 'register',
       component: Register,
     },
-    // {
-    //   path:'/archive/register',
-    //   name: 'register',
-    //   component: Register,
-    // },
     {
       path:'/login',
       name: 'login',
       component: Login,
     },
-    // {
-    //   path:'/archive/login',
-    //   name: 'login',
-    //   component: Login,
-    // },
     {
       path:'/forgotpassword',
       name: 'forgotpassword',
       component: Forgotpassword,
     },
-    // {
-    //   path: '/archive/users/forgotpassword',
-    //   name: 'forgotpassword',
-    //   component: Forgotpassword,
-    // },
     {
       path:'/resetpassword/:reference',
       name: 'resetpassword',
