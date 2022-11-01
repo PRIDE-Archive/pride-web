@@ -1,3 +1,6 @@
+/**
+ * import necessary module
+ */
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -31,14 +34,10 @@ import 'echarts/lib/component/legend'
 import 'echarts/lib/component/legend/ScrollableLegendModel.js'
 import 'echarts/lib/component/legend/ScrollableLegendView.js'
 import 'echarts/lib/component/legend/scrollableLegendAction.js'
-//import 'echarts/lib/component/visualMap'//these two used for dividing the data accoridng to Y
-//import 'echarts/lib/component/visualMapContinuous'//these two used for dividing the data accoridng to Y
 import 'echarts/lib/component/dataZoom.js'
 import 'echarts/lib/chart/map'
 import 'echarts/map/json/world.json'
 import 'echarts/map/js/world.js'
-// import vSuggest from 'v-suggest';
-// Vue.use(vSuggest);
 
 Vue.component('vue-markdown', VueMarkdown);
 Vue.component('text-highlight', TextHighlight);
