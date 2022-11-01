@@ -1,6 +1,5 @@
 <template>
   <div class="notFound-container">
-    <!--<div class="panel nav"><Nav/></div>-->
     <div class = "content">
          <div id="clouds">
             <div class="cloud x1"></div>
@@ -17,17 +16,6 @@
             <div class='_2'>WAS NOT FOUND</div>
             <a class='btn' @click="backtohome">BACK TO HOME</a>
         </div>
-        <!--
-        <div class="first-row">
-            <div class="col not-found-num">404</div>
-            <div class="col not-found-content"><div>Error - Sorry</div><div>Something Went</div> <div>Wrong!</div></div>
-        </div>
-        <div class="not-found-reason">For Some Reason The Page You Requested Could Not Be Found On Our Server</div>
-        <div class="box">
-          <a class="go-back">Go Back</a>
-          <a class="go-home">Go Home</a>
-        </div>
-        -->
     </div>
   </div>
 </template>
@@ -50,15 +38,11 @@
     },
 
     beforeRouteEnter: function(to, from, next){
-        console.log('from',from);
-        //console.log(from);
-        //console.log(document.getElementById('elixir-banner'));
         //document.getElementById('elixir-banner').setAttribute('display','none');
         next();
     },
     mounted(){
-    //  console.log(document.getElementById('elixir-banner'));
-     // document.getElementById('elixir-banner').attribute('display','none');
+
     }
   }
 </script>
@@ -78,42 +62,8 @@
     background: #5bc0be;
     color:#fff;
     font-family: 'Open Sans', sans-serif;
-    /*max-height:700px;*/
     overflow: hidden;
  }
- /* .not-found-num{
-    font-size: 220px;
-    color:#979797;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    line-height: 250px;
-    margin-bottom: 80px;
-  }*/
-  /*.not-found-content{
-      font-size: 50px;
-    color:#979797;
-    font-family: Georgia, "Times New Roman", Times, serif;
-  }*/
-  /*.not-found-reason{
-    font-size: 16px;
-    font-family: Georgia, "Times New Roman", Times, serif;
-    color:#979797;
-    font-weight: bold;
-    text-transform: uppercase;
-  }*/
-  /*.first-row{
-    display: flex;
-    align-items:center;
-  }
-  .first-row .col{
-    width: 48%;
-    display: inline-block;
-  }*/
-  /*.box{
-    padding: 10px;
-    border: 1px solid #CCCCCC; 
-    display: flex;
-    justify-content: space-between;
-  }*/
 #clouds{
     z-index: 1000;
 }
@@ -155,16 +105,13 @@
     position: relative;
     display: inline-block;
     margin: 19px 0px 0px 0px;
-    /* top: 256.301px; */
     z-index: 3;
     width: 100%;
     line-height: 1.2em;
     display: inline-block;
 }
 
-
 .btn{
-    /*background-color: rgb( 255, 255, 255 );*/
     position: relative;
     display: inline-block;
     width: 358px;
@@ -192,18 +139,6 @@ hr{
     width: 420px;
     height:10px;
     z-index: -10;
-}
-
-hr:after {
-  /*
-    content: "\2022";
-    display: inline-block;
-    position: relative;
-    top: -0.75em;
-    font-size: 2em;
-    padding: 0 0.2em;
-    background: #33cc99;
-    */
 }
 
 .cloud {
