@@ -150,7 +150,6 @@
                         <Card>
                              <p slot="title">Consensus Spectrum</p>
                              <Spin fix v-if="consensusSpectrumSpinShow"></Spin>
-                             <!--<p slot="extra">Species distribution for all the PSMs within the cluster.</p>-->
                              <div class="spectrum-container">
                                <div style="color:#bdbdbd; text-align: center;">
                                </div>
@@ -177,10 +176,7 @@
             return {
                 iframeURL: this.$store.state.baseURL + '/lorikeet/html/pride.html',
                 clusterIDApi: this.$store.state.baseApiURL + '/peptidedetails',
-                // clusterSpeciesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/species',
-                // clusterModificationApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/modification',
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
-                // clusterOriginalExperimentsApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/project',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 europmcUrl:'https://europepmc.org/article/MED/',
                 diseasesSpinShow:false,
@@ -190,7 +186,6 @@
                 originalExperimentsSpinShow:false,
                 consensusSpectrumSpinShow:false,
                 totalPeptides:0,
-                // totalProjects:0,
                 peptidesCol: [
                     {
                         title: 'Peptide',
@@ -318,16 +313,6 @@
                         width:100,
                         render: (h, params) => {
                             return h('div', [
-                                /*
-                                h('Button', {
-                                   
-                                    on: {
-                                        click: () => {
-                                            this.gotoEuroPMC(params);
-                                        }
-                                    }
-                                }, 'Blast'),
-                                */
                                 h('Button', {
                                     props: {
                                         type: 'primary',
@@ -441,42 +426,40 @@
                 this.$http
                   .get(this.clusterIDApi,{params:query })
                   .then(function(res){
-                        this.detailsSpinShow=false;
-                        this.queryPeptideDetailBool = true
-                        console.log('aaaa',res.body)
-                        let body = res.body
-                        this.sequence=body.peptideSequence;
-                        this.proteinAccession = body.proteinAccession;
-                        this.numberOfSpectra = body.psmsCount;
-                        this.numberOfProjects = body.projects.length;
-                        this.averagePrecursorCharge = body.bestSearchEngineScore;
-                        this.organism = body.organism;
-                        this.proteinName = body.proteinName;
-                        this.gene = body.gene || 'NULL';
+                    this.detailsSpinShow=false;
+                    this.queryPeptideDetailBool = true
+                    let body = res.body
+                    this.sequence=body.peptideSequence;
+                    this.proteinAccession = body.proteinAccession;
+                    this.numberOfSpectra = body.psmsCount;
+                    this.numberOfProjects = body.projects.length;
+                    this.averagePrecursorCharge = body.bestSearchEngineScore;
+                    this.organism = body.organism;
+                    this.proteinName = body.proteinName;
+                    this.gene = body.gene || 'NULL';
 
-                        // for Original Experiments Table
-                        this.originalExperimentsNum = body.projects.length
-                        for(let i=0; i<body.projects.length; i++){
-                            var item = {
-                                project: body.projects[i].accession,
-                                title: body.projects[i].title,
-                                instruments: body.projects[i].instruments.length>0 ? body.projects[i].instruments[0] : '',
-                                diseases: body.projects[i].diseases.length>0 ? body.projects[i].diseases[0] : '',
-                                tissues: body.projects[i].tissues.length>0 ? body.projects[i].tissues[0] : '',
-                                pubmedid: body.projects[i].pubmedIds.length>0 ? body.projects[i].pubmedIds[0] : '',
-                                // psm: res.body.clusteredProjects[i].numberOfPSMs,
-                                // species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
-                            }
-                            this.originalExperimentsData.push(item);
+                    // for Original Experiments Table
+                    this.originalExperimentsNum = body.projects.length
+                    for(let i=0; i<body.projects.length; i++){
+                        var item = {
+                            project: body.projects[i].accession,
+                            title: body.projects[i].title,
+                            instruments: body.projects[i].instruments.length>0 ? body.projects[i].instruments[0] : '',
+                            diseases: body.projects[i].diseases.length>0 ? body.projects[i].diseases[0] : '',
+                            tissues: body.projects[i].tissues.length>0 ? body.projects[i].tissues[0] : '',
+                            pubmedid: body.projects[i].pubmedIds.length>0 ? body.projects[i].pubmedIds[0] : '',
+                            // psm: res.body.clusteredProjects[i].numberOfPSMs,
+                            // species: res.body.clusteredProjects[i].species.length>0 ? res.body.clusteredProjects[i].species[0] : '',
                         }
-                        // PTMS
-                        let ptmsData = {
-                            sequence:body.peptideSequence,
-                            ptms:body.ptmsMap
-                        }
-                        this.$bus.$emit('show-scatter', ptmsData)
+                        this.originalExperimentsData.push(item);
+                    }
 
-
+                    // PTMS
+                    let ptmsData = {
+                        sequence:body.peptideSequence,
+                        ptms:body.ptmsMap
+                    }
+                    this.$bus.$emit('show-scatter', ptmsData)
 
                     let diseases = {}
                     let tissues  = {}
@@ -515,10 +498,8 @@
                       }
                       tissuesList.push(item)
                     }
-
                     this.speciesNum = diseasesList.length;
                     this.tissuesNum = tissuesList.length;
-
                     this.$bus.$emit('show-diseases', diseasesList)
                     this.$bus.$emit('show-tissues', tissuesList);
 
@@ -526,14 +507,12 @@
                           .get('https://www.ebi.ac.uk/pride/ws/archive/v2/spectrum?usi='+body.bestUsis[0])
                           .then(function(res){
                                 this.consensusSpectrumSpinShow=false;
-                                // console.log(res.body)
                                 let psm = res.body;
                                 let peptideSequence = psm.peptideSequence;
                                 let charge = psm.charge;
                                 let precursorMZ = psm.precursorMZ;
                                 let peaks;
                                 let variableMods;
-
                                 //add peaks for item
                                 if(psm.intensities){
                                   let peaksArray = [];
@@ -568,7 +547,6 @@
                                 this.consensusSpectrumSpinShow=false;
                           });                               
                   },function(err){
-                    console.log('errerrerr',err)
                     this.detailsSpinShow=false
                     this.queryPeptideDetailBool = false
                     this.$Message.error({content:'No Peptide Available', duration:3});
@@ -578,7 +556,6 @@
                 this.$http
                   .get(this.clusterPeptidesApi)
                   .then(function(res){
-                    //console.log(res);
                     this.peptidesSpinShow=false;
                     this.peptidesNum = res.body.clusteredPeptides.length;
                     for(let i=0;i<res.body.clusteredPeptides.length; i++){
@@ -617,10 +594,9 @@
                       iframe.style.borderWidth = '0';
                       document.querySelector(".spectrum-container").appendChild(iframe)
                       document.querySelector("#lorikeetIframe").onload = ()=>{
-                        this.spectrumTableShow=true;
-                        this.spectrumSpinShow = false;
-                        //console.log(peptideSequence,peaks)
-                        document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
+                      this.spectrumTableShow=true;
+                      this.spectrumSpinShow = false;
+                      document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
                       }
                       document.querySelector("#lorikeetIframe").onerror = ()=> {
                           this.spectrumTableShow= false;
@@ -672,13 +648,8 @@
             }
         },
         mounted: function(){
-            // console.log(this.$route)
             this.queryPeptideDetail();
-            // this.queryPeptideSpecies();
-            // this.queryPeptideModification();
             this.queryClusterPeptides();
-            // this.queryClusterOriginalExperiments();
-            // this.queryClusterConsensusSpectrum();
         },
     }
 </script>
@@ -702,8 +673,8 @@
         padding: 20px 0px;
     }
     .project-title{
-      margin-bottom: 40px;
-      color:rgb(100, 102, 100);
+        margin-bottom: 40px;
+        color:rgb(100, 102, 100);
     }
     .property-item{
         font-size: 14px;
@@ -712,16 +683,13 @@
     .button-wrapper{
         padding: 0 20px;
         display: flex;
-         text-align: center;
-         justify-content:space-between;
+        text-align: center;
+        justify-content:space-between;
     }
     .button-wrapper a{
-
         padding: 6px 8px;
         font-size: 12px;
         width:80px;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
         font-weight: 700;
         background-color: #5bc0be;
         border-radius: 3px;
@@ -755,7 +723,6 @@
         display: flex;
         align-items: center;
         width: 132px;
-        /*justify-content: flex-end;*/
     }
     .peptide-details-item .content{
         border-left-width: 4px;
@@ -784,12 +751,10 @@
         width: calc((100% - 90px) / 3 - 1px);
       }
       .button-wrapper a{
-
-            padding: 6px 6px;
-            font-size: 12px;
-            width:110px;
-
-        }
+        padding: 6px 6px;
+        font-size: 12px;
+        width:110px;
+      }
     }
     @media (max-width: 1910px) and (min-width: 1511px){ 
       .item{ 
