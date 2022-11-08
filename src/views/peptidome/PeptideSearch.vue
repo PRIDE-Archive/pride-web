@@ -7,7 +7,6 @@
                 <p slot="title">Search</p>
                 <div class="search-container">
                     <div class="search-input">
-                       
                         <div class="search-input-wrapper peptidome">
                             <div class="fake-input">
                               <div class="tag-wrapper">
@@ -24,7 +23,6 @@
                                       style="width:500px">
                                       <Option v-for="(item, index) in autoCompleteArray" :value="item" :key="index">{{item}}</Option>
                                   </Select>
-                                  <!--<Input class="tag-input" v-model="keyword" placeholder="input here" style="width: 500px;"></Input>-->
                               </div>
                               <Icon type="ios-search"></Icon>
                             </div>
@@ -41,33 +39,9 @@
                             style="width: 100%" 
                             size="large">
                         </AutoComplete>
-                      -->
+                        -->
                     </div>
-
                     <div class="search-filter">
-                      <!--
-                        <div class="filter-wrapper">
-                            <div class="filter-condition">
-                                <Select ref="fieldRef" class="filter-selector" v-model="fieldValue" style="width:200px" @on-change="fieldChange">
-                                    <Option v-for="item in fieldSelectors" :value="item.value" :label="item.label" :key="item.value" >
-                                            <span>{{ item.label }}</span>
-                                            <span style="float:right;color:#ccc">{{item.number}}</span>
-                                    </Option>
-                                </Select>
-                            </div>
-                            <span class="separator">></span>
-                            <div class="filter-condition ">
-                                <Select ref="containRef" class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading..." @on-open-change="containDropdownOpen" @on-query-change="queryChange">
-                                    <Option v-for="item in containSelectors" :value="item.value" :label="item.label" :key="item.value">
-                                      <span>
-                                            <span>{{ item.label }}</span>
-                                            <span style="color:#ccc"><span v-if="item.number">(</span>{{item.number}}<span v-if="item.number">)</span></span>
-                                      </span>
-                                    </Option>
-                                </Select>
-                            </div>
-                        </div>
-                      -->
                         <div class="search-button">
                             <a class="button search-button" @click="submitSearch">Search</a>
                         </div>
@@ -133,7 +107,6 @@
           facetsURL: this.$store.state.baseApiURL + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
-          // queryClusterListApi: 'https://www.ebi.ac.uk:443/pride/ws/cluster/cluster/list',
           queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
           containItemSearch:'',
@@ -145,7 +118,6 @@
               check: false,
               number: ''
           }],
-          //containSelectors:[],
           filterCombination:[],
           sortType:'Date',
           publicaitionList:[],
@@ -183,7 +155,6 @@
           normalQuery:{},
           autoCompleteArray:[],
           peptideTableColumn: [
-
               {
                   title: 'Peptide',
                   key: 'peptide',
@@ -259,16 +230,8 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      //console.log('to query',to.query);
-      /*
-      let filter = to.query.split('?')[1].split('filter');
-      if(filter.length>1)
-        filter.split("=");
-      console.log('filter',filter);*/
       this.updateCondition(to.query);
-      console.log('beforeRouteUpdate',to.query);
       this.queryClusterList(to.query);
-      //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
       next();
     },
     components: {
@@ -277,11 +240,9 @@
     methods:{
       searchInputChange (query, splitBool) {
           if(splitBool){
-            //console.log('searchInputChange',query);
             this.tadAdd(query);
             this.$refs.searchRef.setQuery(null);
           }
-
           if(query !== ''){
               console.log('query',query);
               this.searchInputLoading = false;
@@ -301,7 +262,6 @@
           this.$http
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
-                //console.log('res.body._embedded',res.body._embedded);
                 let facetsMap = res.body._embedded.facets;
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;
@@ -328,8 +288,6 @@
                         this.fieldSelectors.push(item);
                     }
                     this.fieldValue = this.fieldSelectors[0].value;
-                    //console.log( this.fieldSelectors[0].value);
-                    //console.log('this.fieldValue',this.fieldValue);
                     this.containSelectors = this.fieldSelectors[0].containItems;
             },function(err){
 
@@ -361,8 +319,6 @@
           }
           if(!pageSizeFound)
             query.pageSize = this.pageSize;
-          //console.log('search query',query);
-          //let q=query.keyword?'q='+query.keyword : '';
           let newquery = '';
           for(let i in query){
               if(i == 'keyword')
@@ -372,21 +328,15 @@
               
           }
           var reg=/&$/gi; 
-          //console.log('before',newquery);
           newquery = newquery.replace(reg,'');
-          //console.log('after',newquery);
           this.$http
             .get(this.queryClusterListApi+'?'+newquery)
             .then(function(clusterRes){
                 this.loading=false;
-                // this.total = clusterRes.body.totalResults;
                 this.total = clusterRes.body.page.totalElements;
-                // console.log('clusterRes.body',clusterRes.body._embedded.peptideSummaries);
-                //console.log('this.facetsMap',this.facetsMap);
                 for(let i=0; i < clusterRes.body._embedded.peptideSummaries.length; i++){
                   console.log(clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore)
                   var item = {
-                      //ID:clusterRes.body._embedded.peptideSummaries[i].id,
                       peptide:clusterRes.body._embedded.peptideSummaries[i].peptideSequence,
                       precharge:clusterRes.body._embedded.peptideSummaries[i].proteinAccession,
                       ratio: (clusterRes.body._embedded.peptideSummaries[i].bestSearchEngineScore*100).toFixed(3),
@@ -395,7 +345,6 @@
                       proteinname: clusterRes.body._embedded.peptideSummaries[i].proteinName,
                       organism: clusterRes.body._embedded.peptideSummaries[i].organism,
                       gene: clusterRes.body._embedded.peptideSummaries[i].gene,
-                      
                   }
                   this.peptideTableResults.push(item);
                 }
@@ -418,7 +367,6 @@
       },
       setHighlightKeywords(){
           this.highlightKeyword = this.keyword.split(',');
-          //console.log('this.highlightKeyword',this.highlightKeyword);
       },
       querySpecificFacets(keyword){
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
@@ -427,7 +375,6 @@
           if(keyword.length<4 && keyword.length>0) {
               this.querySpecificFacetsLoading = true;
               for(let i=0; i<this.fieldSelectors.length; i++){
-                //console.log('aaa');
                   if(this.fieldSelectors[i].value == this.fieldValue){
                       let itemArray=[];
                       var re = new RegExp(keyword,'i');
@@ -453,18 +400,15 @@
                                   this.$http
                                     .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
                                     .then(function(res){
-                                        //console.log(res.body._embedded);
                                          if(res.body._embedded && res.body._embedded.facets){
                                               let facetsArray = res.body._embedded.facets;
                                               let fieldFind = false;
                                               for(let j=0; j<facetsArray.length; j++){
-                                                //console.log('ddd');
                                                   if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
                                                       fieldFind = true;
                                                       this.querySpecificFacetsLoading = false;
                                                       let itemArray = [];
                                                       for(let k=0; k<facetsArray[j].values.length; k++){
-                                                        //console.log('eee');
                                                             let item = {
                                                                 value: facetsArray[j].values[k].value,
                                                                 label: facetsArray[j].values[k].value,
@@ -497,18 +441,15 @@
                       this.$http
                         .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
                         .then(function(res){
-                            //console.log(res.body._embedded);
                              if(res.body._embedded && res.body._embedded.facets){
                                   let facetsArray = res.body._embedded.facets;
                                   let fieldFind = false;
                                   for(let j=0; j<facetsArray.length; j++){
-                                    //console.log('ddd');
                                       if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
                                           fieldFind = true;
                                           this.querySpecificFacetsLoading = false;
                                           let itemArray = [];
                                           for(let k=0; k<facetsArray[j].values.length; k++){
-                                            //console.log('eee');
                                                 let item = {
                                                     value: facetsArray[j].values[k].value,
                                                     label: facetsArray[j].values[k].value,
@@ -533,15 +474,11 @@
           }
       },
       containDropdownOpen(open){
-          //console.log( this.$refs.containRef);
-          //console.log('aaaaaa');
           if(!open && this.$refs.containRef.isFocused){
             this.$refs.containRef.toggleMenu();
-            //this.$Message.success({content:'repeated item', duration:1});
           }
       },
       searchInputLoadingDropdownOpen(open){
-          console.log('open',open)
           if(open){
               window.addEventListener('mousedown', this.searchInputBlur, false);
               window.addEventListener('touchstart', this.searchInputBlur, false);
@@ -556,16 +493,17 @@
             e.target.click();
         });
       },
+      /*
       keywordChange(keyword){
-        /*
-        if(keyword == ';'){
-          this.keyword = ''
-          console.log(123);
-          return;
-        }
-        if(keyword.charAt(keyword.length-1) ==';')
-          console.log(keyword);*/
+          if(keyword == ';'){
+            this.keyword = ''
+            console.log(123);
+            return;
+          }
+          if(keyword.charAt(keyword.length-1) ==';')
+            console.log(keyword);
       },
+      */
       autoCompleteFilter (value, option) {
           return option.toUpperCase().indexOf(value.toUpperCase()) !== -1;
       },
@@ -578,14 +516,13 @@
         for(let i in this.fieldSelectors){
           if(this.fieldSelectors[i].value == this.fieldValue){
               /*
-              this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
-                  value: '',
-                  label: '',
-                  check: false,
-                  number: ''
-              }],*/
-             //console.log('fieldChange his.fieldValue', this.fieldValue);
-              //console.log('fieldChange this.containSelectors',this.containSelectors);
+                this.containSelectors=[{ //Need to be initial value to make sure "No match data" hint will not be shown.
+                    value: '',
+                    label: '',
+                    check: false,
+                    number: ''
+                }],
+              */
               this.containSelectors = this.fieldSelectors[i].containItems
               this.containValue='';
               this.$refs.containRef.setQuery(null);
@@ -594,14 +531,12 @@
         }
       },
       containChange(){
-        console.log('containChange');
           if(this.containValue){
               this.$refs.containRef.toggleMenu();
               let filterCombinationFound =false;
               for(let j=0; j<this.filterCombination.length; j++){
                   if(this.filterCombination[j].field == this.fieldValue && this.filterCombination[j].contains == this.containValue){
                     filterCombinationFound = true;
-                    //this.$Message.success({content:'repeated item', duration:1});
                     break;
                   }
               }
@@ -636,28 +571,14 @@
         this.filterCombination.splice(index,1);
         this.$refs.containRef.setQuery(null);
         this.setSearchCondition();
-        /*
-          for(let i=0; i<this.fieldSelectors.length; i++){
-              if(this.fieldSelectors[i].value == item.field){
-                  for(let j=0; j<this.fieldSelectors[i].containItems.length; j++){
-                    if(this.fieldSelectors[i].containItems[j].value == item.contains){
-                        this.fieldSelectors[i].containItems[j].check =false;
-                        break;
-                    }
-                  }
-                  break;
-              }
-          }
-        */
       },
+      /*
       keywordSearch(value){
-
-        //console.log('this.keyword',this.keyword);
-        //this.keyword = value;
+        this.keyword = value;
       },
+      */
       submitSearch(){
         let temp = this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').value;
-        console.log('temp',temp);
         if(temp && this.tagArray.length == 0){
           this.tadAdd(temp);
           this.$refs.searchRef.setQuery(null);
@@ -668,10 +589,7 @@
         else
           this.hightlightMode = false;
 
-        console.log('peptidome search', this.query)
-
         this.$router.push({name: 'peptidesearch', query: this.query});
-        //this.$Message.success({content:'new result', duration:1});
       },
       pageChange(page){
           this.page = page-1;
@@ -723,13 +641,11 @@
                               contains:facetsArray[1]
                           };
                           this.filterCombination.push(item);
-                          //this.tadAdd(keywordArray[i]);
                       }
                 }
               }
               else if(i =='page'){
                 this.currentPage = parseInt(query[i])+1;
-                //console.log(this.currentPage );
               }
               else if(i =='pageSize'){
                   let tempPageSize = parseInt(query[i]);
@@ -739,15 +655,12 @@
                     this.pageSize = 20;
               }
           }
-          //console.log();
-        //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
       searchInputListener(){
           this.$refs.searchRef.$el.querySelector('.ivu-select-selection .ivu-select-input').addEventListener('keydown',(e)=>{
               if(e.keyCode == 13 || e.keyCode == 188){
                   e.preventDefault();
                   e.stopPropagation();
-                  //this.searchInputChange(',');
               }
           });
 
@@ -792,18 +705,17 @@
             });
       },
       rowClick(row,index){
-        // console.log('row',row)
         this.$router.push({name:'peptidedetails',query:{keyword:row.peptide, proteinAccession:row.precharge}});
       },
     },
-
+    /*
     watch: {
       filterCombination: function (val) {
           //combine keyword (this.keyword) and filters together (val)
           //this.submitSearch();
       },
-
     },
+    */
     computed:{
       //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
@@ -815,34 +727,21 @@
           for(let i=0; i<this.tagArray.length; i++){
 
           }
-          //console.log('this.keyword',this.keyword)
           if(this.keyword)
             normalQuery.keyword = this.keyword;
           if(this.filter)
             normalQuery.filter = this.filter;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
-          //console.log('this.normalQuery',this.normalQuery);
-          //return '?'+keyword+filter+page+pageSize;
           return normalQuery;
           
       }
     },
     mounted: function(){
       this.queryConfig();
-      //this.updateCondition();//move into queryConfig function
-      //this.queryClusterList();//move into queryConfig function
-      //this.setFilter();//move into queryConfig function
       this.searchInputListener();
     },
-    created(){
-      
-    },
-    beforeDestroy(){
-          
-    },
     beforeRouteEnter(to,from,next){
-      //console.log('from',from);
       if(from.name == 'landingpage' && from.params.keyword)
         paramsFromLandingPage = from.params.keyword;
       
@@ -885,16 +784,16 @@
   .search-input-wrapper .fake-input{
     padding-right: 32px;
     border-radius: 3px !important;
-        font-size: 14px;
+    font-size: 14px;
     padding: 6px 7px;
     height: 36px;
     display: flex;
     align-items: center;
     width: 100%;
     line-height: 1.5;
-        border: 1px solid #5bc0be;
-            color: #495060;
-                background-color: #fcfcfc;
+    border: 1px solid #5bc0be;
+    color: #495060;
+    background-color: #fcfcfc;
     background-image: none;
     cursor: text;
     text-align:left;
@@ -902,19 +801,16 @@
   .search-input-wrapper .tag-wrapper{
     display: inline-block;
     width: 100%
-   /* position: absolute;*/
   }
-
   .search-input-wrapper .tag-wrapper .tag-in-search-input:hover{
-      opacity: 1 !important;
+    opacity: 1 !important;
   }
   .search-input-wrapper .tag-wrapper .tag-in-search-input{
-      background: none !important;
+    background: none !important;
   }
   .search-input-wrapper .tag-wrapper .ivu-select{
-      width: auto
+    width: auto
   }
-
   .refine-name{
     font-size: 12px;
   }
@@ -956,263 +852,233 @@
     border:none;
   }
   .search-button a{
-        padding: 8px 10px;
-        font-size: 12px;
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 5px;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        font-weight: 700;
-        background-color: #5bc0be;
-        border-radius: 3px;
+    padding: 8px 10px;
+    font-size: 12px;
+    width: 100%;
+    margin-bottom: 0;
+    margin-top: 5px;
+    font-weight: 700;
+    background-color: #5bc0be;
+    border-radius: 3px;
     }
-    .resource-item{
-      margin-bottom: 20px;
-    }
-    .resource-item .project-info{
-      font-weight: 400;
-    }
-    .resource-id{
-      font-size: 14px;
-      margin-right: 2px;
-    }
-    .resource-title{
-      font-weight: bold;
-    }
-    .detailed-resouce{
-      margin-left: 5px;
-    }
-    .biological-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #5bc0be;
-        border-radius: 3px;
-    }
-    .biomedical-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #bd7edc;
-        border-radius: 3px;
-    }
-    .highlighted-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #e2c94c;
-        border-radius: 3px;
-    }
-    .technical-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #6acaef;
-        border-radius: 3px;
-    }
-    .gray-dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #999c9c;
-        border-radius: 3px;
-    }
-    .dataset-wrapper{
-      margin-right: 5px;
-    }
-    .search-item-input-wrapper{
-      position: absolute;
-      top:5px;
-      width: 100%;
-      text-align: center;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgb(200,200,200,0.5);
-    }
-    /*
-    .archive-search-input{
-      margin-bottom: 10px;
-    }*/
-    .dropdown-action{
-      width: 50px;
-    }
-    .separator{
-      margin: 0 5px;
-    }
-    .sortOption{
-      display: inline-block;
-      margin-left: 5px;
-    }
-    .matched-items{
-      color: #948d8d;
-    }
-    .readMore{
-      display: inline;
-    }
+  .resource-item{
+    margin-bottom: 20px;
+  }
+  .resource-item .project-info{
+    font-weight: 400;
+  }
+  .resource-id{
+    font-size: 14px;
+    margin-right: 2px;
+  }
+  .resource-title{
+    font-weight: bold;
+  }
+  .detailed-resouce{
+    margin-left: 5px;
+  }
+  .biological-dataset-button{
+    padding: 2px 3px;
+    font-size: 12px;
+    margin-bottom: 0;
+    background-color: #5bc0be;
+    border-radius: 3px;
+  }
+  .biomedical-dataset-button{
+    padding: 2px 3px;
+    font-size: 12px;
+    margin-bottom: 0;
+    background-color: #bd7edc;
+    border-radius: 3px;
+  }
+  .highlighted-dataset-button{
+    padding: 2px 3px;
+    font-size: 12px;
+    margin-bottom: 0;
+    background-color: #e2c94c;
+    border-radius: 3px;
+  }
+  .technical-dataset-button{
+    padding: 2px 3px;
+    font-size: 12px;
+    margin-bottom: 0;
+    background-color: #6acaef;
+    border-radius: 3px;
+  }
+  .gray-dataset-button{
+    padding: 2px 3px;
+    font-size: 12px;
+    margin-bottom: 0;
+    background-color: #999c9c;
+    border-radius: 3px;
+  }
+  .dataset-wrapper{
+    margin-right: 5px;
+  }
+  .search-item-input-wrapper{
+    position: absolute;
+    top:5px;
+    width: 100%;
+    text-align: center;
+    padding-bottom: 5px;
+    border-bottom: 1px solid rgb(200,200,200,0.5);
+  }
+  .dropdown-action{
+    width: 50px;
+  }
+  .separator{
+    margin: 0 5px;
+  }
+  .sortOption{
+    display: inline-block;
+    margin-left: 5px;
+  }
+  .matched-items{
+    color: #948d8d;
+  }
+  .readMore{
+    display: inline;
+  }
 </style>
 
 <style>
-    .page .ivu-select-dropdown-list{
-      margin-left: 0 !important;
-    }
-    /*
-    .archive-search-input input{
-      border-radius: 3px !important;
-      margin-bottom: 0 !important;
-    }
-    .archive-search-input input:focus{
-      border:none !important;
-      box-shadow: none !important;
-    }
-    .archive-search-input .ivu-select-dropdown{
-      text-align: left;
-    }*/
-    .search-item-input input{
-      margin-bottom: 0 !important;
-    }
-    .filter-selector .ivu-select-item-selected{
-      color: rgba(91, 192, 190, 0.9) !important;
-      background: inherit !important;
-    }
-    .filter-selector .ivu-checkbox-wrapper{
-      width: 100% !important;
-      margin: 0 auto !important;
-    }
-    .filter-selector .ivu-select-input{
-      margin-bottom: 0;
-      box-shadow: none;
-    }
-    .filter-selector .ivu-select-input:focus{
-          border: none;
-          background:none !important;
-    }
-    .filter-selector .ivu-tag{
-      background: none ;
-    }
-    .filter-selector .ivu-select-item-selected::after{
-      line-height: 0.8 !important;
-      font-size: 22px;
-      margin-right: 5px;
-      float:left;
-      display: none !important; 
-    }
-    .tag-container .ivu-tag-border.ivu-tag-closable:after{
-        /*display: none !important;*/
-    }
-    .filter-selector .ivu-select-input{
-      height: 30px;
-      line-height: 30px;
-    }
-    .filter-selector .ivu-tag{
-      display: none;
-      margin:2px 4px 2px 0;
-    }
-    .filter-selector .ivu-select-selection{
-      border-radius: 3px;
-    }
-    .filter-selector.input-search-needed .ivu-select-dropdown{
-      width: 200px !important;
-      left:243px !important;
-    }
-    .filter-selector .ivu-icon-ios-close-empty{
-      display: none;
-    }
-    .filter-selector .ivu-select-selection{
-      height: 30px !important;
-      line-height: 30px !important;
-    }
-    .sortOption .ivu-select-selection{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
-      height: 17px !important;
-      line-height: 17px !important;
-    }
-    .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
-      height: 18px !important;
-      line-height: 18px !important;
-    }
-    .sortOption .ivu-select-selection .ivu-select-selected-value{
-      font-weight: normal !important;
-
-    }
-    .sortOption .ivu-select-dropdown .ivu-select-item{
-      font-weight: normal !important;
-
-    }
-    .resource-item .readMore p{
-      display: inline !important;
-    }
-    .resource-item .readMore span{
-      display: inline !important;
-    }
-    .resource-item .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header{
-      padding-left: 0px;
-      height: 20px;
-      line-height: 20px;
-      margin-top: 10px;
-      margin-bottom: 5px;
-    }
-    .resource-item .ivu-collapse{
-      border:none;
-      background: none;
-    }
-    .resource-item .ivu-collapse-content > .ivu-collapse-content-box{
-      padding-top: 0;
-      padding-bottom: 0;
-    }
-    .search-input .tag-input .ivu-input{
-      width: 100%;
-      height: 29px;
-      line-height: 32px;
-      padding: 0 0 0 4px;
-      display: inline-block;
-      font-size: 14px;
-      outline: 0;
-      border: none !important;
-      box-sizing: border-box;
-      color: #495060;
-      background-color: transparent;
-      position: relative;
-      margin:0 !important;
-      box-shadow:none !important;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection{
-      border:none !important;
-      box-shadow:none !important;
-      background: none;
-      padding:0;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input:focus{
-      border:none !important;
-      box-shadow:none !important;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input{
-      border:none !important;
-      box-shadow:none !important;
-      background: none;
-    }
-    .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
-      /*display: none;*//******this will be removed when autocomplete function needed********/
-    }
-    .peptide-table table{
-      margin-bottom: 0 !important;
-    }
-    .peptide-table .peptideID{
-      display: none;
-    }
-    .search-input-wrapper.peptidome .ivu-select-dropdown{
-      /*display: none;*/
-    }
+  .page .ivu-select-dropdown-list{
+    margin-left: 0 !important;
+  }
+  .search-item-input input{
+    margin-bottom: 0 !important;
+  }
+  .filter-selector .ivu-select-item-selected{
+    color: rgba(91, 192, 190, 0.9) !important;
+    background: inherit !important;
+  }
+  .filter-selector .ivu-checkbox-wrapper{
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
+  .filter-selector .ivu-select-input{
+    margin-bottom: 0;
+    box-shadow: none;
+  }
+  .filter-selector .ivu-select-input:focus{
+    border: none;
+    background:none !important;
+  }
+  .filter-selector .ivu-tag{
+    background: none ;
+  }
+  .filter-selector .ivu-select-item-selected::after{
+    line-height: 0.8 !important;
+    font-size: 22px;
+    margin-right: 5px;
+    float:left;
+    display: none !important; 
+  }
+  .tag-container .ivu-tag-border.ivu-tag-closable:after{
+    /*display: none !important;*/
+  }
+  .filter-selector .ivu-select-input{
+    height: 30px;
+    line-height: 30px;
+  }
+  .filter-selector .ivu-tag{
+    display: none;
+    margin:2px 4px 2px 0;
+  }
+  .filter-selector .ivu-select-selection{
+    border-radius: 3px;
+  }
+  .filter-selector.input-search-needed .ivu-select-dropdown{
+    width: 200px !important;
+    left:243px !important;
+  }
+  .filter-selector .ivu-icon-ios-close-empty{
+    display: none;
+  }
+  .filter-selector .ivu-select-selection{
+    height: 30px !important;
+    line-height: 30px !important;
+  }
+  .sortOption .ivu-select-selection{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-selected-value{
+    height: 17px !important;
+    line-height: 17px !important;
+  }
+  .sortOption .ivu-select-small.ivu-select-single .ivu-select-selection .ivu-select-placeholder{
+    height: 18px !important;
+    line-height: 18px !important;
+  }
+  .sortOption .ivu-select-selection .ivu-select-selected-value{
+    font-weight: normal !important;
+  }
+  .sortOption .ivu-select-dropdown .ivu-select-item{
+    font-weight: normal !important;
+  }
+  .resource-item .readMore p{
+    display: inline !important;
+  }
+  .resource-item .readMore span{
+    display: inline !important;
+  }
+  .resource-item .ivu-collapse > .ivu-collapse-item > .ivu-collapse-header{
+    padding-left: 0px;
+    height: 20px;
+    line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  .resource-item .ivu-collapse{
+    border:none;
+    background: none;
+  }
+  .resource-item .ivu-collapse-content > .ivu-collapse-content-box{
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .search-input .tag-input .ivu-input{
+    width: 100%;
+    height: 29px;
+    line-height: 32px;
+    padding: 0 0 0 4px;
+    display: inline-block;
+    font-size: 14px;
+    outline: 0;
+    border: none !important;
+    box-sizing: border-box;
+    color: #495060;
+    background-color: transparent;
+    position: relative;
+    margin:0 !important;
+    box-shadow:none !important;
+  }
+  .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection{
+    border:none !important;
+    box-shadow:none !important;
+    background: none;
+    padding:0;
+  }
+  .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input:focus{
+    border:none !important;
+    box-shadow:none !important;
+  }
+  .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-selection input{
+    border:none !important;
+    box-shadow:none !important;
+    background: none;
+  }
+  .search-input-wrapper .tag-wrapper .ivu-select .ivu-select-dropdown{
+    /*display: none;*//******this will be removed when autocomplete function needed********/
+  }
+  .peptide-table table{
+    margin-bottom: 0 !important;
+  }
+  .peptide-table .peptideID{
+    display: none;
+  }
+  .search-input-wrapper.peptidome .ivu-select-dropdown{
+    /*display: none;*/
+  }
 </style>
