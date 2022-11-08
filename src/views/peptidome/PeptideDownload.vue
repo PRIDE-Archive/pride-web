@@ -20,7 +20,6 @@
                        <div class="button-wrapper">
                             <a v-for="downloadMethod in item.downloadURLs" :href="downloadMethod.url">{{downloadMethod.type}} Download</a>
                         </div>
-                        
                    </Card>
                 </transition-group>
             </div>
@@ -77,7 +76,6 @@
         margin: 0 auto;
         padding: 100px 50px;
         max-width: 1000px;
-
     }
     .jumbotron .head{
         font-size: 35px;
@@ -99,7 +97,6 @@
         padding-top: 60px;
         padding-bottom: 30px;
         background-color:#f8f9fa!important;
-        
     }
     .album .container{
         width: 90%;
@@ -111,7 +108,6 @@
         margin: 0 15px;
         margin-bottom: 30px;
     }
-     
     .card-content{
         height: 80px;
         display: flex;
@@ -124,12 +120,9 @@
          justify-content:space-around;
     }
     .button-wrapper a{
-
         padding: 6px 8px;
         font-size: 12px;
         width:120px;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
         font-weight: 700;
         background-color: #5bc0be;
         border-radius: 3px;
@@ -159,12 +152,10 @@
         width: calc((100% - 90px) / 3 - 1px);
       }
       .button-wrapper a{
-
-            padding: 6px 6px;
-            font-size: 12px;
-            width:110px;
-
-        }
+        padding: 6px 6px;
+        font-size: 12px;
+        width:110px;
+      }
     }
     @media (max-width: 1910px) and (min-width: 1511px){ 
       .item{ 
