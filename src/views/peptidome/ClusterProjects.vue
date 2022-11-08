@@ -6,14 +6,8 @@
             <Card>
                 <p slot="title">Projects Results</p>
                 <div class="projects-search-container">
-                <!--<Table class="peptide-table" :loading="loading" border :columns="columns5" :data="results" size="small" @on-row-click="rowClick"></Table>-->
-                <Table class="projects-detail-table" :loading="loading" border :columns="peptidesCol" :data="results" size="small"></Table>
+                  <Table class="projects-detail-table" :loading="loading" border :columns="peptidesCol" :data="results" size="small"></Table>
                 </div>
-                <!--
-                <div class="page-container">
-                  <Page :total="total" :page-size="size" size="small" show-sizer show-total class-name="page" @on-change="pageChange" @on-page-size-change="pageSizeChange"></Page>
-                </div>
-                -->
             </Card>
           </Row>
       </div>
@@ -32,13 +26,8 @@
           modFilters:'',
           sequence:'',
           speciesFilters:'',
-          //sort:'',
-          //order:'desc',
           facets:false,
           highligts:false,
-          //page:0,
-          //size:20,
-          //total:0,
           loading: true,
           results: [],
           peptidesCol: [
@@ -197,8 +186,6 @@
                       disease: diseasesTemp,
                       instrument: instrumentTemp,
                       searchengine: searchEnginesTemp
-
-                      //(res.body.results[i].maxRatio*100).toFixed(1) + '%'
                   }
                   this.results.push(item);
                 }
@@ -302,8 +289,6 @@
         width: 100%;
         margin-bottom: 0;
         margin-top: 5px;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
         font-weight: 700;
         background-color: #5bc0be;
         border-radius: 3px;
@@ -324,8 +309,6 @@
         padding: 2px 3px;
         font-size: 12px;
         margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
         background-color: #5bc0be;
         border-radius: 3px;
     }
@@ -353,11 +336,9 @@
       display: inline-block;
       margin-left: 5px;
     }
-
     .page-container{
       margin-top: 20px;
     }
-
 </style>
 
 <style>
