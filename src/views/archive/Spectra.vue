@@ -600,7 +600,7 @@
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
           spectraApi: this.$store.state.baseApiURL+ '/spectra',
-          spectrumApi: this.$store.state.baseApiURL+ '/spectrum',
+          spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -719,15 +719,18 @@
               });
       },
       getSpectrum(usi){
-          let query = {usi:usi};
+          let query = {usi:usi,resultType:'FULL'};
           this.$http
               .get(this.spectrumApi,{params: query})
               .then(function(res){
                 this.psmTableResults=[];
                 this.psmTableLoading = false;
+
                 if(res.body){
                   let psm = res.body;
-                  
+                  psm.attributes = []
+                  psm.intensities = ''
+                    console.log(psm)
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
@@ -736,11 +739,12 @@
                         isValid: psm.valid,
                         charge:psm.charge,
                         precursorMZ:psm.precursorMZ,
-                        ptms:psm.ptms,
+                        ptms:psm.modifications,
                         usi:psm.usi,
                         select:true,
                         psmMoreArray:[]
                       }
+
                       // this.keyword = item.peptideSequence;
                       //add psmlevelFDR for item
                       for(let j=0; j<psm.attributes.length; j++){
