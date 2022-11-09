@@ -36,18 +36,28 @@ function receiveMessage(event)
 {
     //if (event.origin !== "http://example.org:8080")
     //return;
+
+    if(!event.data.sequence)
+        return
     width = event.data.width || width;
     sequence = event.data.sequence || sequence;
     charge = event.data.charge || charge;
     precursorMZ = event.data.precursorMZ || precursorMZ;
     peaksTemp = event.data.peaks || peaksTemp;
     variableMods = event.data.variableMods || variableMods;
+
+   
+
     for(let i=0; i<peaksTemp.length; i++){
       var tempArray = [];
       tempArray.push(peaksTemp[i].mz);
       tempArray.push(peaksTemp[i].intensity);
       peaks.push(tempArray);
     }
+    console.log('sequence',sequence)
+    console.log('charge',charge)
+    console.log('variableMods',variableMods)
+    console.log('peaks',peaks)
     // console.log('event.data',event.data);
     showData();
 }
