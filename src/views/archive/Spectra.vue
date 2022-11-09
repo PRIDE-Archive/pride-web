@@ -140,6 +140,7 @@
                               'on-change': (val) => {
                                   console.log('val',val)
                                   this.psmTableResults.map(x => {
+                                    console.log('x',x)
                                       x.select= false;
                                       return x;
                                   });
@@ -160,7 +161,7 @@
                                       
                                   
                                   if (history.pushState) {
-                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
+                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
                                         window.history.pushState({path:newurl},'',newurl);
                                     }
 
@@ -331,31 +332,38 @@
               //     minWidth: 60,
               //     // ellipsis:true
               // },
+              // for old spectrum api 
+              // {
+              //     title: 'PSM-level FDR',
+              //     key: 'psmlevelFDR',
+              //     //sortable: true,
+              //     minWidth: 60,
+              //     renderHeader: (h,params)=>{
+              //         return h('span',[
+              //             h('Icon',{
+              //                 props:{
+              //                     type: 'information-circled'
+              //                 },
+              //                 style: {
+              //                     marginRight: '5px',
+              //                     cursor:'pointer'
+              //                 },
+              //                 on: {
+              //                   click: (value) => {
+              //                       let routeData = this.$router.resolve({path:'/markdownpage/resultpage#combined_psm_fdr'});
+              //                       window.open(routeData.href, '_blank');
+              //                   }
+              //                 }
+              //             }),
+              //             h('span','PSM-level FDR')
+              //         ])
+              //     }
+              // },
               {
-                  title: 'PSM-level FDR',
-                  key: 'psmlevelFDR',
+                  title: 'PSM-level q-value',
+                  key: 'psmlevelqvalue',
                   //sortable: true,
                   minWidth: 60,
-                  renderHeader: (h,params)=>{
-                      return h('span',[
-                          h('Icon',{
-                              props:{
-                                  type: 'information-circled'
-                              },
-                              style: {
-                                  marginRight: '5px',
-                                  cursor:'pointer'
-                              },
-                              on: {
-                                click: (value) => {
-                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#combined_psm_fdr'});
-                                    window.open(routeData.href, '_blank');
-                                }
-                              }
-                          }),
-                          h('span','PSM-level FDR')
-                      ])
-                  }
               },
               {
                   title: 'PrecursorMZ',
@@ -369,41 +377,50 @@
                   minWidth: 40,
                   // ellipsis:true
               },
+              // for old spectrum api
+              // {
+              //     title: 'Pass submitter Threshold',
+              //     key: 'isThreshold',
+              //     //sortable: true,
+              //     minWidth: 150,
+              //     align: 'center',
+              //     render: (h, params) => {
+              //         var className
+              //         var iconColor;
+              //         if(params.row.isThreshold){
+              //           className='fa fa-check';
+              //           iconColor='#19be6b'
+              //         }
+              //         else{
+              //           className ='fa fa-times';
+              //           iconColor='#ed3f14'
+              //         }
+              //         return h('div', [
+              //             h('i', {
+              //                 attrs: { class: className},
+              //                 style: {
+              //                     color:iconColor,
+              //                     //marginRight: '5px',
+              //                     //marginLeft: '20px'
+              //                 },
+              //             }),
+              //             // h('span', {
+              //             //     on: {
+              //             //         click: () => {
+
+              //             //         }
+              //             //     }
+              //             // }, params.row.type),
+              //         ]);
+              //     }
+              // },
               {
-                  title: 'Pass submitter Threshold',
-                  key: 'isThreshold',
+                  title: 'ReanalysisAccession',
+                  key: 'reanalysisAccession',
                   //sortable: true,
                   minWidth: 150,
                   align: 'center',
-                  render: (h, params) => {
-                      var className
-                      var iconColor;
-                      if(params.row.isThreshold){
-                        className='fa fa-check';
-                        iconColor='#19be6b'
-                      }
-                      else{
-                        className ='fa fa-times';
-                        iconColor='#ed3f14'
-                      }
-                      return h('div', [
-                          h('i', {
-                              attrs: { class: className},
-                              style: {
-                                  color:iconColor,
-                                  //marginRight: '5px',
-                                  //marginLeft: '20px'
-                              },
-                          }),
-                          // h('span', {
-                          //     on: {
-                          //         click: () => {
-
-                          //         }
-                          //     }
-                          // }, params.row.type),
-                      ]);
-                  }
+                
               },
               {
                   title: 'Validated by PRIDE',
@@ -555,7 +572,7 @@
           ],
           psmTableResults:[],
           protienItemSelected:false,
-          psmItemSelected:false,
+          psmItemSelected:true,
           //selectedProteinTableItem:{},
           spectrumSpinShow:false,
           spectrumTableShow:false,
@@ -601,6 +618,7 @@
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
           spectraApi: this.$store.state.baseApiURL+ '/spectra',
           spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
+
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -614,7 +632,7 @@
     },
     methods:{
       getSpectra(q){
-          // console.log('getSpectra111',q)
+          console.log('getSpectra1111111111111111',q)
           let query = q || this.spectraQuery
           this.keyword = q ? q.peptideSequence : ''
           this.psmTableLoading = true;
@@ -633,13 +651,15 @@
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm[i].peptideSequence,
-                        accession: psm[i].usi.split(':')[1],
-                        decoy: psm[i].decoy,
-                        isValid: psm[i].valid,
-                        charge:psm[i].charge,
+                        accession: psm[i].projectAccession,
+                        decoy: psm[i].isDecoy,
+                        isValid: psm[i].isValid,
+                        charge:psm[i].precursorCharge,
                         precursorMZ:psm[i].precursorMZ,
-                        ptms:psm[i].ptms,
+                        ptms:psm[i].modifications,
                         usi:psm[i].usi,
+                        psmlevelqvalue:psm[i].bestSearchEngineScore.value,
+                        reanalysisAccession: psm[i].reanalysisAccession,
                         select:false,
                         psmMoreArray:[]
                       }
@@ -674,7 +694,7 @@
                       }
 
                       //add peaks for item
-                      if(psm[i].intensifties){
+                      if(psm[i].intensities){
                           let peaksArray = [];
                           for(let j=0; j<psm[i].intensities.length; j++){
                               let item = {
@@ -686,15 +706,15 @@
                           item.peaks = peaksArray;
                       }
                       
-                      if(psm[i].ptms){
+                      if(psm[i].modifications){
                           //add variableMods for item
                           let variableModsArray = [];
-                          for(let j=0; j<psm[i].ptms.length; j++){
-                              for(let k=0; k<psm[i].ptms[j].positionMap.length; k++){
+                          for(let j=0; j<psm[i].modifications.length; j++){
+                              for(let k=0; k<psm[i].modifications[j].positionMap.length; k++){
                                   let item = {
-                                    index:psm[i].ptms[j].positionMap[k].key,
-                                    modMass:parseFloat(psm[i].ptms[j].modification.value),
-                                    aminoAcid: psm[i].peptideSequence.split('')[psm[i].ptms[j].positionMap[k].key-1]
+                                    index:psm[i].modifications[j].positionMap[k].key,
+                                    modMass:parseFloat(psm[i].modifications[j].modification.value),
+                                    aminoAcid: psm[i].peptideSequence.split('')[psm[i].modifications[j].positionMap[k].key-1]
                                   };
                                   variableModsArray.push(item)
                               }
@@ -729,18 +749,20 @@
                 if(res.body){
                   let psm = res.body;
                   psm.attributes = []
-                  psm.intensities = ''
+                  
                     console.log(psm)
                       var item = {
                         //proteinAccession: psm[i].projectAccession,
                         peptideSequence: psm.peptideSequence,
-                        accession: psm.usi.split(':')[1],
-                        decoy: psm.decoy,
-                        isValid: psm.valid,
-                        charge:psm.charge,
-                        precursorMZ:psm.precursorMZ,
+                        accession: psm.projectAccession,
+                        decoy: psm.isDecoy,
+                        isValid: psm.isValid,
+                        charge:psm.precursorCharge,
+                        precursorMZ:psm.precursorMz,
                         ptms:psm.modifications,
                         usi:psm.usi,
+                        psmlevelqvalue:psm.bestSearchEngineScore.value,
+                        reanalysisAccession: psm.reanalysisAccession,
                         select:true,
                         psmMoreArray:[]
                       }
@@ -779,23 +801,24 @@
                           let peaksArray = [];
                           for(let j=0; j<psm.intensities.length; j++){
                               let item = {
-                                mz:psm.mzs[j],
+                                mz:psm.masses[j],
                                 intensity:psm.intensities[j]
                               }
                               peaksArray.push(item)
                           }
                           item.peaks = peaksArray;
                       }
-                      
-                      if(psm.ptms){
+               
+                      if(psm.modifications){
                           //add variableMods for item
+                          // console.log('psm.ptms')
                           let variableModsArray = [];
-                          for(let j=0; j<psm.ptms.length; j++){
-                              for(let k=0; k<psm.ptms[j].positionMap.length; k++){
+                          for(let j=0; j<psm.modifications.length; j++){
+                              for(let k=0; k<psm.modifications[j].positionMap.length; k++){
                                   let item = {
-                                    index:psm.ptms[j].positionMap[k].key,
-                                    modMass:parseFloat(psm.ptms[j].modification.value),
-                                    aminoAcid: psm.peptideSequence.split('')[psm.ptms[j].positionMap[k].key-1]
+                                    index:psm.modifications[j].positionMap[k].key,
+                                    modMass:parseFloat(psm.modifications[j].modification.value),
+                                    aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
                                   };
                                   variableModsArray.push(item)
                               }
@@ -806,6 +829,14 @@
                       this.psmTableResults.push(item);
 
                       this.spectrumTableCollapseChange(!true);
+
+                      // console.log('item.peptideSequence',item.peptideSequence)
+                      console.log('item.peaks',item.peaks)
+                      // console.log('item.charge',item.charge)
+                      // console.log('item.precursorMZ',item.precursorMZ)
+                      // console.log('item.variableMods',item.variableMods)
+
+
                       this.showSpectrum(true, item.peptideSequence, item.peaks, item.charge, item.precursorMZ, item.variableMods)
                 }
                 else{
@@ -854,6 +885,7 @@
           this.$router.push({name: 'spectra', query: query});
       },
       spectrumTableCollapseChange(val){
+        // console.log('spectrumTableCollapseChange');
           this.spectrumTableCollapse = val
           if(this.spectrumTableCollapse){
               document.querySelector('.spectrum-container').style.height = 'auto'
@@ -876,6 +908,7 @@
           }
       },
       showSpectrum(val, peptideSequence, peaks, charge, precursorMZ,variableMods){
+        // console.log('444444444444444')
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -1026,7 +1059,7 @@
         if(this.selected == 'usi'){
             this.getSpectrum(this.keyword);
             if (history.pushState) {
-                  var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword;
+                  var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
                   window.history.pushState({path:newurl},'',newurl);
               }
 
@@ -1041,6 +1074,7 @@
               peptideSequence:this.keyword,
               sortConditions:'projectAccession',
               sortDirection:'DESC',
+              // resultType:'FULL'
           }
           console.log('submitSearch',query);
           if(this.keyword === this.$route.query.peptideSequence){
@@ -1167,6 +1201,7 @@
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
+            console.log(22222)
             this.getSpectrum(this.$route.query.usi);
           }
           else{
