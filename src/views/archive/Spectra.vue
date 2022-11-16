@@ -168,7 +168,7 @@
                                   this.spectrumTableCollapseChange(!val);
                                   
 
-                                  // this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMZ, params.row.variableMods)
+                                  // this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMz, params.row.variableMods)
                               }
                           }
                       });
@@ -366,8 +366,8 @@
                   minWidth: 60,
               },
               {
-                  title: 'PrecursorMZ',
-                  key: 'precursorMZ',
+                  title: 'PrecursorMz',
+                  key: 'precursorMz',
                   minWidth: 80,
                   // ellipsis:true
               },
@@ -648,6 +648,7 @@
                   //this.spectraPage = res.body.page.number;
                   //this.spectraPageSize = res.body.page.size;
                   let psm = res.body._embedded.summaryArchiveSpectrumList; 
+                  console.log('psm',psm)
                   // console.log('psm',res.body._embedded)
                   for(let i=0; i < psm.length; i++){
                       var item = {
@@ -657,14 +658,15 @@
                         decoy: psm[i].isDecoy,
                         isValid: psm[i].isValid,
                         charge:psm[i].precursorCharge,
-                        precursorMZ:psm[i].precursorMZ,
+                        precursorMz:psm[i].precursorMz,
                         ptms:psm[i].modifications,
                         usi:psm[i].usi,
-                        psmlevelqvalue:psm[i].bestSearchEngineScore.value,
+                        psmlevelqvalue:psm[i].bestSearchEngineScore.value+'',
                         reanalysisAccession: psm[i].reanalysisAccession,
                         select:false,
                         psmMoreArray:[]
                       }
+                      console.log(item)
                       //add psmlevelFDR for item
                       if(psm[i].attributes){
                           for(let j=0; j<psm[i].attributes.length; j++){
@@ -709,7 +711,7 @@
                           let peaksArray = [];
                           for(let j=0; j<psm[i].intensities.length; j++){
                               let item = {
-                                mz:psm[i].mzs[j],
+                                mz:psm[i].masses[j],
                                 intensity:psm[i].intensities[j]
                               }
                               peaksArray.push(item)
@@ -769,10 +771,10 @@
                         decoy: psm.isDecoy,
                         isValid: psm.isValid,
                         charge:psm.precursorCharge,
-                        precursorMZ:psm.precursorMz,
+                        precursorMz:psm.precursorMz,
                         ptms:psm.modifications,
                         usi:psm.usi,
-                        psmlevelqvalue:psm.bestSearchEngineScore.value,
+                        psmlevelqvalue:psm.bestSearchEngineScore.value+'',
                         reanalysisAccession: psm.reanalysisAccession,
                         select:true,
                         psmMoreArray:[]
@@ -853,11 +855,11 @@
                       // console.log('item.peptideSequence',item.peptideSequence)
                       console.log('item.peaks',item.peaks)
                       // console.log('item.charge',item.charge)
-                      // console.log('item.precursorMZ',item.precursorMZ)
+                      // console.log('item.precursorMz',item.precursorMz)
                       // console.log('item.variableMods',item.variableMods)
 
 
-                      this.showSpectrum(true, item.peptideSequence, item.peaks, item.charge, item.precursorMZ, item.variableMods)
+                      this.showSpectrum(true, item.peptideSequence, item.peaks, item.charge, item.precursorMz, item.variableMods)
                 }
                 else{
                   this.spectrumTableCollapseChange(true);
@@ -927,7 +929,7 @@
                   this.spectrumTableHint = "Please select one PSM"
           }
       },
-      showSpectrum(val, peptideSequence, peaks, charge, precursorMZ,variableMods){
+      showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods){
         // console.log('444444444444444')
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
@@ -949,7 +951,7 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMZ, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMz, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
