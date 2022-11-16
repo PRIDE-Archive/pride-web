@@ -488,7 +488,8 @@
                       if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
                           return  h('Dropdown', {
                                     props: {
-                                      placement: 'bottom-end'
+                                      placement: 'bottom-end',
+                                      transfer:true
                                     },
                                     style: {
                                       textAlign: 'left'
@@ -616,7 +617,7 @@
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
-          spectraApi: this.$store.state.baseApiURL+ '/spectra',
+          spectraApi: this.$store.state.baseMoleculesApiURL+ '/spectra/search',
           spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
 
       }
@@ -632,8 +633,9 @@
     },
     methods:{
       getSpectra(q){
-          console.log('getSpectra1111111111111111',q)
-          let query = q || this.spectraQuery
+          console.log('getSpectra',q)
+          let query = q || this.spectraQuery;
+          query.resultType='COMPACT';
           this.keyword = q ? q.peptideSequence : ''
           this.psmTableLoading = true;
           this.$http
@@ -645,7 +647,7 @@
                   this.spectraTotal = res.body.page.totalElements;
                   //this.spectraPage = res.body.page.number;
                   //this.spectraPageSize = res.body.page.size;
-                  let psm = res.body._embedded.spectraevidences;
+                  let psm = res.body._embedded.summaryArchiveSpectrumList; 
                   // console.log('psm',res.body._embedded)
                   for(let i=0; i < psm.length; i++){
                       var item = {
@@ -671,24 +673,33 @@
                                   break;
                               }
                           }
-                      }
-                      //add isThreshold
-                      let found = false;
-                      for(let j=0; j<psm[i].attributes.length; j++){
-                          if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
-                              found = true;
-                              item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
-                              break;
+                     
+                          //add isThreshold
+                          let found = false;
+                          for(let j=0; j<psm[i].attributes.length; j++){
+                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
+                                  found = true;
+                                  item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
+                                  break;
+                              }
                           }
-                      }
-                      if(!found)
-                          item.isThreshold = false
+                          if(!found)
+                              item.isThreshold = false
 
-                      //add for More option
-                      for(let j=0; j<psm[i].attributes.length; j++){
+                          // //add for More option
+                          // for(let j=0; j<psm[i].attributes.length; j++){
+                          //     let tempItem = {
+                          //       name:psm[i].attributes[j].name,
+                          //       value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                          //     }
+                          //     item.psmMoreArray.push(tempItem)
+                          // }
+                      }
+
+                      for(let j=0; j<psm[i].scores.length; j++){
                           let tempItem = {
-                            name:psm[i].attributes[j].name,
-                            value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
+                            name:psm[i].scores[j].name,
+                            value:psm[i].scores[j].name+': '+psm[i].scores[j].value
                           }
                           item.psmMoreArray.push(tempItem)
                       }
@@ -788,10 +799,19 @@
                           item.isThreshold = false
 
                       //add for More option
-                      for(let j=0; j<psm.attributes.length; j++){
+                      // for(let j=0; j<psm.attributes.length; j++){
+                      //     let tempItem = {
+                      //       name:psm.attributes[j].name,
+                      //       value:psm.attributes[j].name+': '+psm.attributes[j].value
+                      //     }
+                      //     item.psmMoreArray.push(tempItem)
+                      // }
+
+                      //add for new More Option
+                      for(let j=0; j<psm.scores.length; j++){
                           let tempItem = {
-                            name:psm.attributes[j].name,
-                            value:psm.attributes[j].name+': '+psm.attributes[j].value
+                            name:psm.scores[j].name,
+                            value:psm.scores[j].name+': '+psm.scores[j].value
                           }
                           item.psmMoreArray.push(tempItem)
                       }
@@ -1201,11 +1221,11 @@
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
-            console.log(22222)
+            // console.log(22222)
             this.getSpectrum(this.$route.query.usi);
           }
           else{
-              console.log(333333)
+              // console.log(333333)
               this.selected = 'peptide'
               this.$forceUpdate()
               if(this.$route.query.page)
