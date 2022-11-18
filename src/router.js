@@ -161,6 +161,11 @@ export default new Router({
       component: Register,
     },
     {
+      path:'/archive/register',
+      name: 'register',
+      component: Register,
+    },
+    {
       path:'/login',
       name: 'login',
       component: Login,
