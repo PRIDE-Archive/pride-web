@@ -77,9 +77,7 @@
                             <Icon type="chevron-down"></Icon>
                           </a>
                           <DropdownMenu slot="list">
-                    <!--<DropdownItem name="goToSpectraClustering">Spectra Clustering Toolsuite</DropdownItem>-->
                               <DropdownItem name="goToPrideSubmission"><router-link :to="{ path: '/markdownpage/pridesubmissiontool' }">PRIDE Submission Tool</router-link></DropdownItem>
-                              <DropdownItem name="goToPrideInspector"><router-link :to="{ path: '/markdownpage/prideinspector' }">PRIDE Inspector Toolsuite</router-link></DropdownItem>
                               <DropdownItem name="goToPrideUtilities"><router-link :to="{ path: '/markdownpage/prideutilities' }">PRIDE Utilities Libraries</router-link></DropdownItem>
                           </DropdownMenu>
                       </Dropdown>
