@@ -479,8 +479,8 @@
               this.emailValidateState = false;
               return callback(new Error(errorInfo.email.noneEmail));
           }
-          
-          var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+          var pattern = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+          // var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
           if(!pattern.test(this.formInline.email)){
               this.emailValidateState = false;
               return callback(new Error(errorInfo.email.unRegEmail));
