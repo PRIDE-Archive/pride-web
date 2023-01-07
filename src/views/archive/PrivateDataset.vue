@@ -99,7 +99,12 @@
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
                               <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                           </div>
+                          <!-- <div class="card-item-wrapper">
+                              <div class="summary-content-header">Lab Head</div>
+                              <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                          </div> -->
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Submission Date</div>
                               <p>{{submissionDate}}</p>
@@ -492,6 +497,7 @@
           sampleProcessingProtocol:'',
           dataProcessingProtocol:'',
           contactors:[],
+          labheads:[],
           publications:[],
           species:[],
           diseases:[],
@@ -1003,7 +1009,7 @@
                 'Authorization':'Bearer '+ localStorage.getItem('token')
               }
             }).then(function(res){
-              // console.log('1111111',res.status)
+              console.log('1111111',res)
                 this.init();
                 this.accession = res.body.accession;
                 this.title = res.body.title;
@@ -1030,14 +1036,16 @@
                     }
                     this.contactors.push(item);
                   }
+                //for labheads
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
                     let item = {
+                      title: res.body.labPIs[i].title,
                       name: res.body.labPIs[i].name,
                       affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
                       email:res.body.labPIs[i].email
                     }
-                    this.contactors.push(item);
+                    this.labheads.push(item);
                   }
                 //for publications
                 if(res.body.references)
