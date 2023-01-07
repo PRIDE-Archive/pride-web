@@ -120,6 +120,7 @@
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
                               <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Submission Date</div>
@@ -394,6 +395,7 @@
           sampleProcessingProtocol:'',
           dataProcessingProtocol:'',
           contactors:[],
+          labheads:[],
           publications:[],
           species:[],
           diseases:[],
@@ -850,15 +852,17 @@
                   }
                   this.contactors.push(item);
                 }
-                for(let i=0; i<res.body.labPIs.length; i++){
-                  let item = {
-                    name: res.body.labPIs[i].name,
-                    affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
-                    email:res.body.labPIs[i].email
+                //for labheads
+                if(res.body.labPIs)
+                  for(let i=0; i<res.body.labPIs.length; i++){
+                    let item = {
+                      title: res.body.labPIs[i].title,
+                      name: res.body.labPIs[i].name,
+                      affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
+                      email:res.body.labPIs[i].email
+                    }
+                    this.labheads.push(item);
                   }
-                  this.contactors.push(item);
-                }
-
                 //for publications
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
