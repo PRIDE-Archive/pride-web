@@ -8,8 +8,6 @@ Website, for users to explore through a web browser. [https://www.ebi.ac.uk/prid
 
 Web Service, for programmatic access, query and use PRIDE Restful API [https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html)
 
-PRIDE Inspector stand-alone tool. For detailed data visualisation and basic analysis capabilities. [https://www.ebi.ac.uk/pride/markdownpage/prideinspector](https://www.ebi.ac.uk/pride/markdownpage/prideinspector)
-
 If you have further queries please consult our Help FAQ or please contact us at [pride-support@ebi.ac.uk](pride-support@ebi.ac.uk) for advice.
 
 ## PRIDE's mission
@@ -41,7 +39,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
   **PX Complete**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org) via the PRIDE partner repository [1] with the dataset identifier PXDxxxxxx and DOI 10.6019/PXDxxxxxx.
 
-  [1] Perez-Riverol et al. The PRIDE database and related tools and resources in 2019: improving support for quantification data. Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450.
+  [1] Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. [The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences](https://academic.oup.com/nar/article/50/D1/D543/6415112). Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. PMID: 34723319; PMCID: PMC8728295.
 
   See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission](https://www.frontiersin.org/articles/10.3389/fmicb.2018.00680/full).
 

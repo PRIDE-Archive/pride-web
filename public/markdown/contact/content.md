@@ -6,7 +6,7 @@ Please contact the following ProteomeXchange Partner Repository Coordinators in 
 
 **Juan Antonio Vizcaino, PhD:**
 
-![Private access in PRIDE inspector](../markdown/contact/image/juan.jpeg)
+![Juan Antonio Vizcaino](../markdown/contact/image/juan.jpeg)
 
 - **Proteomics Team Leader**
 - **pride-support@ebi.ac.uk**

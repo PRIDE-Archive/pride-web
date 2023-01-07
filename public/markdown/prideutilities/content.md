@@ -13,7 +13,7 @@ Perez-Riverol Y, Uszkoreit J, Sanchez A, Ternent T, del Toro N, Hermjakob H, ...
 
 ## pride utilities
 
-The PRIDE Utilities module contains a series of data structures and algorithms used by all the components of the PRIDE Inspector Toolsuite and other PRIDE Projects such as PRIDE Archive libraries and PRIDE Cluster. Some of the values defined in PRIDE Utilities are the definition of the amino acid mass table, pK values and hydrophobic indexes. The module also contains the mappings between different ontology terms meaning the same concept, e.g. the b ion annotation could be annotated using the PRIDE ontology term PRIDE:0000194 or the PSI-MS ontology term MS:1001224.
+The PRIDE Utilities module contains a series of data structures and algorithms used by all the components of the PRIDE. Some values defined in PRIDE Utilities are the definition of the amino acid mass table, pK values and hydrophobic indexes. The module also contains the mappings between different ontology terms meaning the same concept, e.g. the b ion annotation could be annotated using the PRIDE ontology term PRIDE:0000194 or the PSI-MS ontology term MS:1001224.
 
 These modules can homogenize all the terms and concepts used in metadata annotations. For instance, the library contains the definition of the well-established search engines and processing software and their corresponding scores in different controlled vocabularies (CVs) or ontologies.
 

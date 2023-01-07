@@ -50,13 +50,6 @@
 
         },
         {
-          "title":"PRIDE Inspector",
-          "content":"PRIDE Inspector is a desktop tool to visualise and perform first quality assessment on Mass Spectrometry data.",
-          "externalURL":"",
-          "moreID":"pride_inspector",
-          "markdownFolder":"prideinspector"
-        },
-        {
           "title":"PRIDE Archive API",
           "content":"The PRIDE Archive API enables the interaction of PRIDE users with the data programmatically using a Restful API",
           "externalURL":"https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html",

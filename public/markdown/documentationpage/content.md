@@ -12,6 +12,8 @@
 
 - [PRIDE Archive supported file formats](./pridefileformats)
 
+- [PRIDE Archive Data Downloading](./pridefiledownload)
+
 - [How to review proteomics data in PRIDE Archive](./reviewpridedata)
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
@@ -20,8 +22,6 @@
 
 
 ## Tools Help Pages
-
-- [PRIDE Inspector Toolsuite](./prideinspector)
 
 - [Submission Tool](./pridesubmissiontool)
 
