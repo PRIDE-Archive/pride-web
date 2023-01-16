@@ -22,16 +22,6 @@ export default {
       showMapdata:[],
       options: {
           backgroundColor: 'white', //'#404a59',
-          /*
-          title : {
-              text: 'World Population (2011)',
-              subtext: 'From Gapminder',
-              left: 'center',
-              top: 'top',
-              textStyle: {
-                  color: '#fff'
-              }
-          },*/
           tooltip : {
               trigger: 'item',
               formatter : function (params) {
