@@ -72,7 +72,7 @@
               </Card>
           </Row>
           <Row>
-              <Card>
+              <Card style="width:100%">
                   <p slot="title" class="resource-list-title-container">
                     <span>List of Datasets ({{total}})</span>
                     <span v-if="publicaitionList.length>0" class="sort-wrapper">
