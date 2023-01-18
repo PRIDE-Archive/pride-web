@@ -41,7 +41,7 @@
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
               <FormItem>
-                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="error" @click="showForcePublishModal('formInlinePublish')" long>Force Submit</Button>
+                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="warning" @click="showForcePublishModal('formInlinePublish')" long>Force Submit</Button>
                 <Button v-else :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
               </FormItem>
             </Form>
