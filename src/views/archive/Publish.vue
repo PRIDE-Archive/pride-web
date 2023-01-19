@@ -14,7 +14,7 @@
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title" @on-change="validTypeChange">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
-                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder="">
+                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder=""> 
                         <!-- <Icon v-if="checkValid" type="ios-search" slot="suffix" /> -->
                     </Input>
                     <!-- <Icon type="md-checkmark" /> -->
@@ -410,5 +410,17 @@
     width: 100%;
     text-align: left;
     white-space: pre-wrap;
+}
+.pubmed-doi-form-item .ivu-form-item-error-tip{
+  color: #ff9900;
+}
+.pubmed-doi-form-item.ivu-form-item-error  .ivu-select-selection{
+    border:1px solid #ff9900 !important;
+}
+.pubmed-doi-form-item.ivu-form-item-error .ivu-select-arrow{
+  color:#ff9900;
+}
+.pubmed-doi-form-item.ivu-form-item-error .pubmed-doi-value .ivu-input{
+  border:1px solid #ff9900 !important;
 }
 </style>
