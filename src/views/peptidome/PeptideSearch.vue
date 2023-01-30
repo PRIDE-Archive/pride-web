@@ -584,10 +584,7 @@
           this.$refs.searchRef.setQuery(null);
         }
         
-        if(this.keyword)
-          this.hightlightMode = true;
-        else
-          this.hightlightMode = false;
+        this.hightlightMode = !!this.keyword;
 
         this.$router.push({name: 'peptidesearch', query: this.query});
       },

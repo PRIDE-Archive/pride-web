@@ -19,18 +19,13 @@
                             <span>
                               Examples:
                               <Tooltip content="YYWGGLYSWDMSK">
-                                  <a @click="gotoExamplePeptide('YYWGGLYSWDMSK')" style="color:#666">YYWGGLYSWDMSK</a>
+                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>
                               </Tooltip>
-                              <Tooltip content="mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2" style="margin-left: 5px">
+                              <Tooltip content="mzspec:PRD000908:S9588TPST_Fr3:scan:15969" style="margin-left: 5px">
                                 <div slot="content">
-                                    <p>mzspec:PXD000966:</p>
-                                    <p>CPTAC_CompRef_00_</p>
-                                    <p>iTRAQ_12_5Feb12_Cougar</p>
-                                    <p>_11-10-11.mzML:scan</p>
-                                    <p>:11850:[UNIMOD:214]</p>
-                                    <p>YYWGGLYSWDMSK[UNIMOD:214]/2</p>
+                                    <p>mzspec:PRD000908:S9588TPST_Fr3:scan:15969</p>
                                 </div>
-                                  <a @click="gotoExampleUSI('mzspec:PXD000966:CPTAC_CompRef_00_iTRAQ_12_5Feb12_Cougar_11-10-11.mzML:scan:11850:[UNIMOD:214]YYWGGLYSWDMSK[UNIMOD:214]/2')" style="color:#666">USI for YYWGGLYSWDMSK</a>
+                                  <a @click="gotoExampleUSI('mzspec:PRD000908:S9588TPST_Fr3:scan:15969')" style="color:#666">USI for MESASSSLATSGR</a>
                               </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
@@ -61,7 +56,7 @@
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
-                      <p slot="title"> <i class="fas fa-download icon-tag"></i>PSM</p>
+                      <p slot="title"> <i class="fas fa-download icon-tag"></i>Peptide Spectrum Matches</p>
                      <!--
                      <div class="filter-wrapper">
                          <div class="summary-content-header">Filter</div>
