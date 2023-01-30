@@ -260,6 +260,9 @@
                               }
                               else{
                                   let errArray = err.body;
+                           
+
+
                                   if(errArray[0].hasOwnProperty('defaultMessage'))
                                     this.$Message.error({ content: errArray[0].defaultMessage,duration:10});
                                   else
@@ -412,15 +415,15 @@
     white-space: pre-wrap;
 }
 .pubmed-doi-form-item .ivu-form-item-error-tip{
-  color: #454548;
+  color: #ff9900;
 }
 .pubmed-doi-form-item.ivu-form-item-error  .ivu-select-selection{
-    border:1px solid #454548 !important;
+    border:1px solid #ff9900 !important;
 }
 .pubmed-doi-form-item.ivu-form-item-error .ivu-select-arrow{
-  color:#454548;
+  color: #ff9900;
 }
 .pubmed-doi-form-item.ivu-form-item-error .pubmed-doi-value .ivu-input{
-  border:1px solid #454548 !important;
+  border:1px solid #ff9900 !important;
 }
 </style>
