@@ -79,8 +79,7 @@ To download one file the docker image can be executed using the following comman
 
 ## Downloading Data using PRIDE Streaming API
 
-PRIDE [Streaming API is a RESTful API](https://www.ebi.ac.uk/pride/ws/archive-file-downloader/swagger-ui/index.html) that allows users to download data from PRIDE database. 
-The API only have one endpoint that can be used to download files. The endpoint is:
+PRIDE Streaming API is a RESTful API that allows users to download data from PRIDE database. The API only have one endpoint that can be used to download files. The endpoint is:
 
     https://www.ebi.ac.uk/pride/ws/archive-file-downloader/files/s3/<project accession>/<filename>
 
