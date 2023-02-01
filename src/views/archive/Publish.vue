@@ -194,7 +194,7 @@
                       }
                   });
             },
-            submit(name){
+            submit(name){ //finally submit the file
                 // this.$Spin.show({
                 //   render: (h) => {
                 //     return h('div', [
@@ -242,7 +242,7 @@
                               this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
                             else
                               this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
-                        this.idCheckPass = false
+                            this.idCheckPass = false
                             this.forceSubmitBool = false
                             this.gotoProfile()
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
@@ -260,6 +260,9 @@
                               }
                               else{
                                   let errArray = err.body;
+                           
+
+
                                   if(errArray[0].hasOwnProperty('defaultMessage'))
                                     this.$Message.error({ content: errArray[0].defaultMessage,duration:10});
                                   else
@@ -418,7 +421,7 @@
     border:1px solid #ff9900 !important;
 }
 .pubmed-doi-form-item.ivu-form-item-error .ivu-select-arrow{
-  color:#ff9900;
+  color: #ff9900;
 }
 .pubmed-doi-form-item.ivu-form-item-error .pubmed-doi-value .ivu-input{
   border:1px solid #ff9900 !important;

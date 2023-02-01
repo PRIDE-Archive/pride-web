@@ -339,29 +339,29 @@
       color:#656665;
     }
     .ebi-fieldset{
-        border: 0 !important;
+      border: 0 !important;
     }
     .ebi-masthead{
-        background-image: url('/pride/image/hero-beta-banner.png'); /*in the local environment, we can not see the background unless we change it to '/image/hero-beta-banner.png' */
+      background-image: url('/pride/image/hero-beta-banner.png'); /*in the local environment, we can not see the background unless we change it to '/image/hero-beta-banner.png' */
     }
     .ebi-masthead nav ul.menu li{
-        border-right: 1px solid rgb(248,248,248,0.7);
+      border-right: 1px solid rgb(248,248,248,0.7);
     }
     .sub-nav-list{
       padding: 0 5px;
     }
     .sub-nav-list li{
-        border-right:0px !important;
-        border-bottom: 1px solid #e7e7e7 !important;
+      border-right:0px !important;
+      border-bottom: 1px solid #e7e7e7 !important;
     }
     .sub-nav-list li:last-child{
-        border-bottom: none !important;
+      border-bottom: none !important;
     }
     .ebi-masthead nav ul.menu li:last-child{
       border: 0;
     }
     .sub-nav-ebi a:hover{
-        opacity: 0.7;
+      opacity: 0.7;
     }
     .ebi-masthead h1, .ebi-masthead a{
       color:#454548;
@@ -382,7 +382,6 @@
     }
     .row{
       margin:0 auto;
-
       max-width: 150rem !important;
    }
    #local-nav{

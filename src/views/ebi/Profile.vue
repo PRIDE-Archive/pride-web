@@ -1,4 +1,4 @@
-<template>
+                <template>
     <div class="submit-data-container">
         <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="content-container">

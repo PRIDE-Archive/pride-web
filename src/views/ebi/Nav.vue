@@ -267,50 +267,49 @@
 </template>
 <script>
     import store from "@/store/store.js"
-    //const csv=require('csvtojson')
     const initPage = function(page){
-      let item = {}
-      if(page == 'archive'){
-        item = {
-            pageName:'archive',
-            homePageName:'landingpage',
-            logoWidth:410,
-            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        let item = {}
+        if(page == 'archive'){
+            item = {
+                pageName:'archive',
+                homePageName:'landingpage',
+                logoWidth:410,
+                logoURL:'/static/logo/PRIDE_logo_Archive.png',
+            }
         }
-      }
-      else if(page == 'peptidome'){
-        item = {
-            pageName:'peptidome',
-            homePageName:'landingpage',
-            logoWidth:400,
-            logoURL:'/static/logo/PRIDE_logo_Peptide.png',
+        else if(page == 'peptidome'){
+            item = {
+                pageName:'peptidome',
+                homePageName:'landingpage',
+                logoWidth:400,
+                logoURL:'/static/logo/PRIDE_logo_Peptide.png',
+            }
         }
-      }
-      else if(page == 'spectra'){
-        item = {
-            pageName:'spectra',
-            homePageName:'landingpage',
-            logoWidth:400,
-            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        else if(page == 'spectra'){
+            item = {
+                pageName:'spectra',
+                homePageName:'landingpage',
+                logoWidth:400,
+                logoURL:'/static/logo/PRIDE_logo_Archive.png',
+            }
         }
-      }
-      else if(page == 'landingpage'){
-        item = {
-            pageName:'landingpage',
-            homePageName:'landingpage',
-            logoWidth:500,
-            logoURL:'/static/logo/PRIDE_logo.png',
+        else if(page == 'landingpage'){
+            item = {
+                pageName:'landingpage',
+                homePageName:'landingpage',
+                logoWidth:500,
+                logoURL:'/static/logo/PRIDE_logo.png',
+            }
         }
-      }
-      else{
-        item = {
-            pageName:'archive',
-            homePageName:'landingpage',
-            logoWidth:410,
-            logoURL:'/static/logo/PRIDE_logo_Archive.png',
+        else{
+            item = {
+                pageName:'archive',
+                homePageName:'landingpage',
+                logoWidth:410,
+                logoURL:'/static/logo/PRIDE_logo_Archive.png',
+            }
         }
-      }
-      return item;
+        return item;
     }
     export default {
         data () {
