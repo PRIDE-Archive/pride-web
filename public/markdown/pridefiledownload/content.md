@@ -95,5 +95,5 @@ The PRIDE Team has developed a [python client library](https://github.com/PRIDE-
 
 We have done some benchmarks to compare the different ways of downloading files from PRIDE database. The results are shown in the following plot: 
 
-//TODO 
+// In progress  
 
