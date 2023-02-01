@@ -36,9 +36,9 @@ Concerning FTP client programs, we recommend using WinSCP (Windows only) or File
 - FileZilla: http://filezilla-project.org/download.php
 
 Eg: One can download files through a web browser https://ftp.pride.ebi.ac.uk/pride/data/archive/2018/04/PXD005011/
-    or use FTP tools like filezilla 
+    or use FTP tools like FileZilla 
 
-    #### Filezilla
+    #### FileZilla
     Host:ftp.pride.ebi.ac.uk
     Path: pride/data/archive/<year>/<month>/<accession>
     Username can be empty or in somecases, one need to explicitly provide "anonymous" as the username.
