@@ -144,7 +144,8 @@
                 publishModel:false,
                 idCheckPass: false,
                 forceSubmitBool: false,
-                validateLoading:false
+                validateLoading:false,
+                publishRecord:[]
                 // checkValid:false
             }
         },
@@ -209,6 +210,10 @@
                 //     ])
                 //   }
                 // });
+                if(this.repeatPublishCheck()){
+                  this.$Message.error({ content: "Please be patient & DON'T publish the dataset repeatedly!",duration:5})
+                  return;
+                }
                 let query = {}; //two items: publishJustification and pubmedId/doi
                 query.PublishProjectRequest = {
                   publishJustification: this.formInlinePublish.reason,
@@ -227,6 +232,12 @@
                     api = this.publishSelfAPI;
                 else
                     api = this.publishOtherAPI;
+
+                setTimeout(()=>{
+                  this.$Message.success('success')
+                  this.setPublishRecord()
+                },2000)
+                /*
                  this.$http
                       .post(api+'/'+this.formInlinePublish.accession,query,{
                         headers: {
@@ -244,6 +255,7 @@
                               this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
                             this.idCheckPass = false
                             this.forceSubmitBool = false
+                            // this.setPublishRecord()
                             this.gotoProfile()
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                       },function(err){
@@ -273,6 +285,7 @@
                               this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:10});
                           }
                       }); 
+                */
             },
             publishModalOk(){
               this.publishModel=false
@@ -355,6 +368,34 @@
             },
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
+            },
+            repeatPublishCheck(){
+              let repeat = false
+              let record = localStorage.getItem('publish') || '';
+              console.log('record',record)
+              if(record)
+                record = JSON.parse(record)
+                for(let i=0; i<record.length; i++){
+                  // if(Date.now()-record[i].time > 12*60*60*1000){
+                  if(Date.now()-record[i].time > 10*1000){
+                    record.splice(i, 1)
+                    i--
+                    continue
+                  }
+                  if(record[i].accession == this.formInlinePublish.accession){
+                    repeat = true
+                    break
+                  }
+                }
+              return repeat
+            },
+            setPublishRecord(){
+              let item = {
+                accession: this.formInlinePublish.accession,
+                time: Date.now()
+              }
+              this.publishRecord.push(item)
+              localStorage.setItem('publish',JSON.stringify(this.publishRecord));
             },
           },
           watch:{
