@@ -72,6 +72,7 @@
                   .get(this.markdownURL)
                   .then(function(res){
                     this.source = res.body;
+                    console.log('source',this.source)
                     this.$nextTick(function(){
                         this.addID();
                         this.goAnchor(location.hash.replace(/\#/,''));
@@ -165,7 +166,7 @@
         margin: 0 auto;
     }
     .markdown-body{
-        display: inline-block;
+        /*display: inline-block;*/
     }
     .menu-wrapper .ivu-menu-vertical{
         width: 200px !important;
