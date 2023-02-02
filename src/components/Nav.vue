@@ -54,7 +54,7 @@
                       <Dropdown @on-click="resourcesClick">
                           <router-link :to="{ path: '/markdownpage/documentationpage' }">
                             <i class="fas fa-graduation-cap"></i>
-                            <span class='sub-nav-title'>Docs</span>
+                            <span class='sub-nav-title'>Help</span>
                           </router-link>
                       </Dropdown>
                   </li>

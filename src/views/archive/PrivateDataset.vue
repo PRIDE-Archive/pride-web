@@ -1216,10 +1216,7 @@
                 if(res.body && res.body._embedded){
                  
                   let proteinEvidences = res.body._embedded.proteinevidences;
-                  if(proteinEvidences.length>0)
-                    this.moleculesButtonState = false
-                  else
-                    this.moleculesButtonState = true
+                  this.moleculesButtonState = proteinEvidences.length <= 0;
                   
                 }
               },function(err){

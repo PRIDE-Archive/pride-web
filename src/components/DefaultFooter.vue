@@ -1,7 +1,7 @@
 <template>
     <div class="footer-container">
       <!-- data-color="grey" is the previous settings!!!!!!!!!!!!!!!!!-->
-      <div id="elixir-banner" data-color="#656665" data-name="This service" data-description="EMBL Pride Service" data-more-information-link="https://www.elixir-europe.org/about-us/who-we-are/nodes/embl-ebi" data-use-basic-styles="true"></div>
+      <div id="elixir-banner" data-color="#656665" data-name="This service" data-description="PRIDE database is an ELIXIR Core Data Resource" data-more-information-link="https://www.elixir-europe.org/about-us/who-we-are/nodes/embl-ebi" data-use-basic-styles="true"></div>
       <footer>
         <div id="global-footer" class="global-footer ebi-global-footer" >
           <nav id="global-nav-expanded" class="global-nav-expanded row">
