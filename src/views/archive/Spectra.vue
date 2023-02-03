@@ -53,6 +53,26 @@
           </Col>
       </Row>
       <Row type="flex" justify="center" class="code-row-bg">
+        <Col span="24">
+            <div class="visualization-wrapper">
+              <Card class="card protein">
+                 <p slot="title" class="table-header">
+                    <span><i class="fas fa-download icon-tag"></i>Spectrum</span>
+                    <span class="right">
+                        <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
+                        <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
+                    </span>
+                 </p>
+                 <div class="spectrum-container">
+                    <div style="color:#bdbdbd; text-align: center;">
+                        {{spectrumTableHint}}
+                    </div>
+                 </div>
+              </Card>
+            </div>
+        </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
@@ -75,26 +95,6 @@
                   </Card>
               </div>
           </Col>
-      </Row>
-      <Row type="flex" justify="center" class="code-row-bg">
-        <Col span="24">
-            <div class="visualization-wrapper">
-              <Card class="card protein">
-                 <p slot="title" class="table-header">
-                    <span><i class="fas fa-download icon-tag"></i>Spectrum</span>
-                    <span class="right">
-                        <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
-                        <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
-                    </span>
-                 </p>
-                 <div class="spectrum-container">
-                    <div style="color:#bdbdbd; text-align: center;">
-                        {{spectrumTableHint}}
-                    </div>
-                 </div>
-              </Card>
-            </div>
-        </Col>
       </Row>
     </div>
   </div>
