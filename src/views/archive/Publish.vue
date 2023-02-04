@@ -233,11 +233,11 @@
                 else
                     api = this.publishOtherAPI;
 
-                setTimeout(()=>{
-                  this.$Message.success('success')
-                  this.setPublishRecord()
-                },2000)
-                /*
+                // setTimeout(()=>{
+                //   this.$Message.success('success')
+                //   this.setPublishRecord()
+                // },2000)
+
                  this.$http
                       .post(api+'/'+this.formInlinePublish.accession,query,{
                         headers: {
@@ -249,13 +249,10 @@
                             this.$Spin.hide()
                             this.$refs[name].resetFields();
                             this.publishModel = true
-                            if(this.forceSubmitBool)
-                              this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
-                            else
-                              this.$Message.success({ content: "Request is being processed. It takes few hours/days depending on the size of your dataset. So, please be patient & DON'T publish repeatedly!",duration:5});
+                            this.$Message.success({ content: "<b>Request is being processed. It takes few hours/days depending on the size of your dataset. <br/> So, please be patient & DON'T publish repeatedly!</b>",duration:7});
                             this.idCheckPass = false
                             this.forceSubmitBool = false
-                            // this.setPublishRecord()
+                            this.setPublishRecord()
                             this.gotoProfile()
                             // this.$router.push({name:'dataset',params:{id:id}}); TODO: put the id to redirect to the dataset page.
                       },function(err){
@@ -284,8 +281,7 @@
                           else{
                               this.$Message.error({ content: 'Error: ' + err.bodyText?err.bodyText:'', duration:10});
                           }
-                      }); 
-                */
+                      });
             },
             publishModalOk(){
               this.publishModel=false
@@ -376,8 +372,8 @@
               if(record) {
                 record = JSON.parse(record)
                 for (let i = 0; i < record.length; i++) {
-                  // if(Date.now()-record[i].time > 12*60*60*1000){
-                  if (Date.now() - record[i].time > 30 * 1000) {
+                  if(Date.now()-record[i].time > 12*60*60*1000){
+                  // if (Date.now() - record[i].time > 30 * 1000) {
                     record.splice(i, 1)
                     i--
                     continue
