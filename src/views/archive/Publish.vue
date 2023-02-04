@@ -211,7 +211,7 @@
                 //   }
                 // });
                 if(this.repeatPublishCheck()){
-                  this.$Message.error({ content: "Please be patient & DON'T publish the dataset repeatedly!",duration:5})
+                  this.$Message.error({ content: "<b>We already received your publication request for: " + this.formInlinePublish.accession + "<br/> Please wait for 12hrs before requesting again! </b>",duration:8})
                   return;
                 }
                 let query = {}; //two items: publishJustification and pubmedId/doi
@@ -373,23 +373,31 @@
               let repeat = false
               let record = localStorage.getItem('publish') || '';
               console.log('record',record)
-              if(record)
+              if(record) {
                 record = JSON.parse(record)
-                for(let i=0; i<record.length; i++){
+                for (let i = 0; i < record.length; i++) {
                   // if(Date.now()-record[i].time > 12*60*60*1000){
-                  if(Date.now()-record[i].time > 10*1000){
+                  if (Date.now() - record[i].time > 30 * 1000) {
                     record.splice(i, 1)
                     i--
                     continue
                   }
-                  if(record[i].accession == this.formInlinePublish.accession){
+                  if (record[i].accession == this.formInlinePublish.accession) {
                     repeat = true
                     break
                   }
                 }
-              return repeat
+                localStorage.setItem('publish', JSON.stringify(record));
+              }
+                return repeat
             },
             setPublishRecord(){
+              let record = localStorage.getItem('publish') || '';
+              if(record) {
+                this.publishRecord = JSON.parse(record)
+              } else {
+                this.publishRecord = []
+              }
               let item = {
                 accession: this.formInlinePublish.accession,
                 time: Date.now()
