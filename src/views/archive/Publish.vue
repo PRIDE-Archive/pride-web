@@ -14,7 +14,7 @@
                     <Select class="pubmed-doi-select" v-model="formInlinePublish.title" @on-change="validTypeChange">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                     </Select>
-                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder=""> 
+                    <Input class="pubmed-doi-value" type="text" v-model="formInlinePublish.id" placeholder="">
                         <!-- <Icon v-if="checkValid" type="ios-search" slot="suffix" /> -->
                     </Input>
                     <!-- <Icon type="md-checkmark" /> -->
@@ -41,7 +41,7 @@
                   <Checkbox v-model="formInlinePublish.terms"><a @click="openTerms">Privacy notice</a></Checkbox>
               </FormItem> -->
               <FormItem>
-                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="warning" @click="showForcePublishModal('formInlinePublish')" long>Force Submit</Button>
+                <Button v-if="forceSubmitBool" :loading="validateLoading" class="publishButton" type="primary" @click="showForcePublishModal('formInlinePublish')" long>Force Submit</Button>
                 <Button v-else :loading="validateLoading" class="publishButton" type="primary" @click="publish('formInlinePublish')" long>Submit</Button>
               </FormItem>
             </Form>
@@ -72,7 +72,7 @@
                 //     let des = "Forced publishing is allowed on the risk!"
                 //     this.forceSubmitBool = true
                 //     callback(new Error(err+des))
-                // } 
+                // }
                 // else {
                   try{
                       let result = await this.validatePassPubmedCheck()
@@ -88,7 +88,7 @@
                   catch(e){
                       callback(new Error(e))
                   }
-                    
+
                 // }
             };
             const validatePassReason = async (rule, value, callback) => {
@@ -101,8 +101,8 @@
                 publishOtherAPI: this.$store.state.basePrivateURL + '/projects/publishother',
                 publishSelfAPI: this.$store.state.basePrivateURL + '/projects/publish',
                 validatePubmedIDAPI:'https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi',
-                validateDOIAPI:'https://www.ebi.ac.uk/europepmc/webservices/rest/search', 
-                formInlinePublish:{ 
+                validateDOIAPI:'https://www.ebi.ac.uk/europepmc/webservices/rest/search',
+                formInlinePublish:{
                   accession:this.$route.params.id,
                   id:'',
                   title:'PubMedID',
@@ -220,7 +220,7 @@
                 }
 
                 if(this.formInlinePublish.title == 'PubMedID')
-                  query.PublishProjectRequest.pubmedId = this.formInlinePublish.id 
+                  query.PublishProjectRequest.pubmedId = this.formInlinePublish.id
                 else if(this.formInlinePublish.title == 'DOI')
                   query.PublishProjectRequest.doi = this.formInlinePublish.id //the value is the same, only the obj name is different
                 if(this.forceSubmitBool)//for force submit
@@ -269,9 +269,6 @@
                               }
                               else{
                                   let errArray = err.body;
-                           
-
-
                                   if(errArray[0].hasOwnProperty('defaultMessage'))
                                     this.$Message.error({ content: errArray[0].defaultMessage,duration:10});
                                   else
@@ -288,16 +285,16 @@
             },
             async validatePassPubmedCheck(){
               let result = ''
-              this.idCheckPass = false;     
+              this.idCheckPass = false;
               if (!this.formInlinePublish.id) {  //for PubMed and DOI empty validate
                   let err = this.formInlinePublish.title == 'PubMedID' ? 'No PubMed! ' : 'No DOI! '
-                  let des = "Forced publishing is allowed on the risk!"
+                  let des = "Please click 'Force Submit' button below if you still want to continue!"
                   // if(this.formInlinePublish.reason)
                     this.forceSubmitBool = true
                   return new Promise((resolve,reject)=>{
                       reject(err+des)
                   })
-              }            
+              }
               if(this.formInlinePublish.title == 'PubMedID'){
                 return new Promise((resolve,reject)=>{
                     let query = {
@@ -319,7 +316,6 @@
                               this.idCheckPass = true;
                               resolve(res.body);
                             }
-                            
                         },function(err){
                             reject('PubMedID Check Failed, try again.')
                         });
@@ -339,28 +335,27 @@
                                 this.idCheckPass = true;
                                 this.forceSubmitBool = true;
                                 reject('Invalid DOIs! Force submit is allowed but the change will be difficult in future. ')
-                            }  
-                            else{ 
+                            }
+                            else{
                                 if(res.body.resultList.result[0].pubType.indexOf('preprint') != -1) //preprint
-                                  reject('The DOI is recognized as a pre-print in EuroPMC, in order to perform the publication please contact pride-support@ebi.ac.uk') 
+                                  reject('The DOI is recognized as a pre-print in EuroPMC, in order to perform the publication please contact pride-support@ebi.ac.uk')
                                 else { //normal submit
                                   this.idCheckPass = true;
                                   resolve(res.body);
                                 }
                             }
-                            
                         },function(err){
                             reject('DOI Check Failed')
                         });
-                })  
+                })
               }
               return result
             },
             async validTypeChange(){
                 // this.idCheckPass = false;
-                // if (this.formInlinePublish.id) {  
+                // if (this.formInlinePublish.id) {
                 //     await validatePass()
-                // } 
+                // }
             },
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
