@@ -93,7 +93,10 @@ The PRIDE Team has developed a [python client library](https://github.com/PRIDE-
 
 ## Benchmarking data downloads 
 
-We have done some benchmarking studies to compare the different ways of downloading files from PRIDE. The main results will be shown in the following plot as soon as possible: 
+We have done some benchmarking studies to compare the different ways of downloading files from PRIDE.
 
-// In progress  
+Below is the plot of different download methods tested in UK and from US machines
 
+It is a average of times tested for a file of size 1GB.
+
+<img height="300" src="../pridefiledownload/image/download-plot.png" width="5000"/>
