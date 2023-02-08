@@ -342,10 +342,10 @@
                               </div>
                           </div>
                           <div class="property-row">
-                              <div class="summary-content-header">Dataset reuses</div>
+                              <div class="summary-content-header">Number of files</div>
                               <div class="property-wrapper">
-                                <div v-if="reanalysisReferences.length>0">
-                                    <a @click="referenceModalShow=true">{{reanalysisReferences.length}}</a>
+                                <div v-if="filesNumber">
+                                    <p>{{filesNumber}}</p>
                                 </div>
                                 <div v-else>
                                     <p>Unknown</p>
@@ -800,7 +800,9 @@
           queryProjectDetailsLoading:false,
           sdrfFile:'',  
           sdrfFileList:[],
-          license:''
+          license:'',
+          filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
+          filesNumber:''
       }
     },
     metaInfo () {
@@ -936,6 +938,21 @@
             .then(function(res){
                 this.reanalysisReferences = res.body.references;
                 console.log(this.reanalysisReferences)
+            },function(err){
+
+            });
+      },
+      queryFilesNumber(){
+          let query = {};
+          query.accession=this.$route.params.id //'PXD012991'
+          this.$http
+            .get(this.filesNumberURL,{params: query}) 
+            .then(function(res){
+                if(res.body)
+                  this.filesNumber = 'RAW'+' ('+res.body.RAW+')'+', '+
+                                     'SEARCH'+' ('+res.body.SEARCH+')'+', '+
+                                     'OTHER'+' ('+res.body.OTHER+')';
+                console.log('res',res)
             },function(err){
 
             });
@@ -1497,6 +1514,7 @@
         this.querySdrfFiles();
         this.querySimilarity();
         this.queryReanalysis();
+        this.queryFilesNumber();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
