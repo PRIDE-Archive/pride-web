@@ -99,4 +99,4 @@ Below is the plot of different download methods tested in UK and from US machine
 
 It is a average of times tested for a file of size 1GB.
 
-<img height="300" src="../pridefiledownload/image/download-plot.png" width="5000"/>
+<img height="300" src="../markdown/pridefiledownload/image/download-plot.png" width="5000"/>
