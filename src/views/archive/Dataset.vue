@@ -342,6 +342,17 @@
                               </div>
                           </div>
                           <div class="property-row">
+                              <div class="summary-content-header">Dataset reuses</div>
+                              <div class="property-wrapper">
+                                <div v-if="reanalysisReferences.length>0">
+                                    <a @click="referenceModalShow=true">{{reanalysisReferences.length}}</a>
+                                </div>
+                                <div v-else>
+                                    <p>Unknown</p>
+                                </div>
+                              </div>
+                          </div>
+                          <div class="property-row">
                               <div class="summary-content-header">License</div>
                               <div class="property-wrapper">
                                 <div>
@@ -544,8 +555,8 @@
                               },
                               on: {
                                   click: (value) => {
-                                      console.log(value)
-                                      console.log(params.row.url[0].key);
+                                      // console.log(value)
+                                      // console.log(params.row.url[0].key);
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.url[0].key)
                                      
@@ -817,7 +828,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-              console.log('queryProjectDetails',res.body)
+              // console.log('queryProjectDetails',res.body)
                 this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
@@ -1045,8 +1056,8 @@
           window.open(this.doiApi + id);
       },
       downLoadSelect(selection,row){
-          console.log(selection);
-          console.log(row);
+          // console.log(selection);
+          // console.log(row);
       },
       filesSelectAll(){
           this.selectAllfiles =! this.selectAllfiles;
@@ -1097,7 +1108,7 @@
       searchProperties(filter){
           let normalQuery = {}
           normalQuery.filter = filter;
-          console.log(filter)
+          // console.log(filter)
           this.$router.push({name: 'archive', query: normalQuery});
       },
       getProteinEvidences(q){
@@ -1155,7 +1166,7 @@
           //setup();
       },
       downloadFiles (value) {
-          console.log('value',value);
+          // console.log('value',value);
           let transferSpec = {
               "paths": [{"source":value}],
               "remote_host": "fasp.ebi.ac.uk",
@@ -1173,7 +1184,7 @@
           };
           var response = this.asperaWeb.startTransfer(transferSpec, connectSettings);
 
-          console.log('response',response);
+          // console.log('response',response);
       },
       downloadPageChange(page){
           this.pageDownLoad = page;
@@ -1203,7 +1214,7 @@
           window.open(ftp)
       },
       projectFilesTableSortChange(item){
-        console.log(item)
+        // console.log(item)
         if(item.order == 'asc')
             this.projectFileSortDirection = 'ASC'
         else
@@ -1333,7 +1344,7 @@
             }
             else{ //for the table data
               if(!arr[i]){
-                console.log('empty row')
+                // console.log('empty row')
                 // this.$Modal.warning({
                 //       title: 'WARNING',
                 //       content: '<p>The current file has some empty lines and the end, please remove it. Check specification</p>',
