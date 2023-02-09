@@ -312,7 +312,7 @@
           this.$http
             .get(this.tableMappingJsonURL)
             .then(function(res){
-             console.log(res.body)
+             // console.log(res.body)
             },function(err){
 
             });
@@ -367,27 +367,24 @@
                   let samplePropertiesChildArray = []
                   let propertiesChildArray = []
                   for(let i in psm){
-                    // console.log(i,psm[i])
-                    if(psm[i]){
-                      if(Array.isArray(psm[i])){ //find the array in the reply
-                        if(i == 'sampleProperties'){  // deal with the "sampleProperties" array and "properties"
-                            for(let j=0;j<psm[i].length;j++){
-                              let item = {}
-                              item.key = psm[i][j].name
-                              item.value = psm[i][j].value
-                              array.push(item)
-                            }
-                        }
-                        else if(i == 'properties') { // deal with the "properties" array 
-                            for(let j=0;j<psm[i].length;j++){
-                              let item = {}
-                              item.key = psm[i][j].name
-                              item.value = psm[i][j].value
-                              array.push(item)
-                            }
-                        } 
-                        else
+                    if(psm[i]){ // remove the "null" properties in the reply
+                      if(Array.isArray(psm[i])){ //find the array in the reply, 
+                        if( i == 'masses' || i== 'intensities' ) //it must be the array of "sampleProperties" array and "properties". Not "masses" and "intensities"
                           continue
+                        for(let j=0;j<psm[i].length;j++){
+                              let item = {}
+                              item.key = psm[i][j].name
+                              item.value = psm[i][j].value
+                              // console.log('item',item)
+                              if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
+                                continue
+                              if(item.key.indexOf('project')!= -1) //find project property
+                                array.push(item)
+                              else if(i == 'sampleProperties')  // deal with the "sampleProperties" array and "properties"
+                                samplePropertiesChildArray.push(item)
+                              else if(i == 'properties') // deal with the "properties" array 
+                                propertiesChildArray.push(item)
+                         }
                       }
                       else{
                         let item = {}
