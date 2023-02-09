@@ -79,7 +79,7 @@
                       <p slot="title"> <i class="fas fa-download icon-tag"></i>USI Details</p>
                       <div class="download-list-wrapper psm-container">
                           <span v-if="psmTableLoading==false && psmTableResults.length<1" class="no-data-wrapper">Please select one Peptide</span>
-                          <Table v-else class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
+                          <Table v-else row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                       </div>
                       <div v-if="!psmItemSelected" class="page-container">
                          <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
@@ -116,8 +116,9 @@
               {
                   title: 'Key',
                   key: 'key',
-                  minWidth: 100,
-                  align: 'center',  
+                  width: 250,
+                  // align: 'center',
+                  tree:true,  
                   // ellipsis:true
               },
               {
@@ -308,15 +309,6 @@
                   this.$Message.error({content:'No PSMs', duration:3});
               });
       },
-      documentQuery(){
-          this.$http
-            .get(this.tableMappingJsonURL)
-            .then(function(res){
-             // console.log(res.body)
-            },function(err){
-
-            });
-      },
       getSpectrum(usi){
           let query = {usi:usi,resultType:'FULL'};
           this.$http
@@ -394,9 +386,47 @@
                       }
                     }
                   }
-                  console.log(array)
-                  this.psmTableResults = array
 
+                  //add Id for tree table to use
+                  for(let i=0; i<samplePropertiesChildArray.length; i++){
+                    samplePropertiesChildArray[i].id = '100'+ i
+                  }
+                  for(let i=0; i<propertiesChildArray.length; i++){
+                    propertiesChildArray[i].id = '101'+ i
+                  }
+
+                  // after set id, add "sampleProperties" and "properties" to "array"
+                  let samplePropertiesItem = {
+                    key:'samplePropertiesItem',
+                    value:'-',
+                    children:samplePropertiesChildArray
+                  }
+                  let propertiesItem = {
+                    key:'propertiesItem',
+                    value:'-',
+                    children:propertiesChildArray
+                  }
+                  array.push(samplePropertiesItem)
+                  array.push(propertiesItem)
+
+                  // remame the key according to the Json file
+                  this.$http
+                    .get(this.tableMappingJsonURL)
+                    .then(function(res){
+                        for(let i=0; i<array.length; i++){
+                          //set Id for the array and order the "project" item order
+                          array[i].id = '102'+ i
+                          //set the key based on json or just capitalized the first 'char'
+                          array[i].key = res.body[array[i].key] ? res.body[array[i].key] : array[i].key.charAt(0).toUpperCase() + array[i].key.slice(1)
+                        }
+                        // reorder the array
+                        console.log(array)
+                        console.log(samplePropertiesChildArray)
+                        console.log(propertiesChildArray)
+                        this.psmTableResults = array
+                    },function(err){
+
+                    });
                 }
                 else{
                   this.spectrumTableCollapseChange(true);
@@ -743,7 +773,6 @@
       },
     },
     mounted: function(){
-        this.documentQuery()
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
           console.log('111');
@@ -1058,7 +1087,7 @@
     visibility: hidden;
   }
   .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
-    visibility: hidden;
+    /*visibility: hidden;*/
   }
   .peptide-table .ivu-table .ivu-table-body th.ivu-table-column-center, td.ivu-table-column-center{
     padding: 0 !important;
