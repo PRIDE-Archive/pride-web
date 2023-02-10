@@ -358,6 +358,8 @@
                   let array = []
                   let samplePropertiesChildArray = []
                   let propertiesChildArray = []
+                  let projectChildArray = []
+                  let projectTitle = ''
                   for(let i in psm){
                     if(psm[i]){ // remove the "null" properties in the reply
                       if(Array.isArray(psm[i])){ //find the array in the reply, 
@@ -371,7 +373,9 @@
                               if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
                                 continue
                               if(item.key.indexOf('project')!= -1) //find project property
-                                array.push(item)
+                                projectChildArray.push(item)
+                              if(item.key.indexOf('project title')!= -1) //query the title content and use later
+                                projectTitle = item.value  
                               else if(i == 'sampleProperties')  // deal with the "sampleProperties" array and "properties"
                                 samplePropertiesChildArray.push(item)
                               else if(i == 'properties') // deal with the "properties" array 
@@ -394,20 +398,30 @@
                   for(let i=0; i<propertiesChildArray.length; i++){
                     propertiesChildArray[i].id = '101'+ i
                   }
+                  for(let i=0; i<projectChildArray.length; i++){
+                    projectChildArray[i].id = '102'+ i
+                  }
 
                   // after set id, add "sampleProperties" and "properties" to "array"
                   let samplePropertiesItem = {
-                    key:'samplePropertiesItem',
+                    key:'sampleProperties',
                     value:'-',
                     children:samplePropertiesChildArray
                   }
                   let propertiesItem = {
-                    key:'propertiesItem',
+                    key:'properties',
                     value:'-',
                     children:propertiesChildArray
                   }
+                  let projectItem = {
+                    key:'project',
+                    value: projectTitle,
+                    children:projectChildArray
+                  }
+
                   array.push(samplePropertiesItem)
                   array.push(propertiesItem)
+                  array.unshift(projectItem)
 
                   // remame the key according to the Json file
                   this.$http
@@ -415,9 +429,27 @@
                     .then(function(res){
                         for(let i=0; i<array.length; i++){
                           //set Id for the array and order the "project" item order
-                          array[i].id = '102'+ i
+                          array[i].id = '103'+ i
                           //set the key based on json or just capitalized the first 'char'
+                          if(array[i].key == 'sampleProperties'){
+                            for(let j=0; j<array[i].children.length; j++){
+                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                            }
+                          }
+                          else if(array[i].key == 'properties'){ // the logic is the same with the above "sampleProperties" just in case of any specific tasks need to been done
+                            for(let j=0; j<array[i].children.length; j++){
+                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                            }
+                          }
+                          else if(array[i].key == 'project'){ // the logic is the same with the above "sampleProperties" ,but we need to change some specific item orders
+                            for(let j=0; j<array[i].children.length; j++){
+                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                            }
+                            //change the order here TODO
+                          }
                           array[i].key = res.body[array[i].key] ? res.body[array[i].key] : array[i].key.charAt(0).toUpperCase() + array[i].key.slice(1)
+
+
                         }
                         // reorder the array
                         console.log(array)
@@ -1086,8 +1118,11 @@
   .peptide-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
     visibility: hidden;
   }
-  .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
+  .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{ 
     /*visibility: hidden;*/
+  }
+  .psm-table .ivu-table-cell .ivu-table-cell-tree{ 
+   text-align: center;
   }
   .peptide-table .ivu-table .ivu-table-body th.ivu-table-column-center, td.ivu-table-column-center{
     padding: 0 !important;
