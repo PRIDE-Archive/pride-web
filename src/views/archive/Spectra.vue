@@ -57,7 +57,7 @@
             <div class="visualization-wrapper">
               <Card class="card protein">
                  <p slot="title" class="table-header">
-                    <span><i class="fas fa-download icon-tag"></i>Spectrum</span>
+                    <span><Icon type="md-stats" size="14" style="margin-right: 5px"/>Spectrum</span> 
                     <span class="right">
                         <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
                         <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
@@ -76,13 +76,37 @@
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
-                      <p slot="title"> <i class="fas fa-download icon-tag"></i>USI Details</p>
+                      <p slot="title"> <Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</p>
                       <div class="download-list-wrapper psm-container">
                           <span v-if="psmTableLoading==false && psmTableResults.length<1" class="no-data-wrapper">Please select one Peptide</span>
                           <Table v-else row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                       </div>
                       <div v-if="!psmItemSelected" class="page-container">
                          <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title"> <Icon type="md-quote" size="12" style="margin-right: 5px"/></i>Citations</p> 
+                      <div class="citations-container">
+                          <ul>
+                            <li>
+                              Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences. Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. <a href="https://academic.oup.com/nar/article/50/D1/D543/6415112">PMID: 34723319</a>.
+                            </li>
+                            <Divider />
+                            <li>
+                              Deutsch EW, Perez-Riverol Y, Carver J, Kawano S, Mendoza L, Van Den Bossche T, Gabriels R, Binz PA, Pullman B, Sun Z, Shofstahl J, Bittremieux W, Mak TD, Klein J, Zhu Y, Lam H, Vizcaíno JA, Bandeira N. Universal Spectrum Identifier for mass spectra. Nat Methods. 2021 Jul;18(7):768-770. doi: 10.1038/s41592-021-01184-6. Epub 2021 Jun 28. <a href="https://www.nature.com/articles/s41592-021-01184-6">PMID: 34183830</a>.
+                            </li>
+                            <Divider />
+                            <li>
+                              Hulstaert N, Shofstahl J, Sachsenberg T, Walzer M, Barsnes H, Martens L, Perez-Riverol Y. ThermoRawFileParser: Modular, Scalable, and Cross-Platform RAW File Conversion. J Proteome Res. 2020 Jan 3;19(1):537-542. doi: 10.1021/acs.jproteome.9b00328. Epub 2019 Dec 6. <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.9b00328">PMID: 31755270</a>.
+                            </li>
+                          </ul>
                       </div>
                   </Card>
               </div>
@@ -376,9 +400,9 @@
                                 projectChildArray.push(item)
                               if(item.key.indexOf('project title')!= -1) //query the title content and use later
                                 projectTitle = item.value  
-                              else if(i == 'sampleProperties')  // deal with the "sampleProperties" array and "properties"
+                              else if(i == 'sampleProperties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
                                 samplePropertiesChildArray.push(item)
-                              else if(i == 'properties') // deal with the "properties" array 
+                              else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
                                 propertiesChildArray.push(item)
                          }
                       }
@@ -400,6 +424,8 @@
                   }
                   for(let i=0; i<projectChildArray.length; i++){
                     projectChildArray[i].id = '102'+ i
+
+                    //merge the repeated items.
                   }
 
                   // after set id, add "sampleProperties" and "properties" to "array"
@@ -1072,6 +1098,9 @@
       background-color: #5bc0be;
       border-radius: 3px;
   }
+  .citations-container{
+    margin-left: 20px;
+  }
 </style>
 <style>
   .card .ivu-card-body table{
@@ -1122,7 +1151,8 @@
     /*visibility: hidden;*/
   }
   .psm-table .ivu-table-cell .ivu-table-cell-tree{ 
-   text-align: center;
+    margin-right: 5px;
+    text-align: center;
   }
   .peptide-table .ivu-table .ivu-table-body th.ivu-table-column-center, td.ivu-table-column-center{
     padding: 0 !important;
