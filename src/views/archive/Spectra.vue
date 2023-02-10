@@ -386,9 +386,10 @@
                   let projectTitle = ''
                   for(let i in psm){
                     if(psm[i]){ // remove the "null" properties in the reply
-                      if(Array.isArray(psm[i])){ //find the array in the reply, 
-                        if( i == 'masses' || i== 'intensities' ) //it must be the array of "sampleProperties" array and "properties". Not "masses" and "intensities"
-                          continue
+                       //find the array in the reply, 
+                      if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
+                        continue
+                      if(Array.isArray(psm[i])){
                         for(let j=0;j<psm[i].length;j++){
                               let item = {}
                               item.key = psm[i][j].name
