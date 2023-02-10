@@ -11,16 +11,16 @@
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
                               <Select v-model="selected" slot="prepend" style="width: 100px">
                                   <Option value="usi">USI</Option>
-                                  <Option value="peptide">Peptide</Option>
+<!--                                  <Option value="peptide">Peptide</Option>-->
                               </Select>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
-                              Examples:
-                              <Tooltip content="YYWGGLYSWDMSK">
-                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>
-                              </Tooltip>
+                              Example:
+<!--                              <Tooltip content="YYWGGLYSWDMSK">-->
+<!--                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
+<!--                              </Tooltip>-->
                               <Tooltip content="mzspec:PRD000908:S9588TPST_Fr3:scan:15969" style="margin-left: 5px">
                                 <div slot="content">
                                     <p>mzspec:PRD000908:S9588TPST_Fr3:scan:15969</p>
