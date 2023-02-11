@@ -62,7 +62,7 @@
                           </a>
                           <DropdownMenu slot="list">
                               <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
-                              <DropdownItem name="goToSpectra"><router-link :to="{ name: 'spectra'}">PRIDE Archive Spectra</router-link></DropdownItem>
+                              <DropdownItem name="goToSpectra"><router-link :to="{ name: 'usi'}">PRIDE Archive USI</router-link></DropdownItem>
 
                               <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
                               <DropdownItem name="gotoSpectrumLibrary"><router-link :to="{ name: 'spectrumlibrary'}">PRIDE Spectral Libraries</router-link></DropdownItem>
@@ -458,7 +458,7 @@
                     this.$router.push({name:'archive'});
                 }
                 else if(name=='goToSpectra'){
-                  this.$router.push({name:"spectra"})
+                  this.$router.push({name:"usi"})
                 }
                 else if(name=='goToPeptidome'){
                     this.$router.push({name:'peptidome'});

@@ -95,9 +95,15 @@ export default new Router({
       component: PeptideSearch
     },
     {
-      path: '/archive/spectra',
-      name: 'spectra',
+      path: '/archive/usi',
+      name: 'usi',
       component: Spectra
+    },
+    {
+      path: '/archive/spectra',
+      redirect: to => {
+          return { name: 'usi'}
+      }
     },
     {
       path: '/peptidome/peptidedownload',
