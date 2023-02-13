@@ -184,7 +184,8 @@
             },
             resourcesClick(name){
                 if(name=='goToArchive'){
-                    this.$router.push({name:'archive'});
+                  console.log('goToArchive')
+                    this.$router.push({name:'archive'}).catch(err => {})
                 }
                 else if(name== 'goToAnnotate'){
                   let query = {
@@ -193,35 +194,37 @@
                     page:0,
                     pageSize:20
                   }
-                  this.$router.push({name: 'archive', query: query});
+                  this.$router.push({name: 'archive', query: query}).catch(err => {})
                   // window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
                 }
                 else if(name=='goToSpectra'){
-                  this.$router.push({name:"spectra"})
+                  this.$router.push({name:'spectra'}).catch(err => {
+                    console.log('err',err)
+                  })
                 }
                 else if(name=='goToPeptidome'){
-                    this.$router.push({name:'peptidome'});
+                    this.$router.push({name:'peptidome'}).catch(err => {})
                 }
                 else if(name=='gotoSpectrumLibrary'){
-                    this.$router.push({name:'spectrumlibrary'});
+                    this.$router.push({name:'spectrumlibrary'}).catch(err => {})
                 }
                 else if(name=='goToSpectraClustering'){
-                    this.$router.push({path:'/markdownpage/spectraclustering'});
+                    this.$router.push({path:'/markdownpage/spectraclustering'}).catch(err => {})
                 }
                 else if(name=='goToPrideSubmission'){
-                  this.$router.push({path:'/markdownpage/pridesubmissiontool'});
+                  this.$router.push({path:'/markdownpage/pridesubmissiontool'}).catch(err => {})
                 }
                 else if(name=='goToPrideInspector'){
-                    this.$router.push({path:'/markdownpage/prideinspector'});
+                    this.$router.push({path:'/markdownpage/prideinspector'}).catch(err => {})
                 }
                 else if(name=='goToPrideUtilities'){
-                    this.$router.push({path:'/markdownpage/prideutilities'});
+                    this.$router.push({path:'/markdownpage/prideutilities'}).catch(err => {})
                 }
                 else if(name=='goToPrideArchiveWS'){
-                    this.$router.push({path:'/markdownpage/pridearchivews'});
+                    this.$router.push({path:'/markdownpage/pridearchivews'}).catch(err => {})
                 }
                 else if(name=='goToPridePeptidomeWS'){
-                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
+                    this.$router.push({path:'/markdownpage/pridepeptidomews'}).catch(err => {})
                 }
             },
             gotoAbout(){
