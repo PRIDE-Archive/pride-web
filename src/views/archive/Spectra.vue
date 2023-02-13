@@ -11,7 +11,6 @@
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
                               <Select v-model="selected" slot="prepend" style="width: 100px">
                                   <Option value="usi">USI</Option>
-<!--                                  <Option value="peptide">Peptide</Option>-->
                               </Select>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
@@ -32,21 +31,6 @@
                                 What is USI?
                             </a>
                           </div>
-                          <!-- <div class="search-input">     
-                              <div class="search-input-wrapper peptidome">
-                                  <div class="fake-input">
-                                    <div class="tag-wrapper">
-                                        <Input class="tag-input" v-model="keyword" placeholder="input here" size="small"></Input>
-                                    </div>
-                                    <Icon type="ios-search"></Icon>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="search-filter">
-                              <div class="search-button">
-                                  <a class="button search-button" @click="submitSearch">Search</a>
-                              </div>
-                          </div> -->
                       </div>
                   </Card>   
               </div>
@@ -58,14 +42,14 @@
               <Card class="card protein">
                  <p slot="title" class="table-header">
                     <span><Icon type="md-stats" size="14" style="margin-right: 5px"/>Spectrum</span> 
-                    <span class="right">
-                        <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
-                        <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
+                    <span v-if="spectrumFound" class="right">
+                        <a v-if="spectrumTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="spectrumTableFold(false)"></Icon></a>
+                        <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="spectrumTableFold(true)"></Icon></a>
                     </span>
                  </p>
                  <div class="spectrum-container">
                     <div style="color:#bdbdbd; text-align: center;">
-                        {{spectrumTableHint}}
+                        <span v-if ="spectrumTableFoldBool">{{spectrumTableHint}}</span>
                     </div>
                  </div>
               </Card>
@@ -76,13 +60,18 @@
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
-                      <p slot="title"> <Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</p>
+                      <p slot="title" class="table-header"> 
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</span>
+                          <span v-if="spectrumFound" class="right">
+                              <a v-if="usiTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="usiTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
+                          </span>
+                      </p>
                       <div class="download-list-wrapper psm-container">
-                          <span v-if="psmTableLoading==false && psmTableResults.length<1" class="no-data-wrapper">Please select one Peptide</span>
-                          <Table v-else row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
-                      </div>
-                      <div v-if="!psmItemSelected" class="page-container">
-                         <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
+                          <div style="color:#bdbdbd; text-align: center;">
+                              <span v-if ="usiTableFoldBool">{{usiTableHint}}</span>
+                          </div>
+                          <Table v-if ="spectrumFound" row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                       </div>
                   </Card>
               </div>
@@ -128,10 +117,11 @@
           peptideSequenceInputModel:'',
           proteinSequence:'',
           proteinSequenceArray:[],
-          proteinSequenceCollapse:true,
+          proteinSequenceFold:true,
           proteinTableLoading: false,
           proteinTableHint:'Please select one Protein',
-          spectrumTableHint:'Please select one PSM',
+          spectrumTableHint:'No Spectrum',
+          usiTableHint:'No USI Details',
           peptideProteinAccession:'',
           spectraAssayAccession:'',
           peptideTableLoading:false,
@@ -141,9 +131,7 @@
                   title: 'Key',
                   key: 'key',
                   width: 250,
-                  // align: 'center',
                   tree:true,  
-                  // ellipsis:true
               },
               {
                   title: 'Value',
@@ -155,14 +143,11 @@
           ],
           psmTableResults:[],
           protienItemSelected:false,
-          psmItemSelected:true,
-          //selectedProteinTableItem:{},
           spectrumSpinShow:false,
           spectrumTableShow:false,
-          spectrumTableCollapse:true,
-          spectraPage:1,
-          spectraPageSize:20,
-          spectraTotal:0,
+          spectrumTableFoldBool:true,
+          usiTableFoldBool:true,
+          spectrumFound:false,
           spectraSortDirection:'DESC',
           spectraSortConditions:'projectAccession',
           countArray:[],
@@ -195,7 +180,6 @@
           selected:'',
           searchInputLoading:false,
           autoCompleteArray:[],
-          //peptideSortType:'',
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
@@ -205,355 +189,223 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      console.log('to.query',to.query);
-      if(to.query)
-        this.getSpectra(to.query);
+      if(to.query){
+        this.getSpectrum(to.query); 
+      }
       next();
     },
     components: {
       NavBar
     },
     methods:{
-      getSpectra(q){
-          console.log('getSpectra',q)
-          let query = q || this.spectraQuery;
-          query.resultType='COMPACT';
-          this.keyword = q ? q.peptideSequence : ''
-          this.psmTableLoading = true;
-          this.$http
-              .get(this.spectraApi,{params: query})
-              .then(function(res){
-                this.psmTableResults=[];
-                this.psmTableLoading = false;
-                if(res.body && res.body._embedded){
-                  this.spectraTotal = res.body.page.totalElements;
-                  //this.spectraPage = res.body.page.number;
-                  //this.spectraPageSize = res.body.page.size;
-                  let psm = res.body._embedded.summaryArchiveSpectrumList; 
-                  console.log('psm',psm)
-                  // console.log('psm',res.body._embedded)
-                  for(let i=0; i < psm.length; i++){
-                      var item = {
-                        //proteinAccession: psm[i].projectAccession,
-                        peptideSequence: psm[i].peptideSequence,
-                        accession: psm[i].projectAccession,
-                        decoy: psm[i].isDecoy,
-                        isValid: psm[i].isValid,
-                        charge:psm[i].precursorCharge,
-                        precursorMz:psm[i].precursorMz,
-                        ptms:psm[i].modifications,
-                        usi:psm[i].usi,
-                        psmlevelqvalue:psm[i].bestSearchEngineScore.value+'',
-                        reanalysisAccession: psm[i].reanalysisAccession,
-                        select:false,
-                        psmMoreArray:[]
-                      }
-                      console.log(item)
-                      //add psmlevelFDR for item
-                      if(psm[i].attributes){
-                          for(let j=0; j<psm[i].attributes.length; j++){
-                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
-                                  item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
-                                  break;
-                              }
-                          }
-                     
-                          //add isThreshold
-                          let found = false;
-                          for(let j=0; j<psm[i].attributes.length; j++){
-                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
-                                  found = true;
-                                  item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
-                                  break;
-                              }
-                          }
-                          if(!found)
-                              item.isThreshold = false
-
-                          // //add for More option
-                          // for(let j=0; j<psm[i].attributes.length; j++){
-                          //     let tempItem = {
-                          //       name:psm[i].attributes[j].name,
-                          //       value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
-                          //     }
-                          //     item.psmMoreArray.push(tempItem)
-                          // }
-                      }
-
-                      for(let j=0; j<psm[i].scores.length; j++){
-                          let tempItem = {
-                            name:psm[i].scores[j].name,
-                            value:psm[i].scores[j].name+': '+psm[i].scores[j].value
-                          }
-                          item.psmMoreArray.push(tempItem)
-                      }
-
-                      //add peaks for item
-                      if(psm[i].intensities){
-                          let peaksArray = [];
-                          for(let j=0; j<psm[i].intensities.length; j++){
-                              let item = {
-                                mz:psm[i].masses[j],
-                                intensity:psm[i].intensities[j]
-                              }
-                              peaksArray.push(item)
-                          }
-                          item.peaks = peaksArray;
-                      }
-                      
-                      if(psm[i].modifications){
-                          //add variableMods for item
-                          let variableModsArray = [];
-                          for(let j=0; j<psm[i].modifications.length; j++){
-                              for(let k=0; k<psm[i].modifications[j].positionMap.length; k++){
-                                  let item = {
-                                    index:psm[i].modifications[j].positionMap[k].key,
-                                    modMass:parseFloat(psm[i].modifications[j].modification.value),
-                                    aminoAcid: psm[i].peptideSequence.split('')[psm[i].modifications[j].positionMap[k].key-1]
-                                  };
-                                  variableModsArray.push(item)
-                              }
-                          }
-                          item.variableMods = variableModsArray;
-                      }
-                      this.psmTableResults.push(item);
-                  }
-                  //console.log('this.psmTableResults[0]',this.psmTableResults[0])
-                  //this.psmTableResults[0].select = true; 
-                  //this.showSpectrum(this.psmTableResults[0].select, this.psmTableResults[0].peptideSequence, this.psmTableResults[0].peaks);
-                }
-                else{
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-                }
-              },function(err){
-                  this.psmTableResults=[];
-                  this.psmTableLoading = false;
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-              });
-      },
-      getSpectrum(usi){
-          let query = {usi:usi,resultType:'FULL'};
-          this.$http
-              .get(this.spectrumApi,{params: query})
-              .then(function(res){
-                this.psmTableResults=[];
-                this.psmTableLoading = false;
-                if(res.body){
-                  let psm = res.body;
-                  console.log(psm)
-                  let peptideSequence = psm.peptideSequence
-                  let charge = psm.precursorCharge
-                  let precursorMz = psm.precursorMz
-                  //calculate peaks for spectrum
-                  let peaks 
-                  if(psm.intensities){
-                      let peaksArray = [];
-                      for(let j=0; j<psm.intensities.length; j++){
-                          let item = {
-                            mz:psm.masses[j],
-                            intensity:psm.intensities[j]
-                          }
-                          peaksArray.push(item)
-                      }
-                      peaks = peaksArray;
-                  }
-                  //calculate variableMods for spectrum 
-                  let variableMods
-                  if(psm.modifications){
-                      let variableModsArray = [];
-                      for(let j=0; j<psm.modifications.length; j++){
-                          for(let k=0; k<psm.modifications[j].positionMap.length; k++){
-                              let item = {
-                                index:psm.modifications[j].positionMap[k].key,
-                                modMass:parseFloat(psm.modifications[j].modification.value),
-                                aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
-                              };
-                              variableModsArray.push(item)
-                          }
-                      }
-                      variableMods = variableModsArray;
-                  }
-                  this.spectrumTableCollapseChange(!true);
-                  this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods)
-
-                  //for USI Details
-                  let array = []
-                  let samplePropertiesChildArray = []
-                  let propertiesChildArray = []
-                  let projectChildArray = []
-                  let projectTitle = ''
-                  for(let i in psm){
-                    if(psm[i]){ // remove the "null" properties in the reply
-                       //find the array in the reply, 
-                      if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
-                        continue
-                      if(Array.isArray(psm[i])){
-                        for(let j=0;j<psm[i].length;j++){
+      getSpectrum(q){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
+          this.spectrumFound = false
+          this.spectrumTableHint = 'No Spectrum'
+          this.usiTableHint = 'No USI Details'
+          if(!q.hasOwnProperty("usi")){
+            console.log('no usi')
+            //NO results
+          }
+          else{
+                let query = {usi:q.usi,resultType:'FULL'};
+                this.$http
+                    .get(this.spectrumApi,{params: query})
+                    .then(function(res){
+                      this.psmTableResults=[];
+                      this.psmTableLoading = false;
+                      if(res.body){
+                        this.spectrumFound = true
+                        this.spectrumTableHint = 'Click to show more'
+                        this.usiTableHint = 'Click to show more'
+                        let psm = res.body;
+                        let peptideSequence = psm.peptideSequence
+                        let charge = psm.precursorCharge
+                        let precursorMz = psm.precursorMz
+                        //calculate peaks for spectrum
+                        let peaks 
+                        if(psm.intensities){
+                            let peaksArray = [];
+                            for(let j=0; j<psm.intensities.length; j++){
+                                let item = {
+                                  mz:psm.masses[j],
+                                  intensity:psm.intensities[j]
+                                }
+                                peaksArray.push(item)
+                            }
+                            peaks = peaksArray;
+                        }
+                        //calculate variableMods for spectrum 
+                        let variableMods
+                        if(psm.modifications){
+                            let variableModsArray = [];
+                            for(let j=0; j<psm.modifications.length; j++){
+                                for(let k=0; k<psm.modifications[j].positionMap.length; k++){
+                                    let item = {
+                                      index:psm.modifications[j].positionMap[k].key,
+                                      modMass:parseFloat(psm.modifications[j].modification.value),
+                                      aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
+                                    };
+                                    variableModsArray.push(item)
+                                }
+                            }
+                            variableMods = variableModsArray;
+                        }
+                        this.spectrumTableFold(false)
+                        this.usiTableFold(false)
+                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods)
+                        //for USI Details
+                        let array = []
+                        let samplePropertiesChildArray = []
+                        let propertiesChildArray = []
+                        let projectChildArray = []
+                        let projectTitle = ''
+                        for(let i in psm){
+                          if(psm[i]){ // remove the "null" properties in the reply
+                             //find the array in the reply, 
+                            if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
+                              continue
+                            if(Array.isArray(psm[i])){
+                              for(let j=0;j<psm[i].length;j++){
+                                    let item = {}
+                                    item.key = psm[i][j].name
+                                    item.value = psm[i][j].value
+                                    // console.log('item',item)
+                                    if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
+                                      continue
+                                    if(item.key.indexOf('project')!= -1) //find project property
+                                      projectChildArray.push(item)
+                                    if(item.key.indexOf('project title')!= -1) //query the title content and use later
+                                      projectTitle = item.value  
+                                    else if(i == 'sampleProperties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
+                                      samplePropertiesChildArray.push(item)
+                                    else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
+                                      propertiesChildArray.push(item)
+                               }
+                            }
+                            else{
                               let item = {}
-                              item.key = psm[i][j].name
-                              item.value = psm[i][j].value
-                              // console.log('item',item)
-                              if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
-                                continue
-                              if(item.key.indexOf('project')!= -1) //find project property
-                                projectChildArray.push(item)
-                              if(item.key.indexOf('project title')!= -1) //query the title content and use later
-                                projectTitle = item.value  
-                              else if(i == 'sampleProperties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
-                                samplePropertiesChildArray.push(item)
-                              else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
-                                propertiesChildArray.push(item)
-                         }
+                              item.key = i;
+                              item.value = psm[i]
+                              array.push(item)
+                            }
+                          }
+                        }
+
+                        //add Id for tree table to use
+                        for(let i=0; i<samplePropertiesChildArray.length; i++){
+                          samplePropertiesChildArray[i].id = '100'+ i
+                        }
+                        for(let i=0; i<propertiesChildArray.length; i++){
+                          propertiesChildArray[i].id = '101'+ i
+                        }
+                        for(let i=0; i<projectChildArray.length; i++){
+                          projectChildArray[i].id = '102'+ i
+
+                          //merge the repeated items. TODO
+                        }
+
+                        // after set id, add "sampleProperties" and "properties" to "array"
+                        let samplePropertiesItem = {
+                          key:'sampleProperties',
+                          value:'-',
+                          children:samplePropertiesChildArray
+                        }
+                        let propertiesItem = {
+                          key:'properties',
+                          value:'-',
+                          children:propertiesChildArray
+                        }
+                        let projectItem = {
+                          key:'project',
+                          value: projectTitle,
+                          children:projectChildArray
+                        }
+
+                        array.push(samplePropertiesItem)
+                        array.push(propertiesItem)
+                        array.unshift(projectItem)
+
+                        // remame the key according to the Json file
+                        this.$http
+                          .get(this.tableMappingJsonURL)
+                          .then(function(res){
+                              for(let i=0; i<array.length; i++){
+                                //set Id for the array and order the "project" item order
+                                array[i].id = '103'+ i
+                                //set the key based on json or just capitalized the first 'char'
+                                if(array[i].key == 'sampleProperties'){
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                }
+                                else if(array[i].key == 'properties'){ // the logic is the same with the above "sampleProperties" just in case of any specific tasks need to been done
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                }
+                                else if(array[i].key == 'project'){ // the logic is the same with the above "sampleProperties" ,but we need to change some specific item orders
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                  //change the order here TODO
+                                }
+                                array[i].key = res.body[array[i].key] ? res.body[array[i].key] : array[i].key.charAt(0).toUpperCase() + array[i].key.slice(1)
+
+
+                              }
+                              // reorder the array
+                              this.psmTableResults = array
+                          },function(err){
+
+                          });
                       }
                       else{
-                        let item = {}
-                        item.key = i;
-                        item.value = psm[i]
-                        array.push(item)
+                        this.spectrumFound = false
+                        this.spectrumTableHint = 'No Spectrum'
+                        this.usiTableHint = 'No USI Details'
+                        this.spectrumTableFold(true);
+                        this.usiTableFold(true)
+                        this.$Message.success({content:'No PSMs', duration:3});
                       }
-                    }
-                  }
-
-                  //add Id for tree table to use
-                  for(let i=0; i<samplePropertiesChildArray.length; i++){
-                    samplePropertiesChildArray[i].id = '100'+ i
-                  }
-                  for(let i=0; i<propertiesChildArray.length; i++){
-                    propertiesChildArray[i].id = '101'+ i
-                  }
-                  for(let i=0; i<projectChildArray.length; i++){
-                    projectChildArray[i].id = '102'+ i
-
-                    //merge the repeated items.
-                  }
-
-                  // after set id, add "sampleProperties" and "properties" to "array"
-                  let samplePropertiesItem = {
-                    key:'sampleProperties',
-                    value:'-',
-                    children:samplePropertiesChildArray
-                  }
-                  let propertiesItem = {
-                    key:'properties',
-                    value:'-',
-                    children:propertiesChildArray
-                  }
-                  let projectItem = {
-                    key:'project',
-                    value: projectTitle,
-                    children:projectChildArray
-                  }
-
-                  array.push(samplePropertiesItem)
-                  array.push(propertiesItem)
-                  array.unshift(projectItem)
-
-                  // remame the key according to the Json file
-                  this.$http
-                    .get(this.tableMappingJsonURL)
-                    .then(function(res){
-                        for(let i=0; i<array.length; i++){
-                          //set Id for the array and order the "project" item order
-                          array[i].id = '103'+ i
-                          //set the key based on json or just capitalized the first 'char'
-                          if(array[i].key == 'sampleProperties'){
-                            for(let j=0; j<array[i].children.length; j++){
-                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
-                            }
-                          }
-                          else if(array[i].key == 'properties'){ // the logic is the same with the above "sampleProperties" just in case of any specific tasks need to been done
-                            for(let j=0; j<array[i].children.length; j++){
-                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
-                            }
-                          }
-                          else if(array[i].key == 'project'){ // the logic is the same with the above "sampleProperties" ,but we need to change some specific item orders
-                            for(let j=0; j<array[i].children.length; j++){
-                                array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
-                            }
-                            //change the order here TODO
-                          }
-                          array[i].key = res.body[array[i].key] ? res.body[array[i].key] : array[i].key.charAt(0).toUpperCase() + array[i].key.slice(1)
-
-
-                        }
-                        // reorder the array
-                        console.log(array)
-                        console.log(samplePropertiesChildArray)
-                        console.log(propertiesChildArray)
-                        this.psmTableResults = array
                     },function(err){
-
+                        this.spectrumFound = false
+                        this.spectrumTableHint = 'No Spectrum'
+                        this.usiTableHint = 'No USI Details'
+                        this.psmTableResults=[];
+                        this.psmTableLoading = false;
+                        this.spectrumTableFold(true);
+                        this.usiTableFold(true)
+                        this.$Message.error({content:'No PSMs', duration:3});
                     });
-                }
-                else{
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.success({content:'No PSMs', duration:3});
-                }
-              },function(err){
-                  this.psmTableResults=[];
-                  this.psmTableLoading = false;
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-              });
-      },
-      spectraPageChange(page){
-          console.log(page)
-          this.spectraPage = page;
-          //console.log('spectraPageChange',this.spectraPage)
-          // if(this.$route.query && this.$route.query.proteinAccession)
-          //   return
-          let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:this.keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-            page:this.spectraPage-1,
-            pageSize :this.spectraPageSize,
           }
-    
-          this.$router.push({name: 'spectra', query: query});
       },
-      spectraPageSizeChange(size){
-          this.spectraPageSize = size;
-          // if(this.$route.query && this.$route.query.proteinAccession)
-          //   return
-
-          let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:this.keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-            page:this.spectraPage-1,
-            pageSize :this.spectraPageSize,
-          }
-          this.$router.push({name: 'spectra', query: query});
-      },
-      spectrumTableCollapseChange(val){
-        // console.log('spectrumTableCollapseChange');
-          this.spectrumTableCollapse = val
-          if(this.spectrumTableCollapse){
+      spectrumTableFold(val){
+          this.spectrumTableFoldBool = val
+          if(this.spectrumTableFoldBool){
               document.querySelector('.spectrum-container').style.height = 'auto'
               if(document.querySelector('#lorikeetIframe'))
                 document.querySelector('#lorikeetIframe').style.display= 'none'
-              if(this.psmItemSelected)
-                  this.spectrumTableHint = "Open Table to see the results"
-              else
-                  this.spectrumTableHint = "Please select one PSM"
           } 
           else{
               document.querySelector('.spectrum-container').style.height = '730px'
-              if(this.psmItemSelected){
-                  if(document.querySelector('#lorikeetIframe'))
-                    document.querySelector('#lorikeetIframe').style.display= 'block'
-                  this.spectrumTableHint = ""
+              if(document.querySelector('#lorikeetIframe')) {
+                if(this.spectrumFound)
+                  document.querySelector('#lorikeetIframe').style.display= 'block'
+                else
+                   document.querySelector('#lorikeetIframe').style.display= 'none' //if spectrum is not found, we have to set display none even if the table is open
               }
-              else
-                  this.spectrumTableHint = "Please select one PSM"
           }
+      },
+      usiTableFold(val){
+          this.usiTableFoldBool = val
+          if(this.usiTableFoldBool){
+            if(document.querySelector('.psm-table'))
+              document.querySelector('.psm-table').style.display = 'none'
+          }
+          else{
+            if(document.querySelector('.psm-table'))
+              document.querySelector('.psm-table').style.display = 'block'
+          } 
       },
       showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods){
           if(val){
@@ -704,17 +556,14 @@
           return
         }
         if(this.selected == 'usi'){
-            this.getSpectrum(this.keyword);
+            this.getSpectrum({usi:this.keyword});
             if (history.pushState) {
                   var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
                   window.history.pushState({path:newurl},'',newurl);
               }
-
-            this.spectrumTableCollapseChange(false);
             delete this.$route.query.peptideSequence
         }
         else if(this.selected == 'peptide'){
-          this.spectrumTableCollapseChange(true)
           let query = {
               //reportedProtein:params.row.proteinAccession,
               //peptideEvidenceAccession:params.row.accession,
@@ -730,36 +579,6 @@
           else
             this.$router.push({name: 'spectra', query: query});
         }
-
-
-        // 'on-change': (val) => {
-        //       this.psmTableResults.map(x => {
-        //           x.select= false;
-        //           return x;
-        //       });
-        //       this.psmTableResults[params.index].select= val;
-        //       if(val){
-        //           this.psmItemSelected = true;
-        //           //console.log(params.row)
-        //           this.getSpectrum(params.row.usi);
-        //       }
-        //       else{
-        //           this.psmItemSelected = false;
-        //           this.getSpectra();
-        //       }
-                  
-              
-        //       if (history.pushState) {
-        //             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
-        //             window.history.pushState({path:newurl},'',newurl);
-        //         }
-
-        //       this.spectrumTableCollapseChange(!val);
-        //   }
-
-
-        
-        //this.$Message.success({content:'new result', duration:1});
       },
       gotoUSI(){
         window.open('http://www.psidev.info/usi')
@@ -767,7 +586,6 @@
       gotoExamplePeptide(keyword){
         this.selected = 'peptide'
         this.keyword = keyword
-        this.spectrumTableCollapseChange(true)
         let query = {
             //reportedProtein:params.row.proteinAccession,
             //peptideEvidenceAccession:params.row.accession,
@@ -787,13 +605,11 @@
       gotoExampleUSI(keyword){
         this.selected = 'usi'
         this.keyword = keyword
-        this.getSpectrum(keyword);
+        this.getSpectrum({usi:keyword});
         if (history.pushState) {
               var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
               window.history.pushState({path:newurl},'',newurl);
           }
-
-        this.spectrumTableCollapseChange(false);
         delete this.$route.query.peptideSequence
         // this.$router.replace({'query': null});
       }
@@ -834,41 +650,18 @@
     mounted: function(){
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
-          console.log('111');
-          //this.getPeptidesEvidences();
-          //this.getProteinEvidences();
-          this.selected = 'usi'
-          let query = {
-            page: this.spectraPage-1,
-            pageSize: this.spectraPageSize
-          }
-          this.getSpectra(query);
+         
         }
         else{
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
-            // console.log(22222)
-            this.getSpectrum(this.$route.query.usi);
+            console.log(22222)
+            this.getSpectrum({usi:this.$route.query.usi});
           }
           else{
-              // console.log(333333)
-              this.selected = 'peptide'
-              this.$forceUpdate()
-              if(this.$route.query.page)
-                  this.spectraPage = parseInt(this.$route.query.page) + 1;
-              if(this.$route.query.pageSize){
-                  let tempPageSize = parseInt(this.$route.query.pageSize);
-                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
-                    this.spectraPageSize = parseInt(this.$route.query.pageSize)
-                  else 
-                    this.spectraPageSize = 20
-              }
-              this.getSpectra(this.$route.query);
-          } //if('peptideSequence' in this.$route.query)
-            
-
-          //this.getProteinEvidences(this.$route.query);
+             
+          } 
         }
     },
     beforeDestroy(){
@@ -986,7 +779,7 @@
     color: rgb(189, 189, 189)
   }
   .download-list-wrapper.psm-container{
-    height: 496px !important;
+    height: auto;
   }
   .spectrum-container{
       height: auto;
@@ -1140,7 +933,7 @@
   }
   .card.protein .download-list-wrapper{
      overflow: auto;
-     height: 450px;
+     height: auto;
   }
   .protein-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
     visibility: hidden;
