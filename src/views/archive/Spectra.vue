@@ -17,9 +17,9 @@
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
                               Example:
-<!--                              <Tooltip content="YYWGGLYSWDMSK">-->
-<!--                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
-<!--                              </Tooltip>-->
+                                        <!--<Tooltip content="YYWGGLYSWDMSK">-->
+                                        <!--<a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
+                                        <!--</Tooltip>-->
                               <Tooltip content="mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555" style="margin-left: 5px">
                                 <div slot="content">
                                     <p>mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2</p>
@@ -31,6 +31,7 @@
                                 What is USI?
                             </a>
                           </div>
+                          <Spin size="large" fix v-if="spinShow"></Spin>
                       </div>
                   </Card>   
               </div>
@@ -148,6 +149,7 @@
           spectrumTableFoldBool:true,
           usiTableFoldBool:true,
           spectrumFound:false,
+          spinShow:false,
           spectraSortDirection:'DESC',
           spectraSortConditions:'projectAccession',
           countArray:[],
@@ -202,17 +204,21 @@
           this.spectrumFound = false
           this.spectrumTableHint = 'No Spectrum'
           this.usiTableHint = 'No USI Details'
+          this.spectrumTableFold(true)
+          this.usiTableFold(true)
           if(!q.hasOwnProperty("usi")){
             console.log('no usi')
-            //NO results
+            //NO results TODO
           }
           else{
+                this.spinShow = true
                 let query = {usi:q.usi,resultType:'FULL'};
                 this.$http
                     .get(this.spectrumApi,{params: query})
                     .then(function(res){
-                      this.psmTableResults=[];
-                      this.psmTableLoading = false;
+                      this.spinShow = false
+                      this.psmTableResults=[]
+                      this.psmTableLoading = false
                       if(res.body){
                         this.spectrumFound = true
                         this.spectrumTableHint = 'Click to show more'
@@ -360,6 +366,7 @@
                           });
                       }
                       else{
+                        this.spinShow = false
                         this.spectrumFound = false
                         this.spectrumTableHint = 'No Spectrum'
                         this.usiTableHint = 'No USI Details'
@@ -368,6 +375,7 @@
                         this.$Message.success({content:'No PSMs', duration:3});
                       }
                     },function(err){
+                        this.spinShow = false
                         this.spectrumFound = false
                         this.spectrumTableHint = 'No Spectrum'
                         this.usiTableHint = 'No USI Details'
@@ -382,12 +390,14 @@
       spectrumTableFold(val){
           this.spectrumTableFoldBool = val
           if(this.spectrumTableFoldBool){
-              document.querySelector('.spectrum-container').style.height = 'auto'
+              if(document.querySelector('.spectrum-container'))
+                document.querySelector('.spectrum-container').style.height = 'auto'
               if(document.querySelector('#lorikeetIframe'))
                 document.querySelector('#lorikeetIframe').style.display= 'none'
           } 
           else{
-              document.querySelector('.spectrum-container').style.height = '730px'
+              if(document.querySelector('.spectrum-container'))
+                document.querySelector('.spectrum-container').style.height = '730px'
               if(document.querySelector('#lorikeetIframe')) {
                 if(this.spectrumFound)
                   document.querySelector('#lorikeetIframe').style.display= 'block'
