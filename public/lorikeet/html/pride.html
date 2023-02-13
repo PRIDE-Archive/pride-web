@@ -64,23 +64,26 @@ function receiveMessage(event)
 
 function showData(){
     $("#lorikeet").specview({"sequence":sequence,
-                            "charge":charge,
-                            "peakDetect":false,
-                            "showMassErrorPlot":true,
-                            "massErrorPlotDefaultUnit":"ppm",
-                            "precursorMz":precursorMZ,
-                            "width":width,
-                            "height":450,
-                            "variableMods":variableMods,
-                            "peaks":peaks,
-                            "showA":[1,1,0],
-                            "showB":[1,1,0],
-                            "showC":[0,0,0],
-                            "showX":[0,0,0],
-                            "showY":[1,1,0],
-                            "showZ":[0,0,0],
-                            "labelImmoniumIons": false,
-                            "labelReporters": false});
+        "charge":charge,
+        "peakDetect":false,
+        "showMassErrorPlot":true,
+        "showSequenceInfo": true,
+        "showViewingOptions": true,
+        "zoomMs1": true,
+        "massErrorPlotDefaultUnit":"ppm",
+        "precursorMz":precursorMZ,
+        "width":width,
+        "height":450,
+        "variableMods":variableMods,
+        "peaks":peaks,
+        "showA":[1,1,0],
+        "showB":[1,1,0],
+        "showC":[0,0,0],
+        "showX":[0,0,0],
+        "showY":[1,1,0],
+        "showZ":[0,0,0],
+        "labelImmoniumIons": false,
+        "labelReporters": false});
 }
 
 

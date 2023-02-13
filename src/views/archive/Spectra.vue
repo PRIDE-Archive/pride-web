@@ -11,68 +11,29 @@
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
                               <Select v-model="selected" slot="prepend" style="width: 100px">
                                   <Option value="usi">USI</Option>
-                                  <Option value="peptide">Peptide</Option>
                               </Select>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
-                              Examples:
-                              <Tooltip content="YYWGGLYSWDMSK">
-                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>
-                              </Tooltip>
-                              <Tooltip content="mzspec:PRD000908:S9588TPST_Fr3:scan:15969" style="margin-left: 5px">
+                              Example:
+                                        <!--<Tooltip content="YYWGGLYSWDMSK">-->
+                                        <!--<a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
+                                        <!--</Tooltip>-->
+                              <Tooltip content="mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555" style="margin-left: 5px">
                                 <div slot="content">
-                                    <p>mzspec:PRD000908:S9588TPST_Fr3:scan:15969</p>
+                                    <p>mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2</p>
                                 </div>
-                                  <a @click="gotoExampleUSI('mzspec:PRD000908:S9588TPST_Fr3:scan:15969')" style="color:#666">USI for MESASSSLATSGR</a>
+                                  <a @click="gotoExampleUSI('mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2')" style="color:#666">USI for VLHPLEGAVVIIFK/2</a>
                               </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
                                 What is USI?
                             </a>
                           </div>
-                          <!-- <div class="search-input">     
-                              <div class="search-input-wrapper peptidome">
-                                  <div class="fake-input">
-                                    <div class="tag-wrapper">
-                                        <Input class="tag-input" v-model="keyword" placeholder="input here" size="small"></Input>
-                                    </div>
-                                    <Icon type="ios-search"></Icon>
-                                  </div>
-                              </div>
-                          </div>
-                          <div class="search-filter">
-                              <div class="search-button">
-                                  <a class="button search-button" @click="submitSearch">Search</a>
-                              </div>
-                          </div> -->
+                          <Spin size="large" fix v-if="spinShow"></Spin>
                       </div>
                   </Card>   
-              </div>
-          </Col>
-      </Row>
-      <Row type="flex" justify="center" class="code-row-bg">
-          <Col span="24">
-              <div class="visualization-wrapper">
-                  <Card class="card protein">
-                      <p slot="title"> <i class="fas fa-download icon-tag"></i>Peptide Spectrum Matches</p>
-                     <!--
-                     <div class="filter-wrapper">
-                         <div class="summary-content-header">Filter</div>
-                         <Select v-model="model1" size="small" style="width:100px">
-                            <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                         </Select>
-                     </div>
-                      -->
-                     <div class="download-list-wrapper psm-container">
-                        <span v-if="psmTableLoading==false && psmTableResults.length<1" class="no-data-wrapper">Please select one Peptide</span>
-                        <Table v-else class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
-                     </div>
-                     <div v-if="!psmItemSelected" class="page-container">
-                       <Page :total="spectraTotal" :page-size="spectraPageSize" :current="spectraPage" size="small" show-sizer show-total @on-change="spectraPageChange" @on-page-size-change="spectraPageSizeChange"></Page>
-                     </div>
-                  </Card>
               </div>
           </Col>
       </Row>
@@ -81,20 +42,65 @@
             <div class="visualization-wrapper">
               <Card class="card protein">
                  <p slot="title" class="table-header">
-                    <span><i class="fas fa-download icon-tag"></i>Spectrum</span>
-                    <span class="right">
-                        <a v-if="spectrumTableCollapse" href="javascript:void(0)"><Icon type="arrow-right-b" size="20" @click="spectrumTableCollapseChange(false)"></Icon></a>
-                        <a v-else href="javascript:void(0)"><Icon type="arrow-down-b" size="20" @click="spectrumTableCollapseChange(true)"></Icon></a>
+                    <span><Icon type="md-stats" size="14" style="margin-right: 5px"/>Spectrum</span> 
+                    <span v-if="spectrumFound" class="right">
+                        <a v-if="spectrumTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="spectrumTableFold(false)"></Icon></a>
+                        <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="spectrumTableFold(true)"></Icon></a>
                     </span>
                  </p>
                  <div class="spectrum-container">
                     <div style="color:#bdbdbd; text-align: center;">
-                        {{spectrumTableHint}}
+                        <span v-if ="spectrumTableFoldBool">{{spectrumTableHint}}</span>
                     </div>
                  </div>
               </Card>
             </div>
         </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title" class="table-header"> 
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</span>
+                          <span v-if="spectrumFound" class="right">
+                              <a v-if="usiTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="usiTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
+                          </span>
+                      </p>
+                      <div class="download-list-wrapper psm-container">
+                          <div style="color:#bdbdbd; text-align: center;">
+                              <span v-if ="usiTableFoldBool">{{usiTableHint}}</span>
+                          </div>
+                          <Table v-if ="spectrumFound" row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title"> <Icon type="md-quote" size="12" style="margin-right: 5px"/></i>Citations</p> 
+                      <div class="citations-container">
+                          <ul>
+                            <li>
+                              Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences. Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. <a href="https://academic.oup.com/nar/article/50/D1/D543/6415112">PMID: 34723319</a>.
+                            </li>
+                            <Divider />
+                            <li>
+                              Deutsch EW, Perez-Riverol Y, Carver J, Kawano S, Mendoza L, Van Den Bossche T, Gabriels R, Binz PA, Pullman B, Sun Z, Shofstahl J, Bittremieux W, Mak TD, Klein J, Zhu Y, Lam H, Vizcaíno JA, Bandeira N. Universal Spectrum Identifier for mass spectra. Nat Methods. 2021 Jul;18(7):768-770. doi: 10.1038/s41592-021-01184-6. Epub 2021 Jun 28. <a href="https://www.nature.com/articles/s41592-021-01184-6">PMID: 34183830</a>.
+                            </li>
+                            <Divider />
+                            <li>
+                              Hulstaert N, Shofstahl J, Sachsenberg T, Walzer M, Barsnes H, Martens L, Perez-Riverol Y. ThermoRawFileParser: Modular, Scalable, and Cross-Platform RAW File Conversion. J Proteome Res. 2020 Jan 3;19(1):537-542. doi: 10.1021/acs.jproteome.9b00328. Epub 2019 Dec 6. <a href="https://pubs.acs.org/doi/10.1021/acs.jproteome.9b00328">PMID: 31755270</a>.
+                            </li>
+                          </ul>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
       </Row>
     </div>
   </div>
@@ -112,470 +118,38 @@
           peptideSequenceInputModel:'',
           proteinSequence:'',
           proteinSequenceArray:[],
-          proteinSequenceCollapse:true,
+          proteinSequenceFold:true,
           proteinTableLoading: false,
           proteinTableHint:'Please select one Protein',
-          spectrumTableHint:'Please select one PSM',
+          spectrumTableHint:'No Spectrum',
+          usiTableHint:'No USI Details',
           peptideProteinAccession:'',
           spectraAssayAccession:'',
           peptideTableLoading:false,
           psmTableLoading:false,
           psmTableColumn: [
               {
-                  title: '#',
-                  //minWidth: 30,
-                  width: 30,
-                  align: 'center',
-                  render: (h, params) => {
-                      return h('Checkbox', {
-                          props: {
-                              value: params.row.select
-                          },
-                          on: {
-                              'on-change': (val) => {
-                                  console.log('val',val)
-                                  this.psmTableResults.map(x => {
-                                    console.log('x',x)
-                                      x.select= false;
-                                      return x;
-                                  });
-                                  this.psmTableResults[params.index].select= val;
-                                  if(val){
-                                      this.psmItemSelected = true;
-                                      // console.log(params.row)
-                                      this.selected = 'usi'
-                                      this.keyword = params.row.usi
-                                      console.log('this.keyword',this.keyword)
-                                      this.getSpectrum(params.row.usi)
-                                  }
-                                  else{
-                                      this.keyword = ''
-                                      this.psmItemSelected = false;
-                                      this.getSpectra();
-                                  }
-                                      
-                                  
-                                  if (history.pushState) {
-                                        var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
-                                        window.history.pushState({path:newurl},'',newurl);
-                                    }
-
-                                  this.spectrumTableCollapseChange(!val);
-                                  
-
-                                  // this.showSpectrum(val, params.row.peptideSequence, params.row.peaks, params.row.charge, params.row.precursorMz, params.row.variableMods)
-                              }
-                          }
-                      });
-                  }
+                  title: 'Key',
+                  key: 'key',
+                  width: 250,
+                  tree:true,  
               },
               {
-                  title: 'Accession',
-                  key: 'accession',
-                  //sortable: true,
-                  minWidth: 75,
-                  render: (h, params) => {
-                      return h('div', [
-                          h('a', {
-                              style:{
-                                color:'#444'
-                              },
-                              class:{
-                                projectAction:true
-                              },
-                              on: {
-                                  click: () => {
-                                      this.$router.push({name:'dataset',params:{id:params.row.accession}});
-                                      //console.log('params',params)
-                                  }
-                              }
-                          }, params.row.accession),
-                      ]);
-                  }
-              },
-              {
-                  title: 'Peptide Sequence',
-                  key: 'peptideSequence',
-                  //sortable: true,
-                  minWidth: 140,
-                  render: (h, params) => {
-                      // var className;
-                      // var iconColor;
-                      //console.log('psmTableColumn',params.row)
-                      let highlightChar=[];
-                      if(params.row.peptideSequence){
-                          if(params.row.ptms&&params.row.ptms.length>0){
-                             for(let i=0; i< params.row.ptms.length; i++){
-                                let positionMap = params.row.ptms[i].positionMap;
-                                //console.log('positionMap',positionMap);
-                                for(let j=0; j<positionMap.length; j++){
-                                    let item = {
-                                      pos:positionMap[j].key,
-                                      val:params.row.ptms[i].modification.name+';'+params.row.ptms[i].modification.accession
-                                    }
-                                    highlightChar.push(item);
-                                }
-                             }
-                             //console.log('highlightChar',highlightChar);
-                             let spanArray = [];
-                             let sequenceChar = params.row.peptideSequence.split('')
-                             //console.log(highlightChar,sequenceChar)
-                            
-                              for(let i=0; i<sequenceChar.length; i++){
-                                  let found = false;
-                                  for(let j=0; j< highlightChar.length; j++){
-                                      if(highlightChar[j].pos && highlightChar[j].pos-1 ==i){
-                                          found =true;
-                                          let item = h('span',[
-                                                h('Tooltip',{ 
-                                                    props: {content: highlightChar[j].val,placement:"right"}
-                                                },[
-                                                  h('span', {
-                                                      style: {color:'red'}
-                                                  }, sequenceChar[i]),
-                                                ])
-                                            ])
-                                          spanArray.push(item);
-                                          highlightChar.splice(j, 1);
-                                          break;
-                                      }
-                                  }
-                                  if(!found){
-                                      let item = h('span', {}, sequenceChar[i])
-                                      spanArray.push(item)
-                                  }
-                              }  
-                             return h('span',spanArray)
-
-                          }
-                          else{
-                              return h('span',[h('span',{}, params.row.peptideSequence)])
-                          }
-                      }
-                      else{
-                          return h('span',[h('span',{}, 'No Seq')])
-                      }
-                      
-
-                      // return h('div', [
-                      //     h('span', {
-                      //         on: {
-                      //             click: () => {
-                                      
-                      //             }
-                      //         }
-                      //     }, params.row.peptide),
-                      //     h('Tooltip',//first item
-                      //         {
-                      //             props: {
-                      //                 content: 'Consensus peptide',
-                      //             },
-                      //         },//second item
-                      //         [
-                      //            h('Icon', {
-                      //                 props: {
-                      //                     type: 'checkmark-round',
-                      //                 },
-                      //                 style: {
-                      //                     marginLeft: '5px'
-                      //                 },
-                      //             }),
-                              
-                      //         ]//third item
-                      //     ),
-                          
-                      // ]);
-                      // if(params.row.valid){
-                      //   className='fa fa-check';
-                      //   iconColor='#19be6b'
-                      // }
-                      // else{
-                      //   className ='fa fa-times';
-                      //   iconColor='#ed3f14'
-                      // }
-                      // return h('div', [
-                      //     h('i', {
-                      //         attrs: { class: className},
-                      //         style: {
-                      //             color:iconColor,
-                      //             //marginRight: '5px',
-                      //             marginLeft: '20px'
-                      //         },
-                      //     }),
-                      // ]);
-                  }
-                  //className:'peptideID'
-              },
-              {
-                  title: 'Decoy',
-                  key: 'decoy',
-                  //sortable: true,
-                  minWidth: 75,
-                  //className:'peptideID'
-              },
-              // {
-              //     title: 'Start',
-              //     key: 'startPostion',
-              //     sortable: true,
-              //     minWidth: 60,
-              //     // ellipsis:true
-              // },
-              // {
-              //     title: 'End',
-              //     key: 'endPostion',
-              //     sortable: true,
-              //     minWidth: 60,
-              //     // ellipsis:true
-              // },
-              // for old spectrum api 
-              // {
-              //     title: 'PSM-level FDR',
-              //     key: 'psmlevelFDR',
-              //     //sortable: true,
-              //     minWidth: 60,
-              //     renderHeader: (h,params)=>{
-              //         return h('span',[
-              //             h('Icon',{
-              //                 props:{
-              //                     type: 'information-circled'
-              //                 },
-              //                 style: {
-              //                     marginRight: '5px',
-              //                     cursor:'pointer'
-              //                 },
-              //                 on: {
-              //                   click: (value) => {
-              //                       let routeData = this.$router.resolve({path:'/markdownpage/resultpage#combined_psm_fdr'});
-              //                       window.open(routeData.href, '_blank');
-              //                   }
-              //                 }
-              //             }),
-              //             h('span','PSM-level FDR')
-              //         ])
-              //     }
-              // },
-              {
-                  title: 'PSM-level q-value',
-                  key: 'psmlevelqvalue',
-                  //sortable: true,
-                  minWidth: 60,
-              },
-              {
-                  title: 'PrecursorMz',
-                  key: 'precursorMz',
-                  minWidth: 80,
-                  // ellipsis:true
-              },
-              {
-                  title: 'Charge',
-                  key: 'charge',
-                  minWidth: 40,
-                  // ellipsis:true
-              },
-              // for old spectrum api
-              // {
-              //     title: 'Pass submitter Threshold',
-              //     key: 'isThreshold',
-              //     //sortable: true,
-              //     minWidth: 150,
-              //     align: 'center',
-              //     render: (h, params) => {
-              //         var className
-              //         var iconColor;
-              //         if(params.row.isThreshold){
-              //           className='fa fa-check';
-              //           iconColor='#19be6b'
-              //         }
-              //         else{
-              //           className ='fa fa-times';
-              //           iconColor='#ed3f14'
-              //         }
-              //         return h('div', [
-              //             h('i', {
-              //                 attrs: { class: className},
-              //                 style: {
-              //                     color:iconColor,
-              //                     //marginRight: '5px',
-              //                     //marginLeft: '20px'
-              //                 },
-              //             }),
-              //             // h('span', {
-              //             //     on: {
-              //             //         click: () => {
-
-              //             //         }
-              //             //     }
-              //             // }, params.row.type),
-              //         ]);
-              //     }
-              // },
-              {
-                  title: 'ReanalysisAccession',
-                  key: 'reanalysisAccession',
-                  //sortable: true,
+                  title: 'Value',
+                  key: 'value',
+                  sortable: true,
                   minWidth: 150,
-                  align: 'center',
-                
-              },
-              {
-                  title: 'Validated by PRIDE',
-                  key: 'isValid',
-                  //sortable: true,
-                  minWidth: 60,
-                  align: 'center',
-                  render: (h, params) => {
-                      var className;
-                      var iconColor;
-                      if(params.row.isValid){
-                        className='fa fa-check';
-                        iconColor='#19be6b'
-                      }
-                      else{
-                        className ='fa fa-times';
-                        iconColor='#ed3f14'
-                      }
-                      return h('div', [
-                          h('i', {
-                              attrs: { class: className},
-                              style: {
-                                  color:iconColor,
-                                  //marginRight: '5px',
-                                  //marginLeft: '20px'
-                              },
-                          }),
-                          // h('span', {
-                          //     on: {
-                          //         click: () => {
-
-                          //         }
-                          //     }
-                          // }, params.row.type),
-                      ]);
-                  },
-                  renderHeader: (h,params)=>{
-                      return h('span',[
-                          h('Icon',{
-                              props:{
-                                  type: 'information-circled'
-                              },
-                              style: {
-                                  marginRight: '5px',
-                                  cursor:'pointer'
-                              },
-                              on: {
-                                click: (value) => {
-                                    let routeData = this.$router.resolve({path:'/markdownpage/resultpage#validated_by_pride_pipelines'});
-                                    window.open(routeData.href, '_blank');
-                                }
-                              }
-                          }),
-                          h('span','Validated by PRIDE')
-                      ])
-                  }
-              },
-              {
-                  title: 'More',
-                  key: 'more',
-                  //sortable: true,
-                  minWidth: 60,
-                  align: 'center',
-                  render: (h, params) => {
-                      if(params.row.psmMoreArray && params.row.psmMoreArray.length>0){
-                          return  h('Dropdown', {
-                                    props: {
-                                      placement: 'bottom-end',
-                                      transfer:true
-                                    },
-                                    style: {
-                                      textAlign: 'left'
-                                    },
-                                    on: {
-                                      'on-click': (value) => {
-                                        console.log(value)
-                                      }
-                                    }
-                                }, [
-                                  h('div', {
-                                    class: {
-                                      member_operate_div: true
-                                    }
-                                  }, [
-                                      h('Icon', {
-                                          props: {
-                                            type: 'ios-list-box-outline',
-                                            size: 20
-                                          },
-                                          style: {
-                                            //marginLeft: '5px' 
-                                          }
-                                        })
-                                      ]),
-                                      h('DropdownMenu', {
-                                        slot: 'list'
-                                      }, 
-                                      params.row.psmMoreArray.map((obj)=>{
-                                          return h('DropdownItem', {
-                                              props: {name: obj.name}  
-                                          }, obj.value);  
-                                      }))
-                          ]);
-                      }
-                      else
-                        return h('span',{},'No Options')
-                  },
-                  className:'psmPTMs' //for css right border settings
-              },
-              {
-                  title: '',
-                  key: 'ptms',
-                  width:1,
-                  render:(h,params)=>{
-                    return h('div')
-                  },
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: '',
-                  key: 'peaks',
-                  width:1,
-                  render:(h,params)=>{
-                    return h('div')
-                  },
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: '',
-                  key: 'variableMods',
-                  width:1,
-                  render:(h,params)=>{
-                    return h('div')
-                  },
-                  className:'psmPTMs'
-                  // ellipsis:true
-              },
-              {
-                  title: '',
-                  key: 'usi',
-                  width:1,
-                  render:(h,params)=>{
-                    return h('div')
-                  },
-                  className:'psmPTMs'
-                  // ellipsis:true
+                  align: 'center',      
               },  
           ],
           psmTableResults:[],
           protienItemSelected:false,
-          psmItemSelected:true,
-          //selectedProteinTableItem:{},
           spectrumSpinShow:false,
           spectrumTableShow:false,
-          spectrumTableCollapse:true,
-          spectraPage:1,
-          spectraPageSize:20,
-          spectraTotal:0,
+          spectrumTableFoldBool:true,
+          usiTableFoldBool:true,
+          spectrumFound:false,
+          spinShow:false,
           spectraSortDirection:'DESC',
           spectraSortConditions:'projectAccession',
           countArray:[],
@@ -608,324 +182,242 @@
           selected:'',
           searchInputLoading:false,
           autoCompleteArray:[],
-          //peptideSortType:'',
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
           spectraApi: this.$store.state.baseMoleculesApiURL+ '/spectra/search',
           spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
-
+          tableMappingJsonURL: this.$store.state.baseURL + '/spectrum/tableMapping.json'
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      console.log('to.query',to.query);
-      if(to.query)
-        this.getSpectra(to.query);
+      if(to.query){
+        this.getSpectrum(to.query); 
+      }
       next();
     },
     components: {
       NavBar
     },
     methods:{
-      getSpectra(q){
-          console.log('getSpectra',q)
-          let query = q || this.spectraQuery;
-          query.resultType='COMPACT';
-          this.keyword = q ? q.peptideSequence : ''
-          this.psmTableLoading = true;
-          this.$http
-              .get(this.spectraApi,{params: query})
-              .then(function(res){
-                this.psmTableResults=[];
-                this.psmTableLoading = false;
-                if(res.body && res.body._embedded){
-                  this.spectraTotal = res.body.page.totalElements;
-                  //this.spectraPage = res.body.page.number;
-                  //this.spectraPageSize = res.body.page.size;
-                  let psm = res.body._embedded.summaryArchiveSpectrumList; 
-                  console.log('psm',psm)
-                  // console.log('psm',res.body._embedded)
-                  for(let i=0; i < psm.length; i++){
-                      var item = {
-                        //proteinAccession: psm[i].projectAccession,
-                        peptideSequence: psm[i].peptideSequence,
-                        accession: psm[i].projectAccession,
-                        decoy: psm[i].isDecoy,
-                        isValid: psm[i].isValid,
-                        charge:psm[i].precursorCharge,
-                        precursorMz:psm[i].precursorMz,
-                        ptms:psm[i].modifications,
-                        usi:psm[i].usi,
-                        psmlevelqvalue:psm[i].bestSearchEngineScore.value+'',
-                        reanalysisAccession: psm[i].reanalysisAccession,
-                        select:false,
-                        psmMoreArray:[]
-                      }
-                      console.log(item)
-                      //add psmlevelFDR for item
-                      if(psm[i].attributes){
-                          for(let j=0; j<psm[i].attributes.length; j++){
-                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('FDR')!=-1){
-                                  item.psmlevelFDR = parseFloat(psm[i].attributes[j].value).toExponential(3)
-                                  break;
-                              }
-                          }
-                     
-                          //add isThreshold
-                          let found = false;
-                          for(let j=0; j<psm[i].attributes.length; j++){
-                              if(psm[i].attributes[j].name && psm[i].attributes[j].name.indexOf('threshold')!=-1){
-                                  found = true;
-                                  item.isThreshold = psm[i].attributes[j].value == 'true' ? true : false
-                                  break;
-                              }
-                          }
-                          if(!found)
-                              item.isThreshold = false
-
-                          // //add for More option
-                          // for(let j=0; j<psm[i].attributes.length; j++){
-                          //     let tempItem = {
-                          //       name:psm[i].attributes[j].name,
-                          //       value:psm[i].attributes[j].name+': '+psm[i].attributes[j].value
-                          //     }
-                          //     item.psmMoreArray.push(tempItem)
-                          // }
-                      }
-
-                      for(let j=0; j<psm[i].scores.length; j++){
-                          let tempItem = {
-                            name:psm[i].scores[j].name,
-                            value:psm[i].scores[j].name+': '+psm[i].scores[j].value
-                          }
-                          item.psmMoreArray.push(tempItem)
-                      }
-
-                      //add peaks for item
-                      if(psm[i].intensities){
-                          let peaksArray = [];
-                          for(let j=0; j<psm[i].intensities.length; j++){
-                              let item = {
-                                mz:psm[i].masses[j],
-                                intensity:psm[i].intensities[j]
-                              }
-                              peaksArray.push(item)
-                          }
-                          item.peaks = peaksArray;
-                      }
-                      
-                      if(psm[i].modifications){
-                          //add variableMods for item
-                          let variableModsArray = [];
-                          for(let j=0; j<psm[i].modifications.length; j++){
-                              for(let k=0; k<psm[i].modifications[j].positionMap.length; k++){
-                                  let item = {
-                                    index:psm[i].modifications[j].positionMap[k].key,
-                                    modMass:parseFloat(psm[i].modifications[j].modification.value),
-                                    aminoAcid: psm[i].peptideSequence.split('')[psm[i].modifications[j].positionMap[k].key-1]
-                                  };
-                                  variableModsArray.push(item)
-                              }
-                          }
-                          item.variableMods = variableModsArray;
-                      }
-                      this.psmTableResults.push(item);
-                  }
-                  //console.log('this.psmTableResults[0]',this.psmTableResults[0])
-                  //this.psmTableResults[0].select = true; 
-                  //this.showSpectrum(this.psmTableResults[0].select, this.psmTableResults[0].peptideSequence, this.psmTableResults[0].peaks);
-                }
-                else{
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-                }
-              },function(err){
-                  this.psmTableResults=[];
-                  this.psmTableLoading = false;
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-              });
-      },
-      getSpectrum(usi){
-          let query = {usi:usi,resultType:'FULL'};
-          this.$http
-              .get(this.spectrumApi,{params: query})
-              .then(function(res){
-                this.psmTableResults=[];
-                this.psmTableLoading = false;
-
-                if(res.body){
-                  let psm = res.body;
-                  psm.attributes = []
-                  
-                    console.log(psm)
-                      var item = {
-                        //proteinAccession: psm[i].projectAccession,
-                        peptideSequence: psm.peptideSequence,
-                        accession: psm.projectAccession,
-                        decoy: psm.isDecoy,
-                        isValid: psm.isValid,
-                        charge:psm.precursorCharge,
-                        precursorMz:psm.precursorMz,
-                        ptms:psm.modifications,
-                        usi:psm.usi,
-                        psmlevelqvalue:psm.bestSearchEngineScore.value+'',
-                        reanalysisAccession: psm.reanalysisAccession,
-                        select:true,
-                        psmMoreArray:[]
-                      }
-
-                      // this.keyword = item.peptideSequence;
-                      //add psmlevelFDR for item
-                      for(let j=0; j<psm.attributes.length; j++){
-                          if(psm.attributes[j].name && psm.attributes[j].name.indexOf('FDR')!=-1){
-                              item.psmlevelFDR = parseFloat(psm.attributes[j].value).toExponential(3)
-                              break;
-                          }
-                      }
-                      //add isThreshold
-                      let found = false;
-                      for(let j=0; j<psm.attributes.length; j++){
-                          if(psm.attributes[j].name && psm.attributes[j].name.indexOf('threshold')!=-1){
-                              found = true;
-                              item.isThreshold = psm.attributes[j].value == 'true' ? true : false
-                              break;
-                          }
-                      }
-                      if(!found)
-                          item.isThreshold = false
-
-                      //add for More option
-                      // for(let j=0; j<psm.attributes.length; j++){
-                      //     let tempItem = {
-                      //       name:psm.attributes[j].name,
-                      //       value:psm.attributes[j].name+': '+psm.attributes[j].value
-                      //     }
-                      //     item.psmMoreArray.push(tempItem)
-                      // }
-
-                      //add for new More Option
-                      for(let j=0; j<psm.scores.length; j++){
-                          let tempItem = {
-                            name:psm.scores[j].name,
-                            value:psm.scores[j].name+': '+psm.scores[j].value
-                          }
-                          item.psmMoreArray.push(tempItem)
-                      }
-
-                      if(psm.intensities){
-                          //add peaks for item
-                          let peaksArray = [];
-                          for(let j=0; j<psm.intensities.length; j++){
-                              let item = {
-                                mz:psm.masses[j],
-                                intensity:psm.intensities[j]
-                              }
-                              peaksArray.push(item)
-                          }
-                          item.peaks = peaksArray;
-                      }
-               
-                      if(psm.modifications){
-                          //add variableMods for item
-                          // console.log('psm.ptms')
-                          let variableModsArray = [];
-                          for(let j=0; j<psm.modifications.length; j++){
-                              for(let k=0; k<psm.modifications[j].positionMap.length; k++){
-                                  let item = {
-                                    index:psm.modifications[j].positionMap[k].key,
-                                    modMass:parseFloat(psm.modifications[j].modification.value),
-                                    aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
-                                  };
-                                  variableModsArray.push(item)
-                              }
-                          }
-                          item.variableMods = variableModsArray;
-                      }
-                      
-                      this.psmTableResults.push(item);
-
-                      this.spectrumTableCollapseChange(!true);
-
-                      // console.log('item.peptideSequence',item.peptideSequence)
-                      console.log('item.peaks',item.peaks)
-                      // console.log('item.charge',item.charge)
-                      // console.log('item.precursorMz',item.precursorMz)
-                      // console.log('item.variableMods',item.variableMods)
-
-
-                      this.showSpectrum(true, item.peptideSequence, item.peaks, item.charge, item.precursorMz, item.variableMods)
-                }
-                else{
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.success({content:'No PSMs', duration:3});
-                }
-              },function(err){
-                  this.psmTableResults=[];
-                  this.psmTableLoading = false;
-                  this.spectrumTableCollapseChange(true);
-                  this.$Message.error({content:'No PSMs', duration:3});
-              });
-      },
-      spectraPageChange(page){
-          console.log(page)
-          this.spectraPage = page;
-          //console.log('spectraPageChange',this.spectraPage)
-          // if(this.$route.query && this.$route.query.proteinAccession)
-          //   return
-          let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:this.keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-            page:this.spectraPage-1,
-            pageSize :this.spectraPageSize,
+      getSpectrum(q){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
+          this.spectrumFound = false
+          this.spectrumTableHint = 'No Spectrum'
+          this.usiTableHint = 'No USI Details'
+          this.spectrumTableFold(true)
+          this.usiTableFold(true)
+          if(!q.hasOwnProperty("usi")){
+            console.log('no usi')
+            //When route update, there is no usi item in the url
           }
-    
-          this.$router.push({name: 'spectra', query: query});
-      },
-      spectraPageSizeChange(size){
-          this.spectraPageSize = size;
-          // if(this.$route.query && this.$route.query.proteinAccession)
-          //   return
+          else{
+                this.spinShow = true
+                let query = {usi:q.usi,resultType:'FULL'};
+                this.$http
+                    .get(this.spectrumApi,{params: query})
+                    .then(function(res){
+                      this.spinShow = false
+                      this.psmTableResults=[]
+                      this.psmTableLoading = false
+                      if(res.body){
+                        this.spectrumFound = true
+                        this.spectrumTableHint = 'Click to show more'
+                        this.usiTableHint = 'Click to show more'
+                        let psm = res.body;
+                        let peptideSequence = psm.peptideSequence
+                        let charge = psm.precursorCharge
+                        let precursorMz = psm.precursorMz
+                        //calculate peaks for spectrum
+                        let peaks 
+                        if(psm.intensities){
+                            let peaksArray = [];
+                            for(let j=0; j<psm.intensities.length; j++){
+                                let item = {
+                                  mz:psm.masses[j],
+                                  intensity:psm.intensities[j]
+                                }
+                                peaksArray.push(item)
+                            }
+                            peaks = peaksArray;
+                        }
+                        //calculate variableMods for spectrum 
+                        let variableMods
+                        if(psm.modifications){
+                            let variableModsArray = [];
+                            for(let j=0; j<psm.modifications.length; j++){
+                                for(let k=0; k<psm.modifications[j].positionMap.length; k++){
+                                    let item = {
+                                      index:psm.modifications[j].positionMap[k].key,
+                                      modMass:parseFloat(psm.modifications[j].modification.value),
+                                      aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
+                                    };
+                                    variableModsArray.push(item)
+                                }
+                            }
+                            variableMods = variableModsArray;
+                        }
+                        this.spectrumTableFold(false)
+                        this.usiTableFold(false)
+                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods)
+                        //for USI Details
+                        let array = []
+                        let samplePropertiesChildArray = []
+                        let propertiesChildArray = []
+                        let projectChildArray = []
+                        let projectTitle = ''
+                        for(let i in psm){
+                          if(psm[i]){ // remove the "null" properties in the reply
+                             //find the array in the reply, 
+                            if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
+                              continue
+                            if(Array.isArray(psm[i])){
+                              for(let j=0;j<psm[i].length;j++){
+                                    let item = {}
+                                    item.key = psm[i][j].name
+                                    item.value = psm[i][j].value
+                                    // console.log('item',item)
+                                    if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
+                                      continue
+                                    if(item.key.indexOf('project')!= -1) //find project property
+                                      projectChildArray.push(item)
+                                    if(item.key.indexOf('project title')!= -1) //query the title content and use later
+                                      projectTitle = item.value  
+                                    else if(i == 'sampleProperties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
+                                      samplePropertiesChildArray.push(item)
+                                    else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
+                                      propertiesChildArray.push(item)
+                               }
+                            }
+                            else{
+                              let item = {}
+                              item.key = i;
+                              item.value = psm[i]
+                              array.push(item)
+                            }
+                          }
+                        }
 
-          let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:this.keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-            page:this.spectraPage-1,
-            pageSize :this.spectraPageSize,
+                        //add Id for tree table to use
+                        for(let i=0; i<samplePropertiesChildArray.length; i++){
+                          samplePropertiesChildArray[i].id = '100'+ i
+                        }
+                        for(let i=0; i<propertiesChildArray.length; i++){
+                          propertiesChildArray[i].id = '101'+ i
+                        }
+                        for(let i=0; i<projectChildArray.length; i++){
+                          projectChildArray[i].id = '102'+ i
+
+                          //merge the repeated items. TODO
+                        }
+
+                        // after set id, add "sampleProperties" and "properties" to "array"
+                        let samplePropertiesItem = {
+                          key:'sampleProperties',
+                          value:'-',
+                          children:samplePropertiesChildArray
+                        }
+                        let propertiesItem = {
+                          key:'properties',
+                          value:'-',
+                          children:propertiesChildArray
+                        }
+                        let projectItem = {
+                          key:'project',
+                          value: projectTitle,
+                          children:projectChildArray
+                        }
+
+                        array.push(samplePropertiesItem)
+                        array.push(propertiesItem)
+                        array.unshift(projectItem)
+
+                        // remame the key according to the Json file
+                        this.$http
+                          .get(this.tableMappingJsonURL)
+                          .then(function(res){
+                              for(let i=0; i<array.length; i++){
+                                //set Id for the array and order the "project" item order
+                                array[i].id = '103'+ i
+                                //set the key based on json or just capitalized the first 'char'
+                                if(array[i].key == 'sampleProperties'){
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                }
+                                else if(array[i].key == 'properties'){ // the logic is the same with the above "sampleProperties" just in case of any specific tasks need to been done
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                }
+                                else if(array[i].key == 'project'){ // the logic is the same with the above "sampleProperties" ,but we need to change some specific item orders
+                                  for(let j=0; j<array[i].children.length; j++){
+                                      array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
+                                  }
+                                  //change the order here TODO
+                                }
+                                array[i].key = res.body[array[i].key] ? res.body[array[i].key] : array[i].key.charAt(0).toUpperCase() + array[i].key.slice(1)
+
+
+                              }
+                              // reorder the array
+                              this.psmTableResults = array
+                          },function(err){
+
+                          });
+                      }
+                      else{
+                        this.spinShow = false
+                        this.spectrumFound = false
+                        this.spectrumTableHint = 'No Spectrum'
+                        this.usiTableHint = 'No USI Details'
+                        this.spectrumTableFold(true);
+                        this.usiTableFold(true)
+                        this.$Message.success({content:'No PSMs', duration:3});
+                      }
+                    },function(err){
+                        this.spinShow = false
+                        this.spectrumFound = false
+                        this.spectrumTableHint = 'No Spectrum'
+                        this.usiTableHint = 'No USI Details'
+                        this.psmTableResults=[];
+                        this.psmTableLoading = false;
+                        this.spectrumTableFold(true);
+                        this.usiTableFold(true)
+                        this.$Message.error({content:'No PSMs', duration:3});
+                    });
           }
-          this.$router.push({name: 'spectra', query: query});
       },
-      spectrumTableCollapseChange(val){
-        // console.log('spectrumTableCollapseChange');
-          this.spectrumTableCollapse = val
-          if(this.spectrumTableCollapse){
-              document.querySelector('.spectrum-container').style.height = 'auto'
+      spectrumTableFold(val){
+          this.spectrumTableFoldBool = val
+          if(this.spectrumTableFoldBool){
+              if(document.querySelector('.spectrum-container'))
+                document.querySelector('.spectrum-container').style.height = 'auto'
               if(document.querySelector('#lorikeetIframe'))
                 document.querySelector('#lorikeetIframe').style.display= 'none'
-              if(this.psmItemSelected)
-                  this.spectrumTableHint = "Open Table to see the results"
-              else
-                  this.spectrumTableHint = "Please select one PSM"
           } 
           else{
-              document.querySelector('.spectrum-container').style.height = '730px'
-              if(this.psmItemSelected){
-                  if(document.querySelector('#lorikeetIframe'))
-                    document.querySelector('#lorikeetIframe').style.display= 'block'
-                  this.spectrumTableHint = ""
+              if(document.querySelector('.spectrum-container'))
+                document.querySelector('.spectrum-container').style.height = '730px'
+              if(document.querySelector('#lorikeetIframe')) {
+                if(this.spectrumFound)
+                  document.querySelector('#lorikeetIframe').style.display= 'block'
+                else
+                   document.querySelector('#lorikeetIframe').style.display= 'none' //if spectrum is not found, we have to set display none even if the table is open
               }
-              else
-                  this.spectrumTableHint = "Please select one PSM"
           }
       },
+      usiTableFold(val){
+          this.usiTableFoldBool = val
+          if(this.usiTableFoldBool){
+            if(document.querySelector('.psm-table'))
+              document.querySelector('.psm-table').style.display = 'none'
+          }
+          else{
+            if(document.querySelector('.psm-table'))
+              document.querySelector('.psm-table').style.display = 'block'
+          } 
+      },
       showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods){
-        // console.log('444444444444444')
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -1074,17 +566,14 @@
           return
         }
         if(this.selected == 'usi'){
-            this.getSpectrum(this.keyword);
+            this.getSpectrum({usi:this.keyword});
             if (history.pushState) {
                   var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
                   window.history.pushState({path:newurl},'',newurl);
               }
-
-            this.spectrumTableCollapseChange(false);
             delete this.$route.query.peptideSequence
         }
         else if(this.selected == 'peptide'){
-          this.spectrumTableCollapseChange(true)
           let query = {
               //reportedProtein:params.row.proteinAccession,
               //peptideEvidenceAccession:params.row.accession,
@@ -1100,36 +589,6 @@
           else
             this.$router.push({name: 'spectra', query: query});
         }
-
-
-        // 'on-change': (val) => {
-        //       this.psmTableResults.map(x => {
-        //           x.select= false;
-        //           return x;
-        //       });
-        //       this.psmTableResults[params.index].select= val;
-        //       if(val){
-        //           this.psmItemSelected = true;
-        //           //console.log(params.row)
-        //           this.getSpectrum(params.row.usi);
-        //       }
-        //       else{
-        //           this.psmItemSelected = false;
-        //           this.getSpectra();
-        //       }
-                  
-              
-        //       if (history.pushState) {
-        //             var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
-        //             window.history.pushState({path:newurl},'',newurl);
-        //         }
-
-        //       this.spectrumTableCollapseChange(!val);
-        //   }
-
-
-        
-        //this.$Message.success({content:'new result', duration:1});
       },
       gotoUSI(){
         window.open('http://www.psidev.info/usi')
@@ -1137,7 +596,6 @@
       gotoExamplePeptide(keyword){
         this.selected = 'peptide'
         this.keyword = keyword
-        this.spectrumTableCollapseChange(true)
         let query = {
             //reportedProtein:params.row.proteinAccession,
             //peptideEvidenceAccession:params.row.accession,
@@ -1157,13 +615,11 @@
       gotoExampleUSI(keyword){
         this.selected = 'usi'
         this.keyword = keyword
-        this.getSpectrum(keyword);
+        this.getSpectrum({usi:keyword});
         if (history.pushState) {
               var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
               window.history.pushState({path:newurl},'',newurl);
           }
-
-        this.spectrumTableCollapseChange(false);
         delete this.$route.query.peptideSequence
         // this.$router.replace({'query': null});
       }
@@ -1204,41 +660,18 @@
     mounted: function(){
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
-          console.log('111');
-          //this.getPeptidesEvidences();
-          //this.getProteinEvidences();
-          this.selected = 'usi'
-          let query = {
-            page: this.spectraPage-1,
-            pageSize: this.spectraPageSize
-          }
-          this.getSpectra(query);
+         
         }
         else{
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
-            // console.log(22222)
-            this.getSpectrum(this.$route.query.usi);
+            console.log(22222)
+            this.getSpectrum({usi:this.$route.query.usi});
           }
           else{
-              // console.log(333333)
-              this.selected = 'peptide'
-              this.$forceUpdate()
-              if(this.$route.query.page)
-                  this.spectraPage = parseInt(this.$route.query.page) + 1;
-              if(this.$route.query.pageSize){
-                  let tempPageSize = parseInt(this.$route.query.pageSize);
-                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
-                    this.spectraPageSize = parseInt(this.$route.query.pageSize)
-                  else 
-                    this.spectraPageSize = 20
-              }
-              this.getSpectra(this.$route.query);
-          } //if('peptideSequence' in this.$route.query)
-            
-
-          //this.getProteinEvidences(this.$route.query);
+             
+          } 
         }
     },
     beforeDestroy(){
@@ -1356,7 +789,7 @@
     color: rgb(189, 189, 189)
   }
   .download-list-wrapper.psm-container{
-    height: 496px !important;
+    height: auto;
   }
   .spectrum-container{
       height: auto;
@@ -1469,6 +902,9 @@
       background-color: #5bc0be;
       border-radius: 3px;
   }
+  .citations-container{
+    margin-left: 20px;
+  }
 </style>
 <style>
   .card .ivu-card-body table{
@@ -1507,7 +943,7 @@
   }
   .card.protein .download-list-wrapper{
      overflow: auto;
-     height: 450px;
+     height: auto;
   }
   .protein-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
     visibility: hidden;
@@ -1515,8 +951,12 @@
   .peptide-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
     visibility: hidden;
   }
-  .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{
-    visibility: hidden;
+  .psm-table .ivu-table-header thead tr th:first-child .ivu-table-cell{ 
+    /*visibility: hidden;*/
+  }
+  .psm-table .ivu-table-cell .ivu-table-cell-tree{ 
+    margin-right: 5px;
+    text-align: center;
   }
   .peptide-table .ivu-table .ivu-table-body th.ivu-table-column-center, td.ivu-table-column-center{
     padding: 0 !important;
