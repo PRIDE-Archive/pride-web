@@ -208,7 +208,7 @@
           this.usiTableFold(true)
           if(!q.hasOwnProperty("usi")){
             console.log('no usi')
-            //NO results TODO
+            //When route update, there is no usi item in the url
           }
           else{
                 this.spinShow = true
