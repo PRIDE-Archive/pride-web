@@ -20,11 +20,11 @@
 <!--                              <Tooltip content="YYWGGLYSWDMSK">-->
 <!--                                  <a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
 <!--                              </Tooltip>-->
-                              <Tooltip content="mzspec:PRD000908:S9588TPST_Fr3:scan:15969" style="margin-left: 5px">
+                              <Tooltip content="mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555" style="margin-left: 5px">
                                 <div slot="content">
-                                    <p>mzspec:PRD000908:S9588TPST_Fr3:scan:15969</p>
+                                    <p>mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2</p>
                                 </div>
-                                  <a @click="gotoExampleUSI('mzspec:PRD000908:S9588TPST_Fr3:scan:15969')" style="color:#666">USI for MESASSSLATSGR</a>
+                                  <a @click="gotoExampleUSI('mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2')" style="color:#666">USI for VLHPLEGAVVIIFK/2</a>
                               </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">

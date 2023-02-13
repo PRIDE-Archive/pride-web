@@ -31,7 +31,7 @@
                           <DropdownMenu slot="list">
                               <DropdownItem name="goToArchive"><router-link :to="{ name: 'archive'}">PRIDE Archive</router-link></DropdownItem>
                               <DropdownItem name="goToAnnotate"><a>PRIDE Archive Annotated</a></DropdownItem>
-                              <DropdownItem name="goToSpectra"><router-link :to="{ name: 'spectra'}">PRIDE Archive Spectra</router-link></DropdownItem>
+                              <DropdownItem name="goToSpectra"><router-link :to="{ name: 'usi'}">PRIDE Archive USI</router-link></DropdownItem>
                               <DropdownItem name="gotoSpectrumLibrary"><router-link :to="{ name: 'spectrumlibrary'}">PRIDE Spectral Libraries</router-link></DropdownItem>
                               <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
                           </DropdownMenu>
@@ -137,9 +137,9 @@
             logoURL:'/logo/PRIDE_logo_Peptide.png',
         }
       }
-      else if(page == 'spectra'){
+      else if(page == 'usi'){
         item = {
-            pageName:'spectra',
+            pageName:'usi',
             homePageName:'landingpage',
             logoWidth:400,
             logoURL:'/logo/PRIDE_logo_Archive.png',
@@ -184,8 +184,7 @@
             },
             resourcesClick(name){
                 if(name=='goToArchive'){
-                  console.log('goToArchive')
-                    this.$router.push({name:'archive'}).catch(err => {})
+                    this.$router.push({name:'archive'});
                 }
                 else if(name== 'goToAnnotate'){
                   let query = {
@@ -194,37 +193,35 @@
                     page:0,
                     pageSize:20
                   }
-                  this.$router.push({name: 'archive', query: query}).catch(err => {})
+                  this.$router.push({name: 'archive', query: query});
                   // window.open('https://www.ebi.ac.uk/pride/archive?keyword=sdrf.tsv&sortDirection=DESC&page=0&pageSize=20')
                 }
                 else if(name=='goToSpectra'){
-                  this.$router.push({name:'spectra'}).catch(err => {
-                    console.log('err',err)
-                  })
+                  this.$router.push({name:"usi"})
                 }
                 else if(name=='goToPeptidome'){
-                    this.$router.push({name:'peptidome'}).catch(err => {})
+                    this.$router.push({name:'peptidome'});
                 }
                 else if(name=='gotoSpectrumLibrary'){
-                    this.$router.push({name:'spectrumlibrary'}).catch(err => {})
+                    this.$router.push({name:'spectrumlibrary'});
                 }
                 else if(name=='goToSpectraClustering'){
-                    this.$router.push({path:'/markdownpage/spectraclustering'}).catch(err => {})
+                    this.$router.push({path:'/markdownpage/spectraclustering'});
                 }
                 else if(name=='goToPrideSubmission'){
-                  this.$router.push({path:'/markdownpage/pridesubmissiontool'}).catch(err => {})
+                  this.$router.push({path:'/markdownpage/pridesubmissiontool'});
                 }
                 else if(name=='goToPrideInspector'){
-                    this.$router.push({path:'/markdownpage/prideinspector'}).catch(err => {})
+                    this.$router.push({path:'/markdownpage/prideinspector'});
                 }
                 else if(name=='goToPrideUtilities'){
-                    this.$router.push({path:'/markdownpage/prideutilities'}).catch(err => {})
+                    this.$router.push({path:'/markdownpage/prideutilities'});
                 }
                 else if(name=='goToPrideArchiveWS'){
-                    this.$router.push({path:'/markdownpage/pridearchivews'}).catch(err => {})
+                    this.$router.push({path:'/markdownpage/pridearchivews'});
                 }
                 else if(name=='goToPridePeptidomeWS'){
-                    this.$router.push({path:'/markdownpage/pridepeptidomews'}).catch(err => {})
+                    this.$router.push({path:'/markdownpage/pridepeptidomews'});
                 }
             },
             gotoAbout(){

@@ -183,7 +183,7 @@
             this.$router.push({name:'archive'});
         },
         gotoProteomes(){
-            window.open('https://www.ebi.ac.uk/pride/archive/spectra');
+            window.open('https://www.ebi.ac.uk/pride/archive/usi');
         },
         gotoGithub(){
             window.open('https://github.com/bigbio/sparkMS');

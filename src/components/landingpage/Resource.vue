@@ -218,7 +218,7 @@
                 this.$router.push({name:'archive'});
             },
             goToSpectraArchive(){
-              this.$router.push({name:'spectra'})
+              this.$router.push({name:'usi'})
             },
             initAdvanceSearch(){
                 this.searchItems = [];
