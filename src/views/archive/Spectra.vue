@@ -139,10 +139,74 @@
                   key: 'value',
                   sortable: true,
                   minWidth: 150,
-                  align: 'center',      
+                  align: 'center',
+                  render: (h, params) => {
+                      // console.log('params',params)
+                      if(params.row.key == 'Pubmed Id')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        window.open('http://europepmc.org/article/MED/' + params.row.value)
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else if(params.row.key == 'Project Accession')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        this.$router.push({name:'dataset',params:{id:params.row.value}});
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else if(params.row.key == 'Project DOI')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        window.open('https://www.doi.org/' + params.row.value)
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else 
+                        return h('div', [
+                            h('span', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                            }, params.row.value),
+                        ]);
+                  }
+      
               },  
           ],
           psmTableResults:[],
+          psmTableResultsRAW:[],
           protienItemSelected:false,
           spectrumSpinShow:false,
           spectrumTableShow:false,
@@ -180,6 +244,7 @@
           selectTemp:'',
           keyword:'',
           selected:'',
+          usiTableSearchKeyword:'',
           searchInputLoading:false,
           autoCompleteArray:[],
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
@@ -218,6 +283,7 @@
                     .then(function(res){
                       this.spinShow = false
                       this.psmTableResults=[]
+                      this.psmTableResultsRAW=[]
                       this.psmTableLoading = false
                       if(res.body){
                         this.spectrumFound = true
@@ -359,8 +425,8 @@
 
 
                               }
-                              // reorder the array
-                              this.psmTableResults = array
+                              // reorder the array, raw table is used to recover the table after search
+                              this.psmTableResultsRAW = this.psmTableResults = array
                           },function(err){
 
                           });
@@ -380,6 +446,7 @@
                         this.spectrumTableHint = 'No Spectrum'
                         this.usiTableHint = 'No USI Details'
                         this.psmTableResults=[];
+                        this.psmTableResultsRAW=[];
                         this.psmTableLoading = false;
                         this.spectrumTableFold(true);
                         this.usiTableFold(true)
@@ -604,9 +671,6 @@
             sortDirection:'DESC',
         }
         if(keyword === this.$route.query.peptideSequence){
-          console.log('111',keyword)
-          console.log('222',this.$route.query.peptideSequence)
-          console.log(keyword,this.$route.query)
           // location.reload();
         }
         else
@@ -622,7 +686,7 @@
           }
         delete this.$route.query.peptideSequence
         // this.$router.replace({'query': null});
-      }
+      },
     },
     watch: {
         peptideTableResults:{
@@ -666,7 +730,6 @@
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
-            console.log(22222)
             this.getSpectrum({usi:this.$route.query.usi});
           }
           else{
