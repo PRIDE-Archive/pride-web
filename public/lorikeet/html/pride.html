@@ -31,6 +31,8 @@ var precursorMZ = 0;
 var variableMods = [];
 var peaksTemp = [];
 var peaks = [];
+var nTerm = 0;
+var cTerm = 0;
 
 function receiveMessage(event)
 {
@@ -45,6 +47,8 @@ function receiveMessage(event)
     precursorMZ = event.data.precursorMZ || precursorMZ;
     peaksTemp = event.data.peaks || peaksTemp;
     variableMods = event.data.variableMods || variableMods;
+    nTerm = event.data.nTerm || nTerm;
+    cTerm = event.data.cTerm || cTerm;
 
    
     peaksTemp.sort((a,b)=>{return a.mz - b.mz})
@@ -71,10 +75,13 @@ function showData(){
         "showViewingOptions": true,
         "zoomMs1": true,
         "massErrorPlotDefaultUnit":"ppm",
+        "fileName":"test",
         "precursorMz":precursorMZ,
         "width":width,
         "height":450,
         "variableMods":variableMods,
+        "ntermMod": nTerm, // additional mass to be added to the n-term
+		"ctermMod": cTerm, // additional mass to be added to the c-term
         "peaks":peaks,
         "showA":[1,1,0],
         "showB":[1,1,0],
