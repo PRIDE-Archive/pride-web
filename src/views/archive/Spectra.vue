@@ -17,9 +17,6 @@
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
                               Example:
-                                        <!--<Tooltip content="YYWGGLYSWDMSK">-->
-                                        <!--<a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
-                                        <!--</Tooltip>-->
                               <Tooltip content="mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555" style="margin-left: 5px">
                                 <div slot="content">
                                     <p>mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2</p>
@@ -64,6 +61,8 @@
                       <p slot="title" class="table-header"> 
                           <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</span>
                           <span v-if="spectrumFound" class="right">
+                              <Input v-if ="!usiTableFoldBool" type="text" v-model="usiTableSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchUSIDetailsTable">
+                              </Input>
                               <a v-if="usiTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="usiTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
                           </span>
@@ -139,10 +138,74 @@
                   key: 'value',
                   sortable: true,
                   minWidth: 150,
-                  align: 'center',      
+                  align: 'center',
+                  render: (h, params) => {
+                      // console.log('params',params)
+                      if(params.row.key == 'Pubmed Id')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        window.open('http://europepmc.org/article/MED/' + params.row.value)
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else if(params.row.key == 'Project Accession')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        this.$router.push({name:'dataset',params:{id:params.row.value}});
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else if(params.row.key == 'Project DOI')
+                        return h('div', [
+                            h('a', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  projectAction:true
+                                },
+                                on: {
+                                    click: () => {
+                                        window.open('https://www.doi.org/' + params.row.value)
+                                    }
+                                }
+                            }, params.row.value),
+                        ]);
+                      else 
+                        return h('div', [
+                            h('span', {
+                                style:{
+                                  color:'#444'
+                                },
+                                class:{
+                                  // projectAction:true
+                                },
+                            }, params.row.value),
+                        ]);
+                  }
+      
               },  
           ],
           psmTableResults:[],
+          psmTableResultsRAW:[],
           protienItemSelected:false,
           spectrumSpinShow:false,
           spectrumTableShow:false,
@@ -180,6 +243,7 @@
           selectTemp:'',
           keyword:'',
           selected:'',
+          usiTableSearchKeyword:'',
           searchInputLoading:false,
           autoCompleteArray:[],
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
@@ -218,6 +282,7 @@
                     .then(function(res){
                       this.spinShow = false
                       this.psmTableResults=[]
+                      this.psmTableResultsRAW=[]
                       this.psmTableLoading = false
                       if(res.body){
                         this.spectrumFound = true
@@ -242,23 +307,31 @@
                         }
                         //calculate variableMods for spectrum 
                         let variableMods
-                        if(psm.modifications){
-                            let variableModsArray = [];
-                            for(let j=0; j<psm.modifications.length; j++){
-                                for(let k=0; k<psm.modifications[j].positionMap.length; k++){
-                                    let item = {
-                                      index:psm.modifications[j].positionMap[k].key,
-                                      modMass:parseFloat(psm.modifications[j].modification.value),
-                                      aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
-                                    };
-                                    variableModsArray.push(item)
-                                }
+                        let ntermMod
+                        let ctermMod
+                        if(psm.modifications) {
+                          let variableModsArray = [];
+                          for (let j = 0; j < psm.modifications.length; j++) {
+                            for (let k = 0; k < psm.modifications[j].positionMap.length; k++) {
+                              if ((psm.modifications[j].positionMap[k].key != 0) && (psm.modifications[j].positionMap[k].key != peptideSequence.length + 1)) {
+                                let item = {
+                                  index: psm.modifications[j].positionMap[k].key,
+                                  modMass: parseFloat(psm.modifications[j].modification.value),
+                                  aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key - 1]
+                                };
+                                variableModsArray.push(item)
+                              }else if(psm.modifications[j].positionMap[k].key == 0){
+                                ntermMod = parseFloat(psm.modifications[j].modification.value)
+                              }else{
+                                ctermMod = parseFloat(psm.modifications[j].modification.value)
+                              }
                             }
-                            variableMods = variableModsArray;
+                          }
+                          variableMods = variableModsArray;
                         }
                         this.spectrumTableFold(false)
                         this.usiTableFold(false)
-                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods)
+                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods, ntermMod, ctermMod)
                         //for USI Details
                         let array = []
                         let samplePropertiesChildArray = []
@@ -359,8 +432,8 @@
 
 
                               }
-                              // reorder the array
-                              this.psmTableResults = array
+                              // reorder the array, raw table is used to recover the table after search
+                              this.psmTableResultsRAW = this.psmTableResults = array
                           },function(err){
 
                           });
@@ -380,6 +453,7 @@
                         this.spectrumTableHint = 'No Spectrum'
                         this.usiTableHint = 'No USI Details'
                         this.psmTableResults=[];
+                        this.psmTableResultsRAW=[];
                         this.psmTableLoading = false;
                         this.spectrumTableFold(true);
                         this.usiTableFold(true)
@@ -417,7 +491,7 @@
               document.querySelector('.psm-table').style.display = 'block'
           } 
       },
-      showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods){
+      showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods, nTerm, cTerm){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -438,7 +512,9 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMz, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence,
+                      peaks:peaks, charge: charge, precursorMz: precursorMz, variableMods:variableMods, nTerm:nTerm,
+                      cTerm: cTerm, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
@@ -516,7 +592,7 @@
               //console.log('ptms',ptms)
                 for(let j=0; j<ptms.length; j++){
                     let modification =  ptms[j].modification
-                    for(let k=0; k<ptms[j].positionMap.length; k++){
+                    for(let k=0; k < ptms[j].positionMap.length; k++){
                         //console.log('k',k)
                         let des = modification.name + ';' + modification.accession
                         let key = ptms[j].positionMap[k].key -1 + start
@@ -604,9 +680,6 @@
             sortDirection:'DESC',
         }
         if(keyword === this.$route.query.peptideSequence){
-          console.log('111',keyword)
-          console.log('222',this.$route.query.peptideSequence)
-          console.log(keyword,this.$route.query)
           // location.reload();
         }
         else
@@ -622,6 +695,51 @@
           }
         delete this.$route.query.peptideSequence
         // this.$router.replace({'query': null});
+      },
+      searchUSIDetailsTable(e){
+        // console.log(this.usiTableSearchKeyword)
+        // console.log(this.psmTableResults)
+        let array = []
+        
+        for(let i=0; i<this.psmTableResultsRAW.length; i++){
+          let found = false
+          let item = {}
+          // console.log(this.psmTableResultsRAW[i].key)
+          //for the item has children
+          if(this.psmTableResultsRAW[i].hasOwnProperty('children')){
+            //for the item who has 'children', also the key and the value has the keyword matched
+            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+              found = true
+              item.id = this.psmTableResultsRAW[i].id
+              item.key = this.psmTableResultsRAW[i].key
+              item.value = this.psmTableResultsRAW[i].value
+              item.children = [] //set [] for initial value
+            }
+            //confirm if the item in children match the keywork
+            let tempChildrenArray = []
+            for(let j=0; j<this.psmTableResultsRAW[i].children.length; j++){
+              if(this.psmTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+                let item = {}
+                item.id = this.psmTableResultsRAW[i].children[j].id
+                item.key = this.psmTableResultsRAW[i].children[j].key
+                item.value = this.psmTableResultsRAW[i].children[j].value
+                tempChildrenArray.push(item)
+              }
+            }
+            item.children = tempChildrenArray
+          }
+          else{
+            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+              found = true
+              item.id = this.psmTableResultsRAW[i].id
+              item.key = this.psmTableResultsRAW[i].key
+              item.value = this.psmTableResultsRAW[i].value
+            }
+          }
+          if(found)
+            array.push(item)
+        }
+        this.psmTableResults = array
       }
     },
     watch: {
@@ -666,7 +784,6 @@
           if('usi' in this.$route.query){
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
-            console.log(22222)
             this.getSpectrum({usi:this.$route.query.usi});
           }
           else{
