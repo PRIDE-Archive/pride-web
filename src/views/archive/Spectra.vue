@@ -192,17 +192,25 @@
                                 }
                             }, params.row.value),
                         ]);
-                      else 
+                      else {
+                        let content = ''
+                        if(this.usiTableSearchKeyword)
+                          content = (params.row.value+'').replace(new RegExp(this.usiTableSearchKeyword, "gi"), match => `<span class="highlighted">${match}</span>`)
+                        else
+                          content = params.row.value
+
                         return h('div', [
                             h('span', {
                                 style:{
                                   color:'#444'
                                 },
                                 class:{
-                                  projectAction:true
+                                  // projectAction:true
                                 },
-                            }, params.row.value),
+                            }, content),
                         ]);
+                      }
+                        
                   }
       
               },  
@@ -703,13 +711,20 @@
             //for the item who has 'children', also the key and the value has the keyword matched
             if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item = this.psmTableResultsRAW[i]
+              item.id = this.psmTableResultsRAW[i].id
+              item.key = this.psmTableResultsRAW[i].key
+              item.value = this.psmTableResultsRAW[i].value
+              item.children = [] //set [] for initial value
             }
             //confirm if the item in children match the keywork
             let tempChildrenArray = []
             for(let j=0; j<this.psmTableResultsRAW[i].children.length; j++){
               if(this.psmTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
-                tempChildrenArray.push(this.psmTableResultsRAW[i].children[j])
+                let item = {}
+                item.id = this.psmTableResultsRAW[i].children[j].id
+                item.key = this.psmTableResultsRAW[i].children[j].key
+                item.value = this.psmTableResultsRAW[i].children[j].value
+                tempChildrenArray.push(item)
               }
             }
             item.children = tempChildrenArray
@@ -717,7 +732,9 @@
           else{
             if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item = this.psmTableResultsRAW[i]
+              item.id = this.psmTableResultsRAW[i].id
+              item.key = this.psmTableResultsRAW[i].key
+              item.value = this.psmTableResultsRAW[i].value
             }
           }
           if(found)
