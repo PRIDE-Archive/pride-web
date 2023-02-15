@@ -64,6 +64,8 @@
                       <p slot="title" class="table-header"> 
                           <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</span>
                           <span v-if="spectrumFound" class="right">
+                              <Input v-if ="!usiTableFoldBool" type="text" v-model="usiTableSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchUSIDetailsTable">
+                              </Input>
                               <a v-if="usiTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="usiTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
                           </span>
@@ -687,6 +689,42 @@
         delete this.$route.query.peptideSequence
         // this.$router.replace({'query': null});
       },
+      searchUSIDetailsTable(e){
+        // console.log(this.usiTableSearchKeyword)
+        // console.log(this.psmTableResults)
+        let array = []
+        
+        for(let i=0; i<this.psmTableResultsRAW.length; i++){
+          let found = false
+          let item = {}
+          // console.log(this.psmTableResultsRAW[i].key)
+          //for the item has children
+          if(this.psmTableResultsRAW[i].hasOwnProperty('children')){
+            //for the item who has 'children', also the key and the value has the keyword matched
+            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+              found = true
+              item = this.psmTableResultsRAW[i]
+            }
+            //confirm if the item in children match the keywork
+            let tempChildrenArray = []
+            for(let j=0; j<this.psmTableResultsRAW[i].children.length; j++){
+              if(this.psmTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+                tempChildrenArray.push(this.psmTableResultsRAW[i].children[j])
+              }
+            }
+            item.children = tempChildrenArray
+          }
+          else{
+            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+              found = true
+              item = this.psmTableResultsRAW[i]
+            }
+          }
+          if(found)
+            array.push(item)
+        }
+        this.psmTableResults = array
+      }
     },
     watch: {
         peptideTableResults:{
