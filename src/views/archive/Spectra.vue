@@ -192,13 +192,7 @@
                                 }
                             }, params.row.value),
                         ]);
-                      else {
-                        let content = ''
-                        if(this.usiTableSearchKeyword)
-                          content = (params.row.value+'').replace(new RegExp(this.usiTableSearchKeyword, "gi"), match => `<span class="highlighted">${match}</span>`)
-                        else
-                          content = params.row.value
-
+                      else 
                         return h('div', [
                             h('span', {
                                 style:{
@@ -207,10 +201,8 @@
                                 class:{
                                   // projectAction:true
                                 },
-                            }, content),
+                            }, params.row.value),
                         ]);
-                      }
-                        
                   }
       
               },  
