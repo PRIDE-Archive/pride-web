@@ -17,9 +17,6 @@
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
                             <span>
                               Example:
-                                        <!--<Tooltip content="YYWGGLYSWDMSK">-->
-                                        <!--<a @click="gotoExamplePeptide('ERGSSPAEADHHR')" style="color:#666">ERGSSPAEADHHR</a>-->
-                                        <!--</Tooltip>-->
                               <Tooltip content="mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555" style="margin-left: 5px">
                                 <div slot="content">
                                     <p>mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2</p>
@@ -310,23 +307,31 @@
                         }
                         //calculate variableMods for spectrum 
                         let variableMods
-                        if(psm.modifications){
-                            let variableModsArray = [];
-                            for(let j=0; j<psm.modifications.length; j++){
-                                for(let k=0; k<psm.modifications[j].positionMap.length; k++){
-                                    let item = {
-                                      index:psm.modifications[j].positionMap[k].key,
-                                      modMass:parseFloat(psm.modifications[j].modification.value),
-                                      aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key-1]
-                                    };
-                                    variableModsArray.push(item)
-                                }
+                        let ntermMod
+                        let ctermMod
+                        if(psm.modifications) {
+                          let variableModsArray = [];
+                          for (let j = 0; j < psm.modifications.length; j++) {
+                            for (let k = 0; k < psm.modifications[j].positionMap.length; k++) {
+                              if ((psm.modifications[j].positionMap[k].key != 0) && (psm.modifications[j].positionMap[k].key != peptideSequence.length + 1)) {
+                                let item = {
+                                  index: psm.modifications[j].positionMap[k].key,
+                                  modMass: parseFloat(psm.modifications[j].modification.value),
+                                  aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key - 1]
+                                };
+                                variableModsArray.push(item)
+                              }else if(psm.modifications[j].positionMap[k].key == 0){
+                                ntermMod = parseFloat(psm.modifications[j].modification.value)
+                              }else{
+                                ctermMod = parseFloat(psm.modifications[j].modification.value)
+                              }
                             }
-                            variableMods = variableModsArray;
+                          }
+                          variableMods = variableModsArray;
                         }
                         this.spectrumTableFold(false)
                         this.usiTableFold(false)
-                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods)
+                        this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods, ntermMod, ctermMod)
                         //for USI Details
                         let array = []
                         let samplePropertiesChildArray = []
@@ -486,7 +491,7 @@
               document.querySelector('.psm-table').style.display = 'block'
           } 
       },
-      showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods){
+      showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods, nTerm, cTerm){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
               if(peptideSequence){ 
@@ -507,7 +512,9 @@
                     this.spectrumTableShow=true;
                     this.spectrumSpinShow = false;
                     //console.log(peptideSequence,peaks)
-                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence, peaks:peaks, charge: charge, precursorMz: precursorMz, variableMods:variableMods, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
+                    document.querySelector("#lorikeetIframe").contentWindow.postMessage({sequence: peptideSequence,
+                      peaks:peaks, charge: charge, precursorMz: precursorMz, variableMods:variableMods, nTerm:nTerm,
+                      cTerm: cTerm, /*width:window.innerWidth-1000can not calculate dynamically*/}, "*");
                   }
                   document.querySelector("#lorikeetIframe").onerror = ()=> {
                       this.spectrumTableShow= false;
@@ -585,7 +592,7 @@
               //console.log('ptms',ptms)
                 for(let j=0; j<ptms.length; j++){
                     let modification =  ptms[j].modification
-                    for(let k=0; k<ptms[j].positionMap.length; k++){
+                    for(let k=0; k < ptms[j].positionMap.length; k++){
                         //console.log('k',k)
                         let des = modification.name + ';' + modification.accession
                         let key = ptms[j].positionMap[k].key -1 + start
