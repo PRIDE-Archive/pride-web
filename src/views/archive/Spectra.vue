@@ -67,11 +67,34 @@
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
                           </span>
                       </p>
-                      <div class="download-list-wrapper psm-container">
+                      <div class="download-list-wrapper usi-container">
                           <div style="color:#bdbdbd; text-align: center;">
                               <span v-if ="usiTableFoldBool">{{usiTableHint}}</span>
                           </div>
-                          <Table v-if ="spectrumFound" row-key="id" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
+                          <Table v-if ="spectrumFound" row-key="id" class="usi-table" :loading="usiTableLoading" border :columns="usiTableColumn" :data="usiTableResults" size="small"></Table>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title" class="table-header"> 
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>PRIDE Archive PSM Search</span>
+                          <span v-if="psmFound" class="right">
+                              <!-- <Input v-if ="!psmTableFoldBool" type="text" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchPSMTable">
+                              </Input> -->
+                              <a v-if="psmTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="psmTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="psmTableFold(true)"></Icon></a>
+                          </span>
+                      </p>
+                      <div class="download-list-wrapper psm-container">
+                          <div style="color:#bdbdbd; text-align: center;">
+                              <span v-if ="psmTableFoldBool">{{psmTableHint}}</span>
+                          </div>
+                          <Table v-if ="psmFound" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
                       </div>
                   </Card>
               </div>
@@ -122,11 +145,13 @@
           proteinTableHint:'Please select one Protein',
           spectrumTableHint:'No Spectrum',
           usiTableHint:'No USI Details',
+          psmTableHint:'No PSM',
           peptideProteinAccession:'',
           spectraAssayAccession:'',
           peptideTableLoading:false,
           psmTableLoading:false,
-          psmTableColumn: [
+          usiTableLoading:false,
+          usiTableColumn: [
               {
                   title: 'Key',
                   key: 'key',
@@ -204,14 +229,83 @@
       
               },  
           ],
-          psmTableResults:[],
-          psmTableResultsRAW:[],
+          psmTableColumn:[
+              {
+                  title: '#',
+                  //minWidth: 30,
+                  width: 30,
+                  align: 'center',
+                  render: (h, params) => {
+                      return h('Checkbox', {
+                          props: {
+                              value: params.row.select
+                          },
+                          on: {
+                              'on-change': (val) => {
+                                  console.log('val',val)
+                                  this.psmTableResults.map(x => {
+                                    console.log('x',x)
+                                      x.select= false;
+                                      return x;
+                                      // });
+                                      // this.psmTableResults[params.index].select= val;
+                                      // if(val){
+                                      //     this.psmItemSelected = true;
+                                      //     // console.log(params.row)
+                                      //     this.selected = 'usi'
+                                      //     this.keyword = params.row.usi
+                                      //     console.log('this.keyword',this.keyword)
+                                      //     this.getSpectrum(params.row.usi)
+                                      // }
+                                      // else{
+                                      //     this.keyword = ''
+                                      //     this.psmItemSelected = false;
+                                      //     this.getSpectra();
+                                      // }
+                                          
+                                      
+                                      // if (history.pushState) {
+                                      //       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
+                                      //       window.history.pushState({path:newurl},'',newurl);
+                                  })
+                              }
+                          }
+                      });
+                  }
+              },
+              {
+                  title: 'Key',
+                  key: 'key',
+                  width: 250,
+                  tree:true,  
+              },
+              {
+                  title: 'Value',
+                  key: 'value',
+                  sortable: true,
+                  minWidth: 150,
+                  align: 'center',
+              },  
+          ],
+          psmTableResults:[
+              {
+                key:'aaa',
+                value:'bbb'
+              },{
+                key:'aaa',
+                value:'bbb'
+              },
+          ],
+          usiTableResults:[],
+          usiTableResultsRAW:[],
           protienItemSelected:false,
           spectrumSpinShow:false,
           spectrumTableShow:false,
           spectrumTableFoldBool:true,
           usiTableFoldBool:true,
+          psmTableFoldBool:true,
           spectrumFound:false,
+          psmFound:true,
           spinShow:false,
           spectraSortDirection:'DESC',
           spectraSortConditions:'projectAccession',
@@ -281,9 +375,9 @@
                     .get(this.spectrumApi,{params: query})
                     .then(function(res){
                       this.spinShow = false
-                      this.psmTableResults=[]
-                      this.psmTableResultsRAW=[]
-                      this.psmTableLoading = false
+                      this.usiTableResults=[]
+                      this.usiTableResultsRAW=[]
+                      this.usiTableLoading = false
                       if(res.body){
                         this.spectrumFound = true
                         this.spectrumTableHint = 'Click to show more'
@@ -433,7 +527,7 @@
 
                               }
                               // reorder the array, raw table is used to recover the table after search
-                              this.psmTableResultsRAW = this.psmTableResults = array
+                              this.usiTableResultsRAW = this.usiTableResults = array
                           },function(err){
 
                           });
@@ -452,8 +546,8 @@
                         this.spectrumFound = false
                         this.spectrumTableHint = 'No Spectrum'
                         this.usiTableHint = 'No USI Details'
-                        this.psmTableResults=[];
-                        this.psmTableResultsRAW=[];
+                        this.usiTableResults=[];
+                        this.usiTableResultsRAW=[];
                         this.psmTableLoading = false;
                         this.spectrumTableFold(true);
                         this.usiTableFold(true)
@@ -483,6 +577,17 @@
       usiTableFold(val){
           this.usiTableFoldBool = val
           if(this.usiTableFoldBool){
+            if(document.querySelector('.usi-table'))
+              document.querySelector('.usi-table').style.display = 'none'
+          }
+          else{
+            if(document.querySelector('.usi-table'))
+              document.querySelector('.usi-table').style.display = 'block'
+          } 
+      },
+      psmTableFold(val){
+          this.psmTableFoldBool = val
+          if(this.psmTableFoldBool){
             if(document.querySelector('.psm-table'))
               document.querySelector('.psm-table').style.display = 'none'
           }
@@ -697,70 +802,57 @@
         // this.$router.replace({'query': null});
       },
       searchUSIDetailsTable(e){
-        // console.log(this.usiTableSearchKeyword)
-        // console.log(this.psmTableResults)
         let array = []
         
-        for(let i=0; i<this.psmTableResultsRAW.length; i++){
+        for(let i=0; i<this.usiTableResultsRAW.length; i++){
           let found = false
           let item = {}
-          // console.log(this.psmTableResultsRAW[i].key)
+          // console.log(this.usiTableResultsRAW[i].key)
           //for the item has children
-          if(this.psmTableResultsRAW[i].hasOwnProperty('children')){
+          if(this.usiTableResultsRAW[i].hasOwnProperty('children')){
             //for the item who has 'children', also the key and the value has the keyword matched
-            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+            if(this.usiTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item.id = this.psmTableResultsRAW[i].id
-              item.key = this.psmTableResultsRAW[i].key
-              item.value = this.psmTableResultsRAW[i].value
+              item.id = this.usiTableResultsRAW[i].id
+              item.key = this.usiTableResultsRAW[i].key
+              item.value = this.usiTableResultsRAW[i].value
               item.children = [] //set [] for initial value
             }
             //confirm if the item in children match the keywork
             let tempChildrenArray = []
-            for(let j=0; j<this.psmTableResultsRAW[i].children.length; j++){
-              if(this.psmTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+            for(let j=0; j<this.usiTableResultsRAW[i].children.length; j++){
+              if(this.usiTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+                console.log('test')
                 let item = {}
-                item.id = this.psmTableResultsRAW[i].children[j].id
-                item.key = this.psmTableResultsRAW[i].children[j].key
-                item.value = this.psmTableResultsRAW[i].children[j].value
+                item.id = this.usiTableResultsRAW[i].children[j].id
+                item.key = this.usiTableResultsRAW[i].children[j].key
+                item.value = this.usiTableResultsRAW[i].children[j].value
                 tempChildrenArray.push(item)
               }
             }
             item.children = tempChildrenArray
           }
           else{
-            if(this.psmTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.psmTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
+            if(this.usiTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item.id = this.psmTableResultsRAW[i].id
-              item.key = this.psmTableResultsRAW[i].key
-              item.value = this.psmTableResultsRAW[i].value
+              item.id = this.usiTableResultsRAW[i].id
+              item.key = this.usiTableResultsRAW[i].key
+              item.value = this.usiTableResultsRAW[i].value
             }
           }
           if(found)
             array.push(item)
         }
-        this.psmTableResults = array
+        this.usiTableResults = array
       }
     },
     watch: {
         peptideTableResults:{
           handler(){
-              //this.psmTableResults = [];
-              // let iframe = document.querySelector("#lorikeetIframe");
-              // if(iframe){
-              //   this.spectrumTableShow=false;
-              //   this.spectrumSpinShow=false;
-              //   iframe.remove();
-              // }
+  
           },
           deep:true
         },
-        // selected:{
-        //   handler(){
-        //     // this.keyword = ''
-        //   },
-        //   deep:false
-        // }
     },
     computed:{
       spectraQuery:function(){
