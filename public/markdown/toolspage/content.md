@@ -1,4 +1,4 @@
-##PRIDE Tools
+## PRIDE Tools
 
 ## Submission Tool
 
