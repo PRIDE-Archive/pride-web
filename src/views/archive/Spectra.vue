@@ -667,7 +667,7 @@
         }
       },
       gotoUSI(){
-        window.open('http://www.psidev.info/usi')
+        window.open('http://www.ebi.ac.uk/pride/markdownpage/usi')
       },
       gotoExamplePeptide(keyword){
         this.selected = 'peptide'
