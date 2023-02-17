@@ -95,6 +95,9 @@
                               <span v-if ="psmTableFoldBool">{{psmTableHint}}</span>
                           </div>
                           <Table v-if ="psmFound" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
+                          <div v-if ="psmFound" class="psm-table-page-container">
+                            <Page :total="totalPsmTableItem" :page-size="psmTablePageSize" :current="currentPsmTablePage" size="small" show-sizer show-total class-name="page" @on-change="psmTablePageChange" @on-page-size-change="psmTablePageSizeChange"></Page>
+                          </div>
                       </div>
                   </Card>
               </div>
@@ -242,9 +245,9 @@
                           },
                           on: {
                               'on-change': (val) => {
-                                  console.log('val',val)
+                                  // console.log('val',val)
                                   this.psmTableResults.map(x => {
-                                    console.log('x',x)
+                                    // console.log('x',x)
                                       x.select= false;
                                       return x;
                                       // });
@@ -274,28 +277,28 @@
                   }
               },
               {
-                  title: 'Key',
-                  key: 'key',
-                  width: 250,
-                  tree:true,  
+                  title: 'Project Accession', 
+                  key: 'accession', 
+                  width: 140,
+                  align: 'center',
+                  sortable: true,
               },
               {
-                  title: 'Value',
-                  key: 'value',
-                  sortable: true,
+                  title: 'Peptidoform',
+                  key: 'peptidoform',
                   minWidth: 150,
                   align: 'center',
+                  sortable: true,
+              },  
+              {
+                  title: 'USI',
+                  key: 'usi',
+                  minWidth: 150,
+                  align: 'center',
+                  sortable: true,
               },  
           ],
-          psmTableResults:[
-              {
-                key:'aaa',
-                value:'bbb'
-              },{
-                key:'aaa',
-                value:'bbb'
-              },
-          ],
+          psmTableResults:[],
           usiTableResults:[],
           usiTableResultsRAW:[],
           protienItemSelected:false,
@@ -307,6 +310,10 @@
           spectrumFound:false,
           psmFound:true,
           spinShow:false,
+          psmTableSpinShow:false,
+          totalPsmTableItem:0,
+          psmTablePageSize:20,
+          currentPsmTablePage:1,          
           spectraSortDirection:'DESC',
           spectraSortConditions:'projectAccession',
           countArray:[],
@@ -345,6 +352,7 @@
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
           spectraApi: this.$store.state.baseMoleculesApiURL+ '/spectra/search',
           spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
+          psmApi: this.$store.state.baseMoleculesApiURL+ '/search/usi',
           tableMappingJsonURL: this.$store.state.baseURL + '/spectrum/tableMapping.json'
       }
     },
@@ -386,6 +394,7 @@
                         let peptideSequence = psm.peptideSequence
                         let charge = psm.precursorCharge
                         let precursorMz = psm.precursorMz
+                        // console.log(psm)
                         //calculate peaks for spectrum
                         let peaks 
                         if(psm.intensities){
@@ -458,7 +467,7 @@
                             else{
                               let item = {}
                               item.key = i;
-                              item.value = psm[i]
+                              item.value = i == 'bestSearchEngineScore'? psm[i].value : psm[i]
                               array.push(item)
                             }
                           }
@@ -555,6 +564,46 @@
                     });
           }
       },
+      getPSM(){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
+          this.psmTableLoading = true
+          this.psmFound = false
+          this.psmTableResults=[]
+          this.psmTableHint = 'No PSMs'
+          this.psmTableFold(true)
+          this.$http
+              .get(this.psmApi,{params: this.psmTableQuery})
+              .then(function(res){
+                this.psmTableLoading = false
+                if(res.body && res.body._embedded){
+                  this.psmFound = true
+                  let psmTempArray = res.body._embedded.summaryArchiveSpectrumList
+                  let array = []
+                  this.totalPsmTableItem = psmTempArray.length
+                  for(let i=0;i<psmTempArray.length;i++){
+                    let item = {}
+                    item.select = false
+                    item.accession = psmTempArray[i].projectAccession
+                    item.peptidoform = psmTempArray[i].peptidoform
+                    item.usi = psmTempArray[i].usi
+                    array.push(item)
+                  }
+                  this.psmTableResults=array
+                  this.psmTableHint = 'Click to show more'
+                  this.psmTableFold(false)
+                }
+                else{
+                  this.psmFound = false
+                  this.psmTableHint = 'No PSMs'
+                  this.psmTableFold(true)
+                }
+              },function(err){
+                  this.psmFound = false
+                  this.psmTableHint = 'No PSMs'
+                  this.psmTableLoading = false
+                  this.psmTableFold(true)
+                  console.log(err)
+              });
+      },
       spectrumTableFold(val){
           this.spectrumTableFoldBool = val
           if(this.spectrumTableFoldBool){
@@ -590,10 +639,14 @@
           if(this.psmTableFoldBool){
             if(document.querySelector('.psm-table'))
               document.querySelector('.psm-table').style.display = 'none'
+            if(document.querySelector('.psm-table-page-container'))
+              document.querySelector('.psm-table-page-container').style.display = 'none'
           }
           else{
             if(document.querySelector('.psm-table'))
               document.querySelector('.psm-table').style.display = 'block'
+            if(document.querySelector('.psm-table-page-container'))
+              document.querySelector('.psm-table-page-container').style.display = 'flex'
           } 
       },
       showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods, nTerm, cTerm){
@@ -748,11 +801,15 @@
         }
         if(this.selected == 'usi'){
             this.getSpectrum({usi:this.keyword});
+            console.log('11111')
+            this.getPSM()
             if (history.pushState) {
                   var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
                   window.history.pushState({path:newurl},'',newurl);
               }
             delete this.$route.query.peptideSequence
+
+            
         }
         else if(this.selected == 'peptide'){
           let query = {
@@ -763,7 +820,7 @@
               sortDirection:'DESC',
               // resultType:'FULL'
           }
-          console.log('submitSearch',query);
+          // console.log('submitSearch',query);
           if(this.keyword === this.$route.query.peptideSequence){
             location.reload();
           }
@@ -806,45 +863,60 @@
         
         for(let i=0; i<this.usiTableResultsRAW.length; i++){
           let found = false
-          let item = {}
+          let itemParent = {}
           // console.log(this.usiTableResultsRAW[i].key)
           //for the item has children
           if(this.usiTableResultsRAW[i].hasOwnProperty('children')){
             //for the item who has 'children', also the key and the value has the keyword matched
             if(this.usiTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item.id = this.usiTableResultsRAW[i].id
-              item.key = this.usiTableResultsRAW[i].key
-              item.value = this.usiTableResultsRAW[i].value
-              item.children = [] //set [] for initial value
+              itemParent.id = this.usiTableResultsRAW[i].id
+              itemParent.key = this.usiTableResultsRAW[i].key
+              itemParent.value = this.usiTableResultsRAW[i].value
+              itemParent.children = [] //set [] for initial value
             }
             //confirm if the item in children match the keywork
             let tempChildrenArray = []
+            let childFound = false
             for(let j=0; j<this.usiTableResultsRAW[i].children.length; j++){
               if(this.usiTableResultsRAW[i].children[j].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].children[j].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
-                console.log('test')
-                let item = {}
-                item.id = this.usiTableResultsRAW[i].children[j].id
-                item.key = this.usiTableResultsRAW[i].children[j].key
-                item.value = this.usiTableResultsRAW[i].children[j].value
-                tempChildrenArray.push(item)
+                found = true
+                childFound = true
+                let itemChild = {}
+                itemChild.id = this.usiTableResultsRAW[i].children[j].id
+                itemChild.key = this.usiTableResultsRAW[i].children[j].key
+                itemChild.value = this.usiTableResultsRAW[i].children[j].value
+                tempChildrenArray.push(itemChild)
               }
             }
-            item.children = tempChildrenArray
+            if(childFound){
+                itemParent.id = this.usiTableResultsRAW[i].id
+                itemParent.key = this.usiTableResultsRAW[i].key
+                itemParent.value = this.usiTableResultsRAW[i].value
+                itemParent.children = tempChildrenArray
+            }
           }
           else{
             if(this.usiTableResultsRAW[i].key.toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1 || (this.usiTableResultsRAW[i].value+'').toLowerCase().indexOf(this.usiTableSearchKeyword.toLowerCase()) != -1){
               found = true
-              item.id = this.usiTableResultsRAW[i].id
-              item.key = this.usiTableResultsRAW[i].key
-              item.value = this.usiTableResultsRAW[i].value
+              itemParent.id = this.usiTableResultsRAW[i].id
+              itemParent.key = this.usiTableResultsRAW[i].key
+              itemParent.value = this.usiTableResultsRAW[i].value
             }
           }
           if(found)
-            array.push(item)
+            array.push(itemParent)
         }
         this.usiTableResults = array
-      }
+      },
+      psmTablePageChange(page){
+          this.currentPsmTablePage = page;
+          this.getPSM()
+      },
+      psmTablePageSizeChange(size){
+          this.psmTablePageSize = size;
+          this.getPSM()
+      },
     },
     watch: {
         peptideTableResults:{
@@ -855,17 +927,31 @@
         },
     },
     computed:{
-      spectraQuery:function(){
+      // spectraQuery:function(){
+      //     let normalQuery = {}
+      //     normalQuery.reportedProtein=''
+      //     normalQuery.peptideEvidenceAccession=''
+      //     normalQuery.peptideSequence=''
+      //     normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
+      //     normalQuery.assayAccession=''
+      //     normalQuery.sortDirection='DESC'
+      //     normalQuery.sortConditions='projectAccession'
+      //     return normalQuery;
+      // },
+      psmTableQuery:function(){
           let normalQuery = {}
-          normalQuery.reportedProtein=''
-          normalQuery.peptideEvidenceAccession=''
-          normalQuery.peptideSequence=''
-          normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
-          normalQuery.assayAccession=''
-          normalQuery.sortDirection='DESC'
-          normalQuery.sortConditions='projectAccession'
-          return normalQuery;
-      },
+          if(this.keyword)
+            normalQuery.spectraUsi = this.keyword
+          normalQuery.sortConditions = 'projectAccession' //fix DESC first
+          normalQuery.sortDirection = 'DESC' //fix DESC first
+          normalQuery.page = this.currentPsmTablePage - 1
+          normalQuery.pageSize = this.psmTablePageSize
+          normalQuery.includePeptidoform = false
+          normalQuery.includePeptideSequence = true
+          // console.log('this.normalQuery',this.normalQuery);
+          //return '?'+keyword+filter+page+pageSize;
+          return normalQuery;   
+      }
     },
     mounted: function(){
         //window.addEventListener("resize", this.change);
@@ -877,6 +963,7 @@
             this.selected = 'usi'
             this.keyword = this.$route.query.usi
             this.getSpectrum({usi:this.$route.query.usi});
+            this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
           }
           else{
              
@@ -1183,6 +1270,12 @@
   .psm-table .projectAction:hover{
     color:#5bc0be !important;
   }
+  .psm-table-page-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+  }
   .sort-dropdown .ivu-select-dropdown{
       border-radius:0;
   }
@@ -1249,6 +1342,12 @@
     }
     #spectra-bar-pride .ivu-select-arrow{
         color: #f8f8f8 !important;
+    }
+    .psm-table-page-container .page .ivu-select-dropdown-list{
+      margin-left: 0 !important;
+    }
+    .psm-table-page-container .page .ivu-select-dropdown{
+      width:90px!important;
     }
 </style>
 
