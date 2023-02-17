@@ -409,9 +409,9 @@
                             peaks = peaksArray;
                         }
                         //calculate variableMods for spectrum 
-                        let variableMods
-                        let ntermMod
-                        let ctermMod
+                        let variableMods = [];
+                        let ntermMod = 0;
+                        let ctermMod =  0;
                         if(psm.modifications) {
                           let variableModsArray = [];
                           for (let j = 0; j < psm.modifications.length; j++) {
@@ -652,7 +652,7 @@
       showSpectrum(val, peptideSequence, peaks, charge, precursorMz, variableMods, nTerm, cTerm){
           if(val){
               let iframeDom = document.querySelector("#lorikeetIframe");
-              if(peptideSequence){ 
+              // if(peptideSequence){
                   if(iframeDom)
                     iframeDom.remove();
                   
@@ -679,11 +679,11 @@
                       this.spectrumSpinShow = false;
                       this.$Message.error({content:'Spectrum Error', duration:3});
                   };
-              }
-              else{
-                  this.spectrumTableShow = false;
-                  this.spectrumSpinShow = false;
-              }
+              // }
+              // else{
+              //     this.spectrumTableShow = false;
+              //     this.spectrumSpinShow = false;
+              // }
           }
           else{
               this.spectrumSpinShow = false;

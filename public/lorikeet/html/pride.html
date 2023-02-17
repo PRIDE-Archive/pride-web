@@ -39,8 +39,8 @@ function receiveMessage(event)
     //if (event.origin !== "http://example.org:8080")
     //return;
 
-    if(!event.data.sequence)
-        return
+    // if(!event.data.sequence)
+    //     return
     width = event.data.width || width;
     sequence = event.data.sequence || sequence;
     charge = event.data.charge || charge;
