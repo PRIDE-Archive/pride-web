@@ -246,27 +246,23 @@
                           on: {
                               'on-change': (val) => {
                                   this.psmTableResults.forEach(item => {
-                                      this.$set(item,'select',false)
+                                      this.$set(item,'select',false) //select string is the item name from the params.row
                                   })
-                                  this.psmTableResults[params.index].select= val;
-                                  // if(val){
-                                  //     this.psmItemSelected = true;
-                                  //     // console.log(params.row)
-                                  //     this.selected = 'usi'
-                                  //     this.keyword = params.row.usi
-                                  //     console.log('this.keyword',this.keyword)
-                                  //     this.getSpectrum(params.row.usi)
-                                  // }
-                                  // else{
-                                  //     this.keyword = ''
-                                  //     this.psmItemSelected = false;
-                                  //     this.getSpectra();
-                                  // }
-                                      
-                                  
-                                  // if (history.pushState) {
-                                  //       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
-                                  //       window.history.pushState({path:newurl},'',newurl);
+                                  if(val){ // checkbox is seleted
+                                      this.psmTableResults[params.index].select= val;
+                                      this.keyword = params.row.usi
+                                      console.log('this.keyword',this.keyword)
+                                      this.getSpectrum({usi:params.row.usi}) 
+                                  }
+                                  else{ // checkbox is unseleted
+                                      this.keyword = ''
+                                      this.getSpectrumFail()//we could remove all the table content, if we deselect the checkbox，it depends our demand
+                                  }
+                                  if (history.pushState) {
+                                    console.log('history.pushState',history.pushState)
+                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
+                                         window.history.pushState({path:newurl},'',newurl);
+                                  }
                                   
                               }
                           }
@@ -540,27 +536,25 @@
                           });
                       }
                       else{
-                        this.spinShow = false
-                        this.spectrumFound = false
-                        this.spectrumTableHint = 'No Spectrum'
-                        this.usiTableHint = 'No USI Details'
-                        this.spectrumTableFold(true);
-                        this.usiTableFold(true)
-                        this.$Message.success({content:'No PSMs', duration:3});
+                        this.getSpectrumFail()
+                        this.$Message.error({content:'No PSMs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
+
                     },function(err){
-                        this.spinShow = false
-                        this.spectrumFound = false
-                        this.spectrumTableHint = 'No Spectrum'
-                        this.usiTableHint = 'No USI Details'
-                        this.usiTableResults=[];
-                        this.usiTableResultsRAW=[];
-                        this.psmTableLoading = false;
-                        this.spectrumTableFold(true);
-                        this.usiTableFold(true)
+                        this.getSpectrumFail()
                         this.$Message.error({content:'No PSMs', duration:3});
                     });
           }
+      },
+      getSpectrumFail(){
+        this.spinShow = false
+        this.spectrumFound = false
+        this.spectrumTableHint = 'No Spectrum'
+        this.usiTableHint = 'No USI Details'
+        this.usiTableResults=[];
+        this.usiTableResultsRAW=[];
+        this.spectrumTableFold(true);
+        this.usiTableFold(true)
       },
       getPSM(){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
           this.psmTableLoading = true
@@ -831,32 +825,15 @@
       gotoUSI(){
         window.open('http://www.ebi.ac.uk/pride/markdownpage/usi')
       },
-      gotoExamplePeptide(keyword){
-        this.selected = 'peptide'
-        this.keyword = keyword
-        let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-        }
-        if(keyword === this.$route.query.peptideSequence){
-          // location.reload();
-        }
-        else
-          this.$router.push({name: 'spectra', query: query});
-      },
       gotoExampleUSI(keyword){
         this.selected = 'usi'
         this.keyword = keyword
         this.getSpectrum({usi:keyword});
+        this.getPSM()
         if (history.pushState) {
               var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
               window.history.pushState({path:newurl},'',newurl);
           }
-        delete this.$route.query.peptideSequence
-        // this.$router.replace({'query': null});
       },
       searchUSIDetailsTable(e){
         let array = []
