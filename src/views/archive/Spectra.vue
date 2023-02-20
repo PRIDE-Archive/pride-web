@@ -9,9 +9,7 @@
                       <p slot="title">Search Spectra</p>
                       <div class="search-container">
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
-                              <Select v-model="selected" slot="prepend" style="width: 100px">
-                                  <Option value="usi">USI</Option>
-                              </Select>
+                              <span slot="prepend" style="width: 100px">USI</span>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -294,7 +292,6 @@
           psmTableResults:[],
           usiTableResults:[],
           usiTableResultsRAW:[],
-          protienItemSelected:false,
           spectrumSpinShow:false,
           spectrumTableShow:false,
           spectrumTableFoldBool:true,
@@ -336,7 +333,6 @@
           ],
           selectTemp:'',
           keyword:'',
-          selected:'',
           usiTableSearchKeyword:'',
           searchInputLoading:false,
           autoCompleteArray:[],
@@ -793,40 +789,17 @@
           this.$Message.error({content:'No keyword', duration:3});
           return
         }
-        if(this.selected == 'usi'){
-            this.getSpectrum({usi:this.keyword});
-            console.log('11111')
-            this.getPSM()
-            if (history.pushState) {
-                  var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
-                  window.history.pushState({path:newurl},'',newurl);
-              }
-            delete this.$route.query.peptideSequence
-
-            
-        }
-        else if(this.selected == 'peptide'){
-          let query = {
-              //reportedProtein:params.row.proteinAccession,
-              //peptideEvidenceAccession:params.row.accession,
-              peptideSequence:this.keyword,
-              sortConditions:'projectAccession',
-              sortDirection:'DESC',
-              // resultType:'FULL'
+        this.getSpectrum({usi:this.keyword});
+        this.getPSM()
+        if (history.pushState) {
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
+              window.history.pushState({path:newurl},'',newurl);
           }
-          // console.log('submitSearch',query);
-          if(this.keyword === this.$route.query.peptideSequence){
-            location.reload();
-          }
-          else
-            this.$router.push({name: 'spectra', query: query});
-        }
       },
       gotoUSI(){
         window.open('http://www.ebi.ac.uk/pride/markdownpage/usi')
       },
       gotoExampleUSI(keyword){
-        this.selected = 'usi'
         this.keyword = keyword
         this.getSpectrum({usi:keyword});
         this.getPSM()
@@ -937,7 +910,6 @@
         }
         else{
           if('usi' in this.$route.query){
-            this.selected = 'usi'
             this.keyword = this.$route.query.usi
             this.getSpectrum({usi:this.$route.query.usi});
             this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
@@ -1298,15 +1270,12 @@
     }
     #spectra-bar-pride .ivu-input-group-prepend{
         background-color: #5bc0be !important;
+        width: 100px;
     }
     #spectra-bar-pride .ivu-input-group-prepend span{
         font-weight:700;
-    }
-    #spectra-bar-pride .ivu-select-single .ivu-select-selection .ivu-select-placeholder{
         color: white !important;
-    }
-    #spectra-bar-pride .ivu-select{
-        color: white !important;
+        width:100px;
     }
     #spectra-bar-pride .ivu-input-group-append{
         background-color: #5bc0be !important;
