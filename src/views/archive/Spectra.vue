@@ -752,38 +752,6 @@
             }
         }
       },
-      searchInputChange (query, splitBool) {
-          if(splitBool){
-            //console.log('searchInputChange',query);
-            this.tadAdd(query);
-            this.$refs.searchRef.setQuery(null);
-          }
-
-          if(query !== ''){
-             // console.log('query',query);
-              this.searchInputLoading = false;
-              // this.$http
-              //     .get(this.autoCompleteApi + query)
-              //     .then(function(res){
-              //        this.autoCompleteArray=res.body;
-              //     },function(err){
-
-              //     });
-          }
-          else{
-            this.autoCompleteArray = [];
-          }
-      },
-      searchInputLoadingDropdownOpen(open){
-          if(open){
-              window.addEventListener('mousedown', this.searchInputBlur, false);
-              window.addEventListener('touchstart', this.searchInputBlur, false);
-          }
-          else{
-            window.removeEventListener('mousedown', this.searchInputBlur, false);
-            window.removeEventListener('touchstart', this.searchInputBlur, false);
-          }
-      },
       submitSearch(){
         if(!this.keyword){
           this.$Message.error({content:'No keyword', duration:3});
@@ -877,17 +845,6 @@
         },
     },
     computed:{
-      // spectraQuery:function(){
-      //     let normalQuery = {}
-      //     normalQuery.reportedProtein=''
-      //     normalQuery.peptideEvidenceAccession=''
-      //     normalQuery.peptideSequence=''
-      //     normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
-      //     normalQuery.assayAccession=''
-      //     normalQuery.sortDirection='DESC'
-      //     normalQuery.sortConditions='projectAccession'
-      //     return normalQuery;
-      // },
       psmTableQuery:function(){
           let normalQuery = {}
           if(this.keyword)
@@ -898,15 +855,13 @@
           normalQuery.pageSize = this.psmTablePageSize
           normalQuery.includePeptidoform = false
           normalQuery.includePeptideSequence = true
-          // console.log('this.normalQuery',this.normalQuery);
-          //return '?'+keyword+filter+page+pageSize;
           return normalQuery;   
       }
     },
     mounted: function(){
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
-         
+          //if there no query, do nothing
         }
         else{
           if('usi' in this.$route.query){
@@ -915,7 +870,7 @@
             this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
           }
           else{
-             
+             //if there no usi in the query, do nothing
           } 
         }
     },
