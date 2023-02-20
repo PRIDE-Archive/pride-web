@@ -245,32 +245,29 @@
                           },
                           on: {
                               'on-change': (val) => {
-                                  // console.log('val',val)
-                                  this.psmTableResults.map(x => {
-                                    // console.log('x',x)
-                                      x.select= false;
-                                      return x;
-                                      // });
-                                      // this.psmTableResults[params.index].select= val;
-                                      // if(val){
-                                      //     this.psmItemSelected = true;
-                                      //     // console.log(params.row)
-                                      //     this.selected = 'usi'
-                                      //     this.keyword = params.row.usi
-                                      //     console.log('this.keyword',this.keyword)
-                                      //     this.getSpectrum(params.row.usi)
-                                      // }
-                                      // else{
-                                      //     this.keyword = ''
-                                      //     this.psmItemSelected = false;
-                                      //     this.getSpectra();
-                                      // }
-                                          
-                                      
-                                      // if (history.pushState) {
-                                      //       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
-                                      //       window.history.pushState({path:newurl},'',newurl);
+                                  this.psmTableResults.forEach(item => {
+                                      this.$set(item,'select',false)
                                   })
+                                  this.psmTableResults[params.index].select= val;
+                                  // if(val){
+                                  //     this.psmItemSelected = true;
+                                  //     // console.log(params.row)
+                                  //     this.selected = 'usi'
+                                  //     this.keyword = params.row.usi
+                                  //     console.log('this.keyword',this.keyword)
+                                  //     this.getSpectrum(params.row.usi)
+                                  // }
+                                  // else{
+                                  //     this.keyword = ''
+                                  //     this.psmItemSelected = false;
+                                  //     this.getSpectra();
+                                  // }
+                                      
+                                  
+                                  // if (history.pushState) {
+                                  //       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
+                                  //       window.history.pushState({path:newurl},'',newurl);
+                                  
                               }
                           }
                       });
@@ -434,6 +431,7 @@
                         }
                         this.spectrumTableFold(false)
                         this.usiTableFold(false)
+                        console.log('peaks',peaks)
                         this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods, ntermMod, ctermMod)
                         //for USI Details
                         let array = []
@@ -577,10 +575,12 @@
                 if(res.body && res.body._embedded){
                   this.psmFound = true
                   let psmTempArray = res.body._embedded.summaryArchiveSpectrumList
+                  console.log('psmTempArray',psmTempArray)
                   let array = []
                   this.totalPsmTableItem = psmTempArray.length
                   for(let i=0;i<psmTempArray.length;i++){
                     let item = {}
+                    item.id = psmTempArray[i].projectAccession +'_' + i
                     item.select = false
                     item.accession = psmTempArray[i].projectAccession
                     item.peptidoform = psmTempArray[i].peptidoform
