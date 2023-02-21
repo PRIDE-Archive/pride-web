@@ -423,7 +423,6 @@
                         }
                         this.spectrumTableFold(false)
                         this.usiTableFold(false)
-                        console.log('peaks',peaks)
                         this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods, ntermMod, ctermMod)
                         //for USI Details
                         let array = []
@@ -565,7 +564,6 @@
                 if(res.body && res.body._embedded){
                   this.psmFound = true
                   let psmTempArray = res.body._embedded.summaryArchiveSpectrumList
-                  console.log('psmTempArray',psmTempArray)
                   let array = []
                   this.totalPsmTableItem = psmTempArray.length
                   for(let i=0;i<psmTempArray.length;i++){
