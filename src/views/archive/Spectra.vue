@@ -9,9 +9,7 @@
                       <p slot="title">Search Spectra</p>
                       <div class="search-container">
                           <Input id="spectra-bar-pride" v-model="keyword" placeholder="search" size="large" @on-keyup.enter.prevent="submitSearch">
-                              <Select v-model="selected" slot="prepend" style="width: 100px">
-                                  <Option value="usi">USI</Option>
-                              </Select>
+                              <span slot="prepend" style="width: 100px">USI</span>
                               <Button slot="append" @click="submitSearch">Search</Button>
                           </Input>
                           <div style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -245,32 +243,25 @@
                           },
                           on: {
                               'on-change': (val) => {
-                                  // console.log('val',val)
-                                  this.psmTableResults.map(x => {
-                                    // console.log('x',x)
-                                      x.select= false;
-                                      return x;
-                                      // });
-                                      // this.psmTableResults[params.index].select= val;
-                                      // if(val){
-                                      //     this.psmItemSelected = true;
-                                      //     // console.log(params.row)
-                                      //     this.selected = 'usi'
-                                      //     this.keyword = params.row.usi
-                                      //     console.log('this.keyword',this.keyword)
-                                      //     this.getSpectrum(params.row.usi)
-                                      // }
-                                      // else{
-                                      //     this.keyword = ''
-                                      //     this.psmItemSelected = false;
-                                      //     this.getSpectra();
-                                      // }
-                                          
-                                      
-                                      // if (history.pushState) {
-                                      //       var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
-                                      //       window.history.pushState({path:newurl},'',newurl);
+                                  this.psmTableResults.forEach(item => {
+                                      this.$set(item,'select',false) //select string is the item name from the params.row
                                   })
+                                  if(val){ // checkbox is seleted
+                                      this.psmTableResults[params.index].select= val;
+                                      this.keyword = params.row.usi
+                                      console.log('this.keyword',this.keyword)
+                                      this.getSpectrum({usi:params.row.usi}) 
+                                  }
+                                  else{ // checkbox is unseleted
+                                      this.keyword = ''
+                                      this.getSpectrumFail()//we could remove all the table content, if we deselect the checkbox，it depends our demand
+                                  }
+                                  if (history.pushState) {
+                                    console.log('history.pushState',history.pushState)
+                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
+                                         window.history.pushState({path:newurl},'',newurl);
+                                  }
+                                  
                               }
                           }
                       });
@@ -301,7 +292,6 @@
           psmTableResults:[],
           usiTableResults:[],
           usiTableResultsRAW:[],
-          protienItemSelected:false,
           spectrumSpinShow:false,
           spectrumTableShow:false,
           spectrumTableFoldBool:true,
@@ -343,7 +333,6 @@
           ],
           selectTemp:'',
           keyword:'',
-          selected:'',
           usiTableSearchKeyword:'',
           searchInputLoading:false,
           autoCompleteArray:[],
@@ -542,27 +531,25 @@
                           });
                       }
                       else{
-                        this.spinShow = false
-                        this.spectrumFound = false
-                        this.spectrumTableHint = 'No Spectrum'
-                        this.usiTableHint = 'No USI Details'
-                        this.spectrumTableFold(true);
-                        this.usiTableFold(true)
-                        this.$Message.success({content:'No PSMs', duration:3});
+                        this.getSpectrumFail()
+                        this.$Message.error({content:'No PSMs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
+
                     },function(err){
-                        this.spinShow = false
-                        this.spectrumFound = false
-                        this.spectrumTableHint = 'No Spectrum'
-                        this.usiTableHint = 'No USI Details'
-                        this.usiTableResults=[];
-                        this.usiTableResultsRAW=[];
-                        this.psmTableLoading = false;
-                        this.spectrumTableFold(true);
-                        this.usiTableFold(true)
+                        this.getSpectrumFail()
                         this.$Message.error({content:'No PSMs', duration:3});
                     });
           }
+      },
+      getSpectrumFail(){
+        this.spinShow = false
+        this.spectrumFound = false
+        this.spectrumTableHint = 'No Spectrum'
+        this.usiTableHint = 'No USI Details'
+        this.usiTableResults=[];
+        this.usiTableResultsRAW=[];
+        this.spectrumTableFold(true);
+        this.usiTableFold(true)
       },
       getPSM(){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
           this.psmTableLoading = true
@@ -581,6 +568,7 @@
                   this.totalPsmTableItem = psmTempArray.length
                   for(let i=0;i<psmTempArray.length;i++){
                     let item = {}
+                    item.id = psmTempArray[i].projectAccession +'_' + i
                     item.select = false
                     item.accession = psmTempArray[i].projectAccession
                     item.peptidoform = psmTempArray[i].peptidoform
@@ -762,101 +750,29 @@
             }
         }
       },
-      searchInputChange (query, splitBool) {
-          if(splitBool){
-            //console.log('searchInputChange',query);
-            this.tadAdd(query);
-            this.$refs.searchRef.setQuery(null);
-          }
-
-          if(query !== ''){
-             // console.log('query',query);
-              this.searchInputLoading = false;
-              // this.$http
-              //     .get(this.autoCompleteApi + query)
-              //     .then(function(res){
-              //        this.autoCompleteArray=res.body;
-              //     },function(err){
-
-              //     });
-          }
-          else{
-            this.autoCompleteArray = [];
-          }
-      },
-      searchInputLoadingDropdownOpen(open){
-          if(open){
-              window.addEventListener('mousedown', this.searchInputBlur, false);
-              window.addEventListener('touchstart', this.searchInputBlur, false);
-          }
-          else{
-            window.removeEventListener('mousedown', this.searchInputBlur, false);
-            window.removeEventListener('touchstart', this.searchInputBlur, false);
-          }
-      },
       submitSearch(){
         if(!this.keyword){
           this.$Message.error({content:'No keyword', duration:3});
           return
         }
-        if(this.selected == 'usi'){
-            this.getSpectrum({usi:this.keyword});
-            console.log('11111')
-            this.getPSM()
-            if (history.pushState) {
-                  var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
-                  window.history.pushState({path:newurl},'',newurl);
-              }
-            delete this.$route.query.peptideSequence
-
-            
-        }
-        else if(this.selected == 'peptide'){
-          let query = {
-              //reportedProtein:params.row.proteinAccession,
-              //peptideEvidenceAccession:params.row.accession,
-              peptideSequence:this.keyword,
-              sortConditions:'projectAccession',
-              sortDirection:'DESC',
-              // resultType:'FULL'
+        this.getSpectrum({usi:this.keyword});
+        this.getPSM()
+        if (history.pushState) {
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
+              window.history.pushState({path:newurl},'',newurl);
           }
-          // console.log('submitSearch',query);
-          if(this.keyword === this.$route.query.peptideSequence){
-            location.reload();
-          }
-          else
-            this.$router.push({name: 'spectra', query: query});
-        }
       },
       gotoUSI(){
         window.open('http://www.ebi.ac.uk/pride/markdownpage/usi')
       },
-      gotoExamplePeptide(keyword){
-        this.selected = 'peptide'
-        this.keyword = keyword
-        let query = {
-            //reportedProtein:params.row.proteinAccession,
-            //peptideEvidenceAccession:params.row.accession,
-            peptideSequence:keyword,
-            sortConditions:'projectAccession',
-            sortDirection:'DESC',
-        }
-        if(keyword === this.$route.query.peptideSequence){
-          // location.reload();
-        }
-        else
-          this.$router.push({name: 'spectra', query: query});
-      },
       gotoExampleUSI(keyword){
-        this.selected = 'usi'
         this.keyword = keyword
         this.getSpectrum({usi:keyword});
+        this.getPSM()
         if (history.pushState) {
               var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
               window.history.pushState({path:newurl},'',newurl);
           }
-        delete this.$route.query.peptideSequence
-        // this.$router.replace({'query': null});
       },
       searchUSIDetailsTable(e){
         let array = []
@@ -927,17 +843,6 @@
         },
     },
     computed:{
-      // spectraQuery:function(){
-      //     let normalQuery = {}
-      //     normalQuery.reportedProtein=''
-      //     normalQuery.peptideEvidenceAccession=''
-      //     normalQuery.peptideSequence=''
-      //     normalQuery.projectAccession=this.$route.params.id //this.peptideProjectAccession
-      //     normalQuery.assayAccession=''
-      //     normalQuery.sortDirection='DESC'
-      //     normalQuery.sortConditions='projectAccession'
-      //     return normalQuery;
-      // },
       psmTableQuery:function(){
           let normalQuery = {}
           if(this.keyword)
@@ -948,25 +853,22 @@
           normalQuery.pageSize = this.psmTablePageSize
           normalQuery.includePeptidoform = false
           normalQuery.includePeptideSequence = true
-          // console.log('this.normalQuery',this.normalQuery);
-          //return '?'+keyword+filter+page+pageSize;
           return normalQuery;   
       }
     },
     mounted: function(){
         //window.addEventListener("resize", this.change);
         if(Object.keys(this.$route.query).length === 0){
-         
+          //if there no query, do nothing
         }
         else{
           if('usi' in this.$route.query){
-            this.selected = 'usi'
             this.keyword = this.$route.query.usi
             this.getSpectrum({usi:this.$route.query.usi});
             this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
           }
           else{
-             
+             //if there no usi in the query, do nothing
           } 
         }
     },
@@ -1321,15 +1223,12 @@
     }
     #spectra-bar-pride .ivu-input-group-prepend{
         background-color: #5bc0be !important;
+        width: 100px;
     }
     #spectra-bar-pride .ivu-input-group-prepend span{
         font-weight:700;
-    }
-    #spectra-bar-pride .ivu-select-single .ivu-select-selection .ivu-select-placeholder{
         color: white !important;
-    }
-    #spectra-bar-pride .ivu-select{
-        color: white !important;
+        width:100px;
     }
     #spectra-bar-pride .ivu-input-group-append{
         background-color: #5bc0be !important;

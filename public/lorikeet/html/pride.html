@@ -24,6 +24,7 @@
 window.addEventListener("message", receiveMessage, false);
 
 
+
 var sequence = '';
 var charge = 0;
 var width = 650;
@@ -36,11 +37,8 @@ var cTerm = 0;
 
 function receiveMessage(event)
 {
-    //if (event.origin !== "http://example.org:8080")
-    //return;
-
-    // if(!event.data.sequence)
-    //     return
+    if(!event.data.hasOwnProperty('sequence'))
+        return
     width = event.data.width || width;
     sequence = event.data.sequence || sequence;
     charge = event.data.charge || charge;
@@ -50,7 +48,6 @@ function receiveMessage(event)
     nTerm = event.data.nTerm || nTerm;
     cTerm = event.data.cTerm || cTerm;
 
-   
     peaksTemp.sort((a,b)=>{return a.mz - b.mz})
     for(let i=0; i<peaksTemp.length; i++){
       var tempArray = [];
@@ -63,6 +60,8 @@ function receiveMessage(event)
     // console.log('variableMods',variableMods)
     // console.log('peaks',peaks)
     // console.log('event.data',event.data);
+    // console.log('sequence',sequence)
+    // console.log('peaks',peaks)
     showData();
 }
 
