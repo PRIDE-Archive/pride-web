@@ -21,6 +21,12 @@
                                 </div>
                                   <a @click="gotoExampleUSI('mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2')" style="color:#666">USI for VLHPLEGAVVIIFK/2</a>
                               </Tooltip>
+                              <Tooltip content="mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648" style="margin-left: 5px">
+                                <div slot="content">
+                                    <p>mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648:DAEKS[UNIMOD:21]PIN[UNIMOD:7]GR/2</p>
+                                </div>
+                                  <a @click="gotoExampleUSI('mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648:DAEKS[UNIMOD:21]PIN[UNIMOD:7]GR/2')" style="color:#666">DAEKSPINGR</a>
+                              </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
                                 What is USI?
