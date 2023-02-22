@@ -21,6 +21,12 @@
                                 </div>
                                   <a @click="gotoExampleUSI('mzspec:PXD000561:Adult_Frontalcortex_bRP_Elite_85_f09:scan:17555:VLHPLEGAVVIIFK/2')" style="color:#666">USI for VLHPLEGAVVIIFK/2</a>
                               </Tooltip>
+                              <Tooltip content="mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648" style="margin-left: 5px">
+                                <div slot="content">
+                                    <p>mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648:DAEKS[UNIMOD:21]PIN[UNIMOD:7]GR/2</p>
+                                </div>
+                                  <a @click="gotoExampleUSI('mzspec:PXD004939:Rice_phos_ABA_3h_20per_F1_R2:scan:2648:DAEKS[UNIMOD:21]PIN[UNIMOD:7]GR/2')" style="color:#666">DAEKSPINGR</a>
+                              </Tooltip>
                             </span>
                             <a href="#" slot="extra" @click.prevent="gotoUSI" style="color:#666">
                                 What is USI?
@@ -57,7 +63,7 @@
               <div class="visualization-wrapper">
                   <Card class="card protein">
                       <p slot="title" class="table-header"> 
-                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details</span>
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details <span v-if="bestSearch" style="color:#5bc0be">[Spectrum Match Found in PRIDE Archive]</span></span>
                           <span v-if="spectrumFound" class="right">
                               <Input v-if ="!usiTableFoldBool" type="text" v-model="usiTableSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchUSIDetailsTable">
                               </Input>
@@ -69,7 +75,7 @@
                           <div style="color:#bdbdbd; text-align: center;">
                               <span v-if ="usiTableFoldBool">{{usiTableHint}}</span>
                           </div>
-                          <Table v-if ="spectrumFound" row-key="id" class="usi-table" :loading="usiTableLoading" border :columns="usiTableColumn" :data="usiTableResults" size="small"></Table>
+                          <Table v-if ="spectrumFound" row-key="id" :row-class-name="rowClassName" class="usi-table" :loading="usiTableLoading" border :columns="usiTableColumn" :data="usiTableResults" size="small"></Table>
                       </div>
                   </Card>
               </div>
@@ -152,6 +158,7 @@
           peptideTableLoading:false,
           psmTableLoading:false,
           usiTableLoading:false,
+          bestSearch:false,
           usiTableColumn: [
               {
                   title: 'Key',
@@ -357,6 +364,7 @@
     methods:{
       getSpectrum(q){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
           this.spectrumFound = false
+          this.bestSearch = false
           this.spectrumTableHint = 'No Spectrum'
           this.usiTableHint = 'No USI Details'
           this.spectrumTableFold(true)
@@ -435,6 +443,9 @@
                              //find the array in the reply, 
                             if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
                               continue
+                            if(i == 'bestSearchEngineScore'){//add some more action when bestSearchEngineScore shows up
+                              this.bestSearch = true
+                            }
                             if(Array.isArray(psm[i])){
                               for(let j=0;j<psm[i].length;j++){
                                     let item = {}
@@ -544,6 +555,7 @@
       getSpectrumFail(){
         this.spinShow = false
         this.spectrumFound = false
+        this.bestSearch = false
         this.spectrumTableHint = 'No Spectrum'
         this.usiTableHint = 'No USI Details'
         this.usiTableResults=[];
@@ -678,6 +690,12 @@
               this.spectrumTableShow=false;
               document.querySelector("#lorikeetIframe").remove();
           }
+      },
+      rowClassName(row, index){
+        if(row.key == 'Best Search Engine Score')
+          return 'best-search-usi-row'
+        else
+          return 'normal-usi-usi-row'
       },
       change(){
         this.changeNum();
@@ -854,7 +872,13 @@
           normalQuery.includePeptidoform = false
           normalQuery.includePeptideSequence = true
           return normalQuery;   
-      }
+      },
+      // rowClassName:function(){
+      //   if(this.bestSearch)
+      //     return 'best-search-usi-row'
+      //   else
+      //     return 'normal-usi-usi-row'
+      // },
     },
     mounted: function(){
         //window.addEventListener("resize", this.change);
@@ -1061,9 +1085,9 @@
     align-items: center;
     width: 100%;
     line-height: 1.5;
-        border: 1px solid #5bc0be;
-            color: #495060;
-                background-color: #fcfcfc;
+    border: 1px solid #5bc0be;
+    color: #495060;
+    background-color: #fcfcfc;
     background-image: none;
     cursor: text;
     text-align:left;
@@ -1247,6 +1271,13 @@
     }
     .psm-table-page-container .page .ivu-select-dropdown{
       width:90px!important;
+    }
+    .usi-table .best-search-usi-row td{
+      background-color: #86d5d4c4
+      /*#5bc0be*/
+    }
+    .usi-table .normal-usi-usi-row{
+      
     }
 </style>
 
