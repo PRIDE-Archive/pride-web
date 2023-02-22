@@ -513,12 +513,12 @@
                         // after set id, add "sampleProperties" and "properties" to "array"
                         let samplePropertiesItem = {
                           key:'sampleProperties',
-                          value:'-',
+                          value:'Expand to view the details',
                           children:samplePropertiesChildArray
                         }
                         let propertiesItem = {
                           key:'properties',
-                          value:'-',
+                          value:'Expand to view the details',
                           children:propertiesChildArray
                         }
                         let projectItem = {
