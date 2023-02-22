@@ -61,9 +61,9 @@
       <Row type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
-                  <Card class="card protein">
+                  <Card class="card usi">
                       <p slot="title" class="table-header"> 
-                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details <span v-if="bestSearch" style="color:#5bc0be">[Spectrum Match Found in PRIDE Archive]</span></span>
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details <span v-if="bestSearch" style="color:#d37878">[Spectrum Match Found in PRIDE Archive]</span></span>
                           <span v-if="spectrumFound" class="right">
                               <Input v-if ="!usiTableFoldBool" type="text" v-model="usiTableSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchUSIDetailsTable">
                               </Input>
@@ -165,6 +165,18 @@
                   key: 'key',
                   width: 250,
                   tree:true,  
+                  // renderHeader: (h, params) =>{
+                  //     return h('div', [
+                  //         h('span', {
+                  //             style:{
+                  //               color:'#444'
+                  //             },
+                  //             class:{
+                  //               // projectAction:true
+                  //             },
+                  //         },'Key11'),
+                  //     ]);
+                  // }
               },
               {
                   title: 'Value',
@@ -233,8 +245,19 @@
                                 },
                             }, params.row.value),
                         ]);
-                  }
-      
+                  },
+                  // renderHeader: (h, params) =>{
+                  //     return h('div', [
+                  //         h('span', {
+                  //             style:{
+                  //               color:'#444'
+                  //             },
+                  //             class:{
+                  //               // projectAction:true
+                  //             },
+                  //         }, 'Value22'),
+                  //     ]);
+                  // }
               },  
           ],
           psmTableColumn:[
@@ -364,11 +387,11 @@
     methods:{
       getSpectrum(q){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
           this.spectrumFound = false
-          this.bestSearch = false
           this.spectrumTableHint = 'No Spectrum'
           this.usiTableHint = 'No USI Details'
           this.spectrumTableFold(true)
           this.usiTableFold(true)
+          this.removeBestSearchHighlight()
           if(!q.hasOwnProperty("usi")){
             console.log('no usi')
             //When route update, there is no usi item in the url
@@ -444,7 +467,8 @@
                             if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
                               continue
                             if(i == 'bestSearchEngineScore'){//add some more action when bestSearchEngineScore shows up
-                              this.bestSearch = true
+                              
+                              this.addBestSearchHighlight()
                             }
                             if(Array.isArray(psm[i])){
                               for(let j=0;j<psm[i].length;j++){
@@ -555,13 +579,13 @@
       getSpectrumFail(){
         this.spinShow = false
         this.spectrumFound = false
-        this.bestSearch = false
         this.spectrumTableHint = 'No Spectrum'
         this.usiTableHint = 'No USI Details'
-        this.usiTableResults=[];
-        this.usiTableResultsRAW=[];
-        this.spectrumTableFold(true);
+        this.usiTableResults=[]
+        this.usiTableResultsRAW=[]
+        this.spectrumTableFold(true)
         this.usiTableFold(true)
+        this.removeBestSearchHighlight()
       },
       getPSM(){ // we use "q(query)"" but not "usi string". because beforeRouteupdate only has "to.query" which is the obj not a string. We all use the obj to unform the parameters
           this.psmTableLoading = true
@@ -851,6 +875,20 @@
           this.psmTablePageSize = size;
           this.getPSM()
       },
+      addBestSearchHighlight(){
+        this.bestSearch = true
+        let header = document.querySelector('.card.usi .ivu-card-head')
+        header.style.backgroundColor= '#86d5d4c4'
+        header.style.borderTopLeftRadius = '4px'
+        header.style.borderTopRightRadius = '4px'
+      },
+      removeBestSearchHighlight(){
+        this.bestSearch = false
+        let header = document.querySelector('.card.usi .ivu-card-head')
+        header.style.backgroundColor= 'white'
+        header.style.borderTopLeftRadius = '0px'
+        header.style.borderTopRightRadius = '0px'
+      }
     },
     watch: {
         peptideTableResults:{
