@@ -567,12 +567,12 @@
                       }
                       else{
                         this.getSpectrumFail()
-                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive.', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
+                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
 
                     },function(err){
                         this.getSpectrumFail()
-                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive.', duration:3});
+                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3});
                     });
           }
       },
