@@ -281,6 +281,7 @@
                                       this.keyword = params.row.usi
                                       console.log('this.keyword',this.keyword)
                                       this.getSpectrum({usi:params.row.usi}) 
+                                      window.scrollTo(0,0)
                                   }
                                   else{ // checkbox is unseleted
                                       this.keyword = ''
@@ -511,7 +512,7 @@
                           //merge the repeated items. TODO
                         }
                         for(let i=0; i<scoresChildArray.length; i++){
-                          scoresChildArray[i].id = '103'+ i
+                          scoresChildArray[i].id = '104'+ i
                         }
 
                         // after set id, add "sampleProperties" and "properties" to "array"
