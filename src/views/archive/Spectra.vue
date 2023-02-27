@@ -533,7 +533,7 @@
                         }
                         let scoreItem = {
                           key:'scores',
-                          value:'-',
+                          value:'Expand to view the details',
                           children:scoresChildArray
                         }
 
