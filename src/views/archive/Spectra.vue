@@ -459,6 +459,7 @@
                         let array = []
                         let samplePropertiesChildArray = []
                         let propertiesChildArray = []
+                        let scoresChildArray = []
                         let projectChildArray = []
                         let projectTitle = ''
                         for(let i in psm){
@@ -467,10 +468,9 @@
                             if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
                               continue
                             if(i == 'bestSearchEngineScore'){//add some more action when bestSearchEngineScore shows up
-                              
                               this.addBestSearchHighlight()
                             }
-                            if(Array.isArray(psm[i])){
+                            if(Array.isArray(psm[i])){ // currently, the array we need to care is "Projects", "Sample Properties" and "Score"
                               for(let j=0;j<psm[i].length;j++){
                                     let item = {}
                                     item.key = psm[i][j].name
@@ -486,6 +486,8 @@
                                       samplePropertiesChildArray.push(item)
                                     else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
                                       propertiesChildArray.push(item)
+                                    else if(i == 'scores' && item.key.indexOf('project') == -1) // deal with the "scores" array 
+                                      scoresChildArray.push(item)
                                }
                             }
                             else{
@@ -506,8 +508,10 @@
                         }
                         for(let i=0; i<projectChildArray.length; i++){
                           projectChildArray[i].id = '102'+ i
-
                           //merge the repeated items. TODO
+                        }
+                        for(let i=0; i<scoresChildArray.length; i++){
+                          scoresChildArray[i].id = '103'+ i
                         }
 
                         // after set id, add "sampleProperties" and "properties" to "array"
@@ -526,8 +530,14 @@
                           value: projectTitle,
                           children:projectChildArray
                         }
+                        let scoreItem = {
+                          key:'scores',
+                          value:'-',
+                          children:scoresChildArray
+                        }
 
                         array.push(samplePropertiesItem)
+                        array.push(scoreItem)
                         array.push(propertiesItem)
                         array.unshift(projectItem)
 
@@ -1316,6 +1326,9 @@
     }
     .usi-table .normal-usi-usi-row{
       
+    }
+    .usi-table .ivu-table-cell-tree{
+      text-align: center;
     }
 </style>
 
