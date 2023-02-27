@@ -517,12 +517,12 @@
                         // after set id, add "sampleProperties" and "properties" to "array"
                         let samplePropertiesItem = {
                           key:'sampleProperties',
-                          value:'-',
+                          value:'Expand to view the details',
                           children:samplePropertiesChildArray
                         }
                         let propertiesItem = {
                           key:'properties',
-                          value:'-',
+                          value:'Expand to view the details',
                           children:propertiesChildArray
                         }
                         let projectItem = {
@@ -577,12 +577,12 @@
                       }
                       else{
                         this.getSpectrumFail()
-                        this.$Message.error({content:'No PSMs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
+                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
 
                     },function(err){
                         this.getSpectrumFail()
-                        this.$Message.error({content:'No PSMs', duration:3});
+                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3});
                     });
           }
       },
