@@ -307,11 +307,11 @@
                         .then(function(res){
                             console.log(res)
                             if(res.body.hasOwnProperty("error"))
-                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC. Please empty this field and submit without any PubMedID')
                             else if(Object.keys(res.body.result).length!=2)
-                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC. Please empty this field and submit without any PubMedID')
                             else if(res.body.result[query.id].hasOwnProperty("error"))
-                                reject('PubmedID not found in Pubmed/EuroPMC, please contact pride-support@ebi.ac.uk')
+                                reject('PubmedID not found in Pubmed/EuroPMC. Please empty this field and submit without any PubMedID')
                             else{
                               this.idCheckPass = true;
                               resolve(res.body);
@@ -338,7 +338,7 @@
                             }
                             else{
                                 if(res.body.resultList.result[0].pubType.indexOf('preprint') != -1) //preprint
-                                  reject('The DOI is recognized as a pre-print in EuroPMC, in order to perform the publication please contact pride-support@ebi.ac.uk')
+                                  reject('The DOI is recognized as a pre-print in EuroPMC. Please empty this field and submit without any DOI.')
                                 else { //normal submit
                                   this.idCheckPass = true;
                                   resolve(res.body);
