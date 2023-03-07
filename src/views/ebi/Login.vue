@@ -33,7 +33,7 @@
     export default {
         data () {
             return {
-                tokenApi:this.$store.state.basePrivateURL+'/getAAPToken',
+                tokenApi:this.$store.state.basePrivateURL+'/getAAPTokenWeb',
                 passwordType:'password',
                 formInline: {
                   user: '',
