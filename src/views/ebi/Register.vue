@@ -1,52 +1,58 @@
 <template>
     <div class="submit-data-container">
-        <div class="panel nav"><NavBar page="landingpage"/></div>
-        <div class="content-container">
-            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Register</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
-            <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
-            <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
-              <FormItem prop="email" label="Email">
-                <Input type="text" v-model="formInlineSignUp.email" placeholder="">
-                </Input>
-              </FormItem>
-              <FormItem prop="title" label="Title">
-                <Select v-model="formInlineSignUp.title">
-                    <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
-                </Select>
-              </FormItem>
-              <FormItem prop="firstname" label="First name">
-                <Input type="text" v-model="formInlineSignUp.firstname" placeholder="">
-                </Input>
-              </FormItem>
-              <FormItem prop="lastname" label="Last name">
-                <Input type="text" v-model="formInlineSignUp.lastname" placeholder="">
-                </Input>
-              </FormItem>
-              <FormItem prop="affiliation" label="Affiliation">
-                <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlineSignUp.affiliation" placeholder="">
-                </Input>
-              </FormItem>
-              <FormItem prop="country" label="Country">
-                <Select v-model="formInlineSignUp.country">
-                    <Option v-for="item in countryList" :value="item.value">{{item.label}}</Option>
-                </Select>
-              </FormItem>
-              <FormItem prop="orcid" label="ORCID">
-                <Input type="text" v-model="formInlineSignUp.orcid" placeholder="">
-                </Input>
-              </FormItem>
-              <FormItem prop="terms" label="Terms of Usage" >
-                  <Checkbox v-model="formInlineSignUp.terms"><a class="privacy-action" @click="openTerms">Privacy notice</a></Checkbox>
-              </FormItem>
-              <FormItem>
-                <Button class="signupButton" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
-              </FormItem>
-            </Form>
-        </div>
+      <template v-if="service">
+          <div class="panel nav"><NavBar page="landingpage"/></div>
+          <div class="content-container">
+              <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Register</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+              <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
+              <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
+                <FormItem prop="email" label="Email">
+                  <Input type="text" v-model="formInlineSignUp.email" placeholder="">
+                  </Input>
+                </FormItem>
+                <FormItem prop="title" label="Title">
+                  <Select v-model="formInlineSignUp.title">
+                      <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem prop="firstname" label="First name">
+                  <Input type="text" v-model="formInlineSignUp.firstname" placeholder="">
+                  </Input>
+                </FormItem>
+                <FormItem prop="lastname" label="Last name">
+                  <Input type="text" v-model="formInlineSignUp.lastname" placeholder="">
+                  </Input>
+                </FormItem>
+                <FormItem prop="affiliation" label="Affiliation">
+                  <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlineSignUp.affiliation" placeholder="">
+                  </Input>
+                </FormItem>
+                <FormItem prop="country" label="Country">
+                  <Select v-model="formInlineSignUp.country">
+                      <Option v-for="item in countryList" :value="item.value">{{item.label}}</Option>
+                  </Select>
+                </FormItem>
+                <FormItem prop="orcid" label="ORCID">
+                  <Input type="text" v-model="formInlineSignUp.orcid" placeholder="">
+                  </Input>
+                </FormItem>
+                <FormItem prop="terms" label="Terms of Usage" >
+                    <Checkbox v-model="formInlineSignUp.terms"><a class="privacy-action" @click="openTerms">Privacy notice</a></Checkbox>
+                </FormItem>
+                <FormItem>
+                  <Button class="signupButton" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
+                </FormItem>
+              </Form>
+          </div>
+      </template>
+      <template v-else>
+        <DefaultErrorPage err="Register Service Down"/>
+      </template>
     </div>
 </template>
 <script>
     import NavBar from '@/components/Nav'
+    import DefaultErrorPage from '@/components/DefaultErrorPage'
     import store from "@/store.js"
     export default {
         data () {
@@ -116,10 +122,12 @@
                 ],
                 countryList:[],
                 countryListURL: this.$store.state.baseURL + '/country/index.csv',
+                service:true
             }
         },
         components: {
             NavBar,
+            DefaultErrorPage
         },
         methods:{
             signup(name){
@@ -208,8 +216,10 @@
             },
         },
         mounted:function(){
+          if(this.service){
             this.$refs['formInlineSignUp'].resetFields();
             this.queryCountryList();
+          }  
         },
     }
 </script>
