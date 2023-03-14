@@ -155,6 +155,24 @@
                           <p>Publication pending</p>
                         </div>
                     </Card>
+                    <Card v-if = "visualisationTableShow" class="card">
+                        <p slot="title" class="project-file-title-container">
+                          <span>Visualizations</span>
+                          <!-- <span class="sort-wrapper">
+                              <Input type="text" v-model="visFileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchVisFile">
+                                  <Button slot="append" icon="ios-search" @click="searchVisFile"></Button>
+                              </Input>
+                          </span> -->
+                        </p>
+                         <div class="download-list-wrapper">
+                           <div class="download-list">
+                             <Table border ref="VisSelection" :loading="visFileListLoading" :columns="visFileListCol" :data="visFileList"></Table>  
+                           </div>
+                         </div>
+                         <!-- <div class="page-container">
+                           <Page :total="totalDownLoad" :page-size="pageSizeDownLoad" :current="pageDownLoad" size="small" show-sizer show-total @on-change="downloadPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
+                         </div> -->
+                    </Card>
                     <Card class="card">
                         <p slot="title" class="project-file-title-container">
                           <span>Project Files</span>
@@ -575,6 +593,77 @@
               },
           ],
           fileList: [],
+          visFileListLoading:false,
+          visFileListCol:[
+              {
+                  title: 'Name',
+                  key: 'name',
+                  align:'left',
+                  sortable: 'custom',
+                  ellipsis:true
+              },
+              {
+                  title: 'Type',
+                  width: 120,
+                  key: 'type',
+                  align:'left',
+                  sortable: 'custom',
+                  ellipsis:true,
+                  render: (h, params) => {
+                      var className;
+                      var iconColor;
+                      if(params.row.type == 'cross-linking'){
+                        className='far fa-chart-bar';
+                        iconColor='#bd7edc'
+                      }
+                      return h('div', [
+                          h('i', {
+                              attrs: { class: className},
+                              style: {
+                                  color:iconColor,
+                                  marginRight: '5px',
+                                  marginLeft: '0px'
+                              },
+                          }),
+                          h('span', {
+                              on: {
+                                  click: () => {
+
+                                  }
+                              }
+                          }, params.row.type),
+                      ]);
+                  }
+              },
+              {
+                  title: 'View',
+                  key: 'view',
+                  align:'center',
+                  width:100,
+                  render: (h, params) => {
+                      return h('div', [
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: (value) => {
+                                      window.open(params.row.view)
+                                  }
+                              }
+                          }, 'View'),
+                      ]);
+                  },
+              },
+          ],
+          visFileList:[],
           cityList: [
                   {
                       value: 'New York',
@@ -802,7 +891,9 @@
           sdrfFileList:[],
           license:'',
           filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
-          filesNumber:''
+          filesNumber:'',
+          visFileListApi:'https://www.ebi.ac.uk/pride/archive/xiview/visualisations',
+          visualisationTableShow:false
       }
     },
     metaInfo () {
@@ -1305,11 +1396,9 @@
               }
           },function(err){
               this.sdrfTableLoading = false;
-          });
-          
+          });   
       },
       sdrfFileChange(){
-
       },
       showSamples(row){
         //console.log(row)
@@ -1506,7 +1595,31 @@
       },
       gotoIconHelpPage(){
         window.open('http://blog.omicsdi.org/post/rosette-chart/')
-      }
+      },
+      queryVisFileList(){
+           this.visFileListLoading = true;
+           this.$http
+            .get(this.visFileListApi + '?' +'pxid=' + this.$route.params.id)
+            .then(function(res){
+                this.visFileListLoading = false;
+                let array = []
+                if(Object.keys(res.body).length === 0)
+                  this.visualisationTableShow = false
+                else{
+                  this.visualisationTableShow = true
+                  let item = {} 
+                  item.name = res.body.filename
+                  item.type = res.body.visualisation
+                  item.view = res.body.link
+                  array.push(item) //Currently, the replay only has one obj and the reply is not a array containing one obj
+                }
+                this.visFileList = array
+            },function(err){
+                this.visFileListLoading = false;
+                this.$Message.error({content:'Query Visualizations Failed', duration:3});
+            });
+      },
+      
     },
     mounted: function(){
         this.queryProjectDetails();
@@ -1515,6 +1628,7 @@
         this.querySimilarity();
         this.queryReanalysis();
         this.queryFilesNumber();
+        this.queryVisFileList();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
