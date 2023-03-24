@@ -269,7 +269,7 @@
 		      let svg = new n(t)
 		      let height = this.height || 65
 		      let width = this.width || 65
-		      console.log('height width', this.height, this.width)
+		      // console.log('height width', this.height, this.width)
 		      let svgInt = svg.initialize(height, width)
 		      this.score = score
 		      // console.log('score',this.icon.id, score)
@@ -281,8 +281,8 @@
 	  	},
 	  	mounted () {
 	  		// if(this.icon.id=='PXD028666')
-	  		console.log('111height width', this.height, this.width)
-    		console.log('iconiconiconicon',this.icon.id)
+	  		// console.log('111height width', this.height, this.width)
+    	// 	console.log('iconiconiconicon',this.icon.id)
   		}
 	};
 </script>
