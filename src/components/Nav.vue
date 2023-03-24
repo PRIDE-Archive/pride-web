@@ -242,6 +242,8 @@
             logout(){
               localStorage.setItem('username','');
               localStorage.setItem('token','');
+              localStorage.setItem('privateusi','');
+              localStorage.setItem('type','');
               this.$router.replace({name:'archive'});
               this.$store.commit('setUser',{username: '', token:''});
             },
