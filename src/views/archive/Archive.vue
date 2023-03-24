@@ -271,7 +271,7 @@
         }
         
         this.updateCondition(to.query);
-        console.log('beforeRouteUpdate',to.query);
+        // console.log('beforeRouteUpdate',to.query);
         this.queryArchiveProjectList(to.query);
         //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
         next();
@@ -291,7 +291,7 @@
           }
 
           if(query !== ''){
-              console.log('query',query);
+              // console.log('query',query);
               this.searchInputLoading = false;
               this.$http
                   .get(this.autoCompleteApi + query)
@@ -354,7 +354,7 @@
             }
           }
           this.filter = condition.replace(/,$/gi,'');
-          console.log(this.filter)
+          // console.log(this.filter)
       },
       queryArchiveProjectList(q){
           this.publicaitionList = [];
@@ -607,7 +607,7 @@
           }
       },
       searchInputLoadingDropdownOpen(open){
-        console.log('open',open)
+        // console.log('open',open)
           if(open){
               window.addEventListener('mousedown', this.searchInputBlur, false);
               window.addEventListener('touchstart', this.searchInputBlur, false);
@@ -640,7 +640,7 @@
         this.setSearchCondition();
       },
       fieldChange(){
-          console.log('fieldChange');
+          // console.log('fieldChange');
           for(let i in this.fieldSelectors){
             if(this.fieldSelectors[i].value == this.fieldValue){
                 /*
@@ -660,7 +660,7 @@
           }
       },
       containChange(){
-        console.log('containChange');
+        // console.log('containChange');
           if(this.containValue){
               this.$refs.containRef.toggleMenu();
               let filterCombinationFound =false;
@@ -741,7 +741,7 @@
           this.$router.push({name: 'archive', query: this.query});
       },
       sortChange(type){
-        console.log(type);
+        // console.log(type);
         if(type == 'Title')
           this.sort = 'project_title'
         else if(type == 'Accession')
@@ -775,9 +775,9 @@
               }
               else if(i == 'filter'){
                 if(query[i]){
-                    console.log(query[i])
+                    // console.log(query[i])
                     let filterArray = query[i].split(',');
-                    console.log('filterArray',filterArray);
+                    // console.log('filterArray',filterArray);
                     this.filterCombination=[];
                       for(let i=0; i<filterArray.length;i++){
                           let facetsArray = filterArray[i].split('==')
@@ -786,7 +786,7 @@
                               field: this.facetsConfigRes.body.archive[facetsArray[0]].name,     
                               contains:facetsArray[1]
                           };
-                          console.log('test',item)
+                          // console.log('test',item)
                           this.filterCombination.push(item);
                           //this.tadAdd(keywordArray[i]);
                       }
@@ -848,7 +848,7 @@
                   .get(this.projectItemsConfigURL)
                   .then(function(projectItemsConfigRes){
                       this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
-                      console.log('this.projectItemsConfigRes',this.projectItemsConfigRes);
+                      // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes);
                       this.setFilter();
                       this.updateCondition();
                       this.queryArchiveProjectList();
@@ -866,7 +866,7 @@
         this.filter = filter
        
         this.$router.push({name: 'archive', query: this.query});
-        console.log(this.query);
+        // console.log(this.query);
       },
       gotoPublish(){
         if(this.keyword.match(/PXD/))
@@ -978,7 +978,7 @@
             normalQuery.sortDirection = this.order;
           normalQuery.page = this.page;
           normalQuery.pageSize = this.pageSize;
-          console.log('this.normalQuery',this.normalQuery);
+          // console.log('this.normalQuery',this.normalQuery);
           //return '?'+keyword+filter+page+pageSize;
           return normalQuery;
           
