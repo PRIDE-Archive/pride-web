@@ -90,10 +90,17 @@
                               localStorage.setItem('token',res.bodyText);
                               //this.username = this.formInline.user;
                               this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
-                              this.$Message.success({ content: 'Login Success' })
+                              
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
-                              this.gotoProfile();
+                              if(localStorage.getItem('privateusi')){
+                                this.$Message.success({ content: 'Login Success and we are doing the USI search for you!' })
+                                this.$router.push({ name: 'usi', query: {usi: localStorage.getItem('privateusi'), resultType: 'FULL'}});
+                              }
+                              else{
+                                this.$Message.success({ content: 'Login Success' })
+                                this.gotoProfile();
+                              }
                         }).catch(err=>{
                           console.log(err);
                           this.$Spin.hide()
