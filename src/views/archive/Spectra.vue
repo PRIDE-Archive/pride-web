@@ -393,6 +393,9 @@
           this.spectrumTableFold(true)
           this.usiTableFold(true)
           this.removeBestSearchHighlight()
+          let header = {}
+          if(localStorage.getItem('token'))
+            header = {'Authorization':'Bearer '+ localStorage.getItem('token')}
           if(!q.hasOwnProperty("usi")){
             console.log('no usi')
             //When route update, there is no usi item in the url
@@ -401,8 +404,10 @@
                 this.spinShow = true
                 let query = {usi:q.usi,resultType:'FULL'};
                 this.$http
-                    .get(this.spectrumApi,{params: query})
-                    .then(function(res){
+                    .get(this.spectrumApi,{
+                      params: query,
+                      headers: header
+                    }).then(function(res){
                       this.spinShow = false
                       this.usiTableResults=[]
                       this.usiTableResultsRAW=[]
@@ -580,10 +585,24 @@
                         this.getSpectrumFail()
                         this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
-
                     },function(err){
+                      console.log(err)
                         this.getSpectrumFail()
-                        this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3});
+                        if(err){
+                          if(err.status == '500')
+                            this.$Message.error({content:'Server is to busy and please try again. Or the dataset does not exist', duration:3});
+                          else if(err.status == '400')
+                            this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3});
+                          else if(err.status == '404')
+                            this.$Message.error({content:err.bodyText, duration:3});
+                          else if(err.status == '401'){
+                            this.$Message.error({content:err.bodyText, duration:3});
+                            localStorage.setItem('privateusi',q.usi);
+                            this.$router.push({name:'login'});
+                          }
+                          else
+                            this.$Message.error({content:'Internal Server Error', duration:3});
+                        }
                     });
           }
       },
@@ -931,6 +950,9 @@
     },
     mounted: function(){
         //window.addEventListener("resize", this.change);
+        console.log(this.$route)
+        if(localStorage.getItem('privateusi'))
+          localStorage.setItem('privateusi','')
         if(Object.keys(this.$route.query).length === 0){
           //if there no query, do nothing
         }
