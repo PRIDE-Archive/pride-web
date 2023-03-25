@@ -590,9 +590,9 @@
                         this.getSpectrumFail()
                         if(err){
                           if(err.status == '500')
-                            this.$Message.error({content:'Server is to busy and please try again. Or the dataset does not exist', duration:3});
+                            this.$Message.error({content:'Server is too busy. Please retry.', duration:3});
                           else if(err.status == '400')
-                            this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3});
+                            this.$Message.error({content:err.bodyText, duration:3});
                           else if(err.status == '404')
                             this.$Message.error({content:err.bodyText, duration:3});
                           else if(err.status == '401'){
