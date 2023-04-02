@@ -3,44 +3,53 @@
       <template v-if="service">
           <div class="panel nav"><NavBar page="landingpage"/></div>
           <div class="content-container">
-              <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Register</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+              <div style="display: flex;justify-content: space-between; align-items: baseline;">
+                <h2 class="project-title">Register</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> -->
+              </div>
               <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
+              <!-- <Alert banner type="warning" style="margin-bottom: 20px">Registry Service is down. We will fix it soon!</Alert> -->
+              <Alert v-if="disableForm" type="warning" show-icon>
+                  Registry Service is down...
+                  <template slot="desc">
+                  We will fix it soon and sorry about any inconvenience.
+                  </template>
+              </Alert>
               <Form class="signUpForm" ref="formInlineSignUp" :model="formInlineSignUp" :rules="ruleInlineSignUp">
                 <FormItem prop="email" label="Email">
-                  <Input type="text" v-model="formInlineSignUp.email" placeholder="">
+                  <Input type="text" :disabled="disableForm" v-model="formInlineSignUp.email" placeholder="">
                   </Input>
                 </FormItem>
                 <FormItem prop="title" label="Title">
-                  <Select v-model="formInlineSignUp.title">
+                  <Select :disabled="disableForm" v-model="formInlineSignUp.title">
                       <Option v-for="item in titleList" :value="item.value">{{item.label}}</Option>
                   </Select>
                 </FormItem>
                 <FormItem prop="firstname" label="First name">
-                  <Input type="text" v-model="formInlineSignUp.firstname" placeholder="">
+                  <Input type="text" :disabled="disableForm" v-model="formInlineSignUp.firstname" placeholder="">
                   </Input>
                 </FormItem>
                 <FormItem prop="lastname" label="Last name">
-                  <Input type="text" v-model="formInlineSignUp.lastname" placeholder="">
+                  <Input type="text" :disabled="disableForm" v-model="formInlineSignUp.lastname" placeholder="">
                   </Input>
                 </FormItem>
                 <FormItem prop="affiliation" label="Affiliation">
-                  <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" v-model="formInlineSignUp.affiliation" placeholder="">
+                  <Input type="textarea" :autosize="{minRows: 2,maxRows: 3}" :disabled="disableForm" v-model="formInlineSignUp.affiliation" placeholder="">
                   </Input>
                 </FormItem>
                 <FormItem prop="country" label="Country">
-                  <Select v-model="formInlineSignUp.country">
+                  <Select :disabled="disableForm" v-model="formInlineSignUp.country">
                       <Option v-for="item in countryList" :value="item.value">{{item.label}}</Option>
                   </Select>
                 </FormItem>
                 <FormItem prop="orcid" label="ORCID">
-                  <Input type="text" v-model="formInlineSignUp.orcid" placeholder="">
+                  <Input type="text" :disabled="disableForm" v-model="formInlineSignUp.orcid" placeholder="">
                   </Input>
                 </FormItem>
                 <FormItem prop="terms" label="Terms of Usage" >
-                    <Checkbox v-model="formInlineSignUp.terms"><a class="privacy-action" @click="openTerms">Privacy notice</a></Checkbox>
+                    <Checkbox :disabled="disableForm" v-model="formInlineSignUp.terms"><a class="privacy-action" @click="openTerms">Privacy notice</a></Checkbox>
                 </FormItem>
                 <FormItem>
-                  <Button class="signupButton" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
+                  <Button class="signupButton" :disabled="disableForm" type="primary" @click="signup('formInlineSignUp')" long>Sign Up</Button>
                 </FormItem>
               </Form>
           </div>
@@ -122,7 +131,8 @@
                 ],
                 countryList:[],
                 countryListURL: this.$store.state.baseURL + '/country/index.csv',
-                service:true
+                service:true,
+                disableForm:false,
             }
         },
         components: {
