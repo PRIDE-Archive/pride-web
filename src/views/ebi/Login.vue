@@ -94,7 +94,7 @@
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
                               if(localStorage.getItem('privateusi')){
-                                this.$Message.success({ content: 'Login Success and we are doing the USI search for you!' })
+                                this.$Message.success({ content: 'Login Success and we are doing the USI search for you!' , duration:3})
                                 this.$router.push({ name: 'usi', query: {usi: localStorage.getItem('privateusi'), resultType: 'FULL'}});
                               }
                               else{
