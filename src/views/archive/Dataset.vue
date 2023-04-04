@@ -1233,7 +1233,7 @@
                   
                 }
               },function(err){
-                  this.$Message.error({content:'Protein Check Error', duration:3});
+                  // this.$Message.error({content:'Protein Check Error', duration:3});
               });
       },
       searchByLabel(filter){
