@@ -595,7 +595,7 @@
                             this.$Message.error({content:err.bodyText, duration:3});
                           else if(err.status == '404')
                             this.$Message.error({content:err.bodyText, duration:3});
-                          else if(err.status == '401'){
+                          else if(err.status == '401' || err.status == '403'){
                             this.$Message.error({content:err.bodyText, duration:3});
                             localStorage.setItem('privateusi',q.usi);
                             this.$router.push({name:'login'});
