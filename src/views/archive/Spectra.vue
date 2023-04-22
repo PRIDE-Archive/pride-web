@@ -38,6 +38,28 @@
               </div>
           </Col>
       </Row>
+      <Row v-if="!spectrumTableFoldBool" type="flex" justify="center" class="code-row-bg">
+        <Col span="24">
+            <div class="visualization-wrapper">
+              <Card class="card protein">
+                 <p slot="title" class="table-header">
+                    <span><Icon type="md-stats" size="14" style="margin-right: 5px"/>Spectrum</span> 
+                    <span v-if="spectrumFound" class="right">
+                        <a v-if="spectrumTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="spectrumTableFold(false)"></Icon></a>
+                        <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="spectrumTableFold(true)"></Icon></a>
+                    </span>
+                 </p>
+                 <div class="spectrum-container">
+                    <div style="color:#bdbdbd; text-align: center;">
+                        <span v-if ="spectrumTableFoldBool">{{spectrumTableHint}}</span>
+                    </div>
+                 </div>
+              </Card>
+            </div>
+        </Col>
+      </Row>
+      <!-- show the table if no spectrum -->
+      <!--
       <Row type="flex" justify="center" class="code-row-bg">
         <Col span="24">
             <div class="visualization-wrapper">
@@ -58,6 +80,32 @@
             </div>
         </Col>
       </Row>
+      -->
+      <Row v-if="!usiTableFoldBool" type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card usi">
+                      <p slot="title" class="table-header"> 
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>USI Details <span v-if="bestSearch" style="color:#d37878">[Spectrum Match Found in PRIDE Archive]</span></span>
+                          <span v-if="spectrumFound" class="right">
+                              <Input v-if ="!usiTableFoldBool" type="text" v-model="usiTableSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchUSIDetailsTable">
+                              </Input>
+                              <a v-if="usiTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="usiTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="usiTableFold(true)"></Icon></a>
+                          </span>
+                      </p>
+                      <div class="download-list-wrapper usi-container">
+                          <div style="color:#bdbdbd; text-align: center;">
+                              <span v-if ="usiTableFoldBool">{{usiTableHint}}</span>
+                          </div>
+                          <Table v-if ="spectrumFound" row-key="id" :row-class-name="rowClassName" class="usi-table" :loading="usiTableLoading" border :columns="usiTableColumn" :data="usiTableResults" size="small"></Table>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      <!-- show the table if no USI Details -->
+      <!--
       <Row type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
@@ -81,7 +129,8 @@
               </div>
           </Col>
       </Row>
-      <Row type="flex" justify="center" class="code-row-bg">
+      -->
+      <Row v-if="!psmTableFoldBool" type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
@@ -107,6 +156,33 @@
               </div>
           </Col>
       </Row>
+      <!-- show the table if no USI Details -->
+      <!--
+      <Row type="flex" justify="center" class="code-row-bg">
+          <Col span="24">
+              <div class="visualization-wrapper">
+                  <Card class="card protein">
+                      <p slot="title" class="table-header"> 
+                          <span><Icon type="md-reorder" size="14" style="margin-right: 5px"/>PRIDE Archive PSM Search</span>
+                          <span v-if="psmFound" class="right">
+                              <a v-if="psmTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="psmTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="psmTableFold(true)"></Icon></a>
+                          </span>
+                      </p>
+                      <div class="download-list-wrapper psm-container">
+                          <div style="color:#bdbdbd; text-align: center;">
+                              <span v-if ="psmTableFoldBool">{{psmTableHint}}</span>
+                          </div>
+                          <Table v-if ="psmFound" class="psm-table" :loading="psmTableLoading" border :columns="psmTableColumn" :data="psmTableResults" size="small"></Table>
+                          <div v-if ="psmFound" class="psm-table-page-container">
+                            <Page :total="totalPsmTableItem" :page-size="psmTablePageSize" :current="currentPsmTablePage" size="small" show-sizer show-total class-name="page" @on-change="psmTablePageChange" @on-page-size-change="psmTablePageSizeChange"></Page>
+                          </div>
+                      </div>
+                  </Card>
+              </div>
+          </Col>
+      </Row>
+      -->
       <Row type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
