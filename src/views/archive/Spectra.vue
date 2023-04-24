@@ -38,7 +38,7 @@
               </div>
           </Col>
       </Row>
-      <Row v-if="!spectrumTableFoldBool" type="flex" justify="center" class="code-row-bg">
+      <Row v-show="spectrumFound" type="flex" justify="center" class="code-row-bg">
         <Col span="24">
             <div class="visualization-wrapper">
               <Card class="card protein">
@@ -81,7 +81,7 @@
         </Col>
       </Row>
       -->
-      <Row v-if="!usiTableFoldBool" type="flex" justify="center" class="code-row-bg">
+      <Row v-show="spectrumFound" type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card usi">
@@ -130,7 +130,7 @@
           </Col>
       </Row>
       -->
-      <Row v-if="!psmTableFoldBool" type="flex" justify="center" class="code-row-bg">
+      <Row v-show="psmFound" type="flex" justify="center" class="code-row-bg">
           <Col span="24">
               <div class="visualization-wrapper">
                   <Card class="card protein">
@@ -405,7 +405,7 @@
           usiTableFoldBool:true,
           psmTableFoldBool:true,
           spectrumFound:false,
-          psmFound:true,
+          psmFound:false,
           spinShow:false,
           psmTableSpinShow:false,
           totalPsmTableItem:0,
