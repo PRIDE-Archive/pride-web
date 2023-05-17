@@ -1,7 +1,7 @@
 <template>
   <div class="statistics-container">
     <Row class="row">
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="treePrideShow"></Spin>
@@ -10,7 +10,7 @@
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="linePrideShow"></Spin>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+        <!-- <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="barHorizontalShow"></Spin>
@@ -27,8 +27,8 @@
                       <a class="static-more-button" @click="gotoStaticDetails">More</a>
                 </div>
             </div>
-        </Col>
-        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
+        </Col> -->
+        <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
             <div class="item-container">
                 <div class="item">
                       <Spin fix v-if="mapPrideShow"></Spin>
