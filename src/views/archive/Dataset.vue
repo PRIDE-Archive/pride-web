@@ -48,7 +48,7 @@
                     </span>
                 </div>
             </Col>
-            <Col span= "4">
+            <!-- <Col span= "4">
                 <Spin style="position: absolute; right: 30px; top: 70px;"   size="small" v-if="iconLoading || queryProjectDetailsLoading"></Spin>
                   <span v-else>
                       <svgLogo v-if="iconFound" :icon="iconData" :height="100" :width="100"></svgLogo>  
@@ -67,7 +67,7 @@
                         </div>
                       </Poptip>
                   </span>
-            </Col>
+            </Col> -->
           </Row>
           <Row :gutter="48">
               <Col span="16">
