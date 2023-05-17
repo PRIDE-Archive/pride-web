@@ -138,7 +138,7 @@
                             </Collapse>
                       </div>
                       
-                      <div style="width:15%; display: inline-block; position: absolute;">
+                      <!-- <div style="width:15%; display: inline-block; position: absolute;">
                             <Spin style="position: absolute; right: 30px; top: 30px;"   size="small" v-if="iconLoading"></Spin>
                             <span v-else>
                                 <svgLogo v-if="publicationItem.icon.id" :icon="publicationItem.icon"></svgLogo> 
@@ -157,7 +157,7 @@
                                   </div>
                                 </Poptip>
                             </span>
-                      </div>
+                      </div> -->
 
                   </Card>
                   
