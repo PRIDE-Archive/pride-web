@@ -22,8 +22,8 @@
                   </span>
                 </div>
                 <div class="tag-wrapper">
-                    <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span>
-                    <span class="dataset-wrapper" v-for="(datesetItem, index) in experimentTypes" :key="index">
+                    <span v-if="projectTags.length>0">PRIDE Assigned Tags: </span>
+                    <span class="dataset-wrapper" v-for="(datesetItem, index) in projectTags" :key="index">
                         <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                            <Icon type="ios-pricetag"></Icon>
                             {{datesetItem}}
@@ -391,7 +391,7 @@
                               <div class="property-wrapper">
                                 <div v-if="experimentTypes.length>0">
                                   <div v-for="item in experimentTypes">
-                                    <p>{{item}}</p>
+                                    <p>{{item.name}}</p>
                                   </div>
                                 </div>
                                 <div v-else>
@@ -505,6 +505,7 @@
           instrumentNames:[],
           quantificationMethods:[],
           experimentTypes:[],
+          projectTags:[],
           softwares:[],
           modification:[],
           queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects',
@@ -998,6 +999,7 @@
           this.instrumentNames=[]
           this.quantificationMethods=[]
           this.experimentTypes=[]
+          this.projectTags=[]
           this.softwares=[]
           this.modification=[]
       },
@@ -1024,7 +1026,8 @@
                 this.instrumentNames = res.body.instruments || [];
                 this.softwares = res.body.softwares || [];
                 this.quantificationMethods = res.body.quantificationMethods || [];
-                this.experimentTypes = res.body.projectTags || [];
+               this.experimentTypes = res.body.experimentTypes || [];
+               this.projectTags = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
                 //for contactors
                 if(res.body.submitters)
