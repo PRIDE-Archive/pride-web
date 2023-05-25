@@ -6,6 +6,8 @@
 
 - [How to submit data to PRIDE](./submitdatapage)
 
+- [How to do resubmission to PRIDE](./prideresubmission)
+
 - [Guideline for file formats for specific softwares used](./specificsoftwareformats)
 
 - [How to manually upload files](./submissionupload)

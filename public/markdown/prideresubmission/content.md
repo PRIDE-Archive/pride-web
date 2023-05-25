@@ -69,7 +69,7 @@ Once saved the submission will start to transfer the submission.px,newly added f
 
 ![Summary](../markdown/prideresubmission/files/summary.png)
 
-## Successful submission
+### Successful submission
 
 Once the transfer has been completed you would be presented with Success message and also the submission reference ticket id.
 Can provide a feedback by selecting the smiley and clicking on the Feedback button. Once done click on the finish button.
