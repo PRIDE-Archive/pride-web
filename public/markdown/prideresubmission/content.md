@@ -5,7 +5,7 @@ This tool has been implemented as a wizard, guiding submitters through a set of 
 
 [DOWNLOAD TOOL](https://ftp.pride.ebi.ac.uk/pub/databases/pride/resources/tools/submission-tool/latest/desktop/px-submission-tool.zip)
 
-### Login Panel
+## Login Panel
 
 The first step to submit a dataset to PRIDE Archive is to log into PRIDE using an existing account as shown:
 
@@ -13,7 +13,7 @@ The first step to submit a dataset to PRIDE Archive is to log into PRIDE using a
 
 ![Login panel](../markdown/prideresubmission/files/login.png)
 
-### Resubmission
+## Resubmission
 
 Users are asked to click the below Resubmisison button presented at bottom of the screen.
 
@@ -21,7 +21,7 @@ Users are asked to click the below Resubmisison button presented at bottom of th
 
 ![Resubmission](../markdown/prideresubmission/files/resubmission.png)
 
-### Enable resubmission and load the private datasets
+## Enable resubmission and load the private datasets
 
 In this stage, please check on enable resubmission check box and click on the Load private datasets button.
 The below drop-down list will be populated with private datasets of the user as shown below. Please select the dataset 
@@ -33,7 +33,7 @@ that needs to be updated
 
 > Once you click Ok, the dialog will be closed and presented with parent screen , please select next and proceed to the next screen.
 
-### Add/Modify/Delete files
+## Add/Modify/Delete files
 
 As shown below the next screen will be presented with previously submitted files below. 
 * You get to choose DELETE/MODIFY option for the files from the drop-down list next to it. 
@@ -52,7 +52,7 @@ the previously submitted files, you should add new file with same name else the 
 
 Once you have done with the changes you shall press Next button and proceed to next step.
 
-### Checksum calculation
+## Checksum calculation
 
 If you are adding new files to the submission you have the option of calculating checksum for the new files added. Please
 press yes or no if you want to calculate checksum. It is highly recommended to calculate checksum but if the file is very large you can skip it
@@ -60,7 +60,7 @@ by pressing no. Please press Next button after that.
 
 ![Checksum](../markdown/prideresubmission/files/checksum.png)
 
-### Submission summary
+## Submission summary
 
 The next screen will show up the summary of new files added and option selected for the previously submitted files.
 Look through the summary and if everything seems fine , please accept the PRIDE dataset policy and press submit button.
@@ -69,7 +69,7 @@ Once saved the submission will start to transfer the submission.px,newly added f
 
 ![Summary](../markdown/prideresubmission/files/summary.png)
 
-### Successful submission
+## Successful submission
 
 Once the transfer has been completed you would be presented with Success message and also the submission reference ticket id.
 Can provide a feedback by selecting the smiley and clicking on the Feedback button. Once done click on the finish button.
