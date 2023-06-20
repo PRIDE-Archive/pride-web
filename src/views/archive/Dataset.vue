@@ -1041,10 +1041,19 @@
           this.$http
             .get(this.filesNumberURL,{params: query}) 
             .then(function(res){
-                if(res.body)
-                  this.filesNumber = 'RAW'+' ('+res.body.RAW+')'+', '+
-                                     'SEARCH'+' ('+res.body.SEARCH+')'+', '+
-                                     'OTHER'+' ('+res.body.OTHER+')';
+                if(res.body){
+                  let raw = res.body.RAW || 0
+                  let search = res.body.SEARCH || 0
+                  let peak = res.body.PEAK || 0
+                  let result =  res.body.RESULT || 0
+                  let other = res.body.OTHER || 0
+
+                  this.filesNumber = 'RAW'+' ('+raw+')'+', '+
+                                     'SEARCH'+' ('+search+')'+', '+
+                                     'PEAK'+' ('+peak+')'+', '+
+                                     'RESULT'+' ('+result+')'+', '+
+                                     'OTHER'+' ('+other+')';
+                }
                 console.log('res',res)
             },function(err){
 
