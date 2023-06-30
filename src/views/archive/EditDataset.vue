@@ -988,10 +988,10 @@
 
             },function(err){
                 console.log('err',err)
-                if(err.body.error=='TOKEN_EXPIRED'){
-                  this.$Message.error({content:'TOKEN_EXPIRED', duration:3});
+                // if(err.body.error=='TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
+                  this.$Message.error({content:'SESSION EXPIRED', duration:3});
                   this.logout();
-                }
+                // }
             });
       },
       // getMSRunTableData(){

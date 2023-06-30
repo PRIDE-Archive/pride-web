@@ -590,9 +590,9 @@
                             //this.$Message.error({content:'No Private Data', duration:1});
                         }
                       },function(err){
-                        if(err.body.error == 'TOKEN_EXPIRED'){
+                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
                             this.logout();
-                        }
+                        // }
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
             },
@@ -622,9 +622,9 @@
                         
                         //console.log(this.publicDataList);
                       },function(err){
-                        if(err.body.error == 'TOKEN_EXPIRED'){
+                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
                             this.logout();
-                        }
+                        // }
                         this.$Message.error({content:'Annotation Error', duration:1});
                       });
             },
@@ -655,9 +655,9 @@
                         }
                         
                       },function(err){
-                        if(err.body.error == 'TOKEN_EXPIRED'){
+                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
                             this.logout();
-                        }
+                        // }
                         this.$Message.error({content:'Review Data Error', duration:1});
                       });
             },
@@ -710,13 +710,13 @@
                         }
                         // console.log('this.profileData',this.profileData)
                       },function(err){
-                        if(err.body.error == 'TOKEN_EXPIRED'){
+                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
                             this.logout();
                             this.$router.push({name:'login'});
                             this.$Message.error({content:'Expired, Please Login Again', duration:3});
-                        }
-                        else
-                            this.$Message.error({content:'Get Profile Error', duration:3});
+                        // }
+                        // else
+                        //     this.$Message.error({content:'Get Profile Error', duration:3});
                       });
             },
             logout(){
