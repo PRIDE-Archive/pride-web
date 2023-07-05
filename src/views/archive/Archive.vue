@@ -438,7 +438,7 @@
                               // item.hightlightItemArray.push(hightlightItem);
                           }
                           item.submitters = item.submitters.replace(/,$/gi,'')
-
+                          // highlights are from the backend reply in each item of projectList
                           for(let j in projectsList[i].highlights){
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
@@ -446,18 +446,24 @@
                                 //console.log(projectsList[i].highlights[j][k]);
                                 content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
                               }
+                              // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
+                              // console.log(j)
                               let hightlightItem={
-                                  name:this.projectItemsConfigRes[j],
+
+                                  name:this.projectItemsConfigRes[j] ? this.projectItemsConfigRes[j] : j,
                                   content:content.replace(/,$/gi,'')
                               }
+                              console.log('hightlightItem',hightlightItem)
                               item.hightlightItemArray.push(hightlightItem);
                           }
+
                           this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);  
                       }
+                      // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
                       // console.log('this.publicaitionList', this.publicaitionList);
                       this.generateIcons()
                 }
@@ -484,7 +490,7 @@
       setHighlightKeywords(){
           if(this.keyword)
             this.highlightKeyword = this.keyword.split(',');
-          //console.log('this.highlightKeyword',this.highlightKeyword);
+          // console.log('this.highlightKeyword',this.highlightKeyword);
       },
       querySpecificFacets(keyword){
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
@@ -848,7 +854,7 @@
                   .get(this.projectItemsConfigURL)
                   .then(function(projectItemsConfigRes){
                       this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
-                      // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes);
+                      // console.log('1111this.projectItemsConfigRes',this.projectItemsConfigRes);
                       this.setFilter();
                       this.updateCondition();
                       this.queryArchiveProjectList();
