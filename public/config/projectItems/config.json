@@ -15,9 +15,7 @@
     "submissionType":"Submission Type",
     "submitters":"Submitters",
     "labPIs":"Lab Head",
-    "sdrf":"Sdrf",
-    "organismParts":"Organism parts",
-    "project_file_names":"Project file names"
+    "sdrf":"Sdrf"
   }
 }
 

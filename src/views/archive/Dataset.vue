@@ -40,11 +40,21 @@
                         <!-- <DropdownMenu slot="list">
                             <DropdownItem>{{datesetItem}}</DropdownItem>
                         </DropdownMenu> -->
-                        <Tag color="blue" v-if="datesetItem == 'Biological'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
-                        <Tag color="cyan" v-else-if="datesetItem == 'Biomedical'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
-                        <Tag color="geekblue" v-else-if="datesetItem == 'Highlighted'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
-                        <Tag color="purple" v-else-if="datesetItem == 'Technical'" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
-                        <Tag color="volcano" v-else @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</Tag>
+                        <Tag color="blue" v-if="datesetItem == 'Biological'">
+                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                        </Tag>
+                        <Tag color="cyan" v-else-if="datesetItem == 'Biomedical'">
+                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                        </Tag>
+                        <Tag color="geekblue" v-else-if="datesetItem == 'Highlighted'">
+                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                        </Tag>
+                        <Tag color="purple" v-else-if="datesetItem == 'Technical'">
+                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                        </Tag>
+                        <Tag color="volcano" v-else>
+                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                        </Tag>
                     </span>
                 </div>
             </Col>
