@@ -94,8 +94,29 @@
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
-                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
-                              <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <!-- <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p> -->
+                              <div v-for ="item in labheads">
+                                <!-- <p style="font-weight: bold">Lab head: </p>  -->
+                                <Form :model="item" label-position="left" :label-width="100">
+                                    <FormItem label="Title">
+                                        <Select v-model="item.title">
+                                            <Option v-for="item in labHeadTitleOptions" :value="item.value" :key="item.name">{{item.name}}</Option>
+                                        </Select>
+                                    </FormItem>
+                                    <FormItem label="First Name">
+                                        <Input v-model="item.firstName" placeholder="No First Name Provided" />
+                                    </FormItem>
+                                    <FormItem label="Last Name">
+                                        <Input v-model="item.lastName" placeholder="No Last Name Provided" />
+                                    </FormItem>
+                                    <FormItem label="Email">
+                                        <Input v-model="item.email" placeholder="No Email Provided" />
+                                    </FormItem>
+                                    <FormItem label="Affiliation">
+                                        <Input v-model="item.affiliation" type="textarea" placeholder="No Email Affiliation" />
+                                    </FormItem>
+                                </Form>
+                              </div>
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Submission Date</div>
@@ -441,6 +462,15 @@
           dataProcessingProtocol:'',
           contactors:[],
           labheads:[],
+          labHeadTitleOptions:[
+            { name:'Mr', value: 'Mr'},
+            { name:'Ms', value: 'Ms'},
+            { name:'Miss', value: 'Miss'},
+            { name:'Mrs', value: 'Mrs'},
+            { name:'Dr', value: 'Dr'},
+            { name:'Professor', value: 'Professor'},
+            { name:'UNKNOWN', value: 'UNKNOWN'}
+          ],
           publications:[],
           species:[],
           diseases:[],
@@ -964,6 +994,7 @@
                 if(res.body.submitters)
                   for(let i=0; i<res.body.submitters.length; i++){
                     let item = {
+                      title: res.body.submitters[i].title,
                       name: res.body.submitters[i].name,
                       affiliation: res.body.submitters[i].affiliation,
                       email:res.body.submitters[i].email
@@ -974,8 +1005,10 @@
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
                     let item = {
-                      name: res.body.labPIs[i].name,
-                      affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
+                      title: res.body.labPIs[i].title,
+                      firstName: res.body.labPIs[i].name.split(' ')[0],
+                      lastName: res.body.labPIs[i].name.split(' ')[1],
+                      affiliation: res.body.labPIs[i].affiliation,
                       email:res.body.labPIs[i].email
                     }
                     this.labheads.push(item);
