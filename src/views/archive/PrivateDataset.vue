@@ -98,7 +98,7 @@
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
-                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                               <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                           </div>
                           <!-- <div class="card-item-wrapper">
@@ -1033,6 +1033,7 @@
                 if(res.body.submitters)
                   for(let i=0; i<res.body.submitters.length; i++){
                     let item = {
+                      title: res.body.submitters[i].title,
                       name: res.body.submitters[i].name,
                       affiliation: res.body.submitters[i].affiliation,
                       email:res.body.submitters[i].email
