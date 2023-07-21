@@ -129,7 +129,7 @@
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
-                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                               <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                           </div>
                           <div class="card-item-wrapper">
@@ -962,12 +962,14 @@
                 //for contactors
                 for(let i=0; i<res.body.submitters.length; i++){
                   let item = {
+                    title: res.body.submitters[i].title,
                     name: res.body.submitters[i].name,
                     affiliation: res.body.submitters[i].affiliation,
                     email:res.body.submitters[i].email
                   }
                   this.contactors.push(item);
                 }
+                console.log('res.body.submitters',res.body.submitters)
                 // lab head in contactors which could be edited in the editdataset page.
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
@@ -979,6 +981,7 @@
                     }
                     this.labheads.push(item);
                   }
+                  console.log('this.labheads',this.labheads)
                 //for publications
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
