@@ -1039,7 +1039,7 @@
                     }
                     this.contactors.push(item);
                   }
-                //for labheads
+                // lab head in contactors which could be edited in the editdataset page.
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
                     let item = {
