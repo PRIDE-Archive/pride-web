@@ -95,6 +95,7 @@
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Contact</div>
                               <p v-for ="item in contactors"> <a :href="'mailto:'+item.email">{{item.name}}</a><span>, {{item.affiliation}}</span></p>
+                              <p v-for ="item in labheads"> <a :href="'mailto:'+item.email">{{item.title}} {{item.name}}</a><span>, {{item.affiliation}}</span></p>
                           </div>
                           <div class="card-item-wrapper">
                               <div class="summary-content-header">Submission Date</div>
@@ -439,6 +440,7 @@
           sampleProcessingProtocol:'',
           dataProcessingProtocol:'',
           contactors:[],
+          labheads:[],
           publications:[],
           species:[],
           diseases:[],
@@ -921,6 +923,7 @@
           this.sampleProcessingProtocol=''
           this.dataProcessingProtocol=''
           this.contactors = []
+          this.labheads = []
           this.publications=[]
           this.species=[]
           this.diseases=[]
@@ -967,6 +970,7 @@
                     }
                     this.contactors.push(item);
                   }
+                // lab head in contactors which could be edited in the editdataset page.
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
                     let item = {
@@ -974,7 +978,7 @@
                       affiliation: res.body.labPIs[i].affiliation + ' ' +'(lab head)',
                       email:res.body.labPIs[i].email
                     }
-                    this.contactors.push(item);
+                    this.labheads.push(item);
                   }
                 //for publications
                 if(res.body.references)
