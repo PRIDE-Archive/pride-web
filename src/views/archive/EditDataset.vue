@@ -1321,19 +1321,22 @@
           // pubMedId: this.publications
         }
         console.log(dataset.Metadata)
-
+        this.$Spin.show();
         this.$http
             .post(this.updateDatesetApi + this.accession,dataset,
               {headers: {'Authorization':'Bearer '+ localStorage.getItem('token')} 
             })
             .then(function(res){
                 console.log('update metadata',res)
+                this.$Spin.hide();
+                this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
                 this.$Message.success({content:'Update Successfully', duration:3});
             },function(err){
               console.log(err)
+              this.$Spin.hide();
                 this.$Message.error({content:'Update Failed', duration:3});
             });
-        this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
+        
       },
     },
     mounted: function(){
