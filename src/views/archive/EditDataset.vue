@@ -1311,13 +1311,16 @@
           sampleProcessingProtocol: this.sampleProcessingProtocol,
           dataProcessingProtocol: this.dataProcessingProtocol,
           // doi: "string",
-          // labHeadAffiliation: this.contactors 
+          labHeadAffiliation:this.labheads[0].affiliation,
+          labHeadEmail:this.labheads[0].email,
+          labHeadFirstName:this.labheads[0].firstName,
+          labHeadLastName:this.labheads[0].lastName,
+          labHeadTitle: this.labheads[0].title
           // labHeadEmail: this.contactors 
           
           // pubMedId: this.publications
-          
         }
-
+        console.log(dataset.Metadata)
 
         this.$http
             .post(this.updateDatesetApi + this.accession,dataset,
@@ -1330,7 +1333,7 @@
               console.log(err)
                 this.$Message.error({content:'Update Failed', duration:3});
             });
-        // this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
+        this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
       },
     },
     mounted: function(){
