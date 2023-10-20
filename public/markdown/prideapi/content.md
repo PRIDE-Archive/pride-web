@@ -39,7 +39,8 @@ Example: https://www.ebi.ac.uk/pride/ws/archive/v2/search/projects?q=human&sortD
 
 The pridepy Python Client library for PRIDE Rest API 
 
-# Installation
+### Installation
+
 To install, simply use `pip`:
 
 ```bash
