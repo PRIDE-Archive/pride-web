@@ -20,6 +20,7 @@
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
 
+- [Miscellaneous queries](./misc)
 
 ## Tools Help Pages
 

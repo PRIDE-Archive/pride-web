@@ -8,6 +8,8 @@ PRIDE Submission Tool is a Java based application and requires Java 8 or higher 
 
     java -jar px-submission-tool-{version}.jar
 
+Below are the steps for using the PRIDE submission tool or PX tool
+
 ## Login Panel
 
 The first step to submit a dataset to PRIDE Archive is to log into PRIDE using an existing account as shown:
@@ -72,6 +74,13 @@ For instance, if there is only 1 ‘RESULT’ file found during the previous ‘
 If there are multiple ‘RESULT’ files the tool maps the other files – ‘RAW’, ‘PEAK’, ‘SEARCH’, … - with the same file name prefix, but without the file extension, to the corresponding ‘RESULT’ files. This mapping is done even if the suffix part of the ‘RAW’ files contains different numbers (for instance indicating different replicates).
 
 If the automatic mapping is partial only or does not apply, the submitter is asked to manually assign manually the relationships between the files.
+
+## Checksum calculation
+
+You have the option of calculating checksum for the files added. Please
+press yes or no if you want to calculate checksum. It is highly recommended to calculate checksum but if the file is very large you can skip or pass through checksum calculation
+by pressing no. Please press Next button after that.
+
 
 ## Additional submission metadata
 
