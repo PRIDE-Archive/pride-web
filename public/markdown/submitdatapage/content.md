@@ -82,7 +82,7 @@ By default, your dataset will be made publicly available after your manuscript h
 
 You can make your dataset public in two ways:
 
-- Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can click the green “Publish” buttons located next to your unpublished datasets. Here you can provide details for your dataset and submit a web form.
+- Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can list all your private datasets, after selecting the dataset to be published; the user can click the green “Publish” button to request the publication. Here you can provide details for your dataset and submit a web form.
 
 - If you are not the original submitter, you can contact pride-support@ebi.ac.uk.
 
