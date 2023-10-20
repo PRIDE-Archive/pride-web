@@ -1,4 +1,4 @@
- - **PRIDE Submission Tool does not launch**
+### PRIDE Submission Tool does not launch
  
  
  - Make sure you have the following requirements before you run the programme 
@@ -7,11 +7,11 @@
  
  - Make sure you have not put the tool in a directory with a blank space or similar
  
- - Please open a command line window and run following command to check your java version:
+ - Please open a command line window and run the following command to check your java version:
  
  	java -version
  	
- - **For MAC users**
+### For MAC users
  
  Check for the old version of JDK installed even though it is updated to the new version of JRE. Re-locate the unzipped px-submission-tool-2.4.xx folder from the desktop to the main Mac directory (this overcame the “unable to access” error).
   
@@ -22,28 +22,34 @@
   - cd <path/to/the/px-submission-tool/directory> Navigate to your submission tool folder
   - java -jar px-submission-tool-<version number>.jar to open the tool. Please replace the version number.
 
-- **PRIDE Submission Tool stuck at checksum stage**
 
-If you don't have write access to the folders you are running the tool from. You can check by creating  a file in that folder and check. For example, if you have the submission tool on the C drive with Windows 10, in the Program Files directory, that is apparently protected and the install tool cannot write there. If you put the install tool into another directory with no read/write permissions (apparently), then it all works fine. I noticed when starting the tool when it was in the directory that could not write, there was an error box when the tool first started, but there was no text in that box or indication what the error was. I supposed that could be enhanced to indicate to people that write permissions are such that the upload tool cannot work.
+### PRIDE Submission Tool stuck at checksum stage
 
-- **How to switch the PRIDE Submission Tool from Aspera to FTP?**
+There are several factors that may cause the PRIDE Submission Tool to encounter delays when calculating checksums for each file:
+
+- Ensure that you possess write access to the directory where you're utilizing the tool, as the checksum file is generated within that directory.
+
+- In cases where your files are big or your submission comprises a significant number of files, the checksum calculation process may take a considerable amount of time. We kindly ask for your patience while the checksum calculation completes.
+
+
+### How to switch the PRIDE Submission Tool from Aspera to FTP?
 
 Should there be problems with the Aspera upload submitters can switch to the slower FTP file transfer protocol by changing the ‘px.upload.protocol = aspera’ line to ‘px.upload.protocol = ftp’ in the plain config.props text file located in the ‘config’ subdirectory in the PRIDE Submission Tool’s working directory.
 
-- **Aspera does not connect**
+### Aspera does not connect
 
 Ensure that the following port allows outbound traffic on your router, firewall, or network: TCP 33001.
 
 Aspera connects, but transfers 0% of my files
 Ensure that the following port allows outbound traffic on your router, firewall, or network: UDP 33001.
 
-- **I cannot do log-in with the PRIDE Submission tool**
+### I cannot do log-in with the PRIDE Submission tool
 
 Please confirm that you can log into the main PRIDE website with your account:
 [http://www.ebi.ac.uk/pride/archive/login](http://www.ebi.ac.uk/pride/archive/login)
 Perhaps you can try changing your password, and then trying again.
 
-- **How to export the summary and checksum file with the PRIDE Submission Tool?**
+### How to export the summary and checksum file with the PRIDE Submission Tool?
 
 For some bulk submissions or for direct Aspera upload, the submission.px and checksum files can still be generated and exported with the PRIDE Submission Tool.
 
