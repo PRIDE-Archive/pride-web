@@ -1,6 +1,5 @@
 ### PRIDE Submission Tool does not launch
- 
- 
+
  - Make sure you have the following requirements before you run the programme 
  
  - You should unzip the zipped file and run px-submission-tool-2.4.xx.jar, not the zipped file
