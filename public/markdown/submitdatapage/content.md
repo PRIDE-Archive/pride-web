@@ -1,9 +1,8 @@
-
 ## How to submit data to PRIDE
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
-The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
 ## What happens to my data after upload
  
@@ -22,6 +21,7 @@ The following [open access publication](https://onlinelibrary.wiley.com/doi/full
 Before submitting to PRIDE database the user need to be sure that it has an account with PRIDE resource. If you don't have already a PRIDE account, please create one [here](https://www.ebi.ac.uk/pride/register). Currently we don't send out automatic emails upon successful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
 
 ## What constitutes a PRIDE dataset?
+
 The general rule is that a dataset should correspond to the data described in a single manuscript, if all data in the manuscript comes from the same data workflow (e.g. Data Dependent Acquisition, DDA). If a manuscript contains data coming from different proteomics workflows (DDA and Selected Reaction Monitoring, SRM), it is recommended to split the data in different datasets so this is easier to interpret for third parties. However, it should be highlighted that it is the submitter’s decision how to organise their submitted datasets, which could depend on a number of factors (e.g. future publications).
 
 
@@ -57,24 +57,18 @@ Optionally other files can be included in any dataset submission to facilitate t
 
 ## Submit your dataset
 
-If you have all the files ready, the next step is to Download the [PX Submission Tool](./pridesubmissiontool). The PX Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File_Format.pdf). The submission.px file contains 2 types of crucial information:
+If you have all the files ready, the next step is to Download the [PRIDE Submission Tool](./pridesubmissiontool). The PRIDE Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File_Format.pdf). The submission.px file contains 2 types of crucial information:
 
 **Metadata**: Required experimental metadata like experiment description, sample taxonomy information, instruments and protein modifications used.
 **Mappings between the uploaded files**: for instance between the RAW files and the corresponding 'RESULT' or search engine output ('SEARCH') files.
 
-Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PX Submission Tool.
-
-## How many PX identifiers can be issued per study/manuscript, can a dataset be split into further partitions?
-
-Sometimes submitters plan to split the dataset belonging to the same study/manuscript/project into many different dataset partitions due to different reasons. In this case it is a recommended practice to contact the PRIDE Curator Team via [pride-support@ebi.ac.uk](pride-support@ebi.ac.uk) in order to agree on the structure of the dataset splits before actual data upload, desirably.
-
-By default we issue one identifier per project unless there's a strong reason to split data like samples from different species have been used, or different instrumentation has been applied. Even in case of a justified way of splitting a dataset into partitions there should be no more than 5 identifiers issued by default. If the curators know the dataset structure in advance they will make an effort to assign a continuous range of PX Identifiers to the dataset splits. However there is no guarantee that this could be achieved since ProteomeXchange has a shared identifier space and other PX partner repositories can issue identifiers too.
+Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PRIDE Submission Tool.
 
 ## Accessing private data
 
 Submitted datasets are 'private' by default, which means you need to be [logged-in](https://www.ebi.ac.uk/pride/archive/login) to view your data. During the submission process we create a reviewer account for your dataset which you can include in your letter to the editor or in the actual manuscript, so that it can be used during the review process. The reviewer account will give access to all of the files included in a dataset. You can access the private dataset files in two ways:
 
-#### PRIDE Archive web page
+## PRIDE Archive web page
 
 PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Registered submitters can use their personal accounts or the reviewer accounts to access and download the individual datasets. For every submitted dataset there is a separate reviewer account generated. Once logged in with your registered User (the e-mail account you used to register in PRIDE) or an issued Reviewer Account you will get access to the private dataset/s listed under that account.
 
@@ -82,29 +76,46 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 ![Private Submission List](../markdown/submitdatapage/files/private-submission.png)
 
-## Post-submission steps
+## Making the data public
 
-The main post-submission steps include the following ones:
+Once your publication is accepted, it is essential for the user to ensure that the associated dataset is made publicly accessible. Failure to do so may result in notifications from journals or fellow researchers requesting the dataset's public availability. Furthermore, if the manuscript is designated as open access, the PRIDE team will automatically identify instances where the corresponding dataset is not public and initiate the necessary publication steps. 
 
-- 1) Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spread sheets, scripts, etc) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional RAW files and accompanying RESULT or SEARCH files, you need to resubmit the whole dataset again. Please follow the procedure here.
+You can make your dataset public in two ways:
 
-- 2) Referencing the dataset in the [paper](./citationpage).
+- Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can list all your private datasets, after selecting the dataset to be published; the user can click the green “Publish” button to request the publication. Here you can provide details for your dataset and submit a web form.
 
-- 3) **Public release of datasets**
-
-By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t now that your manuscript is already published. It is important for authors to take into account that some journals may also have this public release policy in parallel as well, and it may be possible that the manuscript is not accepted until the dataset in made public to the community.
-
-You can notify us in three different ways:
-
-- Via the PRIDE Archive web site (http://www.ebi.ac.uk/pride/archive). Once you have logged in with your user account at http://www.ebi.ac.uk/pride/archive/login you can click the green “Publish” buttons located next to your unpublished datasets. Here you can provide details for your dataset and submit a web form.
-
-- If you are not the original submitter, but have found that the dataset has been included in a publication, you can go directly to https://www.ebi.ac.uk/pride/archive/projects/PXDxxxxxx/publish, where 'xxxxxx' is the integer including the PXD dataset identifier.
-
-- Contacting pride-support@ebi.ac.uk.
+- If you are not the original submitter, you can contact pride-support@ebi.ac.uk.
 
 Upon making the project public, a project page will be released in PRIDE and available also at ProteomeCentral (http://proteomecentral.proteomexchange.org).
 
-**Exceptions to the public release policy of the datasets**
+Note: **Exceptions to the public release policy of the datasets**
 
-Exceptions to this policy may be only be granted in documented special cases, which will be considered in an individual case-by-case basis. If the original submitters have used or are planning to use the same dataset (that should be released) in other ongoing studies, they can request once an extension of the non-released status. This extension will be of a maximum of 6-months. An official request must be done by the data owner to PRIDE, justifying this request appropriately. It should be noted that this 6-month extension does not consider the requirements of the scientific journal where the article has been published, which may mandate that the data is released immediately anyway.
+Exceptions to this policy may be only being granted in documented special cases, which will be considered on an individual case-by-case basis. If the original submitters have used or are planning to use the same dataset (that should be released) in other ongoing studies, they can request once an extension of the non-released status. This extension will be of a maximum of 6-months. An official request must be done by the data owner to PRIDE, justifying this request appropriately. It should be noted that this 6-month extension does not consider the requirements of the scientific journal where the article has been published, which may mandate that the data is released immediately anyway.
+
+## PRIDE Submission Questions and Answers
+
+### Can a publication/project contain multiple datasets?
+
+It is possible to submit multiple datasets for the same project/publication. Some of the reasons to submit multiple datasets for the same study/project/publication: 
+
+- The study contains multiple samples from different organisms, instrument configurations, etc. For example, the study is performed on human samples and other model organisms like mouse. The submitter can do two submissions one for each organism.
+- DIA (Data Independent Acquisition) and DDA (Data Dependent Acquisition) datasets. The submitter can do two submissions one for each acquisition method. One of the DDA data used to generate the spectral libraries and another DIA including the libraries generated with the DDA data. 
+- The study contains multiple samples from the same organism but different conditions. For example, the study is performed on human samples and the samples are treated with different drugs. The submitter can do two submissions one for each condition with the corresponding SDRFs. 
+
+In the manuscript, the submitters can reference each independent dataset with the corresponding accession number.
+
+### Can I modify my private submission before publication? 
+
+During the review process of the manuscript, the user may want to modify their dataset. The following things can be modified: 
+
+- In the PRIDE user profile, the user can modify the title, description, and other fields from the metadata. 
+- Using the PRIDE Submission Tool, the user can perform a resubmission which allows to add, modify or remove files from the private submission. 
+
+### How can I upload a big dataset? 
+
+For big submissions, we suggest generating the submission.px file, which includes the list of files and submission metadata, through the PRIDE Submission Tool. Following this, save the submission.px file to your local computer. Then, we recommend reaching out to the PRIDE support team to obtain an FTP account and dedicated folder for uploading your files, including the submission.px and checksum. Once you've secured access, you can employ your preferred FTP or Aspera client to transfer your data. Once all the data is successfully uploaded, please contact the PRIDE team to initiate the submission process.
+
+**Note**: It is important to note that big submissions these recommendations depend on your internet connection and the size of the dataset. On average, for submissions less than 1 terabyte, we recommend using the PRIDE Submission Tool. For submissions bigger than 1 terabyte, we recommend using the FTP/Aspera client.
+
+
 
