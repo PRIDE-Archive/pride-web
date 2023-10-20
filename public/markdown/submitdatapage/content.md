@@ -78,7 +78,7 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 ## Making the data public
 
-By default, your dataset will be made publicly available after your manuscript has been accepted, or when we have your instructions to do so. While we may also receive acceptance notifications from some journals, we would like to ask all submitters to kindly notify us separately. Otherwise, it can happen that we don’t know that your manuscript is already published. It is important for authors to take into account that some journals may also have this public release policy in parallel as well, and it may be possible that the manuscript is not accepted until the dataset is made public to the community.
+Once your publication is accepted, it is essential for the user to ensure that the associated dataset is made publicly accessible. Failure to do so may result in notifications from journals or fellow researchers requesting the dataset's public availability. Furthermore, if the manuscript is designated as open access, the PRIDE team will automatically identify instances where the corresponding dataset is not public and initiate the necessary publication steps. 
 
 You can make your dataset public in two ways:
 
