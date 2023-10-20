@@ -53,11 +53,28 @@ Perhaps you can try changing your password, and then trying again.
 
 For some bulk submissions or for direct Aspera upload, the submission.px and checksum files can still be generated and exported with the PRIDE Submission Tool.
 
-You can generate them from the PX Tool. You need to install the latest PX Tool from the PRIDE web page. Once you upload your data then at the 4th step when the checksum step passes, the checksum.txt file will automatically be downloaded to your PX Tool folder. Again you need to follow the PX Tool till the 9th step, there in the top right corner you can find the summary/submission.px file which you can export. You don't have to go further to submit the data. See screenshots -
+You can generate them from the PRIDE submission Tool. You need to install the latest PRIDE submission Tool from the PRIDE web page. Once you upload your data then at the 4th step when the checksum step passes, the checksum.txt file will automatically be downloaded to your PRIDE submission Tool folder.
+Again you need to follow the PRIDE submission Tool till the 9th step, 
+there in the top right corner you can find the summary/submission.px file which you can export.
+You don't have to go further to submit the data. See screenshots -
 
 
 ![checksum](../markdown/tooltroubleshooting/files/checksum.png)
 ![checksum1](../markdown/tooltroubleshooting/files/checksum1.png)
 ![checksum2](../markdown/tooltroubleshooting/files/checksum2.png)
+
+### How and where to check the log files of PRIDE submission tool
+
+The log file for the submission tool (submission.log) will be present in the log folder inside the px-submission-tool folder.
+Most of the time the log file will show the common errors in the tool while execution which can be corrected manually, if not ,
+if there is any issue in submitting or using the PRIDE submission tool you can 
+contact the PRIDE support team by attaching the log file.
+
+### How to add modification that is not present in the list of the PRIDE submission tool
+
+Usually the drop-down list would consist of all the common modifications used . If not so you can traverse to the bottom of the list and select Others.
+That would open up the OLS Dialog where you can search by Ontology names or id and select the desired modifications.
+
+
 
 

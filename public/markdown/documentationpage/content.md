@@ -22,6 +22,8 @@
 
 - [PRIDE Results Inspector](./resultpage)
 
+- [Miscellaneous queries](./misc)
+
 
 ## Tools Help Pages
 
