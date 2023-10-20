@@ -108,7 +108,7 @@ In the manuscript, the submitters can reference each independent dataset with th
 
 During the review process of the manuscript, the user may want to modify their dataset. The following things can be modified: 
 
-- In the PRIDE user profile, the user can modify the title, description, and other fields. 
+- In the PRIDE user profile, the user can modify the title, description, and other fields from the metadata. 
 - Using the PRIDE Submission Tool, the user can perform a resubmission which allows to add, modify or remove files from the private submission. 
 
 ### How can I upload a big dataset? 
