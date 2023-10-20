@@ -23,7 +23,7 @@
     "stephovercontent":{
       "one":   "If you do not already have a PRIDE account, create one here.",
       "two":   "We have different type of submissions in PRIDE.",
-      "three": "The PX Submission tool allows users to perform the final submission.",
+      "three": "The PRIDE Submission tool allows users to perform the final submission.",
       "four":  "Submitted datasets are 'private' by default. They will be available to you and the reviewers if you are logged-in into PRIDE",
       "five":  "After the submission, the dataset metadata is validated and different post-processing are applied. "
     },

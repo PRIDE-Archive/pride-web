@@ -3,7 +3,7 @@
 
 PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
-The current way of submitting data to PRIDE is using the PX Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
 ## What happens to my data after upload
  
@@ -57,12 +57,12 @@ Optionally other files can be included in any dataset submission to facilitate t
 
 ## Submit your dataset
 
-If you have all the files ready, the next step is to Download the [PX Submission Tool](./pridesubmissiontool). The PX Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File_Format.pdf). The submission.px file contains 2 types of crucial information:
+If you have all the files ready, the next step is to Download the [PRIDE Submission Tool](./pridesubmissiontool). The PRIDE Submission Tool guides the users through the submission process generating at the end the [submission.px file](../markdown/submitdatapage/files/Submission_Summary_File_Format.pdf). The submission.px file contains 2 types of crucial information:
 
 **Metadata**: Required experimental metadata like experiment description, sample taxonomy information, instruments and protein modifications used.
 **Mappings between the uploaded files**: for instance between the RAW files and the corresponding 'RESULT' or search engine output ('SEARCH') files.
 
-Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PX Submission Tool.
+Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PRIDE Submission Tool.
 
 ## How many PX identifiers can be issued per study/manuscript, can a dataset be split into further partitions?
 
@@ -86,7 +86,7 @@ PRIDE Archive web site is available at http://www.ebi.ac.uk/pride/archive. Regis
 
 The main post-submission steps include the following ones:
 
-- 1) Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spread sheets, scripts, etc) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PX Submission Tool and you need to add additional RAW files and accompanying RESULT or SEARCH files, you need to resubmit the whole dataset again. Please follow the procedure here.
+- 1) Modifying the original dataset: In case you need to add to a small number of additional "other files" (like csv, plain text files, spread sheets, scripts, etc) we can provide you with FTP details to upload and can add these to the original dataset without you resubmitting the whole dataset. In case you have used the PRIDE Submission Tool and you need to add additional RAW files and accompanying RESULT or SEARCH files, you need to resubmit the whole dataset again. Please follow the procedure here.
 
 - 2) Referencing the dataset in the [paper](./citationpage).
 
