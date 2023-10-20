@@ -8,7 +8,7 @@
 
 - [How to do resubmission to PRIDE](./prideresubmission)
 
-- [Guideline for file formats for specific softwares used](./specificsoftwareformats)
+- [Guideline for file formats support](./specificsoftwareformats)
 
 - [How to manually upload files](./submissionupload)
 
@@ -19,8 +19,6 @@
 - [How to review proteomics data in PRIDE Archive](./reviewpridedata)
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
-
-- [PRIDE Results Inspector](./resultpage)
 
 
 ## Tools Help Pages
