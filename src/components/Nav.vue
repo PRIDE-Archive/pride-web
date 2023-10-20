@@ -33,7 +33,7 @@
                               <DropdownItem name="goToAnnotate"><a>PRIDE Archive Annotated</a></DropdownItem>
                               <DropdownItem name="goToSpectra"><router-link :to="{ name: 'usi'}">PRIDE Archive USI</router-link></DropdownItem>
                               <DropdownItem name="gotoSpectrumLibrary"><router-link :to="{ name: 'spectrumlibrary'}">PRIDE Spectral Libraries</router-link></DropdownItem>
-                              <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>
+<!--                              <DropdownItem name="goToPeptidome"><router-link :to="{ name: 'peptidome'}">PRIDE Peptidome</router-link></DropdownItem>-->
                           </DropdownMenu>
                       </Dropdown>
                   </li>
