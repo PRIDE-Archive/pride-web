@@ -113,7 +113,7 @@ During the review process of the manuscript, the user may want to modify their d
 
 ### How can I upload a big dataset? 
 
-We recommend creating the submission.px file containing the list of files, and metadata of the submission using the PRIDE Submission Tool. Then, save the submission.px to your local computer. However, instead of using the PRIDE Submission Tool for the submission, we recommend you to contact a PRIDE support team to get an FTP account and folder to upload the files including the submission.px and checksum. Then, you will be able to use your preferred FTP/Aspera client to upload your data. After uploading all the data, you can contact a PRIDE team to perform the submission. 
+For big submissions, we suggest generating the submission.px file, which includes the list of files and submission metadata, through the PRIDE Submission Tool. Following this, save the submission.px file to your local computer. Then, we recommend reaching out to the PRIDE support team to obtain an FTP account and dedicated folder for uploading your files, including the submission.px and checksum. Once you've secured access, you can employ your preferred FTP or Aspera client to transfer your data. Once all the data is successfully uploaded, please contact the PRIDE team to initiate the submission process.
 
 **Note**: It is important to note that big submissions these recommendations depend on your internet connection and the size of the dataset. On average, for submissions less than 1 terabyte, we recommend using the PRIDE Submission Tool. For submissions bigger than 1 terabyte, we recommend using the FTP/Aspera client.
 
