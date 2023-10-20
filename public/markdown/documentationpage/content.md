@@ -26,7 +26,7 @@
 
 - [Submission Tool](./pridesubmissiontool)
 
-- [PRIDE Archive API](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html)
+- [PRIDE Archive API](./prideapi)
 
 - [Troubleshooting](./tooltroubleshooting)
 

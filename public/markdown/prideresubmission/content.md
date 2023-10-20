@@ -1,4 +1,5 @@
 ## PRIDE Submission Tool - Resubmission of dataset
+
 The PRIDE Submission Tool is the main tool used to submit or resubmit proteomics datasets to [PRIDE Archive](https://www.ebi.ac.uk/pride/). 
 This tool has been implemented as a wizard, guiding submitters through a set of simple steps to complete each dataset submission.
 
