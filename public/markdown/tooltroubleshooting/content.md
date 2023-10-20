@@ -47,7 +47,7 @@ Perhaps you can try changing your password, and then trying again.
 
 For some bulk submissions or for direct Aspera upload, the submission.px and checksum files can still be generated and exported with the PRIDE Submission Tool.
 
-You can generate them from the PX Tool. You need to install the latest PX Tool from the PRIDE web page. Once you upload your data then at the 4th step when the checksum step passes, the checksum.txt file will automatically be downloaded to your PX Tool folder. Again you need to follow the PX Tool till the 9th step, there on the top right corner you can find the summary/submission.px file which you can export. You don't have to go further to submit the data. See screenshots -
+You can generate them from the PX Tool. You need to install the latest PX Tool from the PRIDE web page. Once you upload your data then at the 4th step when the checksum step passes, the checksum.txt file will automatically be downloaded to your PX Tool folder. Again you need to follow the PX Tool till the 9th step, there in the top right corner you can find the summary/submission.px file which you can export. You don't have to go further to submit the data. See screenshots -
 
 
 ![checksum](../markdown/tooltroubleshooting/files/checksum.png)
