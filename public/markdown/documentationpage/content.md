@@ -8,7 +8,7 @@
 
 - [How to do resubmission to PRIDE](./prideresubmission)
 
-- [Guideline for file formats for specific softwares used](./specificsoftwareformats)
+- [Guideline for file formats support](./specificsoftwareformats)
 
 - [How to manually upload files](./submissionupload)
 
@@ -20,10 +20,7 @@
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
 
-- [PRIDE Results Inspector](./resultpage)
-
 - [Miscellaneous queries](./misc)
-
 
 ## Tools Help Pages
 

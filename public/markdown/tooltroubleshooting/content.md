@@ -1,6 +1,5 @@
 ### PRIDE Submission Tool does not launch
- 
- 
+
  - Make sure you have the following requirements before you run the programme 
  
  - You should unzip the zipped file and run px-submission-tool-2.4.xx.jar, not the zipped file
@@ -15,7 +14,7 @@
  
  Check for the old version of JDK installed even though it is updated to the new version of JRE. Re-locate the unzipped px-submission-tool-2.4.xx folder from the desktop to the main Mac directory (this overcame the “unable to access” error).
   
- For troubleshooting, please open your command-line and run following commands and check your environments are correctly set up.
+ For troubleshooting, please open your command-line and run the following commands and check your environments are correctly set up.
  
   - java -version to check you have java installed. You should be able to see something like : java version "1.8.0_191". If you get an error message: java -version is not recognized as an internal or external command ... This means you have not set up your Java properly. If so, please install Java and restart the machine. You need to have a 1.8 or above java version.
   - echo $JAVA_HOME to check you have set up the environment variable properly.
