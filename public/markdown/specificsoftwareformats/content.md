@@ -1,6 +1,6 @@
 ### Recommendations for popular proteomics software tools and search engines - What fits my custom pipeline:
 
-## What kind of Scaffold files is recommended for a Pride Submission?
+## What kind of Scaffold files are recommended for a Pride Submission?
 
 Scaffold (from version 4.0) can export mzIdentML 1.1 files, and we recommend uploading those files with the accompanying mgf peak list files that are referenced in them. This way an mzIdentML based Complete Submission can be done. 
 For older Scaffold versions, we recommend exporting the binary .sf3 result files as ProtXML files and use them for a Partial Submission as "search" files. 
@@ -8,7 +8,7 @@ What kind of ProteinPilot files is recommended for a Pride Submission?
 
 From version 5.0 ProteinPilot can export mzIdentML files, and currently a Complete Submission can accept both versions of mzid files. 
 
-Generally a Partial Submission can be done and we strongly recommend providing human readable files besides the binary group file. Please export the group files into XML files using the following command line feature:
+Generally a Partial Submission can be done, and we strongly recommend providing human-readable files besides the binary group file. Please export the group files into XML files using the following command line feature:
 
 "Command Line Control and Open Results”
 
@@ -20,9 +20,9 @@ For a Partial Submission, please export human-readable pep.xml files out of the 
 
 In PD 2.2 the mzIdentML files are unfortunately not suitable for complete submission, yet. The PD team is working in solving this problem, but we are not aware of the current status. You would need to contact Thermo support to get more details.
 
-If you are aiming for a Complete Submission please try to convert the binary .msf files into mzIdentML files with the ProCon tool (Bochum University) which is still under testing. Please see documentation and please note that ProCon only supports PD 1.x files.
+If you are aiming for a Complete Submission, please try to convert the binary .msf files into mzIdentML files with the ProCon tool (Bochum University) which is still under testing. Please see documentation and please note that ProCon only supports PD 1.x files.
 
-## What kind of MaxQuant files is recommended for a PRIDE Submission?
+## What kind of MaxQuant files are recommended for a PRIDE Submission?
 
 - MaxQuant files can be submitted to PRIDE either as a Partial or as a Complete submission.
 - Mandatory files: RAW, SEARCH/RESULT, PEAK (only in the case of Complete Submission)
