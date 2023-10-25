@@ -52,10 +52,15 @@
                   </li>
                   <li class="sub-nav-list">
                       <Dropdown @on-click="resourcesClick">
-                          <router-link :to="{ path: '/markdownpage/documentationpage' }">
+                          <a href="javascript:void(0)">
                             <i class="fas fa-graduation-cap"></i>
                             <span class='sub-nav-title'>Help</span>
-                          </router-link>
+                            <Icon type="ios-arrow-down"></Icon>
+                          </a>
+                          <DropdownMenu slot="list">
+                              <DropdownItem name="goToDocumentation"><router-link :to="{ path: '/markdownpage/documentationpage' }">Documentation</router-link></DropdownItem>
+                              <DropdownItem name="goToPrideAssistant">PRIDE Assistant </router-link></DropdownItem>
+                          </DropdownMenu>
                       </Dropdown>
                   </li>
                   <li class="sub-nav-list">
@@ -210,6 +215,12 @@
                 }
                 else if(name=='goToPrideSubmission'){
                   this.$router.push({path:'/markdownpage/pridesubmissiontool'});
+                }
+                else if(name=='goToDocumentation'){
+                  this.$router.push({path:'/markdownpage/documentationpage'});
+                }
+                 else if(name=='goToPrideAssistant'){
+                  window.open('https://www.ebi.ac.uk/pride/chatbot/benchmark')
                 }
                 else if(name=='goToPrideInspector'){
                     this.$router.push({path:'/markdownpage/prideinspector'});
