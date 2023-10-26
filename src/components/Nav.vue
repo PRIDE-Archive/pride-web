@@ -220,7 +220,7 @@
                   this.$router.push({path:'/markdownpage/documentationpage'});
                 }
                  else if(name=='goToPrideAssistant'){
-                  window.open('https://www.ebi.ac.uk/pride/chatbot/benchmark')
+                  window.open('https://www.ebi.ac.uk/pride/chatbot')
                 }
                 else if(name=='goToPrideInspector'){
                     this.$router.push({path:'/markdownpage/prideinspector'});
