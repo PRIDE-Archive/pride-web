@@ -30,6 +30,11 @@
 
 - [Troubleshooting](./tooltroubleshooting)
 
+## FAQ
+
+- [FAQ](./faq)
+
+
 ## Additional Resources
 
 - [ProteomeXchange](./proteomexchange)
