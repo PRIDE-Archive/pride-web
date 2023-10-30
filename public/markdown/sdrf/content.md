@@ -15,16 +15,6 @@ The SDRF file is a tab-delimited format where each ROW corresponds to a relation
 
 ![SDRF in nutshell](../markdown/sdrf/images/sdrf-nutshell.png)
 
-### SDRF Additional documentation 
-
-The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. The website includes the specification of the file format, examples and tools to validate the files. A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
-
-Multiple tools have been implemented to validate SDRF-Proteomics files for users familiar with Python and Java:
-
-- sdrf-pipelines (Python - https://github.com/bigbio/sdrf-pipelines): This tool allows validating an SDRF-Proteomics file. In addition, it allows to convert SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
-
-- jsdrf (Java - https://github.com/bigbio/jsdrf ): This Java library and tool allows validating SDRF-Proteomics files. It also includes a generic data model that can be used by Java applications.
-
 ### Relationship to other specifications
 
 SDRF-Proteomics is fully compatible with the SDRF file format part of MAGE-TAB. MAGE-TAB is the file format used to store metadata and sample information for transcriptomics experiments. When the proteomeXchange project file is converted to idf file (project description in MAGE-TAB) and is combined with the SDRF-Proteomics a valid MAGE-TAB is obtained.
@@ -56,8 +46,13 @@ The list of ontologies/controlled vocabularies (CV) supported are:
 - PATO - the Phenotype and Trait Ontology
 - PRIDE Controlled Vocabulary (CV)
 
-8. SDRF-Proteomics file format
-The SDRF-Proteomics file format describes the sample characteristics and the relationships between samples and data files. The file format is a tab-delimited one where each ROW corresponds to a relationship between a Sample and a Data file (and MS signal corresponding to labelling in the context of multiplexed experiments), each column corresponds to an attribute/property of the Sample and the value in each cell is the specific value of the property for a given Sample (Figure 2).
+### SDRF Additional documentation 
 
-sdrf nutshell
-Figure 2: SDRF-Proteomics in a nutshell. The file format is a tab-delimited one where columns are properties of the sample, the data file or the variables under study. The rows are the samples of origin and the cells are the values for one property in a specific sample.
+The official website for SDRF-Proteomics project is https://github.com/bigbio/proteomics-metadata-standard. The website includes the specification of the file format, examples and tools to validate the files. A set of examples and annotated projects from ProteomeXchange can be found here: https://github.com/bigbio/proteomics-metadata-standard/tree/master/annotated-projects
+
+Multiple tools have been implemented to validate SDRF-Proteomics files for users familiar with Python and Java:
+
+- sdrf-pipelines (Python—https://github.com/bigbio/sdrf-pipelines): This tool allows validating an SDRF-Proteomics file. In addition, it allows converting SDRF to other popular pipelines and software configure files such as MaxQuant or OpenMS.
+
+- jsdrf (Java—https://github.com/bigbio/jsdrf): This Java library and tool allows validating SDRF-Proteomics files. It also includes a generic data model that can be used by Java applications.
+
