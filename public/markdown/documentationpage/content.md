@@ -38,6 +38,7 @@
 ## Additional Resources
 
 - [ProteomeXchange](./proteomexchange)
+- [SDRF-Proteomics](./sdrf)
 
 
 
