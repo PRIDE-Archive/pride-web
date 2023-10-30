@@ -30,6 +30,11 @@
 
 - [Troubleshooting](./tooltroubleshooting)
 
+## Additional Resources
+
+- [ProteomeXchange](./proteomexchange)
+
+
 
 
 
