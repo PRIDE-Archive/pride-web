@@ -470,7 +470,12 @@
                   {
                     label:'Review Submission',
                     value:'reviewer_submission',
-                    icon:'eye'
+                    icon:'ios-eye'
+                  },
+                  {
+                    label:'New Submission',
+                    value:'new_submission',
+                    icon:'ios-cloud-upload'
                   },
                   // {
                   //   label:'Settings',
@@ -706,6 +711,10 @@
                                     this.tableList.splice(i,1)
                                     i--;
                                 }
+                                if(this.tableList[i].value == 'new_submission'){
+                                  this.tableList.splice(i,1)
+                                  i--;
+                              }
                             }
                         }
                         // console.log('this.profileData',this.profileData)
