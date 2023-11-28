@@ -16,6 +16,8 @@
 
 - [PRIDE Archive Data Downloading](./pridefiledownload)
 
+- [How to submit complete crosslinking dataset](./crosslinking)
+
 - [How to review proteomics data in PRIDE Archive](./reviewpridedata)
 
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
