@@ -23,6 +23,7 @@ const EditProfile = resolve => require(['@/views/ebi/EditProfile'], resolve);
 const Login = resolve => require(['@/views/ebi/Login'], resolve);
 const Forgotpassword = resolve => require(['@/views/ebi/ForgotPassword'], resolve);
 const Resetpassword = resolve => require(['@/views/ebi/ResetPassword'], resolve);
+const Xiview = resolve => require(['@/views/archive/Xiview'], resolve);
 
 Vue.use(Router)
 
@@ -185,6 +186,11 @@ export default new Router({
       path:'/resetpassword/:reference',
       name: 'resetpassword',
       component: Resetpassword,
+    },
+    {
+      path:'/archive/xiview',
+      name: 'xiview',
+      component: Xiview,
     },
     {
       path:'/archive/projects/:id/publish',
