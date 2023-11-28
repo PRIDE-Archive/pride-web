@@ -32,6 +32,10 @@
 
 - [Troubleshooting](./tooltroubleshooting)
 
+## Prerequisites to upload files manually
+- [Generate submission.px](./submissionpx)
+- [Compute checksum](./checksum)
+
 ## FAQ
 
 - [FAQ](./faq)
