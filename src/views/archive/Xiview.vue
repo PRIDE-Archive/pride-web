@@ -125,24 +125,21 @@
           xiviewTableCol: [
               {
                   title:'#',
-                  type: 'checkBox',
                   width: 50,
                   align: 'center',
                   render: (h, params) => {
                       return h('div', [
                           h('Checkbox', {
                               props: {
-                                  value:params.row.check
+                                  value:params.row.select
                               },
                               on: {
-                                 'on-change':(e)=>{
-                                    this.xiviewTableData.forEach((items)=>{
-                                      console.log(items)
-                                        this.$set(items,'checkBox',false)
-                                    })
-                                    this.xiviewTableData[params.index].check=e
-                                    // console.log(this.xiviewTableData)
-                                    // console.log(this.xiviewTableData[params.index])
+                                 'on-change':(val)=>{
+                                    this.xiviewTableData.map(x => {
+                                      x.select= false;
+                                      return x;
+                                    });
+                                    this.xiviewTableData[params.index].select= val;
                                  }
                               }
                           }, ''),
@@ -271,7 +268,7 @@
            this.$http
             .get(this.queryXiviewDataApi)
             .then(function(res){
-              console.log('queryXiviewData',res.body)
+              // console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               this.totalXiviewData = res.body.length
               for(let i=0; i<res.body.length; i++){
@@ -282,7 +279,7 @@
                     peptides: res.body[i].number_of_peptides,
                     spectra: res.body[i].number_of_spectra,
                     link: res.body[i].xiview_url,
-                    check: false,
+                    select: false,
                   }
                   this.xiviewTableData.push(item);
               }
