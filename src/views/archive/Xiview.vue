@@ -63,7 +63,11 @@
                             </span>
                         </p>
                         <div class="card-item-wrapper">
-                            <div class="summary-content-header">Title</div>
+                            <div class="summary-content-header">Project ID</div>
+                            <p>{{accession}}</p>
+                        </div>
+                        <div class="card-item-wrapper">
+                            <div class="summary-content-header" style="margin-top: 30px">Title</div>
                             <p>{{title}}</p>
                         </div>
                         <div class="card-item-wrapper" style="margin-top: 30px">
@@ -75,10 +79,10 @@
                             <div class="summary-content-header">Data Details</div>
                         </div>
                         <div class="card-item-wrapper">
-                          <div style="color:#bdbdbd; text-align: center;">
+                          <Table v-if ="true" row-key="id" class="xiview-table" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
+                        </div>
+                        <div style="color:#bdbdbd; text-align: center;">
                               <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
-                          </div>
-                          <!-- <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table> -->
                         </div>
                   </Card>
                 </div>
@@ -106,13 +110,11 @@
     data(){
       return {
           queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects',
+          queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           accession: '',
           title: '',
           description:'',
-          proteins: 0, 
-          peptides: 0,
-          spectra: 0,
           xiviewTableLoading:false,
           pageSizeXiview:40,
           pageXiview:1,
@@ -140,6 +142,14 @@
                                       return x;
                                     });
                                     this.xiviewTableData[params.index].select= val;
+                                    if(val){
+                                      this.xiviewDataTableFold(false)
+                                      this.queryXiviewDataDetails(params.row.accession)
+                                    }
+                                    else{
+                                      this.xiviewDataTableFold(true)
+                                      this.initXiviewDataTable()
+                                    }
                                  }
                               }
                           }, ''),
@@ -251,6 +261,40 @@
               // },
           ],
           xiviewTableData: [],
+          xiviewDetailTableCol:[
+              {
+                  type: 'index',
+                  width: 60,
+                  align: 'center'
+              },
+              {
+                  title: 'Accession',
+                  key: 'accession',
+                  width: 100,
+                  sortable: false,
+                  align:'center'
+              },
+              {
+                  title: 'Peptides',
+                  key: 'peptides',
+                  sortable: false,
+                  align:'center'
+              },
+              {
+                  title: 'Crosslink',
+                  key: 'crosslink',
+                  width: 80,
+                  sortable: false,
+                  align:'center'
+              },
+              {
+                  title: 'PDB',
+                  key: 'pdb',
+                  sortable: false,
+                  align:'center'
+              },
+          ],
+          xiviewDetailTableData:[],
           xiviewDataSearchKeyword:'',
       }
     },
@@ -360,9 +404,35 @@
           }
          return tempArray
       },
-      gotoDetails(id){
-          this.$router.push({name:'dataset',params:{id:id}});
-          window.location.reload()
+      queryXiviewDataDetails(id){
+          this.$http
+            .get(this.queryXiviewDataDetailApi + id)
+            .then(function(res){
+              let body = res.body[0]
+              this.accession = body.project_id
+              this.title = body.title
+              this.description = body.description
+              console.log('body.project_sub_details.length',body.project_sub_details.length)
+              for(let i=0; i<body.project_sub_details.length; i++){
+                  let item = {
+                    accession: body.project_sub_details[i].protein_accession,               
+                    peptides: body.project_sub_details[i].number_of_peptides,
+                    crosslink: body.project_sub_details[i].number_of_cross_links,
+                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : 'Null'
+                  }
+                  this.xiviewDetailTableData.push(item);
+              }
+            },function(err){
+               
+               
+            });
+          this.xiviewDetailTableData=[]
+      },
+      initXiviewDataTable(){
+        this.accession = '' 
+        this.title = ''
+        this.description = ''
+        this.xiviewDetailTableData = []
       },
       xiviewPageChange(page){
           console.log('To do')
@@ -416,10 +486,13 @@
       },
       xiviewTableSelectionChange(val){
         console.log(val)
-      }
+      },
     },
     mounted: function(){
+        if(this.xiviewDetailTableData.length == 0)
+          this.xiviewDataTableFold(true)
         this.queryXiviewData();
+
     }
   }
 </script>
