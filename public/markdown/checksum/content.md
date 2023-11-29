@@ -22,7 +22,7 @@ Sample `list_of_files.txt`:
 /path/to/some/file2.xml
 /some/other/path/file3.tsv
 ```
-Please make sure the list of files:
+Make sure the list of files:
 * Doesn't contain any duplicate file names.
 * Doesn't contain any directories (only files are allowed)
 * Doesn't contain any hidden files.

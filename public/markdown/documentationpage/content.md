@@ -36,6 +36,9 @@
 - [Generate submission.px](./submissionpx)
 - [Compute checksum](./checksum)
 
+## Submit data using Globus
+- [Submit data using Globus](./globus)
+
 ## FAQ
 
 - [FAQ](./faq)
