@@ -678,6 +678,11 @@
             },
             handleSubmissionComplete(){
               this.newSubmissionRequestProcessing = true;
+              if(this.newSubmission.finishedSubmissionReference == null || this.newSubmission.finishedSubmissionReference == ""){
+                this.$Message.error({content:"Choose a submission reference", duration:2});
+                this.newSubmissionRequestProcessing = false;
+                return;
+              }
               this.$http
                   .post(this.submissionCompleteURL+"?ticketId="+this.newSubmission.finishedSubmissionReference, null, {
                     headers: {
@@ -687,8 +692,10 @@
                   .then(function(res){
                     this.newSubmissionRequestProcessing = false;
                     // console.log(res);
-                    this.$Message.info({content:"Success: We will process your submission and send you an email when it's done.", duration:5});
-                    this.$router.push({name:'landingpage'});
+                    this.$Message.info({
+                      content: "Success: We will process your submission soon and update you by email.", duration: 5
+                    });
+                    this.$router.push({name: 'landingpage'});
                   },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
