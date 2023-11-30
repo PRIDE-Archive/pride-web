@@ -199,23 +199,55 @@
                 </div>
             </div>
             <div v-if="activeName == 'new_submission' && profileData.userAuthorities =='SUBMITTER'" class="content-wrapper">
-              <Card class="profile">
-                <H5> To upload your dataset:</H5>
-                <br/>
-                <ul>
-                  <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page</li>
-                  <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page</li>
-                  <li>Create an account with <a href="https://www.globus.org/"> "Globus.org" </a> if you already don't have one (trying to login will create an account automatically)</li>
-                </ul>
-              </Card>
-              <br/>
-              Once you have all the above ready, please enter your Globus username in the below text box and click "Submit".
-              <br/>(if you are not sure of your Globus username, please login to <a href="https://www.globus.org/"> Globus </a> and you can find it under Settings -> Account)
-              <br/>
-              <br/>
-              <Input type="text" placeholder="Globus username">
-              </Input>
-              You will receive an email with a shared Globus directory to upload your files.
+              <div v-if="pendingSubmissions.length>0">
+                <Card class="profile">
+                  You have some pending submissions. <br/> <br/>
+                  Once you are done with uploading all the files, select the appropriate submission reference and click the button.
+                  <br/> <br/>
+                  <Form class="signUpForm">
+                    <FormItem label="Select the submission reference:">
+                      <Select v-model="newSubmission.finishedSubmissionReference">
+                          <Option v-for="item in pendingSubmissions" :value="item">{{item}}</Option>
+                      </Select>
+                    </FormItem>
+                    <FormItem>
+                      <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="handleSubmissionComplete">Finished uploading files</Button>
+                    </FormItem>
+                  </Form>
+                </Card>
+              </div>
+              <div v-else>
+                <div v-if="newSubmissionRequestProcessing" class="demo-spin-container">
+                  <Spin size="large" fix></Spin>
+                </div>
+                <div v-else>
+                  <Card class="profile">
+                    <H5> To upload your dataset:</H5>
+                    <br/>
+                    <ul>
+                      <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page</li>
+                      <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page</li>
+                      <li>Create an account with <a href="https://www.globus.org/"> "Globus.org" </a> if you already don't have one (trying to login will create an account automatically)</li>
+                    </ul>
+                  </Card>
+                  <br/>
+                  <Card class="profile">
+                    Once you are done with the above steps, please enter your Globus username in the below text box and click "Submit".
+                    <br/>(if you are not sure of your Globus username, login to <a href="https://www.globus.org/"> Globus </a> and find it under Settings -> Account)
+                    <br/>
+                    <br/>
+                    <Form class="signUpForm">
+                      <FormItem label="Globus Username:">
+                        <Input type="text" v-model="newSubmission.globusUsername"  placeholder="Globus Username">
+                        </Input>
+                      </FormItem>
+                      <FormItem>
+                        <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="handleNewSubmissionRequest">Submit</Button>
+                      </FormItem>
+                    </Form>
+                  </Card>
+                </div>
+                </div>
             </div>
 
             <div v-if="activeName == 'reviewer_submission' && profileData.userAuthorities =='REVIEWER' " class="content-wrapper">
@@ -430,6 +462,9 @@
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.basePrivateURL + '/projects/private-submissions',
+                newSubmissionRequestURL: this.$store.state.basePrivateURL + '/submission/new-submission-request',
+                submissionCompleteURL: this.$store.state.basePrivateURL + '/submission/upload-complete',
+                pendingSubmissionsURL: this.$store.state.basePrivateURL + '/submission/get-pending-tickets',
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
                 reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',
                 changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',
@@ -468,11 +503,13 @@
                 ],
                 changePasswordModalBool:false,
                 privateLoading:false,
+                newSubmissionRequestProcessing:false,
                 publicLoading:false,
                 reviewLoading:false,
                 profileLoading:false,
                 publicDataList:[],
                 privateDataList:[],
+                pendingSubmissions:[],
                 reviewDataList:[],
                 projectItemsSpecies:'',
                 projectItemsProjectDescription:'',
@@ -494,6 +531,10 @@
                   oldPassword: '',
                   newPassword:'',
                   confirmedNewPassword:''
+                },
+                newSubmission:{
+                  globusUsername: '',
+                  finishedSubmissionReference:''
                 },
                 ruleInline: {
                   // email: [
@@ -578,11 +619,85 @@
                             //this.$Message.error({content:'No Private Data', duration:1});
                         }
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
+            },
+            getPendingSubmissions(){
+              this.$http
+                  .get(this.pendingSubmissionsURL,{
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                      let dataList = res.body;
+                      for(let i=0; i<dataList.length; i++){
+                        this.pendingSubmissions.push(dataList[i]);
+                      }
+                  },function(err){
+                    if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
+            },
+            handleNewSubmissionRequest(){
+              this.newSubmissionRequestProcessing = true;
+              this.$http
+                  .post(this.newSubmissionRequestURL+"?globusUsername="+this.newSubmission.globusUsername, null, {
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                    this.newSubmissionRequestProcessing = false;
+                    // console.log(res);
+                    this.$Message.info({content:"Success: You will receive an email soon with more details. Check SPAM/JUNK folders as well.", duration:5});
+                    this.$router.push({name:'landingpage'});
+                  },function(err){
+                    // console.log(err);
+                    this.newSubmissionRequestProcessing = false;
+                    if(err.status == 406) {
+                      this.$Message.error({content:err.bodyText, duration:3});
+                      this.$router.push({name:'landingpage'});
+                    }
+                    else if(err.status == 404) {
+                      this.$Message.error({content:err.body.detail, duration:3});
+                    }
+                    else if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
+            },
+            handleSubmissionComplete(){
+              this.newSubmissionRequestProcessing = true;
+              this.$http
+                  .post(this.submissionCompleteURL+"?ticketId="+this.newSubmission.finishedSubmissionReference, null, {
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                    this.newSubmissionRequestProcessing = false;
+                    // console.log(res);
+                    this.$Message.info({content:"Success: We will process your submission and send you an email when it's done.", duration:5});
+                    this.$router.push({name:'landingpage'});
+                  },function(err){
+                    // console.log(err);
+                    this.newSubmissionRequestProcessing = false;
+                    if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
             },
             getPublicData(){
                  this.publicLoading = true;
@@ -610,10 +725,11 @@
 
                         //console.log(this.publicDataList);
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
             },
             getReviewerSubmission(){
@@ -643,10 +759,11 @@
                         }
 
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Review Data Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
             },
             getProfile(){
@@ -674,6 +791,7 @@
                             this.$store.commit('setUser',{type: 'SUBMITTER'});
                             localStorage.setItem('type','SUBMITTER');
                             this.getPrivateData();
+                            this.getPendingSubmissions();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'reviewer_submission'){
                                     this.tableList.splice(i,1)
@@ -702,10 +820,12 @@
                         }
                         // console.log('this.profileData',this.profileData)
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                            this.$router.push({name:'login'});
-                            this.$Message.error({content:'Expired, Please Login Again', duration:3});
+                        if(err.status == 401 || err.status == 500){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
+
                         // }
                         // else
                         //     this.$Message.error({content:'Get Profile Error', duration:3});
