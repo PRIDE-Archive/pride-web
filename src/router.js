@@ -188,8 +188,8 @@ export default new Router({
       component: Resetpassword,
     },
     {
-      path:'/archive/xiview',
-      name: 'xiview',
+      path:'/archive/crosslinking',
+      name: 'crosslinking',
       component: Xiview,
     },
     {
