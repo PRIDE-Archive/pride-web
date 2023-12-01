@@ -51,7 +51,7 @@
                           <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
                       </div>
                       <div class="page-container">
-                         <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
+                         <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
                       </div>
                   </Card>
                   <Card class="card">
@@ -62,31 +62,42 @@
                                 <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewDataTableFold(true)"></Icon></a>
                             </span>
                         </p>
-                        <div class="card-item-wrapper">
-                            <div class="summary-content-header">Project ID</div>
-                            <p>{{accession}}</p>
-                        </div>
-                        <div class="card-item-wrapper">
-                            <div class="summary-content-header" style="margin-top: 30px">Title</div>
-                            <p>{{title}}</p>
-                        </div>
-                        <div class="card-item-wrapper" style="margin-top: 30px">
-                            <div class="summary-content-header">Description</div>
-                            <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
-                        </div>
-                        <div class="card-item-wrapper">
-                            <div class="summary-content-header" style="margin-top: 30px">Organism</div>
-                            <p>{{organism}}</p>
-                        </div>
-                        <div class="card-item-wrapper" style="margin-top: 30px">
-                            <div class="summary-content-header">Protein Details</div>
-                        </div>
-                        <div class="card-item-wrapper">
-                          <Table v-if ="true" row-key="id" class="xiview-table" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
-                        </div>
-                        <div style="color:#bdbdbd; text-align: center;">
-                              <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
-                        </div>
+                        <template v-if = "!proteinTableLoading">
+                            <div class="card-item-wrapper">
+                                <div class="summary-content-header">Project ID</div>
+                                <p>{{accession}}</p>
+                            </div>
+                            <div class="card-item-wrapper">
+                                <div class="summary-content-header" style="margin-top: 30px">Title</div>
+                                <p>{{title}}</p>
+                            </div>
+                            <div class="card-item-wrapper" style="margin-top: 30px">
+                                <div class="summary-content-header">Description</div>
+                                <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
+                            </div>
+                            <div class="card-item-wrapper">
+                                <div class="summary-content-header" style="margin-top: 30px">Organism</div>
+                                <p>{{organism}}</p>
+                            </div>
+                            <div class="card-item-wrapper" style="margin-top: 30px">
+                                <div class="summary-content-header">Protein Details</div>
+                            </div>
+                            <div class="card-item-wrapper">
+                              <Table row-key="id" class="xiview-table" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
+                            </div>
+                            <div style="color:#bdbdbd; text-align: center;">
+                                  <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
+                            </div>
+                            <div class="page-container" v-if = "!xiviewDataTableFoldBool">
+                                <Page :total="totalProtein" :page-size="pageSizeProtein" :current="pageProtein" size="small" show-sizer show-total @on-change="proteinPageChange" @on-page-size-change="proteinPageSizeChange"></Page>
+                            </div>
+                        </template>
+                        <template v-else>  
+                          <!-- <div style="text-align: center;"> -->
+                            <Spin size="small" style="display: flex; justify-content: center;" ></Spin>
+                          <!-- </div> -->
+                        </template>
+                        
                   </Card>
                 </div>
               </Col>
@@ -120,9 +131,13 @@
           description:'',
           organism:'',
           xiviewTableLoading:false,
+          proteinTableLoading:false,
           pageSizeXiview:40,
           pageXiview:1,
           totalXiviewData:0,
+          pageSizeProtein: 40,
+          pageProtein:1,
+          totalProtein: 0,
           xiviewTableFoldBool:false,
           xiviewDataTableFoldBool:false,
           xiviewTableHint:'Xiview Data List',
@@ -323,6 +338,7 @@
               },
           ],
           xiviewDetailTableData:[],
+          proteinTableData:[],
           xiviewDataSearchKeyword:'',
       }
     },
@@ -436,15 +452,20 @@
          return tempArray
       },
       queryXiviewDataDetails(id){
+          this.xiviewDataTableFold(true)
+          this.proteinTableLoading = true
           this.$http
             .get(this.queryXiviewDataDetailApi + id)
             .then(function(res){
+              this.xiviewDataTableFold(false)
+              this.proteinTableLoading = false
               let body = res.body[0]
               console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
               this.title = body.title
               this.description = body.description
               this.organism = body.organism ? body.organism : 'Null'
+              this.totalProtein = body.project_sub_details.length
               console.log('body.project_sub_details.length',body.project_sub_details.length)
               for(let i=0; i<body.project_sub_details.length; i++){
                   let item = {
@@ -453,19 +474,27 @@
                     crosslink: body.project_sub_details[i].number_of_cross_links,
                     pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession
                   }
-                  this.xiviewDetailTableData.push(item);
+                  this.proteinTableData.push(item)//save for original data
+                  this.xiviewDetailTableData.push(item);//only used for showup
               }
+              //for first pagination when table is loaded
+              if(this.totalProtein > this.pageSizeProtein)
+                this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
+
             },function(err){
-               
-               
+               this.this.proteinTableLoading = false
+               this.xiviewDataTableFold(true)
             });
-          this.xiviewDetailTableData=[]
       },
       initXiviewDataTable(){
         this.accession = '' 
         this.title = ''
         this.description = ''
         this.xiviewDetailTableData = []
+        this.totalProtein = 0
+        this.pageSizeProtein = 40
+        this.pageProtein = 1
+        this.totalProtein = 0
       },
       xiviewPageChange(page){
           console.log('To do')
@@ -476,7 +505,7 @@
           //   this.xiviewTableLoading = false
           // },500)
       },  
-      downloadPageSizeChange(size){
+      xiviewPageSizeChange(size){
           console.log('To do')
           // this.xiviewTableLoading = true
           // this.pageSizeXiview = size;
@@ -484,6 +513,24 @@
           // setTimeout(()=>{
           //   this.xiviewTableLoading = false
           // },500)
+      },
+      proteinPageChange(page){
+          console.log('proteinPageChange')
+          this.proteinTableLoading = true
+          this.pageProtein = page;
+          this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
+          setTimeout(()=>{
+            this.proteinTableLoading = false
+          },500)
+      },  
+      proteinPageSizeChange(size){
+          console.log('proteinPageSizeChange')
+          this.proteinTableLoading = true
+          this.pageSizeProtein = size;
+          this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
+          setTimeout(()=>{
+            this.proteinTableLoading = false
+          },500)
       },
       xiviewTableFold(val){
           this.xiviewTableFoldBool = val
