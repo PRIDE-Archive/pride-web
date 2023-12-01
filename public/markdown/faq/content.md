@@ -31,7 +31,7 @@ We do not support PRIDE inspector tool anymore. It can still be used as a standa
 
 You can write to PRIDE support (pride-support@ebi.ac.uk) to change the PI’s details. You may also need to provide the consent of the earlier PI first.
 
-### Can I add PubMedid/doi after publishing my dataset
+### Can I add PubMed/doi after publishing my dataset
 
 Yes, you can ask PRIDE support (pride-support@ebi.ac.uk)
 

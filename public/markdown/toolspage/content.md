@@ -10,4 +10,4 @@ The [PRIDE Submission Tool](./pridesubmissiontool) is the main tool used to subm
 
 ## PRIDE Archive API
 
-The [PRIDE Archive API](www.ebi.ac.uk/pride/ws/archive) (Restful WS Service) provides a way to retrieve the data from PRIDE Archive programatically. The corresponding documentation can be [found here](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html).
+The [PRIDE Archive API](www.ebi.ac.uk/pride/ws/archive) (Restful WS Service) provides a way to retrieve the data from PRIDE Archive programmatically. The corresponding documentation can be [found here](https://www.ebi.ac.uk/pride/ws/archive/v2/swagger-ui.html).
