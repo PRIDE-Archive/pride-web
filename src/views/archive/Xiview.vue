@@ -48,7 +48,7 @@
                           <div style="color:#bdbdbd; text-align: center;">
                               <span v-if ="xiviewTableFoldBool">{{xiviewTableHint}}</span>
                           </div>
-                          <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small" @on-selection-change="xiviewTableSelectionChange"></Table>
+                          <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
                       </div>
                       <div class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="downloadPageSizeChange"></Page>
@@ -312,7 +312,7 @@
            this.$http
             .get(this.queryXiviewDataApi)
             .then(function(res){
-              // console.log('queryXiviewData',res.body)
+              console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               this.totalXiviewData = res.body.length
               for(let i=0; i<res.body.length; i++){
@@ -483,9 +483,6 @@
       },
       searchTest(){
 
-      },
-      xiviewTableSelectionChange(val){
-        console.log(val)
       },
     },
     mounted: function(){
