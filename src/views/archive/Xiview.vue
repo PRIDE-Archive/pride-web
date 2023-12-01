@@ -172,7 +172,7 @@
                   title: 'Title',
                   key: 'title',
                   sortable: false,
-                  align:'center'
+                  align:'left'
               },
               {
                   title: 'Proteins',
@@ -273,7 +273,7 @@
               {
                   title: 'Accession',
                   key: 'accession',
-                  width: 100,
+                  width: 150,
                   sortable: false,
                   align:'center'
               },
@@ -286,7 +286,6 @@
               {
                   title: 'Crosslink',
                   key: 'crosslink',
-                  width: 80,
                   sortable: false,
                   align:'center'
               },
