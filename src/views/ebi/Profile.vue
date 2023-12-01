@@ -225,15 +225,22 @@
                     <H5> To upload your dataset:</H5>
                     <br/>
                     <ul>
-                      <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page</li>
-                      <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page</li>
-                      <li>Create an account with <a href="https://www.globus.org/"> "Globus.org" </a> if you already don't have one (trying to login will create an account automatically)</li>
+                      <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page.</li>
+                      <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page.</li>
+                        <ul>
+                          <li> <i> As you already have checksum.txt file from the first step, you can skip checksum computing step in the submission tool. </i> </li>
+                          <li> <i> Don't forget to include checksum.txt file as well while generating submission.px file. </i> </li>
+                        </ul>
+                        <li>Create an account with <a href="https://www.globus.org/"> "Globus.org" </a> (if you already don't have one)</li>
+                        <ul>
+                          <li><i>Trying to login will create an account automatically. Don't worry about looking for a sign-up page.</i></li>
+                        </ul>
                     </ul>
                   </Card>
                   <br/>
                   <Card class="profile">
                     Once you are done with the above steps, please enter your Globus username in the below text box and click "Submit".
-                    <br/>(if you are not sure of your Globus username, login to <a href="https://www.globus.org/"> Globus </a> and find it under Settings -> Account)
+                    <br/>(if you are not sure of your Globus username, login to <a href="https://www.globus.org/"> Globus web </a> and find it under Settings -> Account)
                     <br/>
                     <br/>
                     <Form class="signUpForm">
