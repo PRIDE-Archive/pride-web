@@ -74,9 +74,12 @@
                             <div class="summary-content-header">Description</div>
                             <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
                         </div>
-
+                        <div class="card-item-wrapper">
+                            <div class="summary-content-header" style="margin-top: 30px">Organism</div>
+                            <p>{{organism}}</p>
+                        </div>
                         <div class="card-item-wrapper" style="margin-top: 30px">
-                            <div class="summary-content-header">Data Details</div>
+                            <div class="summary-content-header">Protein Details</div>
                         </div>
                         <div class="card-item-wrapper">
                           <Table v-if ="true" row-key="id" class="xiview-table" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
@@ -115,6 +118,7 @@
           accession: '',
           title: '',
           description:'',
+          organism:'',
           xiviewTableLoading:false,
           pageSizeXiview:40,
           pageXiview:1,
@@ -291,7 +295,33 @@
                   title: 'PDB',
                   key: 'pdb',
                   sortable: false,
-                  align:'center'
+                  align:'center',
+                  render: (h, params) => {
+                      return h('div', [
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small'
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: (value) => {
+                                      // console.log(value)
+                                      console.log(params.row.link);
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.pdb)
+                                     
+                                      //this.gotoEuroPMC(params);
+                                  }
+                              }
+                          }, 'PDB Link'),
+                      ]);
+                  },
               },
           ],
           xiviewDetailTableData:[],
@@ -409,16 +439,18 @@
             .get(this.queryXiviewDataDetailApi + id)
             .then(function(res){
               let body = res.body[0]
+              console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
               this.title = body.title
               this.description = body.description
+              this.organism = body.organism ? body.organism : 'Null'
               console.log('body.project_sub_details.length',body.project_sub_details.length)
               for(let i=0; i<body.project_sub_details.length; i++){
                   let item = {
                     accession: body.project_sub_details[i].protein_accession,               
                     peptides: body.project_sub_details[i].number_of_peptides,
                     crosslink: body.project_sub_details[i].number_of_cross_links,
-                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : 'Null'
+                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession
                   }
                   this.xiviewDetailTableData.push(item);
               }
