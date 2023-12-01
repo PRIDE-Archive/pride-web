@@ -135,7 +135,7 @@
           pageSizeXiview:40,
           pageXiview:1,
           totalXiviewData:0,
-          pageSizeProtein: 40,
+          pageSizeProtein: 20,
           pageProtein:1,
           totalProtein: 0,
           xiviewTableFoldBool:false,
@@ -211,7 +211,7 @@
                   align:'center'
               },
               {
-                  title: 'Link',
+                  title: 'XiView',
                   key: 'link',
                   align:'center',
                   width:100,
@@ -222,7 +222,7 @@
                                   type: 'information-circled'
                               },
                               style: {
-                                  marginRight: '5px',
+                                  marginRight: '10px',
                                   cursor:'pointer'
                               },
                               on: {
@@ -232,7 +232,7 @@
                                 }
                               }
                           }),
-                          h('span','Link')
+                          h('span','XiView')
                       ])
                   },
                   render: (h, params) => {
@@ -250,10 +250,11 @@
                           h('Icon', {
                               props: {
                                   type: 'md-stats',
+                                   size: 20
                               },
                               style: {
                                   display:'inline-block',
-                                  marginRight: '5px',
+                                  marginRight: '10px',
                                   paddingLeft: '22px',
                                   paddingRight: '22px'
                               },
@@ -267,7 +268,7 @@
                                       //this.gotoEuroPMC(params);
                                   }
                               }
-                          }, 'Link'),
+                          }, 'XiView'),
                       ]);
                   },
               },
@@ -332,7 +333,7 @@
                                       //this.gotoEuroPMC(params);
                                   }
                               }
-                          }, 'PDB Link'),
+                          }, 'PDB'),
                       ]);
                   },
               },
