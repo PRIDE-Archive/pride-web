@@ -193,21 +193,21 @@
                   title: 'Proteins',
                   key: 'proteins',
                   width: 80,
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
                   title: 'Peptides',
                   key: 'peptides',
                   width: 80,
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
                   title: 'Spectra',
                   key: 'spectra',
                   width: 80,
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
