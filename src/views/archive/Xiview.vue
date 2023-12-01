@@ -35,7 +35,7 @@
                       <p slot="title" class="table-header"> 
                           <span>
                             <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            Xiview Data List 
+                            List of datasets 
                           </span>
                           <span v-if="true" class="right">
                              <!--  <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchTest">
@@ -56,7 +56,7 @@
                   </Card>
                   <Card class="card">
                         <p slot="title" class="table-header" style="display:flex;justify-content: space-between;">
-                            <span>Xiview Data Details</span>
+                            <span>Project Details</span>
                             <span v-if="true" class="right">
                                 <a v-if="xiviewDataTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewDataTableFold(false)"></Icon></a>
                                 <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewDataTableFold(true)"></Icon></a>
