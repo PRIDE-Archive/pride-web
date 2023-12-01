@@ -351,10 +351,13 @@
                     peptides: res.body[i].number_of_peptides,
                     spectra: res.body[i].number_of_spectra,
                     link: res.body[i].xiview_url ? res.body[i].xiview_url : 'https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=' + res.body[i].project_id,
-                    select: false,
+                    select: i == 0? true : false //init the first item selected
                   }
                   this.xiviewTableData.push(item);
               }
+              //init the first item selected
+              this.xiviewDataTableFold(false)
+              this.queryXiviewDataDetails(res.body[0].project_id)
             },function(err){
                 this.queryXiviewDataLoading = false;
                 // if(err.bodyText.match('not in the database')){
