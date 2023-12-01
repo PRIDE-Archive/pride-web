@@ -232,10 +232,9 @@
                               }
                           }, 'Blast'),
                           */
-                          h('Button', {
+                          h('Icon', {
                               props: {
-                                  type: 'primary',
-                                  size: 'small'
+                                  type: 'md-stats',
                               },
                               style: {
                                   display:'inline-block',
@@ -248,7 +247,7 @@
                                       // console.log(value)
                                       console.log(params.row.link);
                                       //window.location.href = params.row.url.ftp;
-                                      // window.open(params.row.url[0].key)
+                                      window.open(params.row.link)
                                      
                                       //this.gotoEuroPMC(params);
                                   }
@@ -352,7 +351,7 @@
                     proteins: res.body[i].number_of_proteins,
                     peptides: res.body[i].number_of_peptides,
                     spectra: res.body[i].number_of_spectra,
-                    link: res.body[i].xiview_url,
+                    link: res.body[i].xiview_url ? res.body[i].xiview_url : 'https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=' + res.body[i].project_id,
                     select: false,
                   }
                   this.xiviewTableData.push(item);
