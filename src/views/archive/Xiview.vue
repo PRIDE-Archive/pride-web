@@ -2,32 +2,6 @@
   <div class="dataset-container">
       <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="content">
-          <!-- <Row>
-            <Col span="20">
-                <div class="title-wrapper">
-                  <h3 class="project-title">Project {{accession}}</h3>  
-                </div>
-                <div class="tag-wrapper">
-                    <span class="dataset-wrapper" v-for="(datesetItem, index) in projectTags" :key="index">
-                        <Tag color="blue" v-if="datesetItem == 'Biological'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
-                        </Tag>
-                        <Tag color="cyan" v-else-if="datesetItem == 'Biomedical'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
-                        </Tag>
-                        <Tag color="geekblue" v-else-if="datesetItem == 'Highlighted'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
-                        </Tag>
-                        <Tag color="purple" v-else-if="datesetItem == 'Technical'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
-                        </Tag>
-                        <Tag color="volcano" v-else>
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
-                        </Tag>
-                    </span>
-                </div>
-            </Col>
-          </Row> -->
           <Row :gutter="48">
               <Col span="24">
                 <div class="visualization-wrapper">
@@ -72,8 +46,8 @@
                                 <p>{{title}}</p>
                             </div>
                             <div class="card-item-wrapper" style="margin-top: 30px">
-                                <div class="summary-content-header">Description</div>
-                                <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
+                                <div class="summary-content-header">Description: </div>
+                              <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
                             </div>
                             <div class="card-item-wrapper">
                                 <div class="summary-content-header" style="margin-top: 30px">Organism</div>
@@ -103,15 +77,6 @@
               </Col>
           </Row>
       </div>
-<!--   <Modal
-      class-name="referenceModal"
-      v-model="referenceModalShow"
-      title="Reference List"
-      :footer-hide="true">
-      <div v-for="item in reanalysisReferences" style="margin: 10px 0">
-          <a @click="gotoReference">{{item.referenceLine}}</a>
-      </div>
-  </Modal> -->
   </div>
 </template>
 
@@ -243,16 +208,6 @@
                   },
                   render: (h, params) => {
                       return h('div', [
-                          /*
-                          h('Button', {
-
-                              on: {
-                                  click: () => {
-                                      this.gotoEuroPMC(params);
-                                  }
-                              }
-                          }, 'Blast'),
-                          */
                           h('Icon', {
                               props: {
                                   type: 'md-stats',
@@ -278,12 +233,6 @@
                       ]);
                   },
               },
-              // {
-              //     title: '',
-              //     key: 'accession',
-              //     width:1,
-              //     className:'project-files-accession'
-              // },
           ],
           xiviewTableData: [],
           xiviewDetailTableCol:[
@@ -296,7 +245,7 @@
                   title: 'Accession',
                   key: 'accession',
                   width: 150,
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
@@ -308,19 +257,19 @@
               {
                   title: 'Gene Name',
                   key: 'gene_name',
-                  sortable: false,
+                  sortable: true,
                   align:'left'
               },
               {
                   title: 'Peptides',
                   key: 'peptides',
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
                   title: 'Crosslink',
                   key: 'crosslink',
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
@@ -396,40 +345,8 @@
               this.queryXiviewDataDetails(res.body[0].project_id)
             },function(err){
                 this.queryXiviewDataLoading = false;
-                // if(err.bodyText.match('not in the database')){
-                //     this.$Modal.warning({
-                //         title: 'Not Public Project',
-                //         content: '<p>The requested project is not public</p>',
-                //         onOk: () => {
-                //             this.$router.push({name:'archive'});
-                //         },
-                //     });
-                // }
-                // else
-                //   this.$Message.error({content:'No results', duration:3});
             });
       },
-      // queryArchiveProjectFiles(q){
-      //      let query = q || this.queryDownload
-      //      this.fileListLoading = true;
-      //      this.$http
-      //       .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
-      //       .then(function(res){
-      //           this.fileListLoading = false;
-      //           this.totalDownLoad = res.body.page.totalElements;
-      //           this.fileList=[];
-      //           if(res.body._embedded && res.body._embedded.files){
-      //             let filesArray = res.body._embedded.files;
-      //             //console.log('filesArray',filesArray)
-      //             this.fileList = this.createFileList(filesArray)
-      //           }
-      //           else{
-      //               this.$Message.error({content:'No results', duration:1});
-      //           }
-      //       },function(err){
-      //           this.fileListLoading = false;
-      //       });
-      // },
       createFileList(filesArray){
          let tempArray = [];
          for(let i=0;i<filesArray.length;i++){
@@ -514,7 +431,7 @@
         this.description = ''
         this.xiviewDetailTableData = []
         this.totalProtein = 0
-        this.pageSizeProtein = 40
+        this.pageSizeProtein = 20
         this.pageProtein = 1
         this.totalProtein = 0
       },
@@ -698,34 +615,6 @@
   .referenceModal a:hover{
     color: #5bc0be;
   }
-  
-  /*
-  @media (min-width: 768px) {
-      .content{
-         min-height: calc(100vh - 505px);
-      }
-
-  }
-  @media (min-width: 992px) {
-
-
-  }
-  @media (min-width: 1200px) {
-
-  }
-
-  @media (min-width: 1600px) {
-
-  }
-  @media (min-width: 1800px) {
-
-  }
-  @media (min-width: 2000px) {
-
-  }
-  @media (min-width: 2300px) {
-
-  }*/
 
 </style>
 <style>
