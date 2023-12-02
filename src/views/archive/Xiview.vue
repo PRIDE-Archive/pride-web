@@ -99,6 +99,20 @@
                         </template>
                         
                   </Card>
+                  <Card class="card">
+                      <p slot="title" class="table-header"> 
+                          <span>
+                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                            Peptide per Protein
+                          </span>
+                          <!-- <span v-if="true" class="right">
+                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                          </span> -->
+                      </p>
+                      <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                      <BarHorizontalPride></BarHorizontalPride>
+                  </Card>
                 </div>
               </Col>
           </Row>
@@ -119,13 +133,15 @@
   import NavBar from '@/components/Nav'
   import store from "@/store.js"
   import svgLogo from "@/components/svg/archive"
+  import BarHorizontalPride from '@/components/chart/BarHorizontalXiview.vue'
   export default {
     name: 'archive',  
     data(){
       return {
           queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects',
           queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
+          // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           accession: '',
           title: '',
           description:'',
@@ -344,7 +360,7 @@
                               on: {
                                   click: (value) => {
                                       // console.log(value)
-                                      console.log(params.row.link);
+                                      // console.log(params.row.link);
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.pdb)
                                      
@@ -359,6 +375,7 @@
           xiviewDetailTableData:[],
           proteinTableData:[],
           xiviewDataSearchKeyword:'',
+          barHorizontalShow:true,
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -367,7 +384,8 @@
     },
     components: {
       NavBar,
-      svgLogo
+      svgLogo,
+      BarHorizontalPride
     },
     methods:{
       queryXiviewData(){
@@ -375,7 +393,7 @@
            this.$http
             .get(this.queryXiviewDataApi)
             .then(function(res){
-              console.log('queryXiviewData',res.body)
+              // console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               this.totalXiviewData = res.body.length
               for(let i=0; i<res.body.length; i++){
@@ -480,13 +498,13 @@
               this.xiviewDataTableFold(false)
               this.proteinTableLoading = false
               let body = res.body[0]
-              console.log('queryXiviewDataDetails',body)
+              // console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
               this.title = body.title
               this.description = body.description
               this.organism = body.organism ? body.organism : 'Null'
               this.totalProtein = body.project_sub_details.length
-              console.log('body.project_sub_details.length',body.project_sub_details.length)
+              // console.log('body.project_sub_details.length',body.project_sub_details.length)
               for(let i=0; i<body.project_sub_details.length; i++){
                   let item = {
                     accession: body.project_sub_details[i].protein_accession,
@@ -583,6 +601,16 @@
               })
           } 
       },
+      queryBarHorizontal(){
+          this.$http
+            .get(this.barHorizontalApi)
+            .then(function(res){
+              this.barHorizontalShow=false;
+              this.$bus.$emit('show-bar-horizontal-xiview', res.body);
+            },function(err){
+
+            });
+     },
       searchTest(){
 
       },
@@ -591,6 +619,7 @@
         if(this.xiviewDetailTableData.length == 0)
           this.xiviewDataTableFold(true)
         this.queryXiviewData();
+        this.queryBarHorizontal();
 
     }
   }
