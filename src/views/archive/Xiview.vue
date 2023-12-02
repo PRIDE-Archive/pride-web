@@ -180,13 +180,19 @@
                   title: 'Accession',
                   key: 'accession',
                   width: 100,
-                  sortable: false,
+                  sortable: true,
                   align:'center'
               },
               {
                   title: 'Title',
                   key: 'title',
                   sortable: false,
+                  align:'left'
+              },
+              {
+                  title: 'Organism',
+                  key: 'organism',
+                  sortable: true,
                   align:'left'
               },
               {
@@ -364,6 +370,7 @@
                   let item = {
                     accession: res.body[i].project_id,
                     title: res.body[i].title,
+                    organism: res.body[i].organism,
                     proteins: res.body[i].number_of_proteins,
                     peptides: res.body[i].number_of_peptides,
                     spectra: res.body[i].number_of_spectra,
