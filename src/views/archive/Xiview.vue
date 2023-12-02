@@ -300,6 +300,18 @@
                   align:'center'
               },
               {
+                  title: 'Protein Name',
+                  key: 'protein_name',
+                  sortable: false,
+                  align:'left'
+              },
+              {
+                  title: 'Gene Name',
+                  key: 'gene_name',
+                  sortable: false,
+                  align:'left'
+              },
+              {
                   title: 'Peptides',
                   key: 'peptides',
                   sortable: false,
@@ -477,7 +489,9 @@
               console.log('body.project_sub_details.length',body.project_sub_details.length)
               for(let i=0; i<body.project_sub_details.length; i++){
                   let item = {
-                    accession: body.project_sub_details[i].protein_accession,               
+                    accession: body.project_sub_details[i].protein_accession,
+                    protein_name: body.project_sub_details[i].protein_name,
+                    gene_name: body.project_sub_details[i].gene_name,
                     peptides: body.project_sub_details[i].number_of_peptides,
                     crosslink: body.project_sub_details[i].number_of_cross_links,
                     pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession
