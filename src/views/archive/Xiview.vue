@@ -77,7 +77,7 @@
                       <p slot="title" class="table-header"> 
                           <span>
                             <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            Peptide per Protein
+                            Peptides per Protein
                           </span>
                           <!-- <span v-if="true" class="right">
                               <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
