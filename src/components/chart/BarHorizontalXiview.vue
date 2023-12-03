@@ -55,11 +55,11 @@ export default {
       setOptions(data){
         let xValue = []
         let yValue = []
-        Object.keys(data).forEach(key=>{
-          console.log('key',key)
-          xValue.push(key.substring(10,key.Length))
-          yValue.push(data[key])
-        })
+        for(let i=0; i< data.length; i++){
+          xValue.push(data[i].protein_frequency)
+          yValue.push(data[i].peptide_count)
+
+        }
         this.options.series[0].data = JSON.parse(JSON.stringify(yValue))
         this.options.xAxis.data = JSON.parse(JSON.stringify(xValue))
     }

@@ -105,7 +105,7 @@
       return {
           queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects',
           queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
-          barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
+          barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/peptide-per-protein',
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           accession: '',
           title: '',
