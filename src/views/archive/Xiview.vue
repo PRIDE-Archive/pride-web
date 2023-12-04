@@ -1,11 +1,11 @@
 <template>
   <div class="dataset-container">
-      <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
+      <!-- <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
         <span class="banner" v-html="bannerContent"></span>
-      </Alert>
+      </Alert> -->
       <div class="panel nav"><NavBar page="xiview"/></div>
       <div class="content">
-          <Row :gutter="48">
+          <Row :gutter="48" class="row">
               <Col span="24">
                 <div class="visualization-wrapper">
                   <Card class="card usi">
@@ -76,49 +76,71 @@
                         </template>
                         
                   </Card>
-                  <Card class="card">
-                      <p slot="title" class="table-header"> 
-                          <span>
-                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            Peptides per Protein
-                          </span>
-                          <!-- <span v-if="true" class="right">
-                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                          </span> -->
-                      </p>
-                      <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
-                      <BarHorizontalPride></BarHorizontalPride>
-                  </Card>
-                  <Card class="card">
-                      <p slot="title" class="table-header"> 
-                          <span>
-                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            Project per Species
-                          </span>
-                          <!-- <span v-if="true" class="right">
-                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                          </span> -->
-                      </p>
-                      <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
-                      <PieXiview></PieXiview>
-                  </Card>
-                  <Card class="card">
-                      <p slot="title" class="table-header"> 
-                          <span>
-                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            Overall Statistics
-                          </span>
-                          <!-- <span v-if="true" class="right">
-                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                          </span> -->
-                      </p>
-                      <OverlapBar></OverlapBar>
-                  </Card>
                 </div>
               </Col>
+          </Row>
+          <Row :gutter="48" class="row">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+                <Card class="card">
+                    <p slot="title" class="table-header"> 
+                        <span>
+                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                          Peptides per Protein
+                        </span>
+                        <!-- <span v-if="true" class="right">
+                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                        </span> -->
+                    </p>
+                    <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                    <BarHorizontalPride></BarHorizontalPride>
+                </Card>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+                <Card class="card">
+                    <p slot="title" class="table-header"> 
+                        <span>
+                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                          Project per Species
+                        </span>
+                        <!-- <span v-if="true" class="right">
+                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                        </span> -->
+                    </p>
+                    <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                    <PieXiview></PieXiview>
+                </Card>
+            </Col>
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+                <Card class="card">
+                    <p slot="title" class="table-header"> 
+                        <span>
+                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                          Overall Statistics
+                        </span>
+                        <!-- <span v-if="true" class="right">
+                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                        </span> -->
+                    </p>
+                    <OverlapBar></OverlapBar>
+                </Card>
+            </Col>
+          </Row>
+          <Row :gutter="48" class="row">
+            <Col span="24">
+              <Divider />
+            </Col>
+          </Row>
+          <Row :gutter="48" class="row">
+            <Col span="18">
+              <span style="color:gray">The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams</span>
+            </Col>
+            <Col span="6">
+              <div class="logo_container" style="background-image:url(/logo/xiview_logo_horizon_1.png)"></div>
+              <!-- <img :src="logoURL" alt="logo" :width="logoWidth"> -->
+            </Col>
           </Row>
       </div>
   </div>
@@ -143,6 +165,8 @@
           areaPieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
           bannerContent:"The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams",
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          logoURL:'/logo/xiview_logo_horizon_1.png',
+          logoWidth:410,
           accession: '',
           title: '',
           description:'',
@@ -621,11 +645,24 @@
   .dataset-container{
     width: 100%;
   }
+  .logo_container
+  {
+    width:  100%; /*or 70%, or what you want*/
+    height: 100%; /*or 70%, or what you want*/
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+
+  }
   .content{
     width: 90%;
     margin:0 auto;
     padding: 40px 0;
     min-height: calc(100vh - 200px);
+  }
+  .row{
+      margin:0 auto;
+      max-width: 100% !important;
   }
   .tab-container{
     /*min-height: calc(100vh - 685px);*/
@@ -737,7 +774,7 @@
     padding: 0px;
   }
   .visualization-wrapper{
-      padding: 0px 20px 0 20px;
+      /*padding: 0px 20px 0 20px;*/
   }
   .table-header{
     display: flex !important;
