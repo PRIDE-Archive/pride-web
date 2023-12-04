@@ -36,7 +36,7 @@
                                     <div class="info-item">
                                         <span class="info-name">ORCID</span><span>{{profileData.orcid}}</span>
                                     </div>
-                                   
+
                                 </div>
                             </Col>
                         </Row>
@@ -45,7 +45,7 @@
                 </Card>
                 <div class="profile-button">
                     <a @click="gotoEditProfile">Edit</a>
-                    <a @click="showPasswordModal">Change Password</a> 
+                    <a @click="showPasswordModal">Change Password</a>
                 </div>
             </div>
             <div v-if="activeName == 'public_data'" class="content-wrapper">
@@ -61,10 +61,10 @@
                     <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
                         <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                     </router-link>
-                    <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
-                    <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p> 
+                    <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span>
+                    <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p>
                     <p>
-                        <span class="project-info">{{projectItemsSpecies}}: </span> 
+                        <span class="project-info">{{projectItemsSpecies}}: </span>
                         <span v-for="item in item.species">
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>
                         </span>
@@ -86,7 +86,7 @@
                         </router-link>
                         <span>|</span>
                         <router-link class="resource-id" :to="{name:'dataset',  params: { id: item.accession}}">
-                            Pride 
+                            Pride
                         </router-link>
                     </p>
                    <!--  <div class="action-group">
@@ -150,15 +150,15 @@
                         <span v-else>No Private Data</span>
                         <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
-                    
+
                     <Card v-for="item in privateDataList" class="resource-item" v-bind:key = "item.accession">
                         <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                         </router-link>
-                        <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
-                        <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p> 
+                        <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span>
+                        <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p>
                         <p>
-                            <span class="project-info">{{projectItemsSpecies}}: </span> 
+                            <span class="project-info">{{projectItemsSpecies}}: </span>
                             <span v-for="item in item.species">
                                 <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>
                             </span>
@@ -180,46 +180,9 @@
                             </router-link>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
-                                Pride 
+                                Pride
                             </router-link>
                         </p>
-                        <!--  <div class="action-group">
-                            <div class="left">
-                                <a>Cite</a>
-                                <a>Watch</a>
-                                <a>Delete</a>
-                            </div>
-                            <div class="right">
-                                <a class="cite"><Icon class="button-icon" type="social-twitch" size="12"></Icon>Cite</a>
-                                <a class="watch"><Icon class="button-icon" type="eye" size="14"></Icon>Watch</a>
-                                <a class="delete"><Icon class="button-icon" type="close-round" size="12"></Icon>Delete</a>
-                            </div>
-                        </div> -->
-                       <!--  <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in item.projectTags" :key="index">
-                            <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)">
-                               <Icon type="ios-pricetag"></Icon>
-                                <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset
-                            </a>
-                            <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)">
-                               <Icon type="ios-pricetag"></Icon>
-                                <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                            </a>
-                            <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)">
-                               <Icon type="ios-pricetag"></Icon>
-                                <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                            </a>
-                            <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)">
-                               <Icon type="ios-pricetag"></Icon>
-                                <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                            </a>
-                            <a v-else class="button gray-dataset-button" href="javascript:void(0)">
-                               <Icon type="ios-pricetag"></Icon>
-                                <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{datesetItem}}</text-highlight> Dataset Dataset
-                            </a>
-                            <DropdownMenu slot="list">
-                                <DropdownItem>{{datesetItem}} Dataset</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown> -->
                         <Collapse v-if="hightlightMode">
                             <Panel>
                                 <span>Matched Items</span>
@@ -235,6 +198,65 @@
                     </div> -->
                 </div>
             </div>
+            <div v-if="activeName == 'new_submission' && profileData.userAuthorities =='SUBMITTER'" class="content-wrapper">
+              <div v-if="pendingSubmissions.length>0">
+                <Card class="profile">
+                  You have some pending submissions. <br/> <br/>
+                  Once you are done with uploading all the files, select the appropriate submission reference and click the button.
+                  <br/> <br/>
+                  <Form class="signUpForm">
+                    <FormItem label="Select the submission reference:">
+                      <Select v-model="newSubmission.finishedSubmissionReference">
+                          <Option v-for="item in pendingSubmissions" :value="item">{{item}}</Option>
+                      </Select>
+                    </FormItem>
+                    <FormItem>
+                      <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="handleSubmissionComplete">Finished uploading files</Button>
+                    </FormItem>
+                  </Form>
+                </Card>
+              </div>
+              <div v-else>
+                <div v-if="newSubmissionRequestProcessing" class="demo-spin-container">
+                  <Spin size="large" fix></Spin>
+                </div>
+                <div v-else>
+                  <Card class="profile">
+                    <H5> To upload your dataset:</H5>
+                    <br/>
+                    <ul>
+                      <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page.</li>
+                      <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page.</li>
+                        <ul>
+                          <li> <i> As you already have checksum.txt file from the first step, you can skip checksum computing step in the submission tool. </i> </li>
+                          <li> <i> Don't forget to include checksum.txt file as well while generating submission.px file. </i> </li>
+                        </ul>
+                        <li>Create an account with <a href="https://www.globus.org/"> "Globus.org" </a> (if you already don't have one)</li>
+                        <ul>
+                          <li><i>Trying to login will create an account automatically. Don't worry about looking for a sign-up page.</i></li>
+                        </ul>
+                    </ul>
+                  </Card>
+                  <br/>
+                  <Card class="profile">
+                    Once you are done with the above steps, please enter your Globus username in the below text box and click "Submit".
+                    <br/>(if you are not sure of your Globus username, login to <a href="https://www.globus.org/"> Globus web </a> and find it under Settings -> Account)
+                    <br/>
+                    <br/>
+                    <Form class="signUpForm">
+                      <FormItem label="Globus Username:">
+                        <Input type="text" v-model="newSubmission.globusUsername"  placeholder="Globus Username">
+                        </Input>
+                      </FormItem>
+                      <FormItem>
+                        <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="handleNewSubmissionRequest">Submit</Button>
+                      </FormItem>
+                    </Form>
+                  </Card>
+                </div>
+                </div>
+            </div>
+
             <div v-if="activeName == 'reviewer_submission' && profileData.userAuthorities =='REVIEWER' " class="content-wrapper">
                 <div v-if="reviewLoading" class="demo-spin-container">
                     <Spin size="large" fix></Spin>
@@ -245,15 +267,15 @@
                         <span v-else>No Review Data</span>
                         <!-- <a><Icon class="button-icon" type="close-round" size="12"></Icon>Delete All</a> -->
                     </div>
-                    
+
                     <Card v-for="item in reviewDataList" class="resource-item" v-bind:key = "item.accession">
                         <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
                             <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight>
                         </router-link>
-                        <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span> 
-                        <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p> 
+                        <!-- <span v-if="item.submissionType == 'COMPLETE'"><Icon type="checkmark-round"></Icon></span>
+                        <p class="resource-title"><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item.title}}</text-highlight></p>
                         <p>
-                            <span class="project-info">{{projectItemsSpecies}}: </span> 
+                            <span class="project-info">{{projectItemsSpecies}}: </span>
                             <span v-for="item in item.species">
                                 <text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{item}}</text-highlight>
                             </span>
@@ -275,7 +297,7 @@
                             </router-link>
                             <span>|</span>
                             <router-link class="resource-id" :to="{name:'privatedataset',  params: { id: item.accession}}">
-                                Pride 
+                                Pride
                             </router-link>
                         </p>
                         <!--  <div class="action-group">
@@ -388,7 +410,7 @@
                     this.emailState = false;
                     return callback(new Error(errorInfo.email.noneEmail));
                 }
-                
+
                 var pattern = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
                 if(!pattern.test(this.formInline.email)){
                     this.emailState = false;
@@ -423,7 +445,7 @@
                         // console.log(22222);
                         this.$refs['formInline'].validateField('confirmedNewPassword');
                     }
-                
+
                     this.newPasswordState=true;
                     callback();
                 }
@@ -440,16 +462,19 @@
                     return callback(new Error(errorInfo.password.invalidConfirmPassword));
                 }
                 this.confirmedNewPasswordState = true;
-                callback(); 
+                callback();
             };
             return {
                 source: '',
                 activeName:'profile',
                 landingPageJsonURL: this.$store.state.baseURL + '/static/landingPage/landing_page.json',
                 privateSubmissionURL: this.$store.state.basePrivateURL + '/projects/private-submissions',
+                newSubmissionRequestURL: this.$store.state.basePrivateURL + '/submission/new-submission-request',
+                submissionCompleteURL: this.$store.state.basePrivateURL + '/submission/upload-complete',
+                pendingSubmissionsURL: this.$store.state.basePrivateURL + '/submission/get-pending-tickets',
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
-                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',  
-                changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',  
+                reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',
+                changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',
                 viewProfileURL: this.$store.state.basePrivateURL + '/user/view-profile',
                 tableList:[
                   {
@@ -470,7 +495,12 @@
                   {
                     label:'Review Submission',
                     value:'reviewer_submission',
-                    icon:'eye'
+                    icon:'ios-eye'
+                  },
+                  {
+                    label:'New Submission',
+                    value:'new_submission',
+                    icon:'ios-cloud-upload'
                   },
                   // {
                   //   label:'Settings',
@@ -480,11 +510,13 @@
                 ],
                 changePasswordModalBool:false,
                 privateLoading:false,
+                newSubmissionRequestProcessing:false,
                 publicLoading:false,
                 reviewLoading:false,
                 profileLoading:false,
                 publicDataList:[],
                 privateDataList:[],
+                pendingSubmissions:[],
                 reviewDataList:[],
                 projectItemsSpecies:'',
                 projectItemsProjectDescription:'',
@@ -507,6 +539,10 @@
                   newPassword:'',
                   confirmedNewPassword:''
                 },
+                newSubmission:{
+                  globusUsername: '',
+                  finishedSubmissionReference:''
+                },
                 ruleInline: {
                   // email: [
                   //   { required: true, validator: emailCheck, trigger: 'on-change' }
@@ -521,7 +557,7 @@
                     { required: true, validator: newPasswordRecheck, trigger: 'on-change' }
                   ],
                 },
-                profileData:{ 
+                profileData:{
                     userAuthorities:'',
                     email:'',
                     title:'',
@@ -583,18 +619,99 @@
                                 }
                                 this.privateDataList.push(item);
                             }
-                            
+
                             //console.log('privateDataList',this.privateDataList);
                         }
                         else{
                             //this.$Message.error({content:'No Private Data', duration:1});
                         }
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
+            },
+            getPendingSubmissions(){
+              this.$http
+                  .get(this.pendingSubmissionsURL,{
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                      let dataList = res.body;
+                      for(let i=0; i<dataList.length; i++){
+                        this.pendingSubmissions.push(dataList[i]);
+                      }
+                  },function(err){
+                    if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
+            },
+            handleNewSubmissionRequest(){
+              this.newSubmissionRequestProcessing = true;
+              this.$http
+                  .post(this.newSubmissionRequestURL+"?globusUsername="+this.newSubmission.globusUsername, null, {
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                    this.newSubmissionRequestProcessing = false;
+                    // console.log(res);
+                    this.$Message.info({content:"Success: You will receive an email soon with more details. Check SPAM/JUNK folders as well.", duration:5});
+                    this.$router.push({name:'landingpage'});
+                  },function(err){
+                    // console.log(err);
+                    this.newSubmissionRequestProcessing = false;
+                    if(err.status == 406) {
+                      this.$Message.error({content:err.bodyText, duration:3});
+                      this.$router.push({name:'landingpage'});
+                    }
+                    else if(err.status == 404) {
+                      this.$Message.error({content:err.body.detail, duration:3});
+                    }
+                    else if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
+            },
+            handleSubmissionComplete(){
+              this.newSubmissionRequestProcessing = true;
+              if(this.newSubmission.finishedSubmissionReference == null || this.newSubmission.finishedSubmissionReference == ""){
+                this.$Message.error({content:"Choose a submission reference", duration:2});
+                this.newSubmissionRequestProcessing = false;
+                return;
+              }
+              this.$http
+                  .post(this.submissionCompleteURL+"?ticketId="+this.newSubmission.finishedSubmissionReference, null, {
+                    headers: {
+                      'Authorization':'Bearer '+ localStorage.getItem('token')
+                    }
+                  })
+                  .then(function(res){
+                    this.newSubmissionRequestProcessing = false;
+                    // console.log(res);
+                    this.$Message.info({
+                      content: "Success: We will process your submission soon and update you by email.", duration: 5
+                    });
+                    this.$router.push({name: 'landingpage'});
+                  },function(err){
+                    // console.log(err);
+                    this.newSubmissionRequestProcessing = false;
+                    if(err.status == 401){
+                      this.logout();
+                      this.$router.push({name:'login'});
+                      this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    }
+                  });
             },
             getPublicData(){
                  this.publicLoading = true;
@@ -619,13 +736,14 @@
                             }
                             this.publicDataList.push(item);
                         }
-                        
+
                         //console.log(this.publicDataList);
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Annotation Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
             },
             getReviewerSubmission(){
@@ -647,18 +765,19 @@
                                     projectDescription: dataList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                                     submissionDate: dataList[i].submissionDate,
                                 }
-                                this.reviewDataList.push(item);  
+                                this.reviewDataList.push(item);
                             }
                         }
                         else{
                             //this.$Message.error({content:'No Review Data', duration:1});
                         }
-                        
+
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                        // }
-                        this.$Message.error({content:'Review Data Error', duration:1});
+                        if(err.status == 401){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
                       });
             },
             getProfile(){
@@ -683,9 +802,10 @@
                         this.profileData.acceptedTermsOfUse = res.body.acceptedTermsOfUse;
 
                         if(this.profileData.userAuthorities == 'SUBMITTER'){
-                            this.$store.commit('setUser',{type: 'SUBMITTER'});  
+                            this.$store.commit('setUser',{type: 'SUBMITTER'});
                             localStorage.setItem('type','SUBMITTER');
                             this.getPrivateData();
+                            this.getPendingSubmissions();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'reviewer_submission'){
                                     this.tableList.splice(i,1)
@@ -694,8 +814,8 @@
                             }
                         }
                         else if(this.profileData.userAuthorities == 'REVIEWER'){
-                            this.$store.commit('setUser',{type: 'REVIEWER'}); 
-                            localStorage.setItem('type','REVIEWER'); 
+                            this.$store.commit('setUser',{type: 'REVIEWER'});
+                            localStorage.setItem('type','REVIEWER');
                             this.getReviewerSubmission();
                             for(let i=0; i<this.tableList.length; i++){
                                 if(this.tableList[i].value == 'private_data'){
@@ -706,21 +826,27 @@
                                     this.tableList.splice(i,1)
                                     i--;
                                 }
+                                if(this.tableList[i].value == 'new_submission'){
+                                  this.tableList.splice(i,1)
+                                  i--;
+                              }
                             }
                         }
                         // console.log('this.profileData',this.profileData)
                       },function(err){
-                        // if(err.body.error == 'TOKEN_EXPIRED'){ //Looks AAP changed their status code & message. So, treating every error as invalid token
-                            this.logout();
-                            this.$router.push({name:'login'});
-                            this.$Message.error({content:'Expired, Please Login Again', duration:3});
+                        if(err.status == 401 || err.status == 500){
+                          this.logout();
+                          this.$router.push({name:'login'});
+                          this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                        }
+
                         // }
                         // else
                         //     this.$Message.error({content:'Get Profile Error', duration:3});
                       });
             },
             logout(){
-                this.$store.commit('setUser',{username: '', token:'', type:''});  
+                this.$store.commit('setUser',{username: '', token:'', type:''});
                 localStorage.setItem('username','');
                 localStorage.setItem('token','');
                 localStorage.setItem('type','');
@@ -731,7 +857,7 @@
                 // this.$router.push({name:'dataset',params:{id:id}});
             },
             changePassword(name){
-                if(this.confirmedNewPasswordState && this.newPasswordState && this.emailState && this.passwordState)  
+                if(this.confirmedNewPasswordState && this.newPasswordState && this.emailState && this.passwordState)
                     this.submitChangePassword();
                 else{
                     this.$refs[name].validate((valid) => {
@@ -895,12 +1021,12 @@
         margin-right: 5px;
     }
     .action-group .right a:nth-child(1){
-        background-color: #5bc0be !important; 
+        background-color: #5bc0be !important;
         border-radius: 3px 0 0 3px !important;
     }
     .action-group .right a:nth-child(2){
         border-radius: 0 !important;
-        background-color: #ef7731 !important;  
+        background-color: #ef7731 !important;
     }
     .action-group .right a:nth-child(3){
         border-radius: 0 3px 3px 0 !important;
