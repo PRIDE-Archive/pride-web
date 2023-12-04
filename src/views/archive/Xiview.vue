@@ -1,6 +1,9 @@
 <template>
   <div class="dataset-container">
-      <div class="panel nav"><NavBar page="landingpage"/></div>
+      <Alert v-if="bannerContent" banner type="warning" @on-close="closeBanner">
+        <span class="banner" v-html="bannerContent"></span>
+      </Alert>
+      <div class="panel nav"><NavBar page="xiview"/></div>
       <div class="content">
           <Row :gutter="48">
               <Col span="24">
@@ -87,6 +90,33 @@
                       <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
                       <BarHorizontalPride></BarHorizontalPride>
                   </Card>
+                  <Card class="card">
+                      <p slot="title" class="table-header"> 
+                          <span>
+                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                            Project per Species
+                          </span>
+                          <!-- <span v-if="true" class="right">
+                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                          </span> -->
+                      </p>
+                      <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                      <PieXiview></PieXiview>
+                  </Card>
+                  <Card class="card">
+                      <p slot="title" class="table-header"> 
+                          <span>
+                            <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
+                            Overall Statistics
+                          </span>
+                          <!-- <span v-if="true" class="right">
+                              <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
+                              <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
+                          </span> -->
+                      </p>
+                      <OverlapBar></OverlapBar>
+                  </Card>
                 </div>
               </Col>
           </Row>
@@ -99,6 +129,9 @@
   import store from "@/store.js"
   import svgLogo from "@/components/svg/archive"
   import BarHorizontalPride from '@/components/chart/BarHorizontalXiview.vue'
+  import PieXiview from '@/components/chart/PieXiview.vue'
+  import AreaPieXiview from '@/components/chart/AreaPieXiview.vue'
+  import OverlapBar from '@/components/chart/OverlapBar.vue'
   export default {
     name: 'archive',  
     data(){
@@ -106,6 +139,9 @@
           queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects',
           queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
           barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/peptide-per-protein',
+          pieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects-per-species',
+          areaPieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
+          bannerContent:"The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams",
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           accession: '',
           title: '',
@@ -325,6 +361,8 @@
           proteinTableData:[],
           xiviewDataSearchKeyword:'',
           barHorizontalShow:true,
+          pieXiviewShow:true,
+          areaPieXiviewShow:true,
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -334,7 +372,10 @@
     components: {
       NavBar,
       svgLogo,
-      BarHorizontalPride
+      BarHorizontalPride,
+      PieXiview,
+      AreaPieXiview,
+      OverlapBar
     },
     methods:{
       queryXiviewData(){
@@ -528,6 +569,36 @@
 
             });
      },
+     queryPieXiview(){
+          this.$http
+            .get(this.pieXiviewApi)
+            .then(function(res){
+              this.pieXiviewShow=false;
+              this.$bus.$emit('show-pie-peptide-xiview', res.body);
+            },function(err){
+
+            });
+     },
+     // queryAreaPieXiview(){
+     //      this.$http
+     //        .get(this.areaPieXiviewApi)
+     //        .then(function(res){
+     //          this.areaPieXiviewShow=false;
+     //          this.$bus.$emit('show-area-pie-peptide-xiview', res.body);
+     //        },function(err){
+
+     //        });
+     // },
+     queryOverlapBar(){
+          this.$http
+            .get(this.areaPieXiviewApi)
+            .then(function(res){
+              this.areaPieXiviewShow=false;
+              this.$bus.$emit('show-overlap-bar-xiview', res.body);
+            },function(err){
+
+            });
+     },
       searchTest(){
 
       },
@@ -535,8 +606,11 @@
     mounted: function(){
         if(this.xiviewDetailTableData.length == 0)
           this.xiviewDataTableFold(true)
-        this.queryXiviewData();
-        this.queryBarHorizontal();
+        this.queryXiviewData()
+        this.queryBarHorizontal()
+        this.queryPieXiview()
+        // this.queryAreaPieXiview()
+        this.queryOverlapBar()
 
     }
   }
