@@ -202,6 +202,8 @@
               <div v-if="pendingSubmissions.length>0">
                 <Card class="profile">
                   You have some pending submissions. <br/> <br/>
+                  You should have received an email from pride-support@ebi.ac.uk about the data upload instructions (Check SPAM/JUNK folders as well).
+                  <br/> <br/>
                   Once you are done with uploading all the files, select the appropriate submission reference and click the button.
                   <br/> <br/>
                   <Form class="signUpForm">
@@ -662,16 +664,20 @@
                     }
                   })
                   .then(function(res){
-                    this.newSubmissionRequestProcessing = false;
                     // console.log(res);
                     this.$Message.info({content:"Success: You will receive an email soon with more details. Check SPAM/JUNK folders as well.", duration:5});
-                    this.$router.push({name:'landingpage'});
+                    setTimeout(() => {
+                      this.$router.go(); // Reloads the current page
+                      this.newSubmissionRequestProcessing = false;
+                    }, 5000);
                   },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
                     if(err.status == 406) {
-                      this.$Message.error({content:err.bodyText, duration:3});
-                      this.$router.push({name:'landingpage'});
+                      this.$Message.error({content:err.bodyText, duration:5});
+                      setTimeout(() => {
+                        this.$router.go(); // Reloads the current page
+                      }, 5000);
                     }
                     else if(err.status == 404) {
                       this.$Message.error({content:err.body.detail, duration:3});
