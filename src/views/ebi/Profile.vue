@@ -202,10 +202,17 @@
               <div v-if="pendingSubmissions.length>0">
                 <Card class="profile">
                   You have some pending submissions. <br/> <br/>
-                  You should have received an email from pride-support@ebi.ac.uk about the data upload instructions (Check SPAM/JUNK folders as well).
-                  <br/> <br/>
+                  You should have received an email from <i>'pride-support@ebi.ac.uk'</i> about the data upload instructions (check SPAM/JUNK folders as well).
+                  Alternatively, you can check <a href="/markdownpage/globus"> this help page.</a>
+                  <br/><br/>
+                  Name of the Globus shared folder is same as the submission reference and following are the references of your pending submissions:
+                  <br/>
+                  <template v-for="ref in pendingSubmissions">
+                    <b><span>{{ ref }}</span> <br/></b>
+                  </template>
+                  <br/>
                   Once you are done with uploading all the files, select the appropriate submission reference and click the button.
-                  <br/> <br/>
+                  <br/>
                   <Form class="signUpForm">
                     <FormItem label="Select the submission reference:">
                       <Select v-model="newSubmission.finishedSubmissionReference">
