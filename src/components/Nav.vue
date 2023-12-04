@@ -158,14 +158,14 @@
             logoURL:'/logo/PRIDE_logo.png',
         }
       }
-      else if(page == 'xiview'){
-        item = {
-            pageName:'landingpage',
-            homePageName:'landingpage',
-            logoWidth:500,
-            logoURL:'/logo/xiview_logo_horizon.png',
-        }
-      }
+      // else if(page == 'xiview'){
+      //   item = {
+      //       pageName:'landingpage',
+      //       homePageName:'landingpage',
+      //       logoWidth:500,
+      //       logoURL:'/logo/xiview_logo_horizon.png',
+      //   }
+      // }
       else{
         item = {
             pageName:'archive',
