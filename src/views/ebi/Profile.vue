@@ -710,13 +710,15 @@
                     }
                   })
                   .then(function(res){
-                    this.newSubmissionRequestProcessing = false;
-                    // console.log(res);
-                    this.$Message.info({
-                      content: "Success: We will process your submission soon and update you by email.", duration: 5
-                    });
-                    this.$router.push({name: 'landingpage'});
-                  },function(err){
+                      this.$Message.info({
+                        content: "Success: We will process your submission soon and update you by email.<br/> " +
+                            "It could take few days, depending on the size of your submission.", duration: 10
+                      });
+                      setTimeout(() => {
+                        this.$router.push({name: 'landingpage'});
+                        this.newSubmissionRequestProcessing = false;
+                      }, 10000);
+                    },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
                     if(err.status == 401){
