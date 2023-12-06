@@ -227,6 +227,7 @@
               {
                   title: 'Title',
                   key: 'title',
+                  width: 500,
                   sortable: false,
                   align:'left'
               },
@@ -327,6 +328,7 @@
               {
                   title: 'Protein Name',
                   key: 'protein_name',
+                  width: 400,
                   sortable: false,
                   align:'left'
               },
