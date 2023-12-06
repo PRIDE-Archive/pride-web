@@ -258,7 +258,7 @@
                   align:'center'
               },
               {
-                  title: 'XiView',
+                  title: 'xiVIEW',
                   key: 'link',
                   align:'center',
                   width:100,
@@ -343,7 +343,7 @@
                   align:'center'
               },
               {
-                  title: 'Crosslink',
+                  title: 'Crosslinked peptides',
                   key: 'crosslink',
                   sortable: true,
                   align:'center'
