@@ -36,7 +36,7 @@ export default {
                     name:'Organism Stats',
                     type:'pie',
                     radius: ['50%', '70%'],
-                    center: ['50%', '60%'],
+                    center: ['50%', '70%'],
                     avoidLabelOverlap: false,
                     itemStyle: {
                         borderRadius: 10,
