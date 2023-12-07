@@ -60,7 +60,7 @@
                                 <div class="summary-content-header">Protein Details</div>
                             </div>
                             <div class="card-item-wrapper">
-                              <Table row-key="id" class="xiview-table" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
+                              <Table row-key="id" class="xiview-table xiview-table-disabled" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
                             </div>
                             <div style="color:#bdbdbd; text-align: center;">
                                   <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
@@ -360,8 +360,9 @@
                               props: {
                                   type: 'primary',
                                   size: 'small',
-                                  disabled: params.row.pdbDisabled 
+                                  disabled: params.row.pdbDisabled
                               },
+                              attrs: { id: params.row.pdbDisabled ? 'disableButton':''},
                               style: {
                                   display:'inline-block',
                                   marginRight: '5px',
@@ -396,6 +397,7 @@
                                   size: 'small',
                                   disabled: params.row.alphafolddbDisabled
                               },
+                              attrs: { id: params.row.alphafolddbDisabled ? 'disableButton':''},
                               style: {
                                   display:'inline-block',
                                   marginRight: '5px',
@@ -795,7 +797,6 @@
   .referenceModal a:hover{
     color: #5bc0be;
   }
-
 </style>
 <style>
   .card .ivu-card-body table{
@@ -834,7 +835,10 @@
   .table-header a:hover{
       border-bottom-style:none !important;
   }
-
+  #disableButton{
+    opacity:0.35;
+    color: #fff;
+  }
 </style>
  
 
