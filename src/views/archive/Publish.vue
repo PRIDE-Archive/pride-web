@@ -331,14 +331,14 @@
                         .get(this.validateDOIAPI,{params: query})
                         .then(function(res){
                             console.log('DOI',res)
-                            if(res.body.resultList.result.length == 0){// No DOI in EuropePMC, counld force submit
+                            if(res.body.resultList.result.length == 0){// No DOI in Europe PMC, could force submit
                                 this.idCheckPass = true;
                                 this.forceSubmitBool = true;
-                                reject('Invalid DOIs! Force submit is allowed but the change will be difficult in future. ')
+                                reject("DOI is not present in Europe PMC! Please click 'Force Submit' button below if you still want to continue.")
                             }
                             else{
                                 if(res.body.resultList.result[0].pubType.indexOf('preprint') != -1) //preprint
-                                  reject('The DOI is recognized as a pre-print in EuroPMC. Please empty this field and submit without any DOI.')
+                                  reject('The DOI is recognized as a pre-print in Europe PMC. Please empty this field and submit without any DOI.')
                                 else { //normal submit
                                   this.idCheckPass = true;
                                   resolve(res.body);
