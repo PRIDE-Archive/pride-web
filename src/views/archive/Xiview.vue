@@ -353,6 +353,7 @@
               {
                   title: 'PDB',
                   key: 'pdb',
+                  width: 100,
                   sortable: false,
                   align:'center',
                   render: (h, params) => {
@@ -360,7 +361,8 @@
                           h('Button', {
                               props: {
                                   type: 'primary',
-                                  size: 'small'
+                                  size: 'small',
+                                  disabled: params.row.pdbDisabled 
                               },
                               style: {
                                   display:'inline-block',
@@ -379,6 +381,40 @@
                                   }
                               }
                           }, 'PDB'),
+                      ]);
+                  },
+              },
+              {
+                  title: 'AlphaFoldDB',
+                  key: 'alphafolddb',
+                  width: 170,
+                  sortable: false,
+                  align:'center',
+                  render: (h, params) => {
+                      return h('div', [
+                          h('Button', {
+                              props: {
+                                  type: 'primary',
+                                  size: 'small',
+                                  disabled: params.row.alphafolddbDisabled
+                              },
+                              style: {
+                                  display:'inline-block',
+                                  marginRight: '5px',
+                                  paddingLeft: '22px',
+                                  paddingRight: '22px'
+                              },
+                              on: {
+                                  click: (value) => {
+                                      // console.log(value)
+                                      // console.log(params.row.link);
+                                      //window.location.href = params.row.url.ftp;
+                                      window.open(params.row.alphafolddb)
+                                     
+                                      //this.gotoEuroPMC(params);
+                                  }
+                              }
+                          }, 'AlphaFoldDB'),
                       ]);
                   },
               },
@@ -482,7 +518,7 @@
               this.xiviewDataTableFold(false)
               this.proteinTableLoading = false
               let body = res.body[0]
-              // console.log('queryXiviewDataDetails',body)
+              console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
               this.title = body.title
               this.description = body.description
@@ -496,7 +532,11 @@
                     gene_name: body.project_sub_details[i].gene_name,
                     peptides: body.project_sub_details[i].number_of_peptides,
                     crosslink: body.project_sub_details[i].number_of_cross_links,
-                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession
+                    pdbDisabled: !body.project_sub_details[i].in_pdbe_kb, 
+                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession, //pdbe is self-defined property
+                    alphafolddbDisabled: !body.project_sub_details[i].in_alpha_fold_db,
+                    alphafolddb: body.project_sub_details[i].link_to_alphafolddb ? body.project_sub_details[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ body.project_sub_details[i].protein_accession,
+
                   }
                   this.proteinTableData.push(item)//save for original data
                   this.xiviewDetailTableData.push(item);//only used for showup
