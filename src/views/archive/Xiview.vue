@@ -181,8 +181,8 @@
           totalProtein: 0,
           xiviewTableFoldBool:false,
           xiviewDataTableFoldBool:false,
-          xiviewTableHint:'Xiview Data List',
-          xiviewDataTableHint:'Xiview Data Details',
+          xiviewTableHint:'xiVIEW Data List',
+          xiviewDataTableHint:'xiVIEW Data Details',
           queryXiviewDataLoading:false,
           xiviewTableCol: [
               {
@@ -280,7 +280,7 @@
                                 }
                               }
                           }),
-                          h('span','XiView')
+                          h('span','xiVIEW')
                       ])
                   },
                   render: (h, params) => {
@@ -306,7 +306,7 @@
                                       //this.gotoEuroPMC(params);
                                   }
                               }
-                          }, 'XiView'),
+                          }, 'xiVIEW'),
                       ]);
                   },
               },
