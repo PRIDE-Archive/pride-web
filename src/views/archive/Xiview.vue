@@ -181,8 +181,8 @@
           totalProtein: 0,
           xiviewTableFoldBool:false,
           xiviewDataTableFoldBool:false,
-          xiviewTableHint:'Xiview Data List',
-          xiviewDataTableHint:'Xiview Data Details',
+          xiviewTableHint:'xiVIEW Data List',
+          xiviewDataTableHint:'xiVIEW Data Details',
           queryXiviewDataLoading:false,
           xiviewTableCol: [
               {
@@ -227,6 +227,7 @@
               {
                   title: 'Title',
                   key: 'title',
+                  width: 500,
                   sortable: false,
                   align:'left'
               },
@@ -258,7 +259,7 @@
                   align:'center'
               },
               {
-                  title: 'XiView',
+                  title: 'xiVIEW',
                   key: 'link',
                   align:'center',
                   width:100,
@@ -279,7 +280,7 @@
                                 }
                               }
                           }),
-                          h('span','XiView')
+                          h('span','xiVIEW')
                       ])
                   },
                   render: (h, params) => {
@@ -305,7 +306,7 @@
                                       //this.gotoEuroPMC(params);
                                   }
                               }
-                          }, 'XiView'),
+                          }, 'xiVIEW'),
                       ]);
                   },
               },
@@ -327,6 +328,7 @@
               {
                   title: 'Protein Name',
                   key: 'protein_name',
+                  width: 400,
                   sortable: false,
                   align:'left'
               },
@@ -343,7 +345,7 @@
                   align:'center'
               },
               {
-                  title: 'Crosslink',
+                  title: 'Crosslinked peptides',
                   key: 'crosslink',
                   sortable: true,
                   align:'center'
