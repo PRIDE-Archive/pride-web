@@ -513,6 +513,7 @@
       },
       queryXiviewDataDetails(id){
           this.xiviewDataTableFold(true)
+          this.initXiviewDataTable()
           this.proteinTableLoading = true
           this.$http
             .get(this.queryXiviewDataDetailApi + id)
