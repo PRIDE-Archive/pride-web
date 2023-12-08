@@ -557,6 +557,7 @@
         this.accession = '' 
         this.title = ''
         this.description = ''
+        this.proteinTableData = []
         this.xiviewDetailTableData = []
         this.totalProtein = 0
         this.pageSizeProtein = 20
