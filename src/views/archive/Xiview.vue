@@ -25,7 +25,7 @@
                           <div style="color:#bdbdbd; text-align: center;">
                               <span v-if ="xiviewTableFoldBool">{{xiviewTableHint}}</span>
                           </div>
-                          <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
+                          <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading || proteinTableLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
                       </div>
                       <div class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
@@ -60,7 +60,7 @@
                                 <div class="summary-content-header">Protein Details</div>
                             </div>
                             <div class="card-item-wrapper">
-                              <Table row-key="id" class="xiview-table xiview-table-disabled" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
+                              <Table row-key="id" class="xiview-table xiview-table-disabled" :loading="proteinTableLoading" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
                             </div>
                             <div style="color:#bdbdbd; text-align: center;">
                                   <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
