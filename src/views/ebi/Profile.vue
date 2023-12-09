@@ -671,7 +671,7 @@
                 return;
               }
               this.$http
-                  .post(this.newSubmissionRequestURL+"?globusUsername="+this.newSubmission.globusUsername, null, {
+                  .post(this.newSubmissionRequestURL+"?globusUsername="+this.newSubmission.globusUsername.trim(), null, {
                     headers: {
                       'Authorization':'Bearer '+ localStorage.getItem('token')
                     }
