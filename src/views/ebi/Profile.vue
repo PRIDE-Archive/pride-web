@@ -203,7 +203,7 @@
                 <Card class="profile">
                   You have some pending submissions. <br/> <br/>
                   You should have received an email from <i>'pride-support@ebi.ac.uk'</i> about the data upload instructions (check SPAM/JUNK folders as well).
-                  Alternatively, you can check <a href="/markdownpage/globus"> this help page.</a>
+                  Alternatively, you can check <a href="../markdownpage/globus"> this help page.</a>
                   <br/><br/>
                   Name of the Globus shared folder is same as the submission reference and following are the references of your pending submissions:
                   <br/>
@@ -220,7 +220,8 @@
                       </Select>
                     </FormItem>
                     <FormItem>
-                      <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="handleSubmissionComplete">Finished uploading files</Button>
+                      <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="showFinishedUploadFilesModal">Finished uploading files</Button>
+                      <p class="label-warning">Click this button only if you are sure that all the files have been uploaded. You can confirm this by checking the <a href="https://app.globus.org/activity"> activity log in the Globus web</a><br/></p>
                     </FormItem>
                   </Form>
                 </Card>
@@ -234,8 +235,8 @@
                     <H5> To upload your dataset:</H5>
                     <br/>
                     <ul>
-                      <li>Generate checksum.txt file as instructed in <a href="/markdownpage/checksum"> "Compute checksum"</a> help page.</li>
-                      <li>Generate submission.px file as instructed in <a href="/markdownpage/submissionpx"> "Generate submission.px"</a> help page.</li>
+                      <li>Generate checksum.txt file as instructed in <a href="../markdownpage/checksum"> "Compute checksum"</a> help page.</li>
+                      <li>Generate submission.px file as instructed in <a href="../markdownpage/submissionpx"> "Generate submission.px"</a> help page.</li>
                         <ul>
                           <li> <i> As you already have checksum.txt file from the first step, you can skip checksum computing step in the submission tool. </i> </li>
                           <li> <i> Don't forget to include checksum.txt file as well while generating submission.px file. </i> </li>
@@ -664,6 +665,11 @@
             },
             handleNewSubmissionRequest(){
               this.newSubmissionRequestProcessing = true;
+              if(this.newSubmission.globusUsername == null || this.newSubmission.globusUsername.trim() == ""){
+                this.$Message.error({content:"Enter a valid Globus username", duration:2});
+                this.newSubmissionRequestProcessing = false;
+                return;
+              }
               this.$http
                   .post(this.newSubmissionRequestURL+"?globusUsername="+this.newSubmission.globusUsername, null, {
                     headers: {
@@ -672,11 +678,11 @@
                   })
                   .then(function(res){
                     // console.log(res);
-                    this.$Message.info({content:"Success: You will receive an email soon with more details. Check SPAM/JUNK folders as well.", duration:5});
+                    this.$Message.info({content:"You will receive an email soon with more details. Check SPAM/JUNK folders as well.", duration:7});
                     setTimeout(() => {
                       this.$router.go(); // Reloads the current page
                       this.newSubmissionRequestProcessing = false;
-                    }, 5000);
+                    }, 7000);
                   },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
@@ -711,13 +717,13 @@
                   })
                   .then(function(res){
                       this.$Message.info({
-                        content: "Success: We will process your submission soon and update you by email.<br/> " +
-                            "It could take few days, depending on the size of your submission.", duration: 10
+                        content: "Provided we received all the files, we will process your submission soon and update you by email.<br/> " +
+                            "It could take few days, depending on the size of your submission.", duration: 15
                       });
                       setTimeout(() => {
                         this.$router.push({name: 'landingpage'});
                         this.newSubmissionRequestProcessing = false;
-                      }, 10000);
+                      }, 15000);
                     },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
@@ -934,7 +940,19 @@
             },
             gotoEditProfile(){
                 this.$router.push({name:'editprofile'});
-            }
+            },
+          showFinishedUploadFilesModal(){
+            this.$Modal.confirm({
+              title: 'Finished uploading files?',
+              content: '<p>Are you sure you finished uploading all the files? <br/> You can confirm this by checking the <a href="https://app.globus.org/activity"> activity log in the Globus web</a></p>',
+              onOk: () => {
+                this.handleSubmissionComplete()
+              },
+              onCancel: () => {
+
+              }
+            });
+          },
         },
         mounted:function(){
               //this.getPrivateData();
@@ -1153,6 +1171,12 @@
         height: 100px;
         position: relative;
     }
+    .label-warning {
+      color: red;
+      //padding: 4px;
+      //background-color: #f44336;
+    }
+
     @media (min-width: 768px) {
         .content-container{
             width: 750px;
