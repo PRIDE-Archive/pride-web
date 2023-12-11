@@ -5,10 +5,12 @@
 
 ## Uploading files to Globus shared folder
 * Install and configure [Globus connect personal](https://docs.globus.org/globus-connect-personal/install/)
+* Go through [this Globus tutorial](https://docs.globus.org/guides/tutorials/manage-files/transfer-files/)
 * Login to the [Globus web](https://www.globus.org/)
 * Navigate to [FILE MANAGER](https://app.globus.org/file-manager)
 * Click on one of the `Collection` text box to select your collection (This is the one you created using Globus connect personal)
     * You can find it under `Your Collections` tab.
+    * Make sure Globus connect personal application is running on your machine
 * Click on the other `Collection` text box to select `PRIDE Submissions` collection.
   * You can either search for it or you can find it under `Shared With You` tab.
 * Choose the appropriate folder from the `PRIDE Submissions` collection and upload all the files including `checksum.txt` and `submission.px`
