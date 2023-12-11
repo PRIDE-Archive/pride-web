@@ -14,8 +14,13 @@
 * Choose the appropriate folder from the `PRIDE Submissions` collection and upload all the files including `checksum.txt` and `submission.px`
 
 ## After Uploading files to Globus shared folder
+
 Once you are done with uploading all the files:
 * Login to the [PRIDE web](https://www.ebi.ac.uk/pride/login)
 * Under profile page, click on the `New Submission` tab on the left
 * Follow the on-screen instructions
+
+## Video Training submitting with Globus 
+
+[![IMAGE ALT TEXT](http://img.youtube.com/vi/VRNumsnYVg0/0.jpg)](http://www.youtube.com/watch?v=VRNumsnYVg0 "Submitting with Globus")
                 
