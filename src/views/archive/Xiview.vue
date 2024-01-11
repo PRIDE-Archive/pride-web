@@ -229,13 +229,15 @@
                   key: 'title',
                   width: 500,
                   sortable: false,
-                  align:'left'
+                  align:'left',
+                  className: 'nobreak-cell',
               },
               {
                   title: 'Organism',
                   key: 'organism',
                   sortable: true,
-                  align:'left'
+                  align:'left',
+                  className: 'nobreak-cell',
               },
               {
                   title: 'Proteins',
@@ -842,6 +844,10 @@
   #disableButton{
     opacity:0.35;
     color: #fff;
+  }
+  .nobreak-cell .ivu-table-cell{
+    word-break:break-word !important;
+    white-space: normal !important;
   }
 </style>
  
