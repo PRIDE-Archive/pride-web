@@ -35,7 +35,7 @@
               </Col>
           </Row>
           <Row :gutter="48" class="row">
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 12}">
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
@@ -51,7 +51,7 @@
                     <BarHorizontalPride></BarHorizontalPride>
                 </Card>
             </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 12}">
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
@@ -67,7 +67,9 @@
                     <PieXiview></PieXiview>
                 </Card>
             </Col>
-            <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 8}">
+          </Row>
+          <Row :gutter="48" class="row">
+            <Col :xs="{ span: 24 }" :sm="{span: 24}" :md="{ span: 24}" :lg="{ span: 24}">
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
@@ -137,48 +139,66 @@
          
           queryXiviewDataLoading:false,
           xiviewTableCol: [
-              {
-                  title:'#',
-                  width: 50,
-                  align: 'center',
-                  render: (h, params) => {
-                      return h('div', [
-                          h('Checkbox', {
-                              props: {
-                                  value:params.row.select
-                              },
-                              on: {
-                                 'on-change':(val)=>{
-                                    this.xiviewTableData.map(x => {
-                                      x.select= false;
-                                      return x;
-                                    });
-                                    this.xiviewTableData[params.index].select= val;
-                                    if(val){
-                                      this.xiviewDataTableFold(false)
-                                    }
-                                    else{
-                                      this.xiviewDataTableFold(true)
-                                      this.initXiviewDataTable()
-                                    }
-                                 }
-                              }
-                          }, ''),
-                      ]);
-                  },
+              // {
+              //     title:'#',
+              //     width: 50,
+              //     align: 'center',
+              //     render: (h, params) => {
+              //         return h('div', [
+              //             h('Checkbox', {
+              //                 props: {
+              //                     value:params.row.select
+              //                 },
+              //                 on: {
+              //                    'on-change':(val)=>{
+              //                       this.xiviewTableData.map(x => {
+              //                         x.select= false;
+              //                         return x;
+              //                       });
+              //                       this.xiviewTableData[params.index].select= val;
+              //                       if(val){
+              //                         this.xiviewDataTableFold(false)
+              //                       }
+              //                       else{
+              //                         this.xiviewDataTableFold(true)
+              //                         this.initXiviewDataTable()
+              //                       }
+              //                    }
+              //                 }
+              //             }, ''),
+              //         ]);
+              //     },
 
-              },
+              // },
               {
                   title: 'Accession',
                   key: 'accession',
-                  width: 100,
+                  width: 120,
                   sortable: true,
-                  align:'center'
+                  align:'center',
+                  render: (h, params) => {
+                      // console.log('params',params)
+                      return h('div', [
+                          h('a', {
+                              style:{
+                                color:'#444'
+                              },
+                              class:{
+                                // projectAction:true
+                              },
+                              on: {
+                                  click: () => {
+                                      this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
+                                      // window.open('http://europepmc.org/article/MED/' + params.row.accession)
+                                  }
+                              }
+                          }, params.row.accession),
+                      ]);
+                  },
               },
               {
                   title: 'Title',
                   key: 'title',
-                  width: 500,
                   sortable: false,
                   align:'left',
                   className: 'nobreak-cell',
@@ -188,6 +208,7 @@
                   key: 'organism',
                   sortable: true,
                   align:'left',
+                  width: 350,
                   className: 'nobreak-cell',
               },
               {
