@@ -15,8 +15,8 @@
                             List of datasets 
                           </span>
                           <span v-if="true" class="right">
-                             <!--  <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchTest">
-                              </Input> -->
+                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchTest">
+                              </Input>
                               <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
                           </span>
@@ -314,6 +314,7 @@
               },
           ],
           xiviewTableData: [],
+          // orignalXiviewTableData:[],
           xiviewDetailTableCol:[
               {
                   type: 'index',
@@ -463,7 +464,8 @@
                     link: res.body[i].xiview_url ? res.body[i].xiview_url : 'https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=' + res.body[i].project_id,
                     select: i == 0? true : false //init the first item selected
                   }
-                  this.xiviewTableData.push(item);
+                  // this.orignalXiviewTableData.push(item);//save for original data
+                  this.xiviewTableData.push(item);//only used for showup
               }
               //init the first item selected
               this.xiviewDataTableFold(false)
@@ -671,10 +673,18 @@
 
             });
      },
-      searchTest(){
-
-      },
-    },
+    //  searchTest(){
+    //     this.xiviewTableData = []
+    //     for(let i=0;i<this.orignalXiviewTableData.length;i++){
+    //       if(this.orignalXiviewTableData[i].title.toLowerCase().indexOf(this.xiviewDataSearchKeyword.toLowerCase()) != -1){
+    //         this.xiviewTableData.push(this.orignalXiviewTableData[i])
+    //       }
+    //       else if(this.orignalXiviewTableData[i].organism.toLowerCase().indexOf(this.xiviewDataSearchKeyword.toLowerCase()) != -1){
+    //          this.xiviewTableData.push(this.orignalXiviewTableData[i])
+    //       }
+    //     }
+    //   },
+    // },
     mounted: function(){
         if(this.xiviewDetailTableData.length == 0)
           this.xiviewDataTableFold(true)
