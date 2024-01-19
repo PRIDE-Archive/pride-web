@@ -5,7 +5,7 @@
 export default {
   data: function () {
     return {
-        visulizationNum:4,
+        visulizationNum:6,
         option:{
             tooltip: {
                 trigger: 'item',
@@ -28,21 +28,28 @@ export default {
             //     zlevel:-1,
             // },
             legend: {
-                top: '5%',
-                left: 'center'
+                type: 'scroll',
+                orient: 'vertical',
+                left: 5,
+                top: 10,
+                bottom: 10,
+                //itemWidth: 10,
+                // data:[],
+                // formatter: function (name) {
+                //    // console.log( name);
+                //     return name;
+
+                // },
+                selected:{},
+                zlevel:-1,
             },
             series: [
                 {
-                    name:'Organism Stats',
+                    // name:'Organism Stats',
                     type:'pie',
-                    radius: ['50%', '70%'],
-                    center: ['50%', '70%'],
-                    avoidLabelOverlap: false,
-                    itemStyle: {
-                        borderRadius: 10,
-                        borderColor: '#fff',
-                        borderWidth: 2
-                    },
+                    radius: ['40%', '60%'],
+                    center: ['70%', '50%'],
+                    // avoidLabelOverlap: false,
                     label: {
                         normal: {
                             show: false,
@@ -69,33 +76,31 @@ export default {
   },
   methods:{
     setOptions(data){
+        this.option.legend.data = [];
+        this.option.series[0].data = [];
+        this.option.legend.selected = {};
         console.log('PiePeptide',data)
-        for(let i=0; i<data.length; i++){
-            let item = {}
-            item.value = data[i].count
-            item.name = data[i].organism
-            this.option.series[0].data.push(item);
-        }
+        if(data){
+            this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
+            data.sort(function(a,b){
+                return a.value < b.value ? 1 : -1;
+            });
 
-        // var legendName = [];
-        // for(let i=0; i<data.organismStats.length; i++){
-        //     let index = data.organismStats[i].Organism.indexOf('(')
-        //     // console.log('index',index)
-        //     if(index>0){
-        //         legendName[i] = data.organismStats[i].Organism.substr(0,index)
-        //     }
-        //     else{
-        //         legendName[i] = data.organismStats[i].Organism
-        //     }
-        //     // legendName[i] = index ? data.organismStats[i].Organism.substr(0,index):data.organismStats[i].Organism
-        //     this.option.legend.data.push(legendName[i]);
-        //     // this.option.legend.selected[legendName[i]] = i < this.visulizationNum;
-        //     var item = {
-        //         value:data.organismStats[i].count,
-        //         name:legendName[i]
-        //     }
-        //     this.option.series[0].data.push(item);
-        // }
+            var legendName = [];
+            for(let i=0; i<data.length; i++){
+                legendName[i] = data[i].organism;
+                //console.log('legendName',legendName[i]);
+                this.option.legend.data.push(legendName[i]);
+                this.option.legend.selected[legendName[i]] = i < this.visulizationNum;
+                var item = {
+                    value:data[i].count,
+                    name:data[i].organism
+                }
+                this.option.series[0].data.push(item);
+            }
+        }
+        else
+          this.$Message.error({content:'No data',duration:3});
     }
   },
   created(){
