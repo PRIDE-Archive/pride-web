@@ -15,7 +15,8 @@
                             List of datasets 
                           </span>
                           <span v-if="true" class="right">
-                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" suffix="ios-search" style="margin-right: 10px; width:auto" @on-change="searchTest">
+                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
+                              <Button slot="append" icon="ios-search" @click="queryXiviewData"></Button>
                               </Input>
                               <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
@@ -115,11 +116,11 @@
     name: 'archive',  
     data(){
       return {
-          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects',
-          queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
+          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/search',
           barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/peptide-per-protein',
           pieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects-per-species',
           areaPieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
+          // projectSearchApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/search?query=PXD038060&page=1&page_size=10'
           bannerContent:"The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams",
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           logoURL:'/logo/xiview_logo_horizon_1.png',
@@ -130,7 +131,7 @@
           organism:'',
           xiviewTableLoading:false,
           
-          pageSizeXiview:40,
+          pageSizeXiview:10,
           pageXiview:1,
           totalXiviewData:0,
           xiviewTableFoldBool:false,
@@ -139,37 +140,6 @@
          
           queryXiviewDataLoading:false,
           xiviewTableCol: [
-              // {
-              //     title:'#',
-              //     width: 50,
-              //     align: 'center',
-              //     render: (h, params) => {
-              //         return h('div', [
-              //             h('Checkbox', {
-              //                 props: {
-              //                     value:params.row.select
-              //                 },
-              //                 on: {
-              //                    'on-change':(val)=>{
-              //                       this.xiviewTableData.map(x => {
-              //                         x.select= false;
-              //                         return x;
-              //                       });
-              //                       this.xiviewTableData[params.index].select= val;
-              //                       if(val){
-              //                         this.xiviewDataTableFold(false)
-              //                       }
-              //                       else{
-              //                         this.xiviewDataTableFold(true)
-              //                         this.initXiviewDataTable()
-              //                       }
-              //                    }
-              //                 }
-              //             }, ''),
-              //         ]);
-              //     },
-
-              // },
               {
                   title: 'Accession',
                   key: 'accession',
@@ -188,7 +158,8 @@
                               },
                               on: {
                                   click: () => {
-                                      this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
+                                      this.$Message.success({content:'Coming Soon.', duration:1});
+                                      // this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
                                       // window.open('http://europepmc.org/article/MED/' + params.row.accession)
                                   }
                               }
@@ -309,10 +280,11 @@
     methods:{
       queryXiviewData(){
            this.queryXiviewDataLoading = true;
+           this.xiviewTableData=[]
            this.$http
-            .get(this.queryXiviewDataApi)
+            .get(this.queryXiviewDataApi,{params: this.query})
             .then(function(res){
-              // console.log('queryXiviewData',res.body)
+              console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               this.totalXiviewData = res.body.length
               for(let i=0; i<res.body.length; i++){
@@ -329,8 +301,6 @@
                   // this.orignalXiviewTableData.push(item);//save for original data
                   this.xiviewTableData.push(item);//only used for showup
               }
-              //init the first item selected
-              this.xiviewDataTableFold(false)
             },function(err){
                 this.queryXiviewDataLoading = false;
             });
@@ -376,34 +346,13 @@
           }
          return tempArray
       },
-      
-      initXiviewDataTable(){
-        this.accession = '' 
-        this.title = ''
-        this.description = ''
-        this.proteinTableData = []
-        this.totalProtein = 0
-        this.pageSizeProtein = 20
-        this.pageProtein = 1
-        this.totalProtein = 0
-      },
       xiviewPageChange(page){
-          console.log('To do')
-          // this.xiviewTableLoading = true
-          // this.pageXiview = page;
-          // this.xiviewTableData = this.sampleData.slice((this.pageXiview-1)*this.pageSizeXiview, (this.pageXiview-1)*this.pageSizeXiview + this.pageSizeXiview)
-          // setTimeout(()=>{
-          //   this.xiviewTableLoading = false
-          // },500)
+          this.pageXiview = page;
+          this.queryXiviewData()
       },  
       xiviewPageSizeChange(size){
-          console.log('To do')
-          // this.xiviewTableLoading = true
-          // this.pageSizeXiview = size;
-          // this.xiviewTableData = this.sampleData.slice((this.pageXiview-1)*this.pageSizeXiview, (this.pageXiview-1)*this.pageSizeXiview + this.pageSizeXiview)
-          // setTimeout(()=>{
-          //   this.xiviewTableLoading = false
-          // },500)
+          this.pageSizeXiview = size;
+          this.queryXiviewData()
       },
       xiviewTableFold(val){
           this.xiviewTableFoldBool = val
@@ -418,20 +367,6 @@
               document.querySelector('.xiview-table').style.display = 'block'
             if(document.querySelector('.page-container'))
               document.querySelector('.page-container').style.display = 'block'
-          } 
-      },
-      xiviewDataTableFold(val){
-          this.xiviewDataTableFoldBool = val
-          let divs = document.querySelectorAll('.card-item-wrapper')
-          if(this.xiviewDataTableFoldBool){
-              divs.forEach(div=>{
-                 div.style.display = 'none'
-              })
-          }
-          else{
-              divs.forEach(div=>{
-                 div.style.display = 'block'
-              })
           } 
       },
       queryBarHorizontal(){
@@ -465,14 +400,24 @@
             });
       },
     },
+    computed:{
+      //this variable is not used anymore and only for updating this.normalQuery;
+      query:function(){
+          let normalQuery = {}
+          normalQuery.query = this.xiviewDataSearchKeyword;
+          normalQuery.page = this.pageXiview;
+          normalQuery.pageSize = this.pageSizeXiview;
+          return normalQuery;  
+        }
+    },
     mounted: function(){
-        // this.xiviewDataTableFold(true)
         this.queryXiviewData()
         this.queryBarHorizontal()
         this.queryPieXiview()
-        // this.queryAreaPieXiview()
         this.queryOverlapBar()
 
+
+        // this.queryAreaPieXiview()
     }
   }
 </script>
@@ -622,7 +567,7 @@
     align-items: center;
   }
   .table-header .right i{
-    margin-left: 10px;
+    /*margin-left: 10px;*/
   }
   .table-header a{
       border-bottom-style:none !important;
