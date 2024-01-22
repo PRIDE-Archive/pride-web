@@ -66,11 +66,11 @@
                 </Col>
             </Row>
             <Row type="flex" justify="center" class="code-row-bg">
-                <Col span="12">
+                <!-- <Col span="12">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">MS Evidences</p>
-                             <!--
+                             
                              <p slot="extra">
                                 <Tooltip>
                                     <i class="fas fa-info-circle"></i>
@@ -79,15 +79,15 @@
                                     </div>
                                 </Tooltip>
                              </p>
-                             -->
+                             
                              <div class="card-content-pie">
                                  <Spin fix v-if="barHorizontalShow"></Spin>
                                  <BarHorizontalPride></BarHorizontalPride>
                              </div>
                         </Card>
                     </div>
-                </Col>
-                <Col span="12">
+                </Col> -->
+                <Col span="24">
                     <div class="visualization-wrapper">
                         <Card>
                              <p slot="title">Submitted datasets per country</p>
