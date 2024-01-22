@@ -223,21 +223,6 @@
                this.xiviewDataTableFold(true)
             });
       },
-      xiviewTableFold(val){
-          this.xiviewTableFoldBool = val
-          if(this.xiviewTableFoldBool){
-            if(document.querySelector('.xiview-table'))
-              document.querySelector('.xiview-table').style.display = 'none'
-            if(document.querySelector('.page-container'))
-              document.querySelector('.page-container').style.display = 'none'
-          }
-          else{
-            if(document.querySelector('.xiview-table'))
-              document.querySelector('.xiview-table').style.display = 'block'
-            if(document.querySelector('.page-container'))
-              document.querySelector('.page-container').style.display = 'block'
-          } 
-      },
       xiviewDataTableFold(val){
           this.xiviewDataTableFoldBool = val
           let divs = document.querySelectorAll('.card-item-wrapper')
@@ -269,6 +254,29 @@
           setTimeout(()=>{
             this.proteinTableLoading = false
           },500)
+      },
+      initXiviewDataTable(){
+        this.accession = '' 
+        this.title = ''
+        this.description = ''
+        this.proteinTableData = []
+        this.totalProtein = 0
+        this.pageSizeProtein = 20
+        this.pageProtein = 1
+      },
+      xiviewDataTableFold(val){
+          this.xiviewDataTableFoldBool = val
+          let divs = document.querySelectorAll('.card-item-wrapper')
+          if(this.xiviewDataTableFoldBool){
+              divs.forEach(div=>{
+                 div.style.display = 'none'
+              })
+          }
+          else{
+              divs.forEach(div=>{
+                 div.style.display = 'block'
+              })
+          } 
       },
     },
     computed:{
