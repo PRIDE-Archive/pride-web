@@ -66,47 +66,49 @@
          description:'',
          organism:'',
          xiviewDetailTableCol:[
-              {
-                  type: 'index',
-                  width: 60,
-                  align: 'center'
-              },
+              // {
+              //     type: 'index',
+              //     width: 70,
+              //     align: 'center'
+              // },
               {
                   title: 'Accession',
                   key: 'accession',
-                  width: 150,
+                  width: 120,
                   sortable: true,
                   align:'center'
               },
               {
                   title: 'Protein Name',
                   key: 'protein_name',
-                  width: 400,
                   sortable: false,
                   align:'left'
               },
               {
                   title: 'Gene Name',
                   key: 'gene_name',
+                  width: 130,
                   sortable: true,
-                  align:'left'
+                  align:'center'
               },
               {
                   title: 'Peptides',
                   key: 'peptides',
+                  width: 130,
                   sortable: true,
                   align:'center'
               },
               {
                   title: 'Crosslinked peptides',
                   key: 'crosslink',
+                  width: 180,
                   sortable: true,
                   align:'center'
               },
               {
                   title: 'PDB',
                   key: 'pdb',
-                  width: 100,
+                  width: 130,
                   sortable: false,
                   align:'center',
                   render: (h, params) => {
@@ -141,7 +143,7 @@
               {
                   title: 'AlphaFoldDB',
                   key: 'alphafolddb',
-                  width: 170,
+                  width: 200,
                   sortable: false,
                   align:'center',
                   render: (h, params) => {
@@ -327,4 +329,7 @@
 </style>
 
 <style>
+.xiview-table table{
+  margin-bottom: 0 !important;
+}
 </style>
