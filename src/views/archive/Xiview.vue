@@ -158,7 +158,8 @@
                               },
                               on: {
                                   click: () => {
-                                      this.$Message.success({content:'Coming Soon.', duration:1});
+                                      // this.$Message.success({content:'Coming Soon.', duration:1});
+                                      this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
                                       // this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
                                       // window.open('http://europepmc.org/article/MED/' + params.row.accession)
                                   }
@@ -502,9 +503,6 @@
   }
   .download-button:hover{
     opacity: .8;
-  }
-  .card-item-wrapper{
-    margin-bottom: 10px;
   }
   .summary-content-header{
     display: flex;
