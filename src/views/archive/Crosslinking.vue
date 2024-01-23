@@ -1,5 +1,5 @@
 <template>
-  <div class="psm-container">
+  <div class="crosslinking-container">
       <div class="panel nav"><NavBar page="landingpage"/></div>
       <div class="browse-data-container">
           <Row>
@@ -281,164 +281,34 @@
     },
     computed:{
       query:function(){
-          let sequence = this.sequence ? 'sequence='+this.sequence + '&' : '';
-          let project = this.project ? 'project='+this.project + '&' : '';
-          //let mod = 'mod=NONE'
-          let mod='mod=NONE&';
-          let page='page='+this.page+'&';
-          let size='size='+this.size;
-          return '?'+sequence+project+mod+page+size;
+         
       }
     },
     mounted: function(){
-        this.updateQuery();
-        this.queryClusterList();
-    },
-    created(){
-       
-    },
-    beforeDestroy(){
-          
+       this.queryXiviewDataDetails(this.$route.params.id)
     },
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
-  .psm-container{
+  .card-item-wrapper{
+    margin-bottom: 10px;
+  }
+  .crosslinking-container{
     width: 100%;
    
   }
   .browse-data-container{
-    width: 80%;
+    width: 90%;
     margin:0 auto;
     padding: 90px 0;
-  }
-  .search-filter{
-    display: flex;
-    margin-bottom: 2rem;
-    justify-content: space-between;
-  }
-  .search-row{
-    margin-bottom: 20px;
-  }
-  .search-condition:not(.first){
-    display: inline-block;
-    padding-left: 8px;
-    border-left: 1px solid #e9eaec;
-  }
-  .search-input{
-    text-align: center;
-  }
-  .refine-name{
-    font-size: 12px;
-  }
-  .tag-container{
-    display: inline-block;
   }
   .page-container{
     text-align: center;
     margin-top: 20px;
   }
-  .filter-condition{
-    display: inline-block;
-    margin-top: 5px; 
-  }
-  .search-condition-container{
-    display: inline-block;
-  }
-  .search-condition-container .ivu-tag{
-    overflow: visible !important;
-    z-index: 2 !important;
-    opacity: 1 !important;
-    height: 30px;
-    line-height: 30px;
-  }
-  .search-condition-container a{
-    border:none;
-  }
-  .resource-list-title-container{
-    display: flex;
-    justify-content: space-between;
-  }
-  .sort-action{
-    font-size: 12px;
-    font-weight: normal;
-    color: #495060;
-    border:none;
-  }
-  .search-button a{
-        padding: 8px 10px;
-        font-size: 12px;
-        width: 100%;
-        margin-bottom: 0;
-        margin-top: 5px;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        font-weight: 700;
-        background-color: #5bc0be;
-        border-radius: 3px;
-    }
-    .resource-item{
-      margin-bottom: 20px;
-    }
-    .resource-id{
-      font-size: 14px;
-    }
-    .resource-title{
-      font-weight: bold;
-    }
-    .detailed-resouce{
-      margin-left: 5px;
-    }
-    .dataset-button{
-        padding: 2px 3px;
-        font-size: 12px;
-        margin-bottom: 0;
-        /*padding: 20px 85px;
-        font-size: 24px;*/
-        background-color: #5bc0be;
-        border-radius: 3px;
-    }
-    .dataset-wrapper{
-      margin-right: 5px;
-    }
-    .search-item-input-wrapper{
-      position: absolute;
-      top:5px;
-      width: 100%;
-      text-align: center;
-      padding-bottom: 5px;
-      border-bottom: 1px solid rgb(200,200,200,0.5);
-    }
-    .archive-search-input{
-      margin-bottom: 10px;
-    }
-    .dropdown-action{
-      width: 50px;
-    }
-    .separator{
-      margin: 0 5px;
-    }
-    .sortOption{
-      display: inline-block;
-      margin-left: 5px;
-    }
 </style>
 
 <style>
-    .psm-detail-table table{
-      margin-bottom: 0 !important;
-    }
-
-    .psm-detail-table a{
-        color:#495060;
-    }
-    .psm-detail-table a:hover{
-        color:#5bc0be;
-        border-bottom-style:dotted;
-    }
-    .psm-detail-table .ivu-tooltip-inner{
-        white-space:normal;
-    }
 </style>
