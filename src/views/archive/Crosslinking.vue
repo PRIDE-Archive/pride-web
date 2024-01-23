@@ -305,6 +305,16 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>  
+  .card{
+    width: 100%
+  }
+  .card a{
+      color: #495060;
+      border-bottom-style: none;
+  }
+  .card a:hover{
+    color: #5bc0be;
+  }
   .card-item-wrapper{
     margin-bottom: 10px;
   }

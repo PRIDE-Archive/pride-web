@@ -465,7 +465,7 @@
       border-bottom-style: dotted;
   }
   .card a:hover{
-        color: #5bc0be;
+    color: #5bc0be;
   }
   .list-wrapper{
 
