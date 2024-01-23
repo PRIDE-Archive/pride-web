@@ -456,17 +456,9 @@
   .project-title{
       color:rgb(23, 35, 61);
   }
-  .summary-content-header{
-    font-size: 14px;
-    color: #5bc0be;
-    font-weight: bold;
-  }
   .card p{
     text-align: justify;
     font-size: 12px;
-  }
-  .card .summary-content-header:first-child{
-    margin-top: 0px;
   }
   .card a{
       color: #495060;
@@ -503,10 +495,6 @@
   }
   .download-button:hover{
     opacity: .8;
-  }
-  .summary-content-header{
-    display: flex;
-    align-items: center;
   }
   .page-container{
     text-align: center;
