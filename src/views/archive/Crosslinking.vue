@@ -7,6 +7,9 @@
                 <p slot="title" class="table-header" style="display:flex;justify-content: space-between;">
                     <span>Project Details</span>
                     <span v-if="true" class="right">
+                        <Input v-if ="!xiviewDataTableFoldBool" type="text" v-model="preteinKeyword" placeholder="" size="small" @on-enter="queryProteinDetails">
+                        <Button slot="append" icon="ios-search" @click="queryProteinDetails"></Button>
+                        </Input>
                         <a v-if="xiviewDataTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewDataTableFold(false)"></Icon></a>
                         <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewDataTableFold(true)"></Icon></a>
                     </span>
@@ -17,22 +20,22 @@
                         <p>{{accession}}</p>
                     </div>
                     <div class="card-item-wrapper">
-                        <div class="summary-content-header" style="margin-top: 30px">Title</div>
+                        <div class="summary-content-header" style="margin-top: 20px">Title</div>
                         <p>{{title}}</p>
                     </div>
-                    <div class="card-item-wrapper" style="margin-top: 30px">
+                    <div class="card-item-wrapper" style="margin-top: 20px">
                         <div class="summary-content-header">Description: </div>
                       <read-more class="readMore" more-str="Read more" :text="description" link="#" less-str="Read less" :max-chars="400"></read-more>
                     </div>
                     <div class="card-item-wrapper">
-                        <div class="summary-content-header" style="margin-top: 30px">Organism</div>
+                        <div class="summary-content-header" style="margin-top: 20px">Organism</div>
                         <p>{{organism}}</p>
                     </div>
-                    <div class="card-item-wrapper" style="margin-top: 30px">
+                    <div class="card-item-wrapper" style="margin-top: 20px">
                         <div class="summary-content-header">Protein Details</div>
                     </div>
                     <div class="card-item-wrapper">
-                      <Table row-key="id" class="xiview-table xiview-table-disabled" :loading="proteinTableLoading" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table>
+                      <Table row-key="id" class="xiview-table xiview-table-disabled" :loading="proteinTableLoading" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table> 
                     </div>
                     <div style="color:#bdbdbd; text-align: center;">
                           <span v-if ="xiviewDataTableFoldBool">{{xiviewDataTableHint}}</span>
@@ -59,6 +62,7 @@
     data(){
       return {
          queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
+         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/protein/search',
          preteinKeyword:'',
          xiviewDataTableFoldBool:false,
          accession: '',
@@ -264,6 +268,14 @@
             this.proteinTableLoading = false
           },500)
       },
+      xiviewPageChange(page){
+          this.pageXiview = page;
+          this.queryXiviewData()
+      },  
+      xiviewPageSizeChange(size){
+          this.pageSizeXiview = size;
+          this.queryXiviewData()
+      },
       initXiviewDataTable(){
         this.accession = '' 
         this.title = ''
@@ -287,6 +299,18 @@
               })
           } 
       },
+      queryProteinDetails(){
+         this.proteinTableLoading = true;
+         this.xiviewDetailTableData=[]
+         this.$http
+          .get(this.queryProteinDetailsApi,{params: this.query})
+          .then(function(res){
+              this.proteinTableLoading = false;
+              console.log(res)
+          },function(err){
+              this.proteinTableLoading = false;
+          });
+      }
     },
     computed:{
       query:function(){
@@ -316,7 +340,7 @@
     color: #5bc0be;
   }
   .card-item-wrapper{
-    margin-bottom: 10px;
+    margin-bottom: 5px;
   }
   .crosslinking-container{
     width: 100%;
@@ -342,4 +366,9 @@
 .xiview-table table{
   margin-bottom: 0 !important;
 }
+.table-header{
+    /*display: flex !important;
+    justify-content: space-between;*/
+    height: 24px !important;
+  }
 </style>
