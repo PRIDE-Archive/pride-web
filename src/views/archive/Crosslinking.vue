@@ -58,6 +58,8 @@
     name: 'archive',
     data(){
       return {
+         queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/',
+         preteinKeyword:'',
          xiviewDataTableFoldBool:false,
          accession: '',
          title: '',
@@ -187,10 +189,14 @@
       queryXiviewDataDetails(id){
           this.xiviewDataTableFold(true)
           this.initXiviewDataTable()
+          this.proteinTableLoading = true
+          if(id)
+            this.query.query=id
           this.$http
             .get(this.queryXiviewDataDetailApi + id)
             .then(function(res){
               this.xiviewDataTableFold(false)
+              this.proteinTableLoading = false
               let body = res.body[0]
               console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
@@ -220,6 +226,7 @@
                 this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
 
             },function(err){
+               this.proteinTableLoading = false
                this.xiviewDataTableFold(true)
             });
       },
@@ -281,8 +288,12 @@
     },
     computed:{
       query:function(){
-         
-      }
+          let normalQuery = {}
+          normalQuery.query = this.preteinKeyword;
+          normalQuery.page = this.pageProtein;
+          normalQuery.pageSize = this.pageSizeProtein;
+          return normalQuery;  
+        }
     },
     mounted: function(){
        this.queryXiviewDataDetails(this.$route.params.id)
@@ -307,6 +318,11 @@
   .page-container{
     text-align: center;
     margin-top: 20px;
+  }
+  .summary-content-header{
+    font-size: 14px;
+    color: #5bc0be;
+    font-weight: 700;
   }
 </style>
 
