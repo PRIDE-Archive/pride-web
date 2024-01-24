@@ -731,6 +731,9 @@
                       this.logout();
                       this.$router.push({name:'login'});
                       this.$Message.error({content:'Session expired, Please Login Again', duration:3});
+                    } else {
+                      var errorMsg = err.bodyText.replaceAll("\n", "<br/>")
+                      this.$Message.error({content:errorMsg, duration:20});
                     }
                   });
             },
