@@ -51,4 +51,4 @@ Aspera connection details:
 - Target directory : {this will also be mentioned in the email from PRIDE team}
 
 ### Usage
-Using the Aspera desktop client is very straight forward like Filezilla or WinSCP FTP clients mentioned in the previous section but if further help is needed, refer to the [official documentation](https://www.ibm.com/docs/en/asdc)
+Using the Aspera desktop client is very straight forward like Filezilla or WinSCP FTP client tools mentioned in the previous section but if further help is needed, refer to the [official documentation](https://www.ibm.com/docs/en/asdc)
