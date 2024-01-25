@@ -7,52 +7,6 @@ Once your submission files have been prepared using the PRIDE Submission Tool, f
 
 First, ask PRIDE support (at pride-support@ebi.ac.uk) for a target directory and a password. The PRIDE curators will specify a target directory for you, see <name-oftarget-dir-specified-by-PRIDE> in the following commands, and you will be provided with this information. Please E-mail us once your upload has been successfully finished.
 
-## Aspera 
-
-### Install Aspera ascp command line programme
-
-Aspera is a commercial file transfer protocol that may provide faster transfer speeds than ftp especially over longer distances.
-
-Operating System: Windows XP / 2003 / Vista / 2008 / 7 / 8, Mac OS Intel 10.5 / 10.6 / 10.7 / 10.8 / Linux
-
-The Aspera ascp command line client can be downloaded [here](http://downloads.asperasoft.com/downloads).
-
-Please select **Aspera Connect**.
-
-The ascp command line client is distributed as part of the aspera connect high-performance transfer browser plug-in and is free to use, without registration. 
-
-The location of the 'ascp' program in the filesystem:
-
- - Mac: On the desktop go `cd /Applications/Aspera\ Connect.app/Contents/Resources/` there you'll see the command line utilities where you're going to use 'ascp'.
-
- - Windows: The downloaded files are a bit hidden. For instance in Windows 7 the ascp.exe is located in the users home directory in: `AppData\Local\Programs\Aspera\Aspera Connect\bin\ascp.exe`
-
- - Linux: It should be in your user's home directory, `cd /home/username/.aspera/connect/bin/` there you'll see the command line utilities where you're going to use 'ascp'.
-
-### Using the Aspera ascp command line program
-
-Your command should look similar to this:    
-
-- Mac/Linux: `ascp -P33001 -QT -l300M L --file-manifest=text -k2 -o Overwrite=diff <path-tofolder-to-be-uploaded> pride-drop-006@hx-fasp-1.ebi.ac.uk:/<name-of-target-dir-specified-by-PRIDE>`
-
-- Windows: `ascp.exe -P33001 -QT -l300M L --file-manifest=text -k2 -o Overwrite=diff <path-tofolder-to-be-uploaded> pride-drop-006@hx-fasp-1.ebi.ac.uk:/<name-of-target-dir-specified-by-PRIDE>`
-
-### Explanation of parameters
-
-- **-l500M** option sets the upload speed limit to 500MB/s. You may wish to lower this value if you get timeout issues or to increase the reliability of the transfer.
-
-- **L** option is for printing logs out while transferring
-
-- **path-to-folder-to-be-uploaded** directory with the files to be submitted.
-
-- **name-of-target-dir-specified-by-PRIDE** directory name provided by PRIDE.
-
-- Add **-k2** switch for transfer restarts
-
-Check the command line transfer [usage](http://download.asperasoft.com/download/docs/ascp/2.7/html/index.html) for more configuration details. 
-
-Please provide the password when it prompt. This will generate an Aspera progress file on your side that will contain a report on the files that have been uploaded, also you can interrupt the process and then it will only upload the ones that were not there so no more overwriting files. It will also skip the ones that are already in the target directory.
-
 ## FTP 
 
 PRIDE team will setup a directory on our private FTP server for you to manually upload your files to. Please see the details below:
@@ -61,8 +15,8 @@ FTP details:
 
 - FTP server: ftp-private.ebi.ac.uk
 - User name : pride-drop-006
-- Password : <password>
-- directory : <name-of-target-dir-specified-by-PRIDE>
+- Password : {PRIDE team will send the password by email}
+- directory : {this will also be mentioned in the email from PRIDE team}
 
 For security reasons, we do not allow directory listings at the top level so you will need to manually navigate to the proper directory, either by typing the command (if using a command-line): `cd <Directory Name>`
 or by the corresponding "go to directory" option (of whatever graphical tool you are using): `/<Directory Name>`
@@ -82,3 +36,19 @@ Use the following connection details (File=> Site Manager) and add your submissi
 ![FTP upload](../markdown/submissionupload/files/filezilla.png)
 
 Select the files you wish to upload, then right click mouse, and select 'upload'.
+
+
+## Aspera
+
+Download Aspera desktop client from [here](https://www.ibm.com/support/fixcentral/swg/selectFixes?parent=ibm~Other%20software&product=ibm/Other%20software/IBM%20Aspera%20Desktop%20Client&release=All&platform=All&function=all).
+
+If the above link doesn't work, try to navigate from [here](https://www.ibm.com/products/aspera/downloads) and look for 'IBM Aspera Desktop Client'.
+
+Aspera connection details:
+- Host/Server: ftp-private.ebi.ac.uk
+- User: pride-drop-006
+- Password : {PRIDE team will send the password by email}
+- Target directory : {this will also be mentioned in the email from PRIDE team}
+
+### Usage
+Using the Aspera desktop client is very straight forward like Filezilla or WinSCP FTP clients mentioned in the previous section but if further help is needed, refer to the [official documentation](https://www.ibm.com/docs/en/asdc)
