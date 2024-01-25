@@ -45,7 +45,7 @@ Download Aspera desktop client from [here](https://www.ibm.com/support/fixcentra
 If the above link doesn't work, try to navigate from [here](https://www.ibm.com/products/aspera/downloads) and look for 'IBM Aspera Desktop Client'.
 
 Aspera connection details:
-- Host/Server: ftp-private.ebi.ac.uk
+- Host/Server: hx-fasp-1.ebi.ac.uk
 - User: pride-drop-006
 - Password : {PRIDE team will send the password by email}
 - Target directory : {this will also be mentioned in the email from PRIDE team}
