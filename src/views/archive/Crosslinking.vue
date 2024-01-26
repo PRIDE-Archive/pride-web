@@ -196,8 +196,6 @@
           this.xiviewDataTableFold(true)
           this.initXiviewDataTable()
           this.proteinTableLoading = true
-          if(id)
-            this.query.query=id
           this.$http
             .get(this.queryXiviewDataDetailApi + id)
             .then(function(res){
@@ -224,13 +222,8 @@
                     alphafolddb: body.project_sub_details[i].link_to_alphafolddb ? body.project_sub_details[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ body.project_sub_details[i].protein_accession,
 
                   }
-                  this.proteinTableData.push(item)//save for original data
-                  this.xiviewDetailTableData.push(item);//only used for showup
+                  this.xiviewDetailTableData.push(item);
               }
-              //for first pagination when table is loaded
-              if(this.totalProtein > this.pageSizeProtein)
-                this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
-
             },function(err){
                this.proteinTableLoading = false
                this.xiviewDataTableFold(true)
@@ -251,36 +244,17 @@
           } 
       },
       proteinPageChange(page){
-          console.log('proteinPageChange')
-          this.proteinTableLoading = true
-          this.pageProtein = page;
-          this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
-          setTimeout(()=>{
-            this.proteinTableLoading = false
-          },500)
+          this.pageXiview = page;
+          this.queryProteinDetails()
       },  
       proteinPageSizeChange(size){
-          console.log('proteinPageSizeChange')
-          this.proteinTableLoading = true
-          this.pageSizeProtein = size;
-          this.xiviewDetailTableData = this.proteinTableData.slice((this.pageProtein-1)*this.pageSizeProtein, (this.pageProtein-1)*this.pageSizeProtein + this.pageSizeProtein)
-          setTimeout(()=>{
-            this.proteinTableLoading = false
-          },500)
-      },
-      xiviewPageChange(page){
-          this.pageXiview = page;
-          this.queryXiviewData()
-      },  
-      xiviewPageSizeChange(size){
           this.pageSizeXiview = size;
-          this.queryXiviewData()
+          this.queryProteinDetails()
       },
       initXiviewDataTable(){
         this.accession = '' 
         this.title = ''
         this.description = ''
-        this.proteinTableData = []
         this.totalProtein = 0
         this.pageSizeProtein = 20
         this.pageProtein = 1
@@ -300,13 +274,32 @@
           } 
       },
       queryProteinDetails(){
+         // if(!this.preteinKeyword)
+          // return
+          console.log(this.query)
          this.proteinTableLoading = true;
          this.xiviewDetailTableData=[]
          this.$http
           .get(this.queryProteinDetailsApi,{params: this.query})
           .then(function(res){
-              this.proteinTableLoading = false;
-              console.log(res)
+              this.proteinTableLoading = false
+              this.totalProtein = res.body.length
+              // console.log(res)
+              for(let i=0; i<res.body.length; i++){
+                  let item = {
+                    accession: res.body[i].protein_accession,
+                    protein_name: res.body[i].protein_name,
+                    gene_name: res.body[i].gene_name,
+                    peptides: res.body[i].number_of_peptides,
+                    crosslink: res.body[i].number_of_cross_links,
+                    pdbDisabled: !res.body[i].in_pdbe_kb, 
+                    pdb: res.body[i].link_to_pdbe ? res.body[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ res.body[i].protein_accession, //pdbe is self-defined property
+                    alphafolddbDisabled: !res.body[i].in_alpha_fold_db,
+                    alphafolddb: res.body[i].link_to_alphafolddb ? res.body[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ res.body[i].protein_accession,
+
+                  }
+                  this.xiviewDetailTableData.push(item);
+              }
           },function(err){
               this.proteinTableLoading = false;
           });
