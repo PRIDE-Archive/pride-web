@@ -93,7 +93,7 @@
           </Row>
           <Row :gutter="48" class="row">
             <Col span="18">
-              <span style="color:gray; font-size: 20px">The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab (Technische Universität Berlin), PRIDE and PDB teams (EMBL-EBI)</span>
+              <span style="color:gray; font-size: 20px">The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab (Technische Universität Berlin, Edinburgh University), PRIDE and PDB teams (EMBL-EBI)</span>
             </Col>
             <Col span="6">
               <div class="logo_container" style="background-image:url(../logo/xiview_logo_horizon_1.png)"></div>
