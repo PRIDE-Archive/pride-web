@@ -289,7 +289,7 @@
                                 },
                                 on: {
                                     click: () => {
-                                        if(this.massiveBool)
+                                        if(!this.prideBool)
                                           window.open('https://proteomecentral.proteomexchange.org/cgi/GetDataset?ID=' + params.row.value)
                                         else
                                           this.$router.push({name:'dataset',params:{id:params.row.value}});
@@ -446,7 +446,7 @@
           usiTableSearchKeyword:'',
           searchInputLoading:false,
           autoCompleteArray:[],
-          massiveBool:false,
+          prideBool:false,
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
@@ -553,8 +553,8 @@
                              //find the array in the reply, 
                             if( i == 'masses' || i== 'intensities'|| i== '_links') //remove the items what we do not need to have in the table
                               continue
-                            if( i == 'provider' && psm[i].toLowerCase() == 'massive') // change the "Project Accession" linking page when the provider is Massive.
-                              this.massiveBool = true
+                            if( i == 'provider' && psm[i].toLowerCase() == 'pride') // change the "Project Accession" linking page when the provider is Massive.
+                              this.prideBool = true
                             if(i == 'bestSearchEngineScore'){//add some more action when bestSearchEngineScore shows up
                               this.addBestSearchHighlight()
                             }
