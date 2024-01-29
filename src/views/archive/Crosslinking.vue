@@ -7,11 +7,8 @@
                 <p slot="title" class="table-header" style="display:flex;justify-content: space-between;">
                     <span>Project Details</span>
                     <span v-if="true" class="right">
-                        <Input v-if ="!xiviewDataTableFoldBool" type="text" v-model="preteinKeyword" placeholder="" size="small" @on-enter="queryProteinDetails">
-                        <Button slot="append" icon="ios-search" @click="queryProteinDetails"></Button>
-                        </Input>
-                        <a v-if="xiviewDataTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewDataTableFold(false)"></Icon></a>
-                        <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewDataTableFold(true)"></Icon></a>
+                      <a v-if="xiviewDataTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewDataTableFold(false)"></Icon></a>
+                      <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewDataTableFold(true)"></Icon></a>
                     </span>
                 </p>
                 <template v-if="true">
@@ -31,8 +28,11 @@
                         <div class="summary-content-header" style="margin-top: 20px">Organism</div>
                         <p>{{organism}}</p>
                     </div>
-                    <div class="card-item-wrapper" style="margin-top: 20px">
+                    <div class="card-item-wrapper protien-details">
                         <div class="summary-content-header">Protein Details</div>
+                        <Input v-if ="!xiviewDataTableFoldBool" type="text" style="width: auto" v-model="preteinKeyword" placeholder="" size="small" @on-enter="queryProteinDetails">
+                        <Button slot="append" icon="ios-search" @click="queryProteinDetails"></Button>
+                        </Input>
                     </div>
                     <div class="card-item-wrapper">
                       <Table row-key="id" class="xiview-table xiview-table-disabled" :loading="proteinTableLoading" border :columns="xiviewDetailTableCol" :data="xiviewDetailTableData" size="small"></Table> 
@@ -264,12 +264,18 @@
           let divs = document.querySelectorAll('.card-item-wrapper')
           if(this.xiviewDataTableFoldBool){
               divs.forEach(div=>{
-                 div.style.display = 'none'
+                  // if(div.getAttribute('class').indexOf('protien-details')>-1){}
+                  // else 
+                  div.style.display = 'none'
               })
           }
           else{
               divs.forEach(div=>{
-                 div.style.display = 'block'
+                 if(div.getAttribute('class').indexOf('protien-details')>-1)
+                  div.style.display='flex'
+                 
+                 else 
+                  div.style.display = 'block'
               })
           } 
       },
@@ -308,7 +314,7 @@
     computed:{
       query:function(){
           let normalQuery = {}
-          normalQuery.query = this.preteinKeyword;
+          normalQuery.query = this.preteinKeyword || 'all';
           normalQuery.page = this.pageProtein;
           normalQuery.pageSize = this.pageSizeProtein;
           return normalQuery;  
@@ -335,9 +341,12 @@
   .card-item-wrapper{
     margin-bottom: 5px;
   }
+  .card-item-wrapper.protien-details{
+    margin-top: 20px; 
+    justify-content: space-between;
+  }
   .crosslinking-container{
     width: 100%;
-   
   }
   .browse-data-container{
     width: 90%;
