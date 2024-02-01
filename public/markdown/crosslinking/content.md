@@ -10,14 +10,14 @@ Crosslinking data submitted to PRIDE will receive complete submission status whe
 
 4. **The mzIdentML files MUST correctly reference the submitted peaklists.** It must be possible to identify and read the spectrum for each identification based on the information in the mzIdentML file, see Section 5.1.2 of the mzIdentML 1.2.0 specification document.
 
-5. **The accession attribute of target <DBSequence> elements  MUST be a valid uniprot accession.** That is, the value of the accession attribute for <DBSequence> elements should match the regular expression: `[OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}`
+5. The accession attribute of target <DBSequence> elements  MUST be a [valid uniprot accession](https://www.uniprot.org/help/accession_numbers)**, if it is a natural protein that has an accession number**. That is, the value of the accession attribute for <DBSequence> elements should match the regular expression: [OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}
 
-6. **Every <DBSequence> element that describes a target protein MUST include the protein sequence in a <Seq> subelement.**
+6. Every **&lt;**DBSequence**&gt;** element that describes a target protein MUST include the protein sequence in a **&lt;**Seq**&gt;** subelement.
 
 ## Limitations of Support
 
 1. Information in mzIdentML files on scores and the passing of thresholds at higher levels of consolidation (unique peptide; crosslink level; PPI) are not processed by https://github.com/PRIDE-Archive/xi-mzidentml-converter, only the PSM level scores/threshold passes.
 
-2. Doesn’t read linked FASTA files, hence item (f) above.
+2. Doesn’t read linked FASTA files, hence item **(6)** above. 
 
-3. Doesn’t support the “combined spectra file type” from mzIdentML 1.2.0 
+3. Doesn’t support the “combined spectra file type” from mzIdentML 1.2.0
