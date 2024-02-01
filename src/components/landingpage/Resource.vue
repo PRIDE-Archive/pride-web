@@ -42,16 +42,7 @@
             <Icon class="icon-archive" size="70" type="ios-paper-outline" />
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
-<!--        <a class="button resource-button peptidome" @click="goToPeptidome">-->
-<!--            <span>-->
-<!--            <svg class="icon-peptidome" aria-hidden="true">-->
-<!--                <use xlink:href="#icon-checklist"></use>-->
-<!--                &lt;!&ndash; &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt; &ndash;&gt;-->
-<!--            </svg>-->
-<!--            </span>-->
-<!--            <span class="resource-button-content">{{peptidomebutton}}</span>-->
-<!--        </a>-->
-      <a class="button resource-button" @click="goToSpectraArchive">
+        <a class="button resource-button" @click="goToSpectraArchive">
             <Icon class="icon-archive" size="110" type="ios-list" />
             <span class="resource-button-content">{{spectraarchivebutton}}</span>
         </a>
