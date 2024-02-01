@@ -116,11 +116,11 @@
     name: 'archive',  
     data(){
       return {
-          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/search',
-          barHorizontalApi: 'https://www.ebi.ac.uk/pride/archive/xiview/ws/peptide-per-protein',
-          pieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects-per-species',
-          areaPieXiviewApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/statistics-count',
-          // projectSearchApi:'https://www.ebi.ac.uk/pride/archive/xiview/ws/projects/search?query=PXD038060&page=1&page_size=10'
+          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/search',
+          barHorizontalApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/peptide-per-protein',
+          pieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects-per-species',
+          areaPieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/statistics-count',
+          // projectSearchApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/search?query=PXD038060&page=1&page_size=10'
           bannerContent:"The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams",
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           logoURL:'/logo/xiview_logo_horizon_1.png',
