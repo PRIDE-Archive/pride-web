@@ -80,11 +80,11 @@ We also would like to thank all previous members of the PRIDE SAB:
 
 ## Acknowledgements
 
-The PRIDE team would like to thank all data submitters for their contributions. The PRIDE team is funded at present by the Wellcome Trust [grant number 208391/Z/17/Z],  the BBSRC grants BB/N022440/1, BB/N022432/1 and BB/P024599/1, the NIH grant R24 GM127667-01, the H2020 EU EPIC-XS grant [grant number 823839], several ELIXIR Implementation Studies and EMBL core funding. 
+The PRIDE team would like to thank all data submitters for their contributions. The PRIDE team is funded at present by the Wellcome Trust [grant number 223745/Z/21/Z], the BBSRC grants '3D-Proteomics' [BB/V018779/1], 'GRAPPA' [BB/T019670/1] and DIA-eXchange [BB/X001911/1], Open  Targets,  several ELIXIR Implementation Studies and EMBL core funding. 
 
-In recent years, PRIDE has also been funded by the Wellcome Trust [grant numbers WT101477MA and WT085949MA], the EU FP7 grants 'ProteomeXchange’ [grant number 260558], ‘PRIME-XS’ [grant number 262067], and ‘LipidomicNet’ [grant number 202272], and the BBSRC grants [reference BB/I024204/1, BB/I00095X/1, BB/K01997X/1 and BB/L024225/1].
+In recent years, PRIDE has also been funded by the Wellcome Trust [grant numbers WT101477MA, WT085949MA and 208391/Z/17/Z], the EU FP7 grants 'ProteomeXchange’ [grant number 260558], ‘PRIME-XS’ [grant number 262067], and ‘LipidomicNet’ [grant number 202272], the EU H2020 grant 'EPIC-XS' [grant number 823839], the NIH grant R24 GM127667-01, the Luxembourg National Research Fund [grant number C19/BM/13684739] and several BBSRC grants [grant numbers BB/I024204/1, BB/I00095X/1, BB/K01997X/1, BB/L024225/1, BB/N022440/1, BB/N022432/1 and BB/P024599/1].
 
 
-## Clinical (potentially sensitive) clinical human datasets
+## Clinical human (sensitive) clinical proteomics datasets
 
-All datasets in PRIDE (as part of ProteomeXchange) are made fully open, once the corresponding paper is published. As such, accessed-controlled datasets are not supported at present. If you have concerns about submitting datasets to PRIDE due to legal issues, please contact [pride-support](pride-support@ebi.ac.uk). 
+All datasets in PRIDE (as part of ProteomeXchange) are made fully open, once the corresponding paper is published. As such, accessed-controlled datasets are not supported at present. If you have concerns about submitting datasets to PRIDE due to legal issues, please contact [pride-support](pride-support@ebi.ac.uk). You can read about the state of the art in this topic in this [white paper](https://www.sciencedirect.com/science/article/pii/S153594762100044X).
