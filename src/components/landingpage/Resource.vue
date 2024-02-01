@@ -315,7 +315,7 @@
         background:#fbfdff;
     }
     .resource-button{
-        padding: 30px 105px 30px 105px;
+        padding: 10px 105px 30px 105px;
         font-size: 18px;
         width: 80%;
         height: 180px;
@@ -406,8 +406,9 @@
     .resource-button-content{
         font-size: 20px;
         position: absolute;
-        bottom: 30px;
+        bottom: 20px;
         color: white;
+        padding-bottom: 50px;
     }
     @media (min-width: 768px) {
         .resource-container{
