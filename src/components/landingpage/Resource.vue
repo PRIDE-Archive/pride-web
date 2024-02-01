@@ -39,7 +39,7 @@
     </div>
     <div class="button-container">
         <a class="button resource-button archive" @click="goToArchive">
-            <Icon class="icon-archive" size="70" type="ios-paper-outline" />
+            <Icon class="icon-archive" size="110" type="ios-paper-outline" />
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
         <a class="button resource-button" @click="goToSpectraArchive">
@@ -407,7 +407,7 @@
         font-size: 20px;
         position: absolute;
         bottom: 30px;
-         color: white;
+        color: white;
     }
     @media (min-width: 768px) {
         .resource-container{
