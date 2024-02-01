@@ -14,7 +14,7 @@
                 <template v-if="true">
                     <div class="card-item-wrapper">
                         <div class="summary-content-header">Project ID</div>
-                        <p>{{accession}}</p>
+                        <a style="border-bottom-style:dotted" @click="gotoDetails(accession)">{{accession}}</a>
                     </div>
                     <div class="card-item-wrapper">
                         <div class="summary-content-header" style="margin-top: 20px">Title</div>
@@ -309,7 +309,10 @@
           },function(err){
               this.proteinTableLoading = false;
           });
-      }
+      },
+      gotoDetails(id){
+          this.$router.push({name:'dataset',params:{id:id}});
+      },
     },
     computed:{
       query:function(){
