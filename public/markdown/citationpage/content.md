@@ -30,8 +30,8 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 - **Citing the PRIDE database generally**: Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. [The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences](https://academic.oup.com/nar/article/50/D1/D543/6415112). Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. PMID: 34723319; PMCID: PMC8728295.
 
-- **Citing ProteomeXchange**: Deutsch EW, Csordas A, Sun Z, Jarnuczak A, Perez-Riverol Y, Ternent T, Campbell D, Bernal-Llinares M, Okuda S, Kawano S, Moritz RL,1 Carver JJ., Wang M, Ishihama Y, Bandeira N, Hermjakob H and Vizcaíno JA.
-  [The ProteomeXchange consortium in 2017: supporting the cultural change in proteomics public data deposition](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5210636/).  Nucleic Acids Res. 2017 Jan 4; 45(Database issue): D1100–D1106. PubMed ID: 27924013.
+- **Citing ProteomeXchange**: Deutsch EW, Bandeira N, Perez-Riverol Y, Sharma V, Carver J, Mendoza L, Kundu DJ, Wang S, Bandla C, Kamatchinathan S, Hewapathirana S, Pullman B, Wertz J, Sun Z, Kawano S, Okuda S, Watanabe Y, MacLean B, MacCoss M, Zhu Y, Ishihama Y and Vizcaíno JA .
+  [The ProteomeXchange Consortium at 10 years: 2023 update](https://academic.oup.com/nar/article/51/D1/D1539/6825347).  Nucleic Acids Res. 2023 Jan 6; 51(D1): D1539–D1548. PubMed ID: 36370099.
 
 - **When a dataset has been deposited in PRIDE (as part of ProteomeXchange) the corresponding manuscript should contain the following statement**:
 
@@ -88,3 +88,4 @@ In recent years, PRIDE has also been funded by the Wellcome Trust [grant numbers
 ## Clinical human (sensitive) clinical proteomics datasets
 
 All datasets in PRIDE (as part of ProteomeXchange) are made fully open, once the corresponding paper is published. As such, accessed-controlled datasets are not supported at present. If you have concerns about submitting datasets to PRIDE due to legal issues, please contact [pride-support](pride-support@ebi.ac.uk). You can read about the state of the art in this topic in this [white paper](https://www.sciencedirect.com/science/article/pii/S153594762100044X).
+
