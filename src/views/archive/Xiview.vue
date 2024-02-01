@@ -113,7 +113,7 @@
   import AreaPieXiview from '@/components/chart/AreaPieXiview.vue'
   import OverlapBar from '@/components/chart/OverlapBar.vue'
   export default {
-    name: 'archive',  
+    name: 'xview',
     data(){
       return {
           queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/search',

@@ -41,7 +41,7 @@
         <a class="button resource-button archive" @click="goToArchive">
             <span>
             <svg class="icon-archive" aria-hidden="true">
-                <use xlink:href="#icon-checklist1"></use>
+                <Icon type="ios-checkmark" />
             </svg>
             </span>
             <span class="resource-button-content">{{archivebutton}}</span>
@@ -63,6 +63,15 @@
             </span>
             <span class="resource-button-content">{{spectraarchivebutton}}</span>
         </a>
+      <a class="button resource-button crosslinking" @click="gotToCrosslinking">
+            <span>
+            <svg class="icon-spectraarchive" aria-hidden="true">
+                <use xlink:href="#icon-stats"></use>
+                <!-- &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt; -->
+            </svg>
+            </span>
+            <span class="resource-button-content">{{crosslinkingbutton}}</span>
+        </a>
     </div>
   </div>
 </template>
@@ -74,6 +83,7 @@
                 title:'',
                 peptidomebutton:'',
                 spectraarchivebutton:'',
+                crosslinkingbutton:'',
                 archivebutton:'',
                 condition:'',
                 keyword:'',
@@ -220,6 +230,9 @@
             goToSpectraArchive(){
               this.$router.push({name:'usi'})
             },
+            gotToCrosslinking(){
+                this.$router.push({name:'Xiview'});
+            },
             initAdvanceSearch(){
                 this.searchItems = [];
                 this.advanceSearchConditoinAdd();
@@ -235,6 +248,7 @@
                     this.title = res.body.resource.title;
                     this.peptidomebutton = res.body.resource.peptidomebutton;
                     this.spectraarchivebutton = res.body.resource.spectraarchivebutton;
+                    this.crosslinkingbutton = res.body.resource.crosslinkingbutton;
                     this.archivebutton = res.body.resource.archivebutton;
                     this.searchpeptideexample = res.body.resource.searchpeptideexample;
                     this.searcharchiveexample = res.body.resource.searcharchiveexample;
@@ -342,6 +356,10 @@
     }
     .resource-button.archive{
         background-color: #3b94d9;
+    }
+
+    .resource-button.crosslinking{
+        background-color: #a19f9f;
     }
     #search-bar-pride .ivu-select-single{
         /*width: 100px !important;*/
