@@ -89,4 +89,4 @@ In recent years, PRIDE has also been funded by the Wellcome Trust [grant numbers
 
 All datasets in PRIDE (as part of ProteomeXchange) are made fully open, once the corresponding paper is published. As such, accessed-controlled datasets are not supported at present. If you have concerns about submitting datasets to PRIDE due to legal issues, please contact [pride-support](pride-support@ebi.ac.uk). You can read about the state of the art in this topic in this [white paper](https://www.sciencedirect.com/science/article/pii/S153594762100044X).
 
-![Wellcome Trust](../markdown/citationpage/files/wellcome-logo-black.png)
+![Wellcome Trust](../markdown/citationpage/image/wellcome-logo-black.png)
