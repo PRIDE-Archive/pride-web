@@ -39,12 +39,16 @@
     </div>
     <div class="button-container">
         <a class="button resource-button archive" @click="goToArchive">
-            <Icon class="icon-archive" size="70" type="ios-paper-outline" />
+            <Icon class="icon-archive" size="110" type="ios-paper-outline" />
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
         <a class="button resource-button" @click="goToSpectraArchive">
-            <Icon class="icon-archive" size="110" type="ios-list" />
+            <Icon class="icon-archive" size="110" type="md-finger-print"/>
             <span class="resource-button-content">{{spectraarchivebutton}}</span>
+        </a>
+      <a class="button resource-button crosslinking" @click="gotToCrosslinking">
+            <Icon class="icon-archive" size="110" type="md-stats"/>
+            <span class="resource-button-content">{{crosslinkingbutton}}</span>
         </a>
     </div>
   </div>
@@ -57,6 +61,7 @@
                 title:'',
                 peptidomebutton:'',
                 spectraarchivebutton:'',
+                crosslinkingbutton:'',
                 archivebutton:'',
                 condition:'',
                 keyword:'',
@@ -203,6 +208,9 @@
             goToSpectraArchive(){
               this.$router.push({name:'usi'})
             },
+            gotToCrosslinking(){
+                this.$router.push({name:'Xiview'});
+            },
             initAdvanceSearch(){
                 this.searchItems = [];
                 this.advanceSearchConditoinAdd();
@@ -218,6 +226,7 @@
                     this.title = res.body.resource.title;
                     this.peptidomebutton = res.body.resource.peptidomebutton;
                     this.spectraarchivebutton = res.body.resource.spectraarchivebutton;
+                    this.crosslinkingbutton = res.body.resource.crosslinkingbutton;
                     this.archivebutton = res.body.resource.archivebutton;
                     this.searchpeptideexample = res.body.resource.searchpeptideexample;
                     this.searcharchiveexample = res.body.resource.searcharchiveexample;
@@ -306,8 +315,7 @@
         background:#fbfdff;
     }
     .resource-button{
-        position: relative;
-        padding: 0px 105px 30px 105px;
+        padding: 10px 105px 30px 105px;
         font-size: 18px;
         width: 80%;
         height: 180px;
@@ -327,6 +335,10 @@
     }
     .resource-button.archive{
         background-color: #3b94d9;
+    }
+
+    .resource-button.crosslinking{
+        background-color: #a19f9f;
     }
     #search-bar-pride .ivu-select-single{
         /*width: 100px !important;*/
@@ -394,7 +406,9 @@
     .resource-button-content{
         font-size: 20px;
         position: absolute;
-        bottom: 30px;
+        bottom: 20px;
+        color: white;
+        padding-bottom: 50px;
     }
     @media (min-width: 768px) {
         .resource-container{

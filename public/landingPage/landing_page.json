@@ -9,7 +9,8 @@
     "searchpeptideexample":["TNEEAGDGTTTATVLAR", "HSPD1", "P10809"],
     "peptidomebutton":"PRIDE PEPTIDOME",
     "archivebutton":"PRIDE ARCHIVE",
-    "spectraarchivebutton": "PRIDE ARCHIVE USI"
+    "spectraarchivebutton": "PRIDE ARCHIVE USI",
+    "crosslinkingbutton":"PRIDE CROSSLINKING"
   },
   "statistics":{},
   "tools":{
