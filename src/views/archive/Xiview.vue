@@ -129,6 +129,7 @@
           title: '',
           description:'',
           organism:'',
+          pubmed_id:'',
           xiviewTableLoading:false,
           
           pageSizeXiview:10,
@@ -174,7 +175,34 @@
                   sortable: false,
                   align:'left',
                   className: 'nobreak-cell',
-              },
+              },{
+                  title: 'Publication',
+                  key: 'pubmed_id',
+                  width: 120,
+                  sortable: true,
+                  align:'center',
+                  render: (h, params) => {
+                      // console.log('params',params)
+                      return h('div', [
+                          h('a', {
+                              style:{
+                                color:'#444'
+                              },
+                              class:{
+                                // projectAction:true
+                              },
+                              on: {
+                                  click: () => {
+                                      // this.$Message.success({content:'Coming Soon.', duration:1});
+                                      //this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
+                                      // this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
+                                    window.open('http://europepmc.org/article/MED/' + params.row.pubmed_id)
+                                  }
+                              }
+                          }, params.row.pubmed_id),
+                      ]);
+                  },
+            },
               {
                   title: 'Organism',
                   key: 'organism',
@@ -292,6 +320,7 @@
                   let item = {
                     accession: res.body[i].project_id,
                     title: res.body[i].title,
+                    pubmed_id: res.body[i].pubmed_id,
                     organism: res.body[i].organism,
                     proteins: res.body[i].number_of_proteins,
                     peptides: res.body[i].number_of_peptides,
