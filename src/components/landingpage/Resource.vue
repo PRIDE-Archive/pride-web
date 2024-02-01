@@ -43,16 +43,11 @@
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
         <a class="button resource-button" @click="goToSpectraArchive">
-            <Icon class="icon-archive" size="110" type="ios-list" />
+            <Icon class="icon-archive" size="110" type="md-finger-print"/>
             <span class="resource-button-content">{{spectraarchivebutton}}</span>
         </a>
       <a class="button resource-button crosslinking" @click="gotToCrosslinking">
-            <span>
-            <svg class="icon-spectraarchive" aria-hidden="true">
-                <use xlink:href="#icon-stats"></use>
-                <!-- &lt;!&ndash;<use xlink:href="#icon-checklist1"></use>&ndash;&gt; -->
-            </svg>
-            </span>
+            <Icon class="icon-archive" size="110" type="md-stats"/>
             <span class="resource-button-content">{{crosslinkingbutton}}</span>
         </a>
     </div>
@@ -412,6 +407,7 @@
         font-size: 20px;
         position: absolute;
         bottom: 30px;
+         color: white;
     }
     @media (min-width: 768px) {
         .resource-container{
