@@ -39,11 +39,7 @@
     </div>
     <div class="button-container">
         <a class="button resource-button archive" @click="goToArchive">
-            <span>
-            <svg class="icon-archive" aria-hidden="true">
-                <use xlink:href="#icon-checklist1"></use>
-            </svg>
-            </span>
+            <Icon class="icon-archive" size="70" type="ios-paper-outline" />
             <span class="resource-button-content">{{archivebutton}}</span>
         </a>
 <!--        <a class="button resource-button peptidome" @click="goToPeptidome">-->
@@ -56,11 +52,7 @@
 <!--            <span class="resource-button-content">{{peptidomebutton}}</span>-->
 <!--        </a>-->
       <a class="button resource-button" @click="goToSpectraArchive">
-            <span>
-            <svg class="icon-spectraarchive" aria-hidden="true">
-                <use xlink:href="#icon-data"></use>
-            </svg>
-            </span>
+            <Icon class="icon-archive" size="110" type="ios-list" />
             <span class="resource-button-content">{{spectraarchivebutton}}</span>
         </a>
     </div>
@@ -323,9 +315,11 @@
         background:#fbfdff;
     }
     .resource-button{
-        padding: 30px 105px 30px 105px;
+        position: relative;
+        padding: 0px 105px 30px 105px;
         font-size: 18px;
         width: 80%;
+        height: 180px;
         /*padding: 20px 85px;
         font-size: 24px;*/
         font-weight: 700;
@@ -386,11 +380,11 @@
         padding: 2px 0 !important;
     }
     .icon-archive {
-       width: 4em; height: 4em;
+       /*width: 4em; height: 4em;
        vertical-align: -0.15em;
        fill: currentColor;
        overflow: hidden;
-       margin-bottom: 20px;
+       margin-bottom: 20px;*/
     }
     .icon-spectraarchive {
        width: 4em; height: 4em;
@@ -408,6 +402,8 @@
     }
     .resource-button-content{
         font-size: 20px;
+        position: absolute;
+        bottom: 30px;
     }
     @media (min-width: 768px) {
         .resource-container{
