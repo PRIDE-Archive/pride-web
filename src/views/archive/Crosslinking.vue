@@ -28,6 +28,10 @@
                         <div class="summary-content-header" style="margin-top: 20px">Organism</div>
                         <p>{{organism}}</p>
                     </div>
+                    <div class="card-item-wrapper">
+                        <div class="summary-content-header" style="margin-top: 20px">Publication</div>
+                        <a style="border-bottom-style:dotted" @click="gotoPubmed(pubmed_id)">{{pubmed_id}}</a>
+                    </div>
                     <div class="card-item-wrapper protien-details">
                         <div class="summary-content-header">Protein Details</div>
                         <Input v-if ="!xiviewDataTableFoldBool" type="text" style="width: auto" v-model="preteinKeyword" placeholder="" size="small" @on-enter="queryProteinDetails">
@@ -69,6 +73,7 @@
          title: '',
          description:'',
          organism:'',
+         pubmed_id:'',
          xiviewDetailTableCol:[
               // {
               //     type: 'index',
@@ -207,6 +212,7 @@
               this.title = body.title
               this.description = body.description
               this.organism = body.organism ? body.organism : 'Null'
+              this.pubmed_id = body.pubmed_id
               this.totalProtein = body.project_sub_details.length
               // console.log('body.project_sub_details.length',body.project_sub_details.length)
               for(let i=0; i<body.project_sub_details.length; i++){
@@ -313,6 +319,9 @@
       gotoDetails(id){
           this.$router.push({name:'dataset',params:{id:id}});
       },
+      gotoPubmed(id){
+          window.open('http://europepmc.org/article/MED/' + id)
+      }
     },
     computed:{
       query:function(){
