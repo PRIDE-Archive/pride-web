@@ -12,7 +12,7 @@
                       <p slot="title" class="table-header"> 
                           <span>
                             <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            List of datasets 
+                            Crosslinking datasets
                           </span>
                           <span v-if="true" class="right">
                               <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
