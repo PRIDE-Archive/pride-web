@@ -12,7 +12,7 @@
                       <p slot="title" class="table-header"> 
                           <span>
                             <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
-                            List of datasets 
+                            Crosslinking datasets
                           </span>
                           <span v-if="true" class="right">
                               <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
@@ -40,15 +40,10 @@
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
-                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
                           Peptides per Protein
                         </span>
-                        <!-- <span v-if="true" class="right">
-                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                        </span> -->
                     </p>
-                    <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                    <Spin fix v-if="barHorizontalShow"></Spin>
                     <BarHorizontalPride></BarHorizontalPride>
                 </Card>
             </Col>
@@ -56,15 +51,10 @@
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
-                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
                           Project per Species
                         </span>
-                        <!-- <span v-if="true" class="right">
-                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                        </span> -->
                     </p>
-                    <!-- <Spin fix v-if="barHorizontalShow"></Spin> -->
+                    <Spin fix v-if="pieXiviewShow"></Spin>
                     <PieXiview></PieXiview>
                 </Card>
             </Col>
@@ -74,14 +64,10 @@
                 <Card class="card">
                     <p slot="title" class="table-header"> 
                         <span>
-                          <!-- <Icon type="md-reorder" size="14" style="margin-right: 5px"/> -->
                           Overall Statistics
                         </span>
-                        <!-- <span v-if="true" class="right">
-                            <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
-                            <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
-                        </span> -->
                     </p>
+                    <Spin fix v-if="areaPieXiviewShow"></Spin>
                     <OverlapBar></OverlapBar>
                 </Card>
             </Col>
