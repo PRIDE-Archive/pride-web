@@ -28,11 +28,11 @@
                         <div class="summary-content-header" style="margin-top: 20px">Organism</div>
                         <p>{{organism}}</p>
                     </div>
-                    <div class="card-item-wrapper">
+                    <div v-if= "pubmed_id" class="card-item-wrapper">
                         <div class="summary-content-header" style="margin-top: 20px">Publication</div>
                         <a style="border-bottom-style:dotted" @click="gotoPubmed(pubmed_id)">{{pubmed_id}}</a>
                     </div>
-                    <div class="card-item-wrapper protien-details">
+                    <div class="card-item-wrapper protien-details" style="display: flex">
                         <div class="summary-content-header">Protein Details</div>
                         <Input v-if ="!xiviewDataTableFoldBool" type="text" style="width: auto" v-model="preteinKeyword" placeholder="" size="small" @on-enter="queryProteinDetails">
                         <Button slot="append" icon="ios-search" @click="queryProteinDetails"></Button>
