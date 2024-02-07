@@ -903,7 +903,7 @@
           license:'',
           filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
           filesNumber:'',
-          visFileListApi:'https://www.ebi.ac.uk/pride/archive/xiview/visualisations',
+          visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/data/visualisations/',
           visualisationTableShow:false
       }
     },
@@ -1624,21 +1624,25 @@
       queryVisFileList(){
            this.visFileListLoading = true;
            this.$http
-            .get(this.visFileListApi + '?' +'pxid=' + this.$route.params.id)
+            .get(this.visFileListApi + this.$route.params.id)
             .then(function(res){
+              console.log('queryVisFileList',res)
                 this.visFileListLoading = false;
-                let array = []
-                if(Object.keys(res.body).length === 0)
+                if(res.body.length === 0)
                   this.visualisationTableShow = false
                 else{
+                  let array = []
                   this.visualisationTableShow = true
-                  let item = {} 
-                  item.name = res.body.filename
-                  item.type = res.body.visualisation
-                  item.view = res.body.link
-                  array.push(item) //Currently, the replay only has one obj and the reply is not a array containing one obj
+                  for(let i=0; i<res.body.length; i++){
+                    let item = {} 
+                    item.name = res.body[i].filename
+                    item.type = res.body[i].visualisation
+                    item.view = res.body[i].link
+                    array.push(item) //Currently, the replay only has one obj and the reply is not a array containing one obj
+                  }
+                  this.visFileList = array
+                  console.log('this.visFileList',this.visFileList)
                 }
-                this.visFileList = array
             },function(err){
                 this.visFileListLoading = false;
                 this.$Message.error({content:'Query Visualizations Failed', duration:3});
