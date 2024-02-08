@@ -66,7 +66,7 @@
     data(){
       return {
          queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/',
-         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/protein/search',
+         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/'+this.$route.params.id+'/proteins',
          preteinKeyword:'',
          xiviewDataTableFoldBool:false,
          accession: '',
@@ -207,7 +207,6 @@
               this.xiviewDataTableFold(false)
               this.proteinTableLoading = false
               let body = res.body[0]
-              console.log('queryXiviewDataDetails',body)
               this.accession = body.project_id
               this.title = body.title
               this.description = body.description
@@ -288,26 +287,26 @@
       queryProteinDetails(){
          // if(!this.preteinKeyword)
           // return
-          console.log(this.query)
          this.proteinTableLoading = true;
          this.xiviewDetailTableData=[]
          this.$http
           .get(this.queryProteinDetailsApi,{params: this.query})
           .then(function(res){
               this.proteinTableLoading = false
-              this.totalProtein = res.body.length
-              // console.log(res)
-              for(let i=0; i<res.body.length; i++){
+              let res_page = res.body.page
+              let res_proteins =  res.body.proteins
+              this.totalProtein = res_page.total_elements
+              for(let i=0; i<res_proteins.length; i++){
                   let item = {
-                    accession: res.body[i].protein_accession,
-                    protein_name: res.body[i].protein_name,
-                    gene_name: res.body[i].gene_name,
-                    peptides: res.body[i].number_of_peptides,
-                    crosslink: res.body[i].number_of_cross_links,
-                    pdbDisabled: !res.body[i].in_pdbe_kb, 
-                    pdb: res.body[i].link_to_pdbe ? res.body[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ res.body[i].protein_accession, //pdbe is self-defined property
-                    alphafolddbDisabled: !res.body[i].in_alpha_fold_db,
-                    alphafolddb: res.body[i].link_to_alphafolddb ? res.body[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ res.body[i].protein_accession,
+                    accession: res_proteins[i].protein_accession,
+                    protein_name: res_proteins[i].protein_name,
+                    gene_name: res_proteins[i].gene_name,
+                    peptides: res_proteins[i].number_of_peptides,
+                    crosslink: res_proteins[i].number_of_cross_links,
+                    pdbDisabled: !res_proteins[i].in_pdbe_kb, 
+                    pdb: res_proteins[i].link_to_pdbe ? res_proteins[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ res_proteins[i].protein_accession, //pdbe is self-defined property
+                    alphafolddbDisabled: !res_proteins[i].in_alpha_fold_db,
+                    alphafolddb: res_proteins[i].link_to_alphafolddb ? res_proteins[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ res_proteins[i].protein_accession,
 
                   }
                   this.xiviewDetailTableData.push(item);
@@ -328,7 +327,7 @@
           let normalQuery = {}
           normalQuery.query = this.preteinKeyword || 'all';
           normalQuery.page = this.pageProtein;
-          normalQuery.pageSize = this.pageSizeProtein;
+          normalQuery.page_size = this.pageSizeProtein;
           return normalQuery;  
         }
     },
