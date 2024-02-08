@@ -102,7 +102,7 @@
     name: 'xview',
     data(){
       return {
-          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/search',
+          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects',
           barHorizontalApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/peptide-per-protein',
           pieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects-per-species',
           areaPieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/statistics-count',
@@ -301,17 +301,19 @@
             .then(function(res){
               console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
-              this.totalXiviewData = res.body.length
-              for(let i=0; i<res.body.length; i++){
+              let res_page = res.body.page
+              let res_projects =  res.body.projects
+              this.totalXiviewData = res_page.total_elements
+              for(let i=0; i<res_projects.length; i++){
                   let item = {
-                    accession: res.body[i].project_id,
-                    title: res.body[i].title,
-                    pubmed_id: res.body[i].pubmed_id,
-                    organism: res.body[i].organism,
-                    proteins: res.body[i].number_of_proteins,
-                    peptides: res.body[i].number_of_peptides,
-                    spectra: res.body[i].number_of_spectra,
-                    link: res.body[i].xiview_url ? res.body[i].xiview_url : 'https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=' + res.body[i].project_id,
+                    accession: res_projects[i].project_id,
+                    title: res_projects[i].title,
+                    pubmed_id: res_projects[i].pubmed_id,
+                    organism: res_projects[i].organism,
+                    proteins: res_projects[i].number_of_proteins,
+                    peptides: res_projects[i].number_of_peptides,
+                    spectra: res_projects[i].number_of_spectra,
+                    link: res_projects[i].xiview_url ? res_projects[i].xiview_url : 'https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=' + res_projects[i].project_id,
                     select: i == 0? true : false //init the first item selected
                   }
                   // this.orignalXiviewTableData.push(item);//save for original data
@@ -422,7 +424,7 @@
           let normalQuery = {}
           normalQuery.query = this.xiviewDataSearchKeyword;
           normalQuery.page = this.pageXiview;
-          normalQuery.pageSize = this.pageSizeXiview;
+          normalQuery.page_size = this.pageSizeXiview;
           return normalQuery;  
         }
     },
