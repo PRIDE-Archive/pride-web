@@ -212,23 +212,27 @@
               this.description = body.description
               this.organism = body.organism ? body.organism : 'Null'
               this.pubmed_id = body.pubmed_id
-              this.totalProtein = body.project_sub_details.length
-              // console.log('body.project_sub_details.length',body.project_sub_details.length)
-              for(let i=0; i<body.project_sub_details.length; i++){
-                  let item = {
-                    accession: body.project_sub_details[i].protein_accession,
-                    protein_name: body.project_sub_details[i].protein_name,
-                    gene_name: body.project_sub_details[i].gene_name,
-                    peptides: body.project_sub_details[i].number_of_peptides,
-                    crosslink: body.project_sub_details[i].number_of_cross_links,
-                    pdbDisabled: !body.project_sub_details[i].in_pdbe_kb, 
-                    pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession, //pdbe is self-defined property
-                    alphafolddbDisabled: !body.project_sub_details[i].in_alpha_fold_db,
-                    alphafolddb: body.project_sub_details[i].link_to_alphafolddb ? body.project_sub_details[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ body.project_sub_details[i].protein_accession,
 
-                  }
-                  this.xiviewDetailTableData.push(item);
-              }
+              this.queryProteinDetails()
+
+              // this.totalProtein = body.project_sub_details.length
+              // console.log('queryXiviewDataDetails',body)
+              // console.log('body.project_sub_details.length',body.project_sub_details.length)
+              // for(let i=0; i<body.project_sub_details.length; i++){
+              //     let item = {
+              //       accession: body.project_sub_details[i].protein_accession,
+              //       protein_name: body.project_sub_details[i].protein_name,
+              //       gene_name: body.project_sub_details[i].gene_name,
+              //       peptides: body.project_sub_details[i].number_of_peptides,
+              //       crosslink: body.project_sub_details[i].number_of_cross_links,
+              //       pdbDisabled: !body.project_sub_details[i].in_pdbe_kb, 
+              //       pdb: body.project_sub_details[i].link_to_pdbe ? body.project_sub_details[i].link_to_pdbe : ' https://www.ebi.ac.uk/pdbe/pdbe-kb/proteins/'+ body.project_sub_details[i].protein_accession, //pdbe is self-defined property
+              //       alphafolddbDisabled: !body.project_sub_details[i].in_alpha_fold_db,
+              //       alphafolddb: body.project_sub_details[i].link_to_alphafolddb ? body.project_sub_details[i].link_to_alphafolddb : 'https://alphafold.ebi.ac.uk/entry/'+ body.project_sub_details[i].protein_accession,
+
+              //     }
+              //     this.xiviewDetailTableData.push(item);
+              // }
             },function(err){
                this.proteinTableLoading = false
                this.xiviewDataTableFold(true)
