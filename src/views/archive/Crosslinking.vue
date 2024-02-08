@@ -253,11 +253,11 @@
           } 
       },
       proteinPageChange(page){
-          this.pageXiview = page;
+          this.pageProtein = page; 
           this.queryProteinDetails()
       },  
       proteinPageSizeChange(size){
-          this.pageSizeXiview = size;
+          this.pageSizeProtein = size;
           this.queryProteinDetails()
       },
       initXiviewDataTable(){
@@ -330,7 +330,7 @@
       query:function(){
           let normalQuery = {}
           normalQuery.query = this.preteinKeyword || 'all';
-          normalQuery.page = this.pageProtein;
+          normalQuery.page = this.pageProtein; 
           normalQuery.page_size = this.pageSizeProtein;
           return normalQuery;  
         }
