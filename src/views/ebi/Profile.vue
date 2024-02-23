@@ -200,31 +200,36 @@
             </div>
             <div v-if="activeName == 'new_submission' && profileData.userAuthorities =='SUBMITTER'" class="content-wrapper">
               <div v-if="pendingSubmissions.length>0">
-                <Card class="profile">
-                  You have some pending submissions. <br/> <br/>
-                  You should have received an email from <i>'pride-support@ebi.ac.uk'</i> about the data upload instructions (check SPAM/JUNK folders as well).
-                  Alternatively, you can check <a href="../markdownpage/globus"> this help page.</a>
-                  <br/><br/>
-                  Name of the Globus shared folder is same as the submission reference and following are the references of your pending submissions:
-                  <br/>
-                  <template v-for="ref in pendingSubmissions">
-                    <b><span>{{ ref }}</span> <br/></b>
-                  </template>
-                  <br/>
-                  Once you are done with uploading all the files, select the appropriate submission reference and click the button.
-                  <br/>
-                  <Form class="signUpForm">
-                    <FormItem label="Select the submission reference:">
-                      <Select v-model="newSubmission.finishedSubmissionReference">
-                          <Option v-for="item in pendingSubmissions" :value="item">{{item}}</Option>
-                      </Select>
-                    </FormItem>
-                    <FormItem>
-                      <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="showFinishedUploadFilesModal">Finished uploading files</Button>
-                      <p class="label-warning">Click this button only if you are sure that all the files have been uploaded. You can confirm this by checking the <a href="https://app.globus.org/activity"> activity log in the Globus web</a><br/></p>
-                    </FormItem>
-                  </Form>
-                </Card>
+                <div v-if="newSubmissionRequestProcessing" class="demo-spin-container">
+                  <Spin size="large" fix></Spin>
+                </div>
+                <div v-else>
+                  <Card class="profile">
+                    You have some pending submissions. <br/> <br/>
+                    You should have received an email from <i>'pride-support@ebi.ac.uk'</i> about the data upload instructions (check SPAM/JUNK folders as well).
+                    Alternatively, you can check <a href="../markdownpage/globus"> this help page.</a>
+                    <br/><br/>
+                    Name of the Globus shared folder is same as the submission reference and following are the references of your pending submissions:
+                    <br/>
+                    <template v-for="ref in pendingSubmissions">
+                      <b><span>{{ ref }}</span> <br/></b>
+                    </template>
+                    <br/>
+                    Once you are done with uploading all the files, select the appropriate submission reference and click the button.
+                    <br/>
+                    <Form class="signUpForm">
+                      <FormItem label="Select the submission reference:">
+                        <Select v-model="newSubmission.finishedSubmissionReference">
+                            <Option v-for="item in pendingSubmissions" :value="item">{{item}}</Option>
+                        </Select>
+                      </FormItem>
+                      <FormItem>
+                        <Button v-if="!newSubmissionRequestProcessing" class="signupButton" type="primary" @click="showFinishedUploadFilesModal">Finished uploading files</Button>
+                        <p class="label-warning">Click this button only if you are sure that all the files have been uploaded. You can confirm this by checking the <a href="https://app.globus.org/activity"> activity log in the Globus web</a><br/></p>
+                      </FormItem>
+                    </Form>
+                  </Card>
+                </div>
               </div>
               <div v-else>
                 <div v-if="newSubmissionRequestProcessing" class="demo-spin-container">
