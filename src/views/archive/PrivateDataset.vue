@@ -223,6 +223,12 @@
                     <Card class="card">
                        <p slot="title" class="project-file-title-container">
                         <span> <i class="fas fa-download icon-tag"></i>Project Files</span>
+                        <span class="sort-wrapper">
+                            <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchFile">
+                                <Button slot="append" icon="ios-search" @click="searchFile"></Button>
+                            </Input>
+                            <!-- <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button> -->
+                        </span>
                         <!-- <span class="sort-wrapper">
                             <span style="margin-left: 10px">Sort by: </span>
                             <div class="sortOption">
@@ -614,7 +620,7 @@
               },
               {
                   title: 'Size (M)',
-                  width: 80,
+                  width: 85,
                   key: 'size',
                   sortable: true,
                   align:'center'
@@ -962,7 +968,9 @@
              ]
           },
           clickTransfer:false,
-          emailInput:false
+          emailInput:false,
+          fileName:'',
+          // projectFileSortCondition:'fileName',
       }
     },
     beforeRouteUpdate:function (to, from, next) {
@@ -1288,6 +1296,7 @@
       downloadPageChange(page){
           this.pageDownLoad = page;
           let query = {
+            serach: this.fileName,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
@@ -1296,6 +1305,7 @@
       downloadPageSizeChange(size){
           this.pageSizeDownLoad = size;
           let query = {
+            serach: this.fileName,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
@@ -1305,6 +1315,7 @@
           this.pageDownLoadSort = type
         //this.$Message.error({content:'Coming soon', duration:1});
         let query = {
+            serach: this.fileName,
             sortConditions: this.pageDownLoadSort,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
@@ -1432,6 +1443,16 @@
         console.log('modalClose')
         this.resetState()
       },
+      searchFile(){
+        let query = {
+            // sortConditions: this.projectFileSortCondition,
+            // sortDirection: this.projectFileSortDirection,
+            search: this.fileName,
+            page: 0,
+            pageSize :this.pageSizeDownLoad,
+        }
+        this.queryArchiveProjectFiles(query)
+      },
       // testCancel(){
       //   console.log('close')
       // },
@@ -1453,13 +1474,9 @@
         //console.log('initAspera',initAspera)
     },
     computed:{//TODO for queryAssayApi
-      query:function(){
-          let page='page='+this.page+'&';
-          let size='size='+this.size;
-          return '?'+sequence+project+mod+page+size;
-      },
       queryDownload:function(){
           let normalQuery = {}
+          normalQuery.search = '';
           normalQuery.page = this.pageDownLoad -1;
           normalQuery.pageSize = this.pageSizeDownLoad;
           return normalQuery;
@@ -1556,15 +1573,14 @@
     margin-bottom: 3px;
   }
   .download-button{
-    padding: 6px 8px;
+    padding: 0;
     font-size: 12px;
-    margin-top: 10px;
     font-weight: 700;
     background-color: #5bc0be;
     border-radius: 3px;
     color: #f8f8f8;
-    border-bottom-style:none;
     display: inline-block;
+    padding: 2px 0px;
   }
   .download-button:hover{
     opacity: .8;
@@ -1683,6 +1699,7 @@
   .project-file-title-container{
     display: flex;
     justify-content: space-between;
+    height: 30px;
   }
   .sortOption{
     display: flex;
@@ -1776,7 +1793,9 @@
   }
   .sortOption .ivu-select-selection .ivu-select-selected-value{
     font-weight: normal !important;
-
+  }
+  .download-button span{
+    margin: 0 10px;
   }
   .sortOption .ivu-select-dropdown{
     width:120px!important;
