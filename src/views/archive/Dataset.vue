@@ -1372,7 +1372,7 @@
         let query = {
             sortConditions: this.projectFileSortCondition,
             sortDirection: this.projectFileSortDirection,
-            page:this.pageDownLoad-1,
+            page: 0,//this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
         if(this.fileName)
