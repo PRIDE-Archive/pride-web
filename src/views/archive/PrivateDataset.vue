@@ -1296,7 +1296,7 @@
       downloadPageChange(page){
           this.pageDownLoad = page;
           let query = {
-            serach: this.fileName,
+            search: this.fileName,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
@@ -1305,7 +1305,7 @@
       downloadPageSizeChange(size){
           this.pageSizeDownLoad = size;
           let query = {
-            serach: this.fileName,
+            search: this.fileName,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
@@ -1315,7 +1315,7 @@
           this.pageDownLoadSort = type
         //this.$Message.error({content:'Coming soon', duration:1});
         let query = {
-            serach: this.fileName,
+            search: this.fileName,
             sortConditions: this.pageDownLoadSort,
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
