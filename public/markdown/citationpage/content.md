@@ -18,9 +18,9 @@ If you have further queries please consult our Help FAQ or please contact us at 
 
 - To provide mass spectrometry based expression data to the Expression Atlas. 
 
-## PRIDE data policy 
+## PRIDE data policy and data preservation policy 
 
-PRIDE data policy can be read [here](./datapolicy) 
+PRIDE data policy can be read [here](./datapolicy). For information about the long-term data preservation policy for all EMBL-EBI resources please go [here](https://www.ebi.ac.uk/long-term-data-preservation). 
 
 ## How to cite PRIDE Resources
 
