@@ -58,8 +58,8 @@ If it is not present in a submission tool drop down, select ‘other’ and it w
 ### How to update proxy settings in submission tool
 
 The proxy settings for the submission tool can be changed or updated in config.properties file present in the px-submission-tool folder.
-Please update the below lines to relevant proxy host and port details uncomment the line by removing the # ,save the file and restart the submission tool. 
+Please update the below lines to relevant proxy host and port details, uncomment the line by removing the #, save the file and restart the submission tool. 
    ``` 
     #  px.proxy.host = localhost
     #  px.proxy.port = 8080
- ```
+    ```
