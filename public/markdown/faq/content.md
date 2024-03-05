@@ -54,3 +54,12 @@ Once you start uploading your data with submission tool, it automatically will g
 ### Submission tool is not listing the metadata I want for my dataset
 
 If it is not present in a submission tool drop down, select ‘other’ and it will connect you to ontology GUI where you can search for your metadata. 
+
+### How to update proxy settings in submission tool
+
+The proxy settings for the submission tool can be changed or updated in config.properties file present in the px-submission-tool folder.
+Please update the below lines to relevant proxy host and port details uncomment the line by removing the # ,save the file and restart the submission tool. 
+   ``` 
+    #  px.proxy.host = localhost
+    #  px.proxy.port = 8080
+ ```
