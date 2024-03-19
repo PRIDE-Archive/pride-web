@@ -25,7 +25,7 @@ const Forgotpassword = resolve => require(['@/views/ebi/ForgotPassword'], resolv
 const Resetpassword = resolve => require(['@/views/ebi/ResetPassword'], resolve);
 const Xiview = resolve => require(['@/views/archive/Xiview'], resolve);
 const Crosslinking = resolve => require(['@/views/archive/Crosslinking'], resolve);
-
+const Relevant = resolve => require(['@/views/ebi/Relevant'], resolve);
 
 Vue.use(Router)
 
@@ -60,6 +60,11 @@ export default new Router({
       path: '/archive',
       name: 'archive',
       component: Archive
+    },
+    {
+      path: '/relevant',
+      name: 'relevant',
+      component: Relevant
     },
     {
       path:'/archive/projects/:id',
