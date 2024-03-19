@@ -6,7 +6,7 @@
     </div>
     <transition name="popup-fade">
       <div class="popup-chat" v-if="isPopup">
-        <iframe src="http://192.168.1.5:8080/popup?type=search" style="width: 100%;height: 100%; " frameborder="0"
+        <iframe src="https://www.ebi.ac.uk/pride/chatbot/popup?type=search" style="width: 100%;height: 100%; " frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
         <!-- <button class="close-button" @click="togglePopup">X</button> -->
       </div>
