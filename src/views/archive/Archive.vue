@@ -175,6 +175,7 @@
               </Card>
           </Row>
       </div>
+      <chat-popup></chat-popup>
   </div>
 </template>
 
@@ -182,6 +183,7 @@
   import NavBar from '@/components/Nav'
   import store from "@/store.js"
   import svgLogo from "@/components/svg/archive"
+  import ChatPopup from '@/components/ChatPopup.vue';
   var paramsFromLandingPage='';
   export default {
     name: 'archive',
@@ -280,7 +282,8 @@
     },
     components: {
       NavBar,
-      svgLogo
+      svgLogo,
+      ChatPopup
     },
     methods:{
       searchInputChange (query, splitBool) {
@@ -1421,4 +1424,4 @@
       font-size: 12px;
       top: 0;
     }
-</style>
+</style>../../components/ChatPopup.vue
