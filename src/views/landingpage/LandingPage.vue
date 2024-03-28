@@ -5,6 +5,7 @@
       <div class="panel statistics"><Statistics/></div>
       <div class="panel tools"><Tools/></div>
       <div class="panel news"><News/></div>
+      <chat-popup></chat-popup>
   </div>
 </template>
 
@@ -14,6 +15,7 @@
   import Statistics from '@/components/landingpage/Statistics'
   import Tools from '@/components/landingpage/Tools'
   import News from '@/components/landingpage/News'
+  import ChatPopup from '@/components/ChatPopup.vue';
   export default {
     name: 'landingpage',
     data(){
@@ -29,7 +31,8 @@
       Resource,
       Statistics,
       Tools,
-      News
+      News,
+      ChatPopup
     },
     mounted: function(){
         

@@ -6,7 +6,7 @@
     </div>
     <transition name="popup-fade">
       <div class="popup-chat" v-if="isPopup">
-        <iframe src="https://www.ebi.ac.uk/pride/chatbot/popup?type=search" style="width: 100%;height: 100%; " frameborder="0"
+        <iframe :src="iframeSrc+iframeType" style="width: 100%;height: 100%; " frameborder="0"
           allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"></iframe>
         <!-- <button class="close-button" @click="togglePopup">X</button> -->
       </div>
@@ -19,6 +19,15 @@ export default {
   data() {
     return {
       isPopup: false,
+      iframeSrc: process.env.NODE_ENV === 'development' ? 'http://192.168.1.5:8080/popup?type=' : 'https://www.ebi.ac.uk/pride/chatbot/popup?type=',
+      iframeType: this.type, 
+    }
+  },
+  props: {
+    // 添加 type prop
+    type: {
+      type: String,
+      default: 'assistant', // assistant or search
     }
   },
   components: {
@@ -31,7 +40,7 @@ export default {
 
   },
   mounted: function () {
-    console.log("puop mounted");
+    // console.log("puop mounted, iframeSrc: ", this.iframeSrc);
     window.onmessage = (e) => {
       console.log(e.data);
       if (e.data.type === "relevant") {
@@ -144,4 +153,3 @@ export default {
   transform: translateY(20px);
 }
 </style>
-<style></style>

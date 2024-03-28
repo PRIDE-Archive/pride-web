@@ -175,7 +175,7 @@
               </Card>
           </Row>
       </div>
-      <chat-popup></chat-popup>
+      <chat-popup type="search"></chat-popup>
   </div>
 </template>
 
