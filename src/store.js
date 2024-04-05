@@ -8,8 +8,9 @@ Vue.use(Vuex);
  * for mode management
  */
 let mode = ''
-// if(process.env.NODE_ENV == 'development')
-if(location.href.match(/wwwdev\.ebi\.ac\.uk\/pride/))
+if(process.env.NODE_ENV == 'development')
+	mode = 'dev'
+else if(location.href.match(/wwwdev\.ebi\.ac\.uk\/pride/))
 	mode = 'dev'
 else if(location.href.match(/www\.ebi\.ac\.uk\/pride/))
 	mode = 'prod'
