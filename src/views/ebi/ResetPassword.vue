@@ -6,19 +6,19 @@
             <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
             <Form class="resetPasswordForm" ref="formInlineResetPassword" :model="formInlineResetPassword" :rules="ruleInlineResetPassword">
               <FormItem prop="email" label="Email">
-                <Input type="email" v-model="formInlineResetPassword.email" placeholder="We can not valid your email currently, please make sure the email is correct.">
+                <Input type="email" v-model="formInlineResetPassword.email" placeholder="Please make sure the email is correct.">
                 </Input>
               </FormItem>
               <FormItem prop="password" label="New Password">
                 <Input type="password" v-model="formInlineResetPassword.password" placeholder="Please input new password">
                 </Input>
               </FormItem>
-              <FormItem prop="conformpassword" label="Confirm New Password">
-                <Input type="password" v-model="formInlineResetPassword.conformpassword" placeholder="Please conform your new password">
+              <FormItem prop="confirmpassword" label="Confirm New Password">
+                <Input type="password" v-model="formInlineResetPassword.confirmpassword" placeholder="Please conform your new password">
                 </Input>
               </FormItem>
-              <FormItem prop="pin" label="Pin">
-                <Input type="text" v-model="formInlineResetPassword.pin" placeholder="Pin from your email">
+              <FormItem prop="token" label="Token">
+                <Input type="text" v-model="formInlineResetPassword.token" placeholder="Token from your email">
                 </Input>
               </FormItem>
               <FormItem>
@@ -34,7 +34,7 @@
     export default {
         data () {
             const passwordRecheck = (rule, value, callback) => {
-              if(this.formInlineResetPassword.conformpassword != this.formInlineResetPassword.password){
+              if(this.formInlineResetPassword.confirmpassword != this.formInlineResetPassword.password){
                 console.log(222)
                 return callback(new Error('Password not the same.'));
               }
@@ -46,8 +46,8 @@
                 formInlineResetPassword:{
                   email:'',
                   password:'',
-                  conformpassword:'',
-                  pin:''
+                  confirmpassword:'',
+                  token:''
                 },
                 ruleInlineResetPassword:{
                   email: [
@@ -56,11 +56,11 @@
                   password: [
                     { required: true, message: 'Please input password', trigger: 'on-change' },
                   ],
-                  conformpassword: [
+                  confirmpassword: [
                     { required: true, validator: passwordRecheck, trigger: 'on-change' },
                   ],
-                  pin: [
-                    { required: true, message: 'Please input pin', trigger: 'on-change' }
+                  token: [
+                    { required: true, message: 'Please input token', trigger: 'on-change' }
                   ],
                 },
                 confirmPasswordState:false
@@ -95,7 +95,7 @@
                       username: this.formInlineResetPassword.email,
                       password: this.formInlineResetPassword.password,
                       reference: this.$route.params.reference,
-                      pin:this.formInlineResetPassword.pin
+                      token:this.formInlineResetPassword.token
                   }
                   this.$http
                         .post(this.resetPasswordAPI,query)
