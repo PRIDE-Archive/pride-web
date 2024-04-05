@@ -21,8 +21,7 @@ docker_build:
     - docker build -t $IMAGE .
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker push $IMAGE
-  only:
-    - master
+  when: manual
 
 dev_hh_kube_deploy:
   environment: dev-hh
