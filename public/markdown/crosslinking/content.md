@@ -12,7 +12,7 @@ Crosslinking data submitted to PRIDE will receive complete submission status whe
 
 5. The accession attribute of target <DBSequence> elements  SHOULD be a [valid uniprot accession](https://www.uniprot.org/help/accession_numbers)**, if it is a natural protein that has an accession number**. That is, the value of the accession attribute for <DBSequence> elements should match the regular expression: [OPQ][0-9][A-Z0-9]{3}[0-9]|[A-NR-Z][0-9]([A-Z][A-Z0-9]{2}[0-9]){1,2}
 
-6. Every **&lt;**DBSequence**&gt;** element that describes a target protein MUST include the protein sequence in a **&lt;**Seq**&gt;** subelement.
+6. Every **&lt;**DBSequence**&gt;** element that describes a target protein MUST include the protein sequence in a **&lt;**Seq**&gt;** subelement. This is the protein sequence in the protein database used to perform the analysis.
 
 ## Limitations of Support
 
