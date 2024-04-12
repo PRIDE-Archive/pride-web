@@ -29,7 +29,7 @@ export default new Vuex.Store({
 	state:{
 		baseURL: (mode == 'prod' || mode == 'prodev') ?'/pride':'',
 		baseApiURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
-		basePrivateURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/private/ws/archive/v2',
+		basePrivateURL: (mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/private/ws/archive/v2',
 		baseMoleculesApiURL:'https://www.ebi.ac.uk/pride/molecules/ws',
 		username: '',
 		token:'',
