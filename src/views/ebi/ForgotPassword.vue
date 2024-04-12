@@ -62,11 +62,11 @@
                   this.$http
                         .post(this.forgotPasswordApi, this.formInlineSendEmail.email)
                         .then(function(res){
-                              this.$Message.success({ content: res, duration:15, closable: true})
+                              this.$Message.success({ content: res.bodyText, duration:15, closable: true})
                               this.$Spin.hide()
                         }).catch(err=>{
                           this.$Spin.hide()
-                          this.$Message.error({ content: err});
+                          this.$Message.error({ content: err.bodyText});
                         });
               })
            },
