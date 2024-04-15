@@ -92,7 +92,7 @@
                   });
                   let query = {};
                   query.ResetPassword = {
-                      username: this.formInlineResetPassword.email,
+                      email: this.formInlineResetPassword.email,
                       password: this.formInlineResetPassword.password,
                       reference: this.$route.params.reference,
                       token:this.formInlineResetPassword.token
@@ -106,7 +106,7 @@
                               this.$router.push({name:'login'});
                         },function(err){
                           this.$Spin.hide()
-                          this.$Message.error({ content: err.body.message, duration:7});
+                          this.$Message.error({ content: err.bodyText, duration:7});
                         });
               })
             },
