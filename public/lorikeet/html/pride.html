@@ -55,19 +55,27 @@ function receiveMessage(event)
       tempArray.push(peaksTemp[i].intensity);
       peaks.push(tempArray);
     }
-    // console.log('sequence',sequence)
-    // console.log('charge',charge)
-    // console.log('variableMods',variableMods)
-    // console.log('peaks',peaks)
-    // console.log('event.data',event.data);
-    // console.log('sequence',sequence)
-    // console.log('peaks',peaks)
+    console.log('sequence',sequence)
+    console.log('charge',charge)
+    console.log('precursorMZ',precursorMZ)
+    console.log('variableMods',variableMods)
+    console.log('nTerm',nTerm)
+    console.log('cTerm',cTerm)
+    console.log('peaks',peaks)
+    console.log('width',width)
     showData();
 }
 
 function showData(){
-    $("#lorikeet").specview({"sequence":sequence,
+    $("#lorikeet").specview({
+        "sequence":sequence,
         "charge":charge,
+        "precursorMz":precursorMZ,
+        "variableMods":variableMods,
+        "ntermMod": nTerm, // additional mass to be added to the n-term
+        "ctermMod": cTerm, // additional mass to be added to the c-term
+        "peaks":peaks,
+        "width":width,
         "peakDetect":false,
         "showMassErrorPlot":true,
         "showSequenceInfo": true,
@@ -75,13 +83,7 @@ function showData(){
         "zoomMs1": true,
         "massErrorPlotDefaultUnit":"ppm",
         "fileName":"test",
-        "precursorMz":precursorMZ,
-        "width":width,
         "height":450,
-        "variableMods":variableMods,
-        "ntermMod": nTerm, // additional mass to be added to the n-term
-		"ctermMod": cTerm, // additional mass to be added to the c-term
-        "peaks":peaks,
         "showA":[1,1,0],
         "showB":[1,1,0],
         "showC":[0,0,0],
