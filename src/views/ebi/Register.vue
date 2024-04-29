@@ -175,7 +175,7 @@
                         .post(this.signupAPI,query)
                         .then(function(res){
                               this.signUpModalBool=false;
-                              this.$Message.success({ content: 'Sign Up Success! Please Log In.', duration:10, closable: true })
+                              this.$Message.success({ content: 'Sign Up Success! Please Check your email.', duration:10, closable: true })
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
                               this.$router.push({name:'landingpage'});
@@ -183,7 +183,7 @@
                           this.$Spin.hide()
                           this.$Message.error({ 
                             top: 500, 
-                            content: err.body ? err.body[0].defaultMessage : "Error! Please email: pride-support@ebi.ac.uk", 
+                            content: err.bodyText ? err.bodyText : "Error! Please email: pride-support@ebi.ac.uk",
                             duration:10,  
                             closable: true
                           });

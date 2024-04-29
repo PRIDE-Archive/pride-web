@@ -23,8 +23,7 @@
     export default {
         data () {
             return {
-                //forgotPasswordApi:this.$store.state.basePrivateURL+'/getAAPToken',
-                forgotPasswordApi:'https://api.aai.ebi.ac.uk/reset?service=pride',
+                forgotPasswordApi: this.$store.state.basePrivateURL + '/user/forgot-password',
                 formInlineSendEmail:{
                   email:'',
                 },
@@ -61,15 +60,13 @@
                   });
                   console.log(this.tokenApi)
                   this.$http
-                        .post(this.forgotPasswordApi, {
-                                username:this.formInlineSendEmail.email,
-                                email:this.formInlineSendEmail.email
-                              }).then(function(res){
-                              this.$Message.success({ content: 'Email Sent', duration:15, closable: true})
+                        .post(this.forgotPasswordApi, this.formInlineSendEmail.email)
+                        .then(function(res){
+                              this.$Message.success({ content: res.bodyText, duration:15, closable: true})
                               this.$Spin.hide()
                         }).catch(err=>{
                           this.$Spin.hide()
-                          this.$Message.error({ content: err});
+                          this.$Message.error({ content: err.bodyText});
                         });
               })
            },
