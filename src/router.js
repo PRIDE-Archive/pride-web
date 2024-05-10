@@ -23,6 +23,8 @@ const EditProfile = resolve => require(['@/views/ebi/EditProfile'], resolve);
 const Login = resolve => require(['@/views/ebi/Login'], resolve);
 const Forgotpassword = resolve => require(['@/views/ebi/ForgotPassword'], resolve);
 const Resetpassword = resolve => require(['@/views/ebi/ResetPassword'], resolve);
+const Reviewdataset = resolve => require(['@/views/ebi/ReviewDataset'], resolve);
+const PrivateReviewDataset = resolve => require(['@/views/archive/PrivateReviewDataset'], resolve);
 const Xiview = resolve => require(['@/views/archive/Xiview'], resolve);
 const Crosslinking = resolve => require(['@/views/archive/Crosslinking'], resolve);
 const Relevant = resolve => require(['@/views/ebi/Relevant'], resolve);
@@ -80,6 +82,11 @@ export default new Router({
       path:'/archive/projects/:id/private',
       name: 'privatedataset',
       component: PrivateDataset
+    },
+    {
+      path:'/archive/projects/:id/privatereviewdataset',
+      name: 'privatereviewdataset',
+      component: PrivateReviewDataset
     },
     {
       path:'/archive/projects/:id/edit',
@@ -193,6 +200,11 @@ export default new Router({
       path:'/resetpassword/:reference',
       name: 'resetpassword',
       component: Resetpassword,
+    },
+    {
+      path:'/review-dataset/:reference',
+      name: 'reviewdataset',
+      component: Reviewdataset,
     },
     {
       path:'/archive/crosslinking',
