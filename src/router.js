@@ -84,11 +84,6 @@ export default new Router({
       component: PrivateDataset
     },
     {
-      path:'/archive/projects/:id/privatereviewdataset',
-      name: 'privatereviewdataset',
-      component: PrivateReviewDataset
-    },
-    {
       path:'/archive/projects/:id/edit',
       name: 'editdataset',
       component: EditDataset
@@ -200,6 +195,11 @@ export default new Router({
       path:'/resetpassword/:reference',
       name: 'resetpassword',
       component: Resetpassword,
+    },
+    {
+      path:'/archive/projects/:id/privatereviewdataset',
+      name: 'privatereviewdataset',
+      component: PrivateReviewDataset
     },
     {
       path:'/review-dataset/:reference',
