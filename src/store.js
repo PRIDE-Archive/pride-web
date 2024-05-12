@@ -22,12 +22,13 @@ if(mode == 'dev'){
 }
 if(mode == 'prod'){
 	console.log('mode is prod')
+	console.log('2024-1')
 }
 
 
 export default new Vuex.Store({
 	state:{
-		baseURL: (mode == 'prod') ?'/pride':'',
+		baseURL: mode == 'prod' ? '/pride' : '',
 		baseApiURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		basePrivateURL: (mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/private/ws/archive/v2',
 		baseMoleculesApiURL:'https://www.ebi.ac.uk/pride/molecules/ws',
