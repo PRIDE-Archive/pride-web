@@ -48,6 +48,8 @@ Vue.use(ReadMore);
 Vue.component('chart', ECharts)
 Vue.use(VueMeta)
 
+console.log('2024-111111')
+
 const bus = new Vue();
 Object.defineProperty(Vue.prototype, '$bus', { get(){return this.$root.bus} });
 
