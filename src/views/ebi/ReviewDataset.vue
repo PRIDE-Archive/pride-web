@@ -5,8 +5,8 @@
             <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Review Dataset</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
             <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
             <Form class="reviewDatasetForm" ref="formInlineReviewDataset" :model="formInlineReviewDataset" :rules="ruleInlineReviewDataset">
-              <FormItem prop="accession" label="Accession">
-                <Input type="text" v-model="formInlineReviewDataset.accession" placeholder="Token from your email">
+              <FormItem prop="accession" label="Project Accession">
+                <Input type="text" v-model="formInlineReviewDataset.accession" placeholder="Project accession (PXD.... etc.,)">
                 </Input>
               </FormItem>
               <FormItem prop="token" label="Token">
