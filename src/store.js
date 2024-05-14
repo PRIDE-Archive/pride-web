@@ -28,7 +28,7 @@ if(mode == 'prod'){
 
 export default new Vuex.Store({
 	state:{
-		baseURL: mode == 'prod' ? '/pride' : '',
+		baseURL: mode == 'prod' ? '/pride' : '', // this URL is only for the static files path like txt, png, md, jpg etc. Not for the request API
 		baseApiURL: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v2',
 		basePrivateURL: (mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/private/ws/archive/v2',
 		baseMoleculesApiURL:'https://www.ebi.ac.uk/pride/molecules/ws',
