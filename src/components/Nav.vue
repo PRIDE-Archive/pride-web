@@ -425,7 +425,7 @@
     .sub-nav-ebi .ivu-dropdown-menu .ivu-dropdown{
       border-bottom: 1px solid #e7e7e7 !important;
     }
-    .banner{
+    .banner p{
       color:#454548 !important;
       font-size: 16px; 
     }
