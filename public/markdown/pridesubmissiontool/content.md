@@ -8,6 +8,12 @@ PRIDE Submission Tool is a Java based application and requires Java 8 or higher 
 
     java -jar px-submission-tool-{version}.jar
 
+If you are using MacOS, you may need to change the privacy and security settings as below:
+
+</br>
+
+![PRIDE Submission Tool panel](../markdown/pridesubmissiontool/files/macos-security.png)
+
 Below are the steps for using the PRIDE submission tool or PX tool
 
 ## Login Panel
