@@ -1,28 +1,114 @@
 <template>
     <div class="submit-data-container">
         <div class="panel nav"><NavBar page="landingpage"/></div>
-        <div class="content-container">
-            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
-            <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
-            <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
-              <FormItem prop="user">
-                <Input type="text" v-model="formInline.accession" placeholder="Project Accession">
-                <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
-                </Input>
-              </FormItem>
-              <FormItem prop="password">
-                <Input :type="passwordType" v-model="formInline.token" placeholder="Reviewer Token">
-                <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
-                </Input>
-              </FormItem>
-              <div class="login-action">
-                <Checkbox @on-change="passwordTypeChange">Show Token</Checkbox>
+
+
+        <div class="container">
+              <div class="content-container">
+                  <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Log In</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
+                  <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+                    <FormItem prop="user">
+                      <Input type="text" v-model="formInline.user" placeholder="Email">
+                      <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                      <Input :type="passwordType" v-model="formInline.password" placeholder="Password">
+                      <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <div class="login-action">
+                      <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
+                      <a @click="forgotPassword">Forgot Password</a>
+                      <!-- <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a> -->
+                    </div>
+                    <FormItem>
+                      <Button type="primary" @click="login('formInline')" long>Log in</Button>
+                    </FormItem>
+                  </Form>
               </div>
-              <FormItem>
-                <Button type="primary" @click="login('formInline')" long>Log in</Button>
-              </FormItem>
-            </Form>
+              <div class="divider"></div>
+              <div class="content-container">
+                  <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
+                  <Form class="form" ref="formInline" :model="token_formInline" :rules="token_ruleInline">
+                    <FormItem prop="user">
+                      <Input type="text" v-model="token_formInline.accession" placeholder="Project Accession">
+                      <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                      <Input :type="token_passwordType" v-model="token_formInline.token" placeholder="Reviewer Token">
+                      <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <div class="login-action">
+                      <Checkbox @on-change="token_passwordTypeChange">Show Token</Checkbox>
+                    </div>
+                    <FormItem>
+                      <Button type="primary" @click="token_login('token_formInline')" long>Log in</Button>
+                    </FormItem>
+                  </Form>
+              </div>
         </div>
+        <!-- <Row>
+          <Col :xs="24" :sm="24" :md="24" :lg="11">
+              <div class="content-container">
+                  <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Log In</h2></div>
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
+                  <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+                    <FormItem prop="user">
+                      <Input type="text" v-model="formInline.user" placeholder="Email">
+                      <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                      <Input :type="passwordType" v-model="formInline.password" placeholder="Password">
+                      <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <div class="login-action">
+                      <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
+                      <a @click="forgotPassword">Forgot Password</a>
+
+                    </div>
+                    <FormItem>
+                      <Button type="primary" @click="login('formInline')" long>Log in</Button>
+                    </FormItem>
+                  </Form>
+              </div>
+          </Col>
+          <Col :xs="0" :sm="0" :md="0" :lg="2">
+              <div class="divider"></div>
+          </Col>
+          <Col :xs="24" :sm="24" :md="24" :lg="11">
+              <div class="content-container">
+                  <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2></div>
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
+                  <Form class="form" ref="formInline" :model="token_formInline" :rules="token_ruleInline">
+                    <FormItem prop="user">
+                      <Input type="text" v-model="token_formInline.accession" placeholder="Project Accession">
+                      <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <FormItem prop="password">
+                      <Input :type="token_passwordType" v-model="token_formInline.token" placeholder="Reviewer Token">
+                      <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
+                      </Input>
+                    </FormItem>
+                    <div class="login-action">
+                      <Checkbox @on-change="token_passwordTypeChange">Show Token</Checkbox>
+                    </div>
+                    <FormItem>
+                      <Button type="primary" @click="token_login('token_formInline')" long>Log in</Button>
+                    </FormItem>
+                  </Form>
+              </div>
+          </Col>
+        </Row> -->
+       
+        
     </div>
 </template>
 <script>
@@ -31,14 +117,32 @@
     export default {
         data () {
             return {
-                // tokenApi:this.$store.state.basePrivateURL+'/login',
-                loginApi: this.$store.state.basePrivateURL+'/reviewer_token_login',
+                // username password login
+                tokenApi:this.$store.state.basePrivateURL+'/login',
                 passwordType:'password',
                 formInline: {
+                  user: '',
+                  password: ''
+                },
+                ruleInline: {
+                  user: [
+                    { required: true, message: 'Please input username', trigger: 'blur' }
+                  ],
+                  password: [
+                    { required: true, message: 'Please input password', trigger: 'blur' },
+                    // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
+                  ]
+                },
+
+
+                // token login
+                loginApi: this.$store.state.basePrivateURL+'/reviewer_token_login',
+                token_passwordType:'password',
+                token_formInline: {
                   accession: '',
                   token: ''
                 },
-                ruleInline: {
+                token_ruleInline: {
                   accession: [
                     { required: true, message: 'Please input project accession', trigger: 'blur' }
                   ],
@@ -53,7 +157,63 @@
             NavBar,
         },
         methods:{
-           login(name) {
+            // username password login
+            login(name) {
+              this.$refs[name].validate((valid) => {
+                  if (!valid) {
+                    this.$Message.error({ content: 'Format Invalid' });
+                    return
+                  }
+                  this.$Spin.show({
+                    render: (h) => {
+                      return h('div', [
+                        h('Icon', {
+                          'class': 'demo-spin-icon-load',
+                          props: {
+                            type: 'ios-loading',
+                            size: 18
+                          }
+                        }),
+                        h('div', 'Loading')
+                      ])
+                    }
+                  });
+                  console.log(this.tokenApi)
+                  this.$http
+                        //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
+                        .post(this.tokenApi,
+                            {Credentials:
+                              {
+                                username:this.formInline.user.trim(),
+                                password:this.formInline.password.trim()
+                              }
+                            })
+                        .then(function(res){
+                              this.loginModalBool=false;
+                              localStorage.setItem('username',this.formInline.user);
+                              localStorage.setItem('token',res.bodyText);
+                              //this.username = this.formInline.user;
+                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+                              
+                              this.$Spin.hide()
+                              this.$refs[name].resetFields();
+                              if(localStorage.getItem('privateusi')){
+                                this.$Message.success({ content: 'Login Success and we are doing the USI search for you!' , duration:3})
+                                this.$router.push({ name: 'usi', query: {usi: localStorage.getItem('privateusi'), resultType: 'FULL'}});
+                              }
+                              else{
+                                this.$Message.success({ content: 'Login Success' })
+                                this.gotoProfile();
+                              }
+                        }).catch(err=>{
+                          console.log(err);
+                          this.$Spin.hide()
+                          this.$Message.error({ content: 'Invalid Username or Password'});
+                        });
+              })
+            },
+            // token login
+            token_login(name) {
               this.$refs[name].validate((valid) => {
                   if (!valid) {
                     this.$Message.error({ content: 'Format Invalid' });
@@ -83,50 +243,63 @@
                               }
                             })
                         .then(function(res){
-                          console.log('res',res)
-                          console.log('this.formInline.accession',this.formInline.accession)
-                          console.log('res.bodyText',res.bodyText)
                               this.loginModalBool=false;
                               localStorage.setItem('username',this.formInline.accession.trim());
                               localStorage.setItem('token',res.bodyText);
-
-                              console.log('localStorage username', localStorage.getItem('username'));
-                              console.log('localStorage token', localStorage.getItem('token'));
-
 
                               //this.username = this.formInline.accession;
                               this.$store.commit('setUser',{username: this.formInline.accession, token:res.bodyText});
                               
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
-                              if(localStorage.getItem('privateusi')){
-                                this.$Message.success({ content: 'Login Success and we are doing the USI search for you!' , duration:3})
-                                this.$router.push({ name: 'usi', query: {usi: localStorage.getItem('privateusi'), resultType: 'FULL'}});
-                              }
-                              else{
-                                this.$Message.success({ content: 'Login Success' })
-                                this.gotoProfile();
-                              }
+                             
+                              this.$Message.success({ content: 'Login Success' })
+                              // this.gotoProfile();
+                              this.gotoReviewDataset(this.formInline.accession,res.bodyText)
+                            
                         }).catch(err=>{
                           console.log(err);
                           this.$Spin.hide()
-                          this.$Message.error({ content: 'Invalid Username or Password'});
+                          this.$Message.error({ content: 'Invalid Accession or Token'});
                         });
               })
-           },
-           passwordTypeChange(type){
+            },
+            // username password login
+            passwordTypeChange(type){
               if(type)
                 this.passwordType="text";
               else
                 this.passwordType="password"
               //console.log(type)
             },
+            token_passwordTypeChange(type){
+              if(type)
+                this.token_passwordType="text";
+              else
+                this.token_passwordType="password"
+              //console.log(type)
+            },
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
             },
-            // forgotPassword(){
-            //     this.$router.push({ name: 'forgotpassword'});
-            // },
+            gotoReviewDataset(accession,token){
+              let query = {}
+              query.ReviewerAccess = {
+                  accession:accession,
+                  token:token
+              }
+              localStorage.setItem('reviewdataset',JSON.stringify(query)); // this is specificall used for reveiew dataset page
+              //set timer for reviewdataset
+              let timer = {
+                time:Date.now(),
+                expire:30*60*1000
+              }
+              localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
+              this.$router.push({ name: 'privatereviewdataset', params: {id: this.$store.state.username.split('@')[0] }});
+            },
+            forgotPassword(){
+                this.$router.push({ name: 'forgotpassword'});
+            },
         },
         mounted:function(){
              this.$refs['formInline'].resetFields();
@@ -145,9 +318,16 @@
     }
 </script>
 <style scoped>
+    .container{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
     .content-container{
         margin: 0 auto;
         padding: 150px 125px;
+        flex: 1;
+        box-sizing: border-box;
     }
     .project-title{
       color:rgb(100, 102, 100);
@@ -170,14 +350,45 @@
     .login-action a:hover{
       color:#5bc0be;
     }
-    @media (min-width: 768px) {
+    .divider {
+      width: 1px;
+      height: 300px;
+      background-color: #ccc;
+      margin: 0 20px;
+    }
+
+    @media (max-width: 991px) {
         .content-container{
-            width: 750px;
+            width: 100%;
+            padding: 50px 50px;
+        }
+        .container{
+          display: block;
+        }
+        .divider {
+          /*width: 80%;
+          height: 1px;
+          background-color: #ccc;
+          margin: 0 20px;*/
+          display: none;
         }
     }
     @media (min-width: 992px) {
         .content-container{
-            width: 870px;
+            width: 800px;
+            padding: 150px 30px;
+        }
+    }
+    @media (min-width: 1200px) {
+        .content-container{
+            width: 850px;
+            padding: 150px 30px;
+        }
+    }
+    @media (min-width: 1400px) {
+        .content-container{
+            width: 850px;
+            padding: 150px 80px;
         }
     }
 </style>
