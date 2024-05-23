@@ -2,23 +2,21 @@
     <div class="submit-data-container">
         <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="content-container">
-            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Log In</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
+            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
             <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
             <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
               <FormItem prop="user">
-                <Input type="text" v-model="formInline.user" placeholder="Email">
+                <Input type="text" v-model="formInline.accession" placeholder="Project Accession">
                 <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
               <FormItem prop="password">
-                <Input :type="passwordType" v-model="formInline.password" placeholder="Password">
+                <Input :type="passwordType" v-model="formInline.token" placeholder="Reviewer Token">
                 <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
                 </Input>
               </FormItem>
               <div class="login-action">
-                <Checkbox @on-change="passwordTypeChange">Show Password</Checkbox>
-                <a @click="forgotPassword">Forgot Password</a>
-                <!-- <a href="mailto:pride-support@ebi.ac.uk?subject=Forgotten Password">Forgotten Password</a> -->
+                <Checkbox @on-change="passwordTypeChange">Show Token</Checkbox>
               </div>
               <FormItem>
                 <Button type="primary" @click="login('formInline')" long>Log in</Button>
@@ -33,18 +31,19 @@
     export default {
         data () {
             return {
-                tokenApi:this.$store.state.basePrivateURL+'/login',
+                // tokenApi:this.$store.state.basePrivateURL+'/login',
+                loginApi: this.$store.state.basePrivateURL+'/reviewer_token_login',
                 passwordType:'password',
                 formInline: {
-                  user: '',
-                  password: ''
+                  accession: '',
+                  token: ''
                 },
                 ruleInline: {
-                  user: [
-                    { required: true, message: 'Please input username', trigger: 'blur' }
+                  accession: [
+                    { required: true, message: 'Please input project accession', trigger: 'blur' }
                   ],
-                  password: [
-                    { required: true, message: 'Please input password', trigger: 'blur' },
+                  token: [
+                    { required: true, message: 'Please input reviewer token', trigger: 'blur' },
                     // { type: 'string', min: 5, message: 'At least 5 words', trigger: 'blur' }
                   ]
                 },
@@ -74,22 +73,29 @@
                       ])
                     }
                   });
-                  console.log(this.tokenApi)
                   this.$http
-                        //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
-                        .post(this.tokenApi,
+                        //.post(this.tokenApi + '?username='+this.formInline.accession+'&password='+this.formInline.token)
+                        .post(this.loginApi,
                             {Credentials:
                               {
-                                username:this.formInline.user.trim(),
-                                password:this.formInline.password.trim()
+                                username:this.formInline.accession.trim(),
+                                password:this.formInline.token.trim()
                               }
                             })
                         .then(function(res){
+                          console.log('res',res)
+                          console.log('this.formInline.accession',this.formInline.accession)
+                          console.log('res.bodyText',res.bodyText)
                               this.loginModalBool=false;
-                              localStorage.setItem('username',this.formInline.user);
+                              localStorage.setItem('username',this.formInline.accession.trim());
                               localStorage.setItem('token',res.bodyText);
-                              //this.username = this.formInline.user;
-                              this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
+
+                              console.log('localStorage username', localStorage.getItem('username'));
+                              console.log('localStorage token', localStorage.getItem('token'));
+
+
+                              //this.username = this.formInline.accession;
+                              this.$store.commit('setUser',{username: this.formInline.accession, token:res.bodyText});
                               
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
@@ -118,9 +124,9 @@
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
             },
-            forgotPassword(){
-                this.$router.push({ name: 'forgotpassword'});
-            },
+            // forgotPassword(){
+            //     this.$router.push({ name: 'forgotpassword'});
+            // },
         },
         mounted:function(){
              this.$refs['formInline'].resetFields();
