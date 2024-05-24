@@ -64,8 +64,8 @@ The [PRIDE team](https://www.ebi.ac.uk/about/teams/proteomics/members/) currentl
 
 The PRIDE project receives advice and guidance from our scientific advisory board. The PRIDE SAB consists of a collection of scientists representing different groups working in the mass spectrometry proteomics field. Our current SAB members are:
 
-- Ruedi Aebersold, Swiss Federal Institute of Technology, ETH, Zurich, Switzerland
 - Jurgen Cox, Max Planck Institute of Biochemistry, Martinsried, Germany
+- Jyoti Choudary, Isntitute of Cancer Research, London, UK
 - Pedro R. Cutillas, Queen Mary University London, UK
 - Concha Gil , Universidad Complutense Madrid, Spain
 - Juri Rappsilber, University of Edinburgh, UK
@@ -73,6 +73,7 @@ The PRIDE project receives advice and guidance from our scientific advisory boar
 
 We also would like to thank all previous members of the PRIDE SAB:
 
+- Ruedi Aebersold, Swiss Federal Institute of Technology, ETH, Zurich, Switzerland
 - Roz Banks, University of Leeds, UK
 - Angus Lamond, University of Dundee, UK
 - Kathryn Lilley, University of Cambridge, UK
