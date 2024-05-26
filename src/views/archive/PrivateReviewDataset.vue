@@ -966,33 +966,6 @@
           this.modification=[]
       },
       queryProjectDetails(query){
-           var id = id || this.$route.params.id;
-           let reviewDatasetPayload = localStorage.getItem('reviewdataset')
-           let timer = localStorage.getItem('reviewdataset-timer')
-           if(reviewDatasetPayload && timer){
-              timer = JSON.parse(timer)
-              if(Date.now()-timer.time>timer.expire){
-                  localStorage.removeItem('reviewdataset');
-                  localStorage.removeItem('reviewdataset-timer');
-                  this.$Message.error({content:'SESSION EXPIRED', duration:3});
-                  this.$router.push({name:'landingpage'});
-              }
-              else{
-                let timer = {
-                  time:Date.now(),
-                  expire:30*60*1000
-                }
-                localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
-              }
-           }
-           else{
-              this.$Message.error({content:'SESSION EXPIRED', duration:3});
-              this.$router.push({name:'landingpage'});
-           }
-            
-           reviewDatasetPayload = JSON.parse(reviewDatasetPayload)
-
-           let query = reviewDatasetPayload
            this.$http
               .post(this.reviewDatasetAPI,query)
               .then(function(res){
