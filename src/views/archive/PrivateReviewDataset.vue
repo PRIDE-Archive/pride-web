@@ -931,7 +931,13 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      this.queryProjectDetails(to.params.id);
+      let query = this.checkSession()
+        if(query){
+          this.queryProjectDetails(query);
+          // this.queryArchiveProjectFiles(); //TODO
+        }
+
+      // this.queryProjectDetails(to.params.id);
       // this.queryArchiveProjectFiles(to.params.id); // it should be the query obj not the ID
       next();
     },
@@ -959,7 +965,7 @@
           this.softwares=[]
           this.modification=[]
       },
-      queryProjectDetails(id){
+      queryProjectDetails(query){
            var id = id || this.$route.params.id;
            let reviewDatasetPayload = localStorage.getItem('reviewdataset')
            let timer = localStorage.getItem('reviewdataset-timer')
@@ -1435,6 +1441,34 @@
         }
         this.queryArchiveProjectFiles(query)
       },
+      checkSession(){
+         let reviewDatasetPayload = localStorage.getItem('reviewdataset')
+         let timer = localStorage.getItem('reviewdataset-timer')
+         if(reviewDatasetPayload && timer){
+            timer = JSON.parse(timer)
+            if(Date.now()-timer.time>timer.expire){
+                localStorage.removeItem('reviewdataset');
+                localStorage.removeItem('reviewdataset-timer');
+                this.$Message.error({content:'SESSION EXPIRED', duration:3});
+                this.$router.push({name:'login'});
+                return null
+            }
+            else{
+              let timer = {
+                time:Date.now(),
+                expire:30*60*1000
+              }
+              localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
+
+              return JSON.parse(reviewDatasetPayload)
+            }
+         }
+         else{
+            this.$Message.error({content:'SESSION EXPIRED', duration:3});
+            this.$router.push({name:'login'});
+            return null
+         }
+      }
       // testCancel(){
       //   console.log('close')
       // },
@@ -1443,9 +1477,13 @@
       // }
     },
     mounted: function(){
-        this.queryProjectDetails();
+        let query = this.checkSession()
+        if(query){
+          this.queryProjectDetails(query);
+          this.queryArchiveProjectFiles();
+        }
 
-        this.queryArchiveProjectFiles();
+        
     },
     computed:{//TODO for queryAssayApi
       queryDownload:function(){
