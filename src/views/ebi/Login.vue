@@ -295,6 +295,7 @@
                 expire:30*60*1000
               }
               localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
+              // here we will direct to "archive/PrivateReviewDataset.vue" but NOT the "ebi/ReviewDataset.vue" which will be abandoned soon
               this.$router.push({ name: 'privatereviewdataset', params: {id: this.$store.state.username.split('@')[0] }});
             },
             forgotPassword(){
