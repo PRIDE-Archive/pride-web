@@ -874,12 +874,16 @@
                         //     this.$Message.error({content:'Get Profile Error', duration:3});
                       });
             },
-            logout(){
-                this.$store.commit('setUser',{username: '', token:'', type:''});
+            logout(){ // only the landingpage direction is different from the logout function in components/Nav.vue
                 localStorage.setItem('username','');
                 localStorage.setItem('token','');
-                localStorage.setItem('type','');
-                this.$router.push({name:'landingpage'})
+                localStorage.setItem('privateusi','');
+                localStorage.setItem('type',''); // user type, if it is reviewer
+                localStorage.setItem('logintype','')
+                localStorage.setItem('reviewdataset','');
+                localStorage.setItem('reviewdataset-timer','');
+                this.$router.replace({name:'landingpage'});
+                this.$store.commit('setUser',{username: '', token:''});
             },
             gotoDetails(id){
                 console.log("go to details")
