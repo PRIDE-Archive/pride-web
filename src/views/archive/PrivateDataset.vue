@@ -1349,12 +1349,16 @@
                 this.$Message.error({content:'Protein Check Error', duration:3});
             });
       },
-      logout(){
-        //this.$store.commit('setUser',{username: '', token:''});  
+      logout(){   
         localStorage.setItem('username','');
         localStorage.setItem('token','');
+        localStorage.setItem('privateusi','');
+        localStorage.setItem('type',''); // user type, if it is reviewer
+        localStorage.setItem('logintype','')
+        localStorage.setItem('reviewdataset','');
+        localStorage.setItem('reviewdataset-timer','');
         this.$router.replace({name:'archive'});
-        this.$store.commit('setUser',{username: '', token:''});    
+        this.$store.commit('setUser',{username: '', token:''});
       },
       publishData(){
         this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
