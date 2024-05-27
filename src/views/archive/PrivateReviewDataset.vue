@@ -472,7 +472,8 @@
           softwares:[],
           modification:[],
           queryArchiveProjectApi: this.$store.state.basePrivateURL + '/projects',
-          queryReviewPrivateProjectFilesApi: this.$store.state.basePrivateURL + '/projects/reviewer-project/files',
+          queryReviewPrivateProjectFilesApi: this.$store.state.basePrivateURL + '/projects/reviewer-project-by-authenticating-token/files',
+          reviewDatasetAPI: this.$store.state.basePrivateURL + '/projects/reviewer-project-by-authenticating-token',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
@@ -482,7 +483,6 @@
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           publishAPI: this.$store.state.basePrivateURL + '/projects/publish',
           transferAPI: this.$store.state.basePrivateURL + '/projects/change-owner',
-          reviewDatasetAPI: this.$store.state.basePrivateURL + '/projects/reviewer-project',
           similarProjects:[],
           similarityLoading:false,
           fileListLoading:false,
@@ -931,12 +931,7 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      let query = this.checkSession()
-        if(query){
-          this.queryProjectDetails(query);
-          // this.queryArchiveProjectFiles(); //TODO
-        }
-
+      this.queryProjectDetails();
       // this.queryProjectDetails(to.params.id);
       // this.queryArchiveProjectFiles(to.params.id); // it should be the query obj not the ID
       next();
@@ -965,11 +960,17 @@
           this.softwares=[]
           this.modification=[]
       },
-      queryProjectDetails(query){
+      queryProjectDetails(){
+           let reviewDatasetPayload = localStorage.getItem('reviewdataset')
+           if(!reviewDatasetPayload)
+            return
+           let query = JSON.parse(reviewDatasetPayload)
            this.$http
-              .post(this.reviewDatasetAPI,query)
-              .then(function(res){
-                
+              .get(this.reviewDatasetAPI, { query,
+                headers: {
+                  'Authorization':'Bearer '+ localStorage.getItem('token')
+                }
+              }).then(function(res){
                 res.body = res.body._embedded.projects[0]
                 console.log('res.body',res.body)
                 // return;
@@ -1064,11 +1065,11 @@
 
            this.fileListLoading = true;
            this.$http
-            .post(this.queryReviewPrivateProjectFilesApi + '?search=' + query.search + '&pageSize=' + query.pageSize + '&page=' + query.page, reviewDatasetPayload,
-              // headers: {
-              //   'Authorization':'Bearer '+ localStorage.getItem('token')
-              // }
-            ).then(function(res){
+            .get(this.queryReviewPrivateProjectFilesApi + '?search=' + query.search + '&pageSize=' + query.pageSize + '&page=' + query.page, reviewDatasetPayload,{
+              headers: {
+                'Authorization':'Bearer '+ localStorage.getItem('token')
+              }
+            }).then(function(res){
                 console.log(res.body);
 
                 // console.log(res.body.page)
@@ -1310,12 +1311,16 @@
                 this.$Message.error({content:'Protein Check Error', duration:3});
             });
       },
-      logout(){
-        //this.$store.commit('setUser',{username: '', token:''});  
+      logout(){ // the same with the login function in components/Nav.vue
         localStorage.setItem('username','');
         localStorage.setItem('token','');
+        localStorage.setItem('privateusi','');
+        localStorage.setItem('type',''); // user type, if it is reviewer
+        localStorage.setItem('logintype','')
+        localStorage.setItem('reviewdataset','');
+        localStorage.setItem('reviewdataset-timer','');
         this.$router.replace({name:'archive'});
-        this.$store.commit('setUser',{username: '', token:''});    
+        this.$store.commit('setUser',{username: '', token:''});
       },
       publishData(){
         this.$router.push({name:'publish',params:{id:this.$route.params.id}, query:{r:'self'}});
@@ -1414,49 +1419,46 @@
         }
         this.queryArchiveProjectFiles(query)
       },
-      checkSession(){
-         let reviewDatasetPayload = localStorage.getItem('reviewdataset')
-         let timer = localStorage.getItem('reviewdataset-timer')
-         if(reviewDatasetPayload && timer){
-            timer = JSON.parse(timer)
-            if(Date.now()-timer.time>timer.expire){
-                localStorage.removeItem('reviewdataset');
-                localStorage.removeItem('reviewdataset-timer');
-                this.$Message.error({content:'SESSION EXPIRED', duration:3});
-                this.$router.push({name:'login'});
-                return null
+      checkSession(){ // we only add checkSession function in this component, as only this page needs to use the token login as the authentication. And token login authentication timers has the 30min limits. For the username login authentication only expired once user click the logout button mannually. 
+         let lastLoginType = localStorage.getItem('logintype');
+         if(lastLoginType == 'token'){
+            let reviewDatasetPayload = localStorage.getItem('reviewdataset')
+            let timer = localStorage.getItem('reviewdataset-timer')
+            if(reviewDatasetPayload && timer){
+                timer = JSON.parse(timer)
+                if(Date.now()-timer.time>timer.expire){
+                    this.$Message.error({content:'SESSION EXPIRED', duration:3});
+                    this.logout()
+                }
+                else{
+                  let timer = {
+                    time:Date.now(),
+                    expire:30*60*1000
+                  }
+                  localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
+                }
             }
-            else{
-              let timer = {
-                time:Date.now(),
-                expire:30*60*1000
-              }
-              localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
-
-              return JSON.parse(reviewDatasetPayload)
+         }
+         else if(lastLoginType == 'password'){
+            //This page can only be accessed by token
+            if(this.$route.path.indexOf('/login') == -1){
+              this.$router.push({name:'login'});
+              this.$Message.error({content:'No Token Login', duration:3});
             }
          }
          else{
-            this.$Message.error({content:'SESSION EXPIRED', duration:3});
-            this.$router.push({name:'login'});
-            return null
+            // Normally, it should be not run
+            if(this.$route.path.indexOf('/login') == -1){
+              this.$router.push({name:'login'});
+              this.$Message.error({content:'No Token Login', duration:3});
+            }
          }
       }
-      // testCancel(){
-      //   console.log('close')
-      // },
-      // modalVisibility(a){
-      //   console.log('modalVisibility',a)
-      // }
     },
     mounted: function(){
-        let query = this.checkSession()
-        if(query){
-          this.queryProjectDetails(query);
-          this.queryArchiveProjectFiles();
-        }
-
-        
+      this.checkSession()
+      this.queryProjectDetails();
+      this.queryArchiveProjectFiles();
     },
     computed:{//TODO for queryAssayApi
       queryDownload:function(){
