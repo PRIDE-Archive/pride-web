@@ -987,8 +987,8 @@
                 this.instrumentNames = res.body.instruments || [];
                 this.softwares = res.body.softwares || [];
                 this.quantificationMethods = res.body.quantificationMethods || [];
-               this.experimentTypes = res.body.experimentTypes || [];
-               this.projectTags = res.body.projectTags || [];
+                this.experimentTypes = res.body.experimentTypes || [];
+                this.projectTags = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
                 //for contactors
                 if(res.body.submitters)
@@ -1296,11 +1296,15 @@
             });
       },
       logout(){
-        //this.$store.commit('setUser',{username: '', token:''});  
         localStorage.setItem('username','');
         localStorage.setItem('token','');
+        localStorage.setItem('privateusi','');
+        localStorage.setItem('type',''); // user type, if it is reviewer
+        localStorage.setItem('logintype','')
+        localStorage.setItem('reviewdataset','');
+        localStorage.setItem('reviewdataset-timer','');
         this.$router.replace({name:'archive'});
-        this.$store.commit('setUser',{username: '', token:''});    
+        this.$store.commit('setUser',{username: '', token:''});   
       },
       saveData(){
         let dataset = {}
