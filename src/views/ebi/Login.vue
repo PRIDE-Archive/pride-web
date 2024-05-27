@@ -248,8 +248,8 @@
                               // set reviewdataset
                               let query = {}
                               query.ReviewerAccess = {
-                                  accession:localStorage.getItem('username');
-                                  token:localStorage.getItem('token');
+                                  accession:localStorage.getItem('username'),
+                                  token:localStorage.getItem('token')
                               }
                               localStorage.setItem('reviewdataset',JSON.stringify(query)); // this is specificall used for reveiew dataset page
                               //set timer for reviewdataset, the timer will be updated once it goes into the "privatereviewdataset" page again.
