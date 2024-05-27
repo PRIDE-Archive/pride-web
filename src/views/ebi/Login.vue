@@ -192,6 +192,7 @@
                               this.loginModalBool=false;
                               localStorage.setItem('username',this.formInline.user);
                               localStorage.setItem('token',res.bodyText);
+                              localStorage.setItem('logintype','password');
                               //this.username = this.formInline.user;
                               this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               
@@ -246,7 +247,7 @@
                               this.loginModalBool=false;
                               localStorage.setItem('username',this.formInline.accession.trim());
                               localStorage.setItem('token',res.bodyText);
-
+                              localStorage.setItem('logintype','token');
                               //this.username = this.formInline.accession;
                               this.$store.commit('setUser',{username: this.formInline.accession, token:res.bodyText});
                               
