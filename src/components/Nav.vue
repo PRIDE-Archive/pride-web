@@ -103,7 +103,7 @@
                               <Icon type="ios-arrow-down"></Icon>
                             </a>
                             <DropdownMenu slot="list">
-                                <DropdownItem name="profile">Profile</DropdownItem>
+                                <DropdownItem v-if="lastLoginType == 'password'" name="profile">Profile</DropdownItem>
                                 <DropdownItem name="logout">Log out</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
@@ -184,7 +184,8 @@
                 countryListURL: this.$store.state.baseURL + '/country/index.csv',
                 countryList:[],
                 pageObj:{},
-                bannerContent:''
+                bannerContent:'',
+                lastLoginType:''
             }
         },
         props: ['page'],
@@ -253,7 +254,9 @@
               this.$router.push({path:'/markdownpage/documentationpage'});
             },
             showLogin(){
-              this.$router.push({name:'login'});
+              if(this.$route.path.indexOf('/login') == -1){
+                this.$router.push({name:'login'});
+              }
             },
             showSignup(){
               this.$router.push({name:'register'});
@@ -262,7 +265,10 @@
               localStorage.setItem('username','');
               localStorage.setItem('token','');
               localStorage.setItem('privateusi','');
-              localStorage.setItem('type','');
+              localStorage.setItem('type',''); // user type, if it is reviewer
+              localStorage.setItem('logintype','')
+              localStorage.setItem('reviewdataset','');
+              localStorage.setItem('reviewdataset-timer','');
               this.$router.replace({name:'archive'});
               this.$store.commit('setUser',{username: '', token:''});
             },
@@ -332,9 +338,10 @@
             },
             closeBanner(){
               console.log('close banner');
-            }
+            },
         },
         mounted() {
+          this.lastLoginType = localStorage.getItem('logintype'); // if the username in the "computed" is null, this lastLoginType must be null.
           this.init();
           this.queryCountryList();
         },
