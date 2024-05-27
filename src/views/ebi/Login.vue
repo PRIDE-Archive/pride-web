@@ -32,13 +32,13 @@
               <div class="content-container">
                   <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
                   <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
-                  <Form class="form" ref="formInline" :model="token_formInline" :rules="token_ruleInline">
-                    <FormItem prop="user">
+                  <Form class="form" ref="token_formInline" :model="token_formInline" :rules="token_ruleInline">
+                    <FormItem prop="accession">
                       <Input type="text" v-model="token_formInline.accession" placeholder="Project Accession">
                       <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                       </Input>
                     </FormItem>
-                    <FormItem prop="password">
+                    <FormItem prop="token">
                       <Input :type="token_passwordType" v-model="token_formInline.token" placeholder="Reviewer Token">
                       <Icon type="ios-lock-outline" slot="prepend" size="14"></Icon>
                       </Input>
@@ -118,7 +118,7 @@
         data () {
             return {
                 // username password login
-                tokenApi:this.$store.state.basePrivateURL+'/login',
+                loginApi:this.$store.state.basePrivateURL+'/login',
                 passwordType:'password',
                 formInline: {
                   user: '',
@@ -136,8 +136,8 @@
 
 
                 // token login
-                loginApi: this.$store.state.basePrivateURL+'/reviewer_token_login',
-                token_passwordType:'password',
+                tokenApi: this.$store.state.basePrivateURL+'/reviewer_token_login',
+                token_passwordType:'password', // it must be password as it will show stars when it is checked
                 token_formInline: {
                   accession: '',
                   token: ''
@@ -178,10 +178,8 @@
                       ])
                     }
                   });
-                  console.log(this.tokenApi)
                   this.$http
-                        //.post(this.tokenApi + '?username='+this.formInline.user+'&password='+this.formInline.password)
-                        .post(this.tokenApi,
+                        .post(this.loginApi,
                             {Credentials:
                               {
                                 username:this.formInline.user.trim(),
@@ -193,7 +191,6 @@
                               localStorage.setItem('username',this.formInline.user);
                               localStorage.setItem('token',res.bodyText);
                               localStorage.setItem('logintype','password');
-                              //this.username = this.formInline.user;
                               this.$store.commit('setUser',{username: this.formInline.user, token:res.bodyText});
                               
                               this.$Spin.hide()
@@ -235,28 +232,40 @@
                     }
                   });
                   this.$http
-                        //.post(this.tokenApi + '?username='+this.formInline.accession+'&password='+this.formInline.token)
-                        .post(this.loginApi,
+                        .post(this.tokenApi,
                             {Credentials:
                               {
-                                username:this.formInline.accession.trim(),
-                                password:this.formInline.token.trim()
+                                username:this.token_formInline.accession.trim(),
+                                password:this.token_formInline.token.trim()
                               }
                             })
                         .then(function(res){
                               this.loginModalBool=false;
-                              localStorage.setItem('username',this.formInline.accession.trim());
+                              localStorage.setItem('username',this.token_formInline.accession.trim());
                               localStorage.setItem('token',res.bodyText);
                               localStorage.setItem('logintype','token');
-                              //this.username = this.formInline.accession;
-                              this.$store.commit('setUser',{username: this.formInline.accession, token:res.bodyText});
-                              
+                              this.$store.commit('setUser',{username: this.token_formInline.accession, token:res.bodyText});
+                              // set reviewdataset
+                              let query = {}
+                              query.ReviewerAccess = {
+                                  accession:localStorage.getItem('username');
+                                  token:localStorage.getItem('token');
+                              }
+                              localStorage.setItem('reviewdataset',JSON.stringify(query)); // this is specificall used for reveiew dataset page
+                              //set timer for reviewdataset, the timer will be updated once it goes into the "privatereviewdataset" page again.
+                              let timer = {
+                                time:Date.now(),
+                                expire:30*60*1000
+                              }
+                              localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
+                              console.log('login success, direct to privatereviewdataset')
+                              // here we will direct to "archive/PrivateReviewDataset.vue" but NOT the "ebi/ReviewDataset.vue" which will be abandoned soon
+
                               this.$Spin.hide()
                               this.$refs[name].resetFields();
                              
                               this.$Message.success({ content: 'Login Success' })
-                              // this.gotoProfile();
-                              this.gotoReviewDataset(this.formInline.accession,res.bodyText)
+                              this.gotoReviewDataset()
                             
                         }).catch(err=>{
                           console.log(err);
@@ -273,6 +282,7 @@
                 this.passwordType="password"
               //console.log(type)
             },
+            // token login
             token_passwordTypeChange(type){
               if(type)
                 this.token_passwordType="text";
@@ -283,20 +293,7 @@
             gotoProfile(){
               this.$router.push({ name: 'profile', params: {id: this.$store.state.username.split('@')[0] }});
             },
-            gotoReviewDataset(accession,token){
-              let query = {}
-              query.ReviewerAccess = {
-                  accession:accession,
-                  token:token
-              }
-              localStorage.setItem('reviewdataset',JSON.stringify(query)); // this is specificall used for reveiew dataset page
-              //set timer for reviewdataset
-              let timer = {
-                time:Date.now(),
-                expire:30*60*1000
-              }
-              localStorage.setItem('reviewdataset-timer',JSON.stringify(timer));
-              // here we will direct to "archive/PrivateReviewDataset.vue" but NOT the "ebi/ReviewDataset.vue" which will be abandoned soon
+            gotoReviewDataset(){
               this.$router.push({ name: 'privatereviewdataset', params: {id: this.$store.state.username.split('@')[0] }});
             },
             forgotPassword(){
@@ -308,12 +305,13 @@
         },
         beforeRouteEnter(to,from,next){
             next(vm=>{
-
-
               let username = localStorage.getItem('username') || '';
-              console.log('username',username)
-              if(username){
+              let lastLoginType = localStorage.getItem('logintype');
+              if(username && lastLoginType == 'password'){
                 vm.$router.push({name:'profile', params: {id: username.split('@')[0] }})
+              }
+              else if(username && lastLoginType == 'token'){
+                vm.$router.push({name:'privatereviewdataset', params: {id: username.split('@')[0] }})
               }
             });
         }
