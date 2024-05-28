@@ -7,7 +7,7 @@
            
             <!-- <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span> -->
             <p style="margin: 30px 0">
-              Please go to the <a href="/login" >Log In</a> page and use the Project Accession and Token to login.
+              Please go to the <a class="login-button" @click="gotoLogin">Log In</a> page and use the <span style="font-weight: bold">Project Accession</span> and <span style="font-weight: bold">Token</span> to login.
             </p>
 
             <p style="margin: 30px 0">
@@ -117,12 +117,15 @@
                     return;
                 }
                 this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            },
+            gotoLogin(){
+              this.$router.push({name:'login'})
             }
         },
         mounted:function(){
             // this.$refs['formInlineReviewDataset'].resetFields();
             // console.log('this.$route.params',this.$route.params)
-            this.startCountdown();
+            // this.startCountdown();
         },
         beforeDestroy() {
             clearInterval(this.intervalId);
@@ -147,6 +150,12 @@
     .project-title{
       color:rgb(100, 102, 100);
       margin: 20px 0 5px 0;
+    }
+    .login-button{
+      color:#515a6e
+    }
+    .login-button:hover{
+      color:#5bc0be
     }
     @media (min-width: 768px) { 
         .content-container{
