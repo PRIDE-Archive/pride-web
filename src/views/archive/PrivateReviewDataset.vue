@@ -1062,13 +1062,13 @@
               this.$Message.error({content:'SESSION EXPIRED', duration:3});
               return
            }
-
+           console.log(123)
            this.fileListLoading = true;
            this.$http
-            .get(this.queryReviewPrivateProjectFilesApi + '?search=' + query.search + '&pageSize=' + query.pageSize + '&page=' + query.page, reviewDatasetPayload,{
-              headers: {
-                'Authorization':'Bearer '+ localStorage.getItem('token')
-              }
+            .get(this.queryReviewPrivateProjectFilesApi + '?search=' + query.search + '&pageSize=' + query.pageSize + '&page=' + query.page, {reviewDatasetPayload,
+                headers: {
+                  'Authorization':'Bearer '+ localStorage.getItem('token')
+                }
             }).then(function(res){
                 console.log(res.body);
 
