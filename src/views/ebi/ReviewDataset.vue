@@ -2,9 +2,19 @@
     <div class="submit-data-container">
         <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="content-container">
-            <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Review Dataset</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
-            <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span>
-            <Form class="reviewDatasetForm" ref="formInlineReviewDataset" :model="formInlineReviewDataset" :rules="ruleInlineReviewDataset">
+           
+            <h2 style="border-bottom: 1px solid rgba(100, 102, 100, 0.4); margin-bottom: 60px;" class="project-title">System Updated Already!</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> -->
+           
+            <!-- <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span> -->
+            <p style="margin: 30px 0">
+              Please go to the <a href="/login" >Log In</a> page and use the Project Accession and Token to login.
+            </p>
+
+            <p style="margin: 30px 0">
+              Or it will redirect automatically in <span style="font-size: 16; font-weight: bold">{{seconds}}</span> seconds.
+            </p>
+
+            <!-- <Form class="reviewDatasetForm" ref="formInlineReviewDataset" :model="formInlineReviewDataset" :rules="ruleInlineReviewDataset">
               <FormItem prop="accession" label="Project Accession">
                 <Input type="text" v-model="formInlineReviewDataset.accession" placeholder="Project accession (PXD.... etc.,)">
                 </Input>
@@ -16,7 +26,7 @@
               <FormItem>
                 <Button class="resetPasswordButton" style="margin-top: 20px" type="primary" @click="reviewDataset('formInlineReviewDataset')" long>Submit</Button>
               </FormItem>
-            </Form>
+            </Form> -->
         </div>
     </div>
 </template>
@@ -26,19 +36,22 @@
     export default {
         data () {
             return {
-                reviewDatasetAPI: this.$store.state.basePrivateURL + '/projects/reviewer-project',
-                formInlineReviewDataset:{
-                  accession:'',
-                  token:''
-                },
-                ruleInlineReviewDataset:{
-                  accession: [
-                    { required: true, message: 'Please input accession', trigger: 'on-change' }
-                  ],
-                  token: [
-                    { required: true, message: 'Please input token', trigger: 'on-change' }
-                  ],
-                },
+                // reviewDatasetAPI: this.$store.state.basePrivateURL + '/projects/reviewer-project',
+                // formInlineReviewDataset:{
+                //   accession:'',
+                //   token:''
+                // },
+                // ruleInlineReviewDataset:{
+                //   accession: [
+                //     { required: true, message: 'Please input accession', trigger: 'on-change' }
+                //   ],
+                //   token: [
+                //     { required: true, message: 'Please input token', trigger: 'on-change' }
+                //   ],
+                // },
+                seconds: 0,
+                endTime: new Date().getTime() + 10000,
+                intervalId:null
             }
         },
         components: {
@@ -90,10 +103,29 @@
                         });
               })
             },
+            startCountdown(){
+              this.updateCountdown();
+              this.intervalId = setInterval(this.updateCountdown, 1000);
+            },
+            updateCountdown() {
+                const now = new Date().getTime();
+                const distance = this.endTime - now;
+                if (distance < 0) {
+                    clearInterval(this.intervalId);
+                    this.seconds = 0;
+                    this.$router.push({name:'login'})
+                    return;
+                }
+                this.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            }
         },
         mounted:function(){
-            this.$refs['formInlineReviewDataset'].resetFields();
-            console.log('this.$route.params',this.$route.params)
+            // this.$refs['formInlineReviewDataset'].resetFields();
+            // console.log('this.$route.params',this.$route.params)
+            this.startCountdown();
+        },
+        beforeDestroy() {
+            clearInterval(this.intervalId);
         },
         // beforeRouteEnter(to,from,next){
         //     next(vm=>{
@@ -109,7 +141,8 @@
 <style scoped>
     .content-container{
         margin: 0 auto;
-        padding: 20px 125px;
+        padding: 100px 125px;
+        text-align: center;
     }
     .project-title{
       color:rgb(100, 102, 100);
