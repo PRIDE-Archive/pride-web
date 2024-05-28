@@ -125,7 +125,7 @@
         mounted:function(){
             // this.$refs['formInlineReviewDataset'].resetFields();
             // console.log('this.$route.params',this.$route.params)
-            // this.startCountdown();
+            this.startCountdown();
         },
         beforeDestroy() {
             clearInterval(this.intervalId);
