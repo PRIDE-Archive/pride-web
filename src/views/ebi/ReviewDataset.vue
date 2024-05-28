@@ -3,7 +3,7 @@
         <div class="panel nav"><NavBar page="landingpage"/></div>
         <div class="content-container">
            
-            <h2 style="border-bottom: 1px solid rgba(100, 102, 100, 0.4); margin-bottom: 60px;" class="project-title">System Updated Already!</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> -->
+            <h2 style="border-bottom: 1px solid rgba(100, 102, 100, 0.4); margin-bottom: 60px;" class="project-title">System Updated!</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> -->
            
             <!-- <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 30px;"> </span> -->
             <p style="margin: 30px 0">
