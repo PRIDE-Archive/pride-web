@@ -6,10 +6,13 @@
         <div class="container">
               <div class="content-container">
                   <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Log In</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
-                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
-                  <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 10px;"> </span>
+                <Form class="form" ref="formInline" :model="formInline" :rules="ruleInline">
+                  <FormItem>
+                    Login with your registered email address OR reviewer username (ex: reviewerXXX@ebi.ac.uk).
+                  </FormItem>
                     <FormItem prop="user">
-                      <Input type="text" v-model="formInline.user" placeholder="Email">
+                      <Input type="text" v-model="formInline.user" placeholder="Username (in the email format ex: pride-support@ebi.ac.uk)">
                       <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
                       </Input>
                     </FormItem>
@@ -31,8 +34,11 @@
               <div class="divider"></div>
               <div class="content-container">
                   <div style="display: flex;justify-content: space-between; align-items: baseline;"><h2 class="project-title">Login using Reviewer Token</h2><!-- <span>Already have an account? Please <a href="">Log in</a></span> --></div>
-                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 70px;"> </span>
+                  <span style="display: block; border-bottom: 1px solid rgba(100, 102, 100, 0.4);margin-bottom: 10px;"> </span>
                   <Form class="form" ref="token_formInline" :model="token_formInline" :rules="token_ruleInline">
+                    <FormItem>
+                      Use this option only if you have a Reviewer Token.
+                    </FormItem>
                     <FormItem prop="accession">
                       <Input type="text" v-model="token_formInline.accession" placeholder="Project Accession">
                       <Icon type="ios-person-outline" slot="prepend" size="14"></Icon>
