@@ -1,1 +1,1 @@
-<p>Do data resources managed by EMBL-EBI and our collaborators make a difference to your work? Please take 10 minutes to fill in our annual user survey, and help us make the case for why sustaining open data resources is critical for life sciences research. <a href="https://www.surveymonkey.com/r/HJKYKTT?channel=[PRIDE]">Survey link</a></p>
+<p></p>
