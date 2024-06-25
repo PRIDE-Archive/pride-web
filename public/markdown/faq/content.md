@@ -5,12 +5,12 @@
 - You can add title, description, sample, and data processing protocols, and contact from your PRIDE account. You need to log in to PRIDE web and go to profile, select your private dataset, and then select ‘Edit’ tab from a right-hand corner of the screen. In the end, save the changes.
 - For another metadata change, you must request PRIDE support team(pride-support@ebi.ac.uk). You must provide all the details before you request to change. You can find details of metadata at - https://www.ebi.ac.uk/ols4
 
+### How should I name my files 
+It is recommended to name your file in a self descriptive way, for instance : experimentname_samplename_replicates_fractions. We only accept A-Za-z0-9_. in file names. Please remove any other special characters from your file name.
+
 ### How can I change the submitter’s details and contact?
 
-In PRIDE, unfortunately, once registered, you would not be able to change your email id.
-You need to register with a new account with a new email id.
-In addition to registering with a new account or email if you want to change ownership to a new account. 
-Login with old email, go to your profile and select the datasets and click transfer ownership button to new email registered.
+Login to your PRIDE web account, go to your profile and select your private dataset. On the right-hand corner of the screen, you can see the ‘Transfer Ownership’ tab. There you can provide your new (submitter’s)email id which must be registered with PRIDE.
 
 ### How can I publish my private dataset in PRIDE?
 
@@ -32,12 +32,12 @@ We do not support PRIDE inspector tool anymore. It can still be used as a standa
 
 ### How can I change PI’s email id
 
-To change email or name of a PI of a dataset, you should be the submitter of the dataset.
-You can change by following below steps.
+You can change the name and email id of the PI by following the steps below -
+
 * Login with registered submitter email.
 * Go to your profile and select the dataset you wish to change the PI information.
 * Click the edit button on the right.
-* Change the information you wish to change and click save once done.
+* Change the information and click save.
 
 ### Can I add PubMed/doi after publishing my dataset
 
@@ -70,4 +70,4 @@ Please update the below lines to relevant proxy host and port details, uncomment
    ``` 
     #  px.proxy.host = localhost
     #  px.proxy.port = 8080
-    ```
+

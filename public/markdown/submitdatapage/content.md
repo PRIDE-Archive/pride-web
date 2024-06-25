@@ -62,6 +62,8 @@ If you have all the files ready, the next step is to Download the [PRIDE Submiss
 **Metadata**: Required experimental metadata like experiment description, sample taxonomy information, instruments and protein modifications used.
 **Mappings between the uploaded files**: for instance between the RAW files and the corresponding 'RESULT' or search engine output ('SEARCH') files.
 
+Note : We can only accept A-Za-z0-9_. in file names. Please remove any other special characters from your file name.
+
 Finally users can submit the dataset using the Aspera (by default) or FTP file transfer protocols provided by the PRIDE Submission Tool.
 
 ## Accessing private data

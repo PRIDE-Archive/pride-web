@@ -38,6 +38,8 @@ Additionally, users have to pick a mass spectrometry experiment type from a drop
 
 In this stage, you should choose the files to be submitted. Files can be added by clicking on the highlighted button.
 
+Note : It is recommended to name your file in a self descriptive way, for instance : experimentname_samplename_replicates_fractions. We only accept A-Za-z0-9_. in file names. Please remove any other special characters from your file name.
+
 ![Add files](../markdown/pridesubmissiontool/files/add-files.png)
 
 > Depending on the [files provided](./pridefileformats) and the type of submission, the tool will try to link the relation between files and also the file type.
@@ -64,22 +66,6 @@ If you are adding a spectral library file, then please assign the file type manu
 Complete Submissions based on mzIdentML only contain the identified peptides/proteins and the corresponding spectra. However, most of the shotgun proteomics experiments are _Quantitative_ experiments.
 
 For Quantitative Complete experiments, users should ideally provide this information using [mzTab files](./pridefileformats#result_files). The dataset should contains at least one 'PEAK' list associated with the mzTab file.
-
-
-## Assign the relationships between the submitted files
-
-This mapping step consists on assigning the relations between the ‘RESULT’ files and the other types of files included in the submission, for example, which ‘RAW’ (mandatory), ‘PEAK’ (mandatory for mzIdentML and mzTab), ‘SEARCH’, ‘QUANT’, ‘FASTA’, ‘SPECTRUM_LIBRARY’, ‘GEL’ or ‘OTHER’ files can be linked to a given ‘RESULT’ file or are associated with it.
-
-This will enable others users to understand how your data is connected and structured.
-
-![Add files](../markdown/pridesubmissiontool/files/file-relations-2.png)
-
-
-> By default, the tool makes an attempt to generate the mapping between the ‘RESULT’ and the other - most importantly ‘RAW’ - files.
-For instance, if there is only 1 ‘RESULT’ file found during the previous ‘Add Files’ step then all the other files will be mapped to this ‘RESULT’ file.
-If there are multiple ‘RESULT’ files the tool maps the other files – ‘RAW’, ‘PEAK’, ‘SEARCH’, … - with the same file name prefix, but without the file extension, to the corresponding ‘RESULT’ files. This mapping is done even if the suffix part of the ‘RAW’ files contains different numbers (for instance indicating different replicates).
-
-If the automatic mapping is partial only or does not apply, the submitter is asked to manually assign manually the relationships between the files.
 
 ## Checksum calculation
 
