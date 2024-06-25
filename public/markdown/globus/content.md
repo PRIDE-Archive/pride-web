@@ -3,6 +3,10 @@
 * Under profile page, click on the `New Submission` tab on the left 
 * Follow the on-screen instructions
 
+Useful links
+* [Generate submission.px file](./submissionpx)
+* [Generate checksum.txt](./checksum)
+
 ## Uploading files to Globus shared folder
 * Install and configure [Globus connect personal](https://docs.globus.org/globus-connect-personal/install/)
 * Go through [this Globus tutorial](https://docs.globus.org/guides/tutorials/manage-files/transfer-files/)
