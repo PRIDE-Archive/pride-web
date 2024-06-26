@@ -641,7 +641,7 @@
                             //this.$Message.error({content:'No Private Data', duration:1});
                         }
                       },function(err){
-                        if(err.status == 401){
+                        if(err.status == 401 || err.status == 403){
                           this.logout();
                           this.$router.push({name:'login'});
                           this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -661,7 +661,7 @@
                         this.pendingSubmissions.push(dataList[i]);
                       }
                   },function(err){
-                    if(err.status == 401){
+                    if(err.status == 401 || err.status == 403){
                       this.logout();
                       this.$router.push({name:'login'});
                       this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -700,7 +700,7 @@
                     else if(err.status == 404) {
                       this.$Message.error({content:err.body.detail, duration:3});
                     }
-                    else if(err.status == 401){
+                    else if(err.status == 401 || err.status == 403){
                       this.logout();
                       this.$router.push({name:'login'});
                       this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -732,7 +732,7 @@
                     },function(err){
                     // console.log(err);
                     this.newSubmissionRequestProcessing = false;
-                    if(err.status == 401){
+                    if(err.status == 401 || err.status == 403){
                       this.logout();
                       this.$router.push({name:'login'});
                       this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -768,7 +768,7 @@
 
                         //console.log(this.publicDataList);
                       },function(err){
-                        if(err.status == 401){
+                        if(err.status == 401 || err.status == 403){
                           this.logout();
                           this.$router.push({name:'login'});
                           this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -802,7 +802,7 @@
                         }
 
                       },function(err){
-                        if(err.status == 401){
+                        if(err.status == 401 || err.status == 403){
                           this.logout();
                           this.$router.push({name:'login'});
                           this.$Message.error({content:'Session expired, Please Login Again', duration:3});
@@ -863,7 +863,7 @@
                         }
                         // console.log('this.profileData',this.profileData)
                       },function(err){
-                        if(err.status == 401 || err.status == 500){
+                        if(err.status == 401 || err.status == 403 || err.status == 500){
                           this.logout();
                           this.$router.push({name:'login'});
                           this.$Message.error({content:'Session expired, Please Login Again', duration:3});
