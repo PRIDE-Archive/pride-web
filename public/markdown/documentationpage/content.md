@@ -7,11 +7,9 @@
 - [How to submit data to PRIDE](./submitdatapage)
 - [How to do resubmission to PRIDE](./prideresubmission)
 - [Guideline for file formats support](./specificsoftwareformats)
-- [How to manually upload files](./submissionupload)
 - [PRIDE Archive supported file formats](./pridefileformats)
 - [PRIDE Archive Data Downloading](./pridefiledownload)
 - [How to submit complete crosslinking dataset](./crosslinking)
-- [How to review proteomics data in PRIDE Archive](./reviewpridedata)
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
 - [Miscellaneous queries](./misc)
 
