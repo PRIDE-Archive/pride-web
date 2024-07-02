@@ -69,11 +69,11 @@ Aspera client can also be executed using the [IBM aspera client docker container
 
 The docker image can be downloaded from [here](https://hub.docker.com/r/ibmcom/aspera-cli/) using the following command:
 
-    docker pull ibmcom/aspera-cli
+    docker pull ghcr.io/pride-archive/aspera
 
 To download one file, the Docker image can be executed using the following command:
 
-        docker run -v /user/data/folder:/data  ibmcom/aspera-cli ascp -i /home/aspera/.aspera/cli/etc/asperaweb_id_dsa.openssh -TQ -P33001 prd_ascp@fasp.ebi.ac.uk:/pride/data/archive/2017/02/PXD004683/20150820_Haura-Pilot-TMT2-bRPLC06-2.raw  /data
+        docker run -v /user/data/folder:/data  ghcr.io/pride-archive/aspera ascp -i /home/aspera/.aspera/cli/etc/asperaweb_id_dsa.openssh -TQ -P33001 prd_ascp@fasp.ebi.ac.uk:/pride/data/archive/2017/02/PXD004683/20150820_Haura-Pilot-TMT2-bRPLC06-2.raw  /data
 
 **Important Note**: `/user/data/folder` is the local folder where the file will be downloaded. `/home/aspera/.aspera/cli/etc/asperaweb_id_dsa.openssh` is the  private key file provided after installing Aspera, and `/pride/data/archive/2017/02/PXD004683/20150820_Haura-Pilot-TMT2-bRPLC06-2.raw` is the public file path for the file.
 
