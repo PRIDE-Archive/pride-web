@@ -79,7 +79,7 @@ export default {
         this.option.legend.data = [];
         this.option.series[0].data = [];
         this.option.legend.selected = {};
-        console.log('PiePeptide',data)
+        // console.log('PiePeptide',data)
         if(data){
             this.visulizationNum = data.length < this.visulizationNum ? data.length : this.visulizationNum;
             data.sort(function(a,b){

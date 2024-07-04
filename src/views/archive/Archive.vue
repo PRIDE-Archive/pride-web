@@ -261,7 +261,7 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      //console.log('to query',to.query);
+      console.log('to query',to.query);
       /*
       let filter = to.query.split('?')[1].split('filter');
       if(filter.length>1)
@@ -273,7 +273,7 @@
         }
         
         this.updateCondition(to.query);
-        // console.log('beforeRouteUpdate',to.query);
+      
         this.queryArchiveProjectList(to.query);
         //this.$bus.$emit('submit-search', {params: to.params, query: to.query});
         next();
@@ -456,7 +456,7 @@
                                   name:this.projectItemsConfigRes[j] ? this.projectItemsConfigRes[j] : j,
                                   content:content.replace(/,$/gi,'')
                               }
-                              console.log('hightlightItem',hightlightItem)
+                              // console.log('hightlightItem',hightlightItem)
                               item.hightlightItemArray.push(hightlightItem);
                           }
 
