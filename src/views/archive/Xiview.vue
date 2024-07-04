@@ -145,10 +145,10 @@
                               },
                               on: {
                                   click: () => {
-                                      // this.$Message.success({content:'Coming Soon.', duration:1});
-                                      this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
-                                      // this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
-                                      // window.open('http://europepmc.org/article/MED/' + params.row.accession)
+                                      let routeData = this.$router.resolve({name:'crosslinking',params:{id:params.row.accession}});
+                                      // console.log('routeData',routeData)
+                                      window.open(routeData.href, '_blank');
+                                      // this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
                                   }
                               }
                           }, params.row.accession),
