@@ -15,6 +15,10 @@
                             Crosslinking datasets
                           </span>
                           <span v-if="true" class="right">
+                              <span class="icon-wrapper">
+                                <Icon type="md-open" size="18" style="margin-right: 5px;cursor: pointer;" @click="gotoExternal()" />  
+                                <Icon type="md-help-circle" size="19" style="margin-right: 5px;cursor: pointer;" @click="gotoHelp()"/>
+                              </span>
                               <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
                               <Button slot="append" icon="ios-search" @click="queryXiviewData"></Button>
                               </Input>
@@ -377,12 +381,16 @@
           if(this.xiviewTableFoldBool){
             if(document.querySelector('.xiview-table'))
               document.querySelector('.xiview-table').style.display = 'none'
+            if(document.querySelector('.icon-wrapper'))
+              document.querySelector('.icon-wrapper').style.display = 'none'
             if(document.querySelector('.page-container'))
               document.querySelector('.page-container').style.display = 'none'
           }
           else{
             if(document.querySelector('.xiview-table'))
               document.querySelector('.xiview-table').style.display = 'block'
+            if(document.querySelector('.icon-wrapper'))
+              document.querySelector('.icon-wrapper').style.display = 'inline-block'
             if(document.querySelector('.page-container'))
               document.querySelector('.page-container').style.display = 'block'
           } 
@@ -417,6 +425,15 @@
 
             });
       },
+      gotoExternal(){
+        this.$Message.success({content:'Coming Soon.', duration:1});
+      }, 
+      gotoHelp(){
+        let routeData = this.$router.resolve({name:'markdownpage',params:{subpage:'crosslinking'}});
+        // http://localhost:8081/markdownpage/crosslinking
+        console.log('routeData',routeData)
+        window.open(routeData.href, '_blank');
+      }
     },
     computed:{
       //this variable is not used anymore and only for updating this.normalQuery;
