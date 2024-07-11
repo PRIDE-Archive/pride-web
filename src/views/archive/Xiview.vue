@@ -19,8 +19,8 @@
                                 <Icon type="md-open" size="18" style="margin-right: 5px;cursor: pointer;" @click="gotoExternal()" />  
                                 <Icon type="md-help-circle" size="19" style="margin-right: 5px;cursor: pointer;" @click="gotoHelp()"/>
                               </span>
-                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
-                              <Button slot="append" icon="ios-search" @click="queryXiviewData"></Button>
+                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="submitSearch">
+                              <Button slot="append" icon="ios-search" @click="submitSearch"></Button>
                               </Input>
                               <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
@@ -32,7 +32,7 @@
                           </div>
                           <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
                       </div>
-                      <div class="page-container">
+                      <div v-if="xiviewTableData.length > 0" class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
                       </div>
                   </Card>
@@ -165,7 +165,8 @@
                   sortable: false,
                   align:'left',
                   className: 'nobreak-cell',
-              },{
+              },
+              {
                   title: 'Publication',
                   key: 'pubmed_id',
                   width: 120,
@@ -192,7 +193,7 @@
                           }, params.row.pubmed_id),
                       ]);
                   },
-            },
+              },
               {
                   title: 'Organism',
                   key: 'organism',
@@ -263,7 +264,7 @@
                               on: {
                                   click: (value) => {
                                       // console.log(value)
-                                      console.log(params.row.link);
+                                      // console.log(params.row.link);
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.link)
                                      
@@ -285,7 +286,8 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      this.queryXiviewData();
+      this.updateCondition(to.query)
+      this.queryXiviewData(to.query)
       next();
     },
     components: {
@@ -297,13 +299,18 @@
       OverlapBar
     },
     methods:{
-      queryXiviewData(){
+      submitSearch(){
+        this.$router.push({name: 'Xiview', query: this.query});
+      },
+      queryXiviewData(q){
+           let query = q || this.$route.query;
+           console.log('query111',query)
            this.queryXiviewDataLoading = true;
            this.xiviewTableData=[]
            this.$http
-            .get(this.queryXiviewDataApi,{params: this.query})
+            .get(this.queryXiviewDataApi,{params: query})
             .then(function(res){
-              console.log('queryXiviewData',res.body)
+              // console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               let res_page = res.body.page
               let res_projects =  res.body.projects
@@ -370,11 +377,12 @@
       },
       xiviewPageChange(page){
           this.pageXiview = page;
-          this.queryXiviewData()
+          this.$router.push({name: 'Xiview', query: this.query});
       },  
       xiviewPageSizeChange(size){
           this.pageSizeXiview = size;
-          this.queryXiviewData()
+          console.log('xiviewPageSizeChange')
+          this.$router.push({name: 'Xiview', query: this.query});
       },
       xiviewTableFold(val){
           this.xiviewTableFoldBool = val
@@ -431,12 +439,29 @@
       gotoHelp(){
         let routeData = this.$router.resolve({name:'markdownpage',params:{subpage:'crosslinking'}});
         // http://localhost:8081/markdownpage/crosslinking
-        console.log('routeData',routeData)
+        // console.log('routeData',routeData)
         window.open(routeData.href, '_blank');
+      },
+      updateCondition(q){
+        let query = q || this.$route.query;
+        console.log('22222',query)
+        for(let i in query){
+              if(i == 'query')
+                 this.xiviewDataSearchKeyword = query[i]
+              else if(i =='page')
+                this.pageXiview = parseInt(query[i]);
+              else if(i =='page_size'){
+                  let tempPageSize = parseInt(query[i]);
+                  console.log('tempPageSize',tempPageSize)
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.pageSizeXiview = parseInt(query[i]);
+                  else 
+                    this.pageSizeXiview = 10;
+              }
+          }
       }
     },
     computed:{
-      //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
           let normalQuery = {}
           normalQuery.query = this.xiviewDataSearchKeyword;
@@ -446,13 +471,11 @@
         }
     },
     mounted: function(){
+        this.updateCondition()
         this.queryXiviewData()
         this.queryBarHorizontal()
         this.queryPieXiview()
         this.queryOverlapBar()
-
-
-        // this.queryAreaPieXiview()
     }
   }
 </script>
