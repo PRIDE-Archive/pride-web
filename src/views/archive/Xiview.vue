@@ -435,7 +435,7 @@
             });
       },
       gotoExternal(){
-        this.$Message.success({content:'Coming Soon.', duration:1});
+        window.open("https://www.ebi.ac.uk/pride/archive?keyword=crosslinking,cross-linking&sortDirection=DESC&page=0&pageSize=40", '_blank');
       }, 
       gotoHelp(){
         let routeData = this.$router.resolve({name:'markdownpage',params:{subpage:'crosslinking'}});
@@ -446,7 +446,6 @@
       updateCondition(q){
         let tempQuery = q || this.$route.query;
         let query = this.formatQuery(tempQuery)
-        console.log('22222',query)
         for(let i in query){
               if(i == 'query')
                  this.xiviewDataSearchKeyword = query[i]
