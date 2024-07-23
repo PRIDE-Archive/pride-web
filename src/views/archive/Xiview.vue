@@ -441,7 +441,6 @@
                     page:0,
                     pageSize:20
                   }
-                  this.$router.push({name: 'archive', query: query});
         let routeData = this.$router.resolve({name:'archive',query:query});
         window.open(routeData.href, '_blank');
         //window.open("https://www.ebi.ac.uk/pride/archive?keyword=crosslinking,cross-linking&sortDirection=DESC&page=0&pageSize=40", '_blank');
