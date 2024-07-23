@@ -303,7 +303,8 @@
         this.$router.push({name: 'Xiview', query: this.query});
       },
       queryXiviewData(q){
-           let query = q || this.$route.query;
+           let tempQuery = q || this.$route.query;
+           let query = this.formatQuery(tempQuery)
            console.log('query111',query)
            this.queryXiviewDataLoading = true;
            this.xiviewTableData=[]
@@ -459,14 +460,26 @@
                     this.pageSizeXiview = 10;
               }
           }
+      },
+      formatQuery(q){
+        let normalQuery = {}
+        normalQuery.query = q.keyword;
+        // normalQuery.sortDirection = q.sortDirection
+        normalQuery.page = q.page;
+        normalQuery.page_size = q.pageSize;
+        return normalQuery
       }
     },
     computed:{
       query:function(){
           let normalQuery = {}
-          normalQuery.query = this.xiviewDataSearchKeyword;
+          normalQuery.keyword = this.xiviewDataSearchKeyword;
+          normalQuery.sortDirection = 'DESC';
           normalQuery.page = this.pageXiview;
-          normalQuery.page_size = this.pageSizeXiview;
+          normalQuery.pageSize = this.pageSizeXiview;
+          // normalQuery.query = this.xiviewDataSearchKeyword;
+          // normalQuery.page = this.pageXiview;
+          // normalQuery.page_size = this.pageSizeXiview;
           return normalQuery;  
         }
     },
