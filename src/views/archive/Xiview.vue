@@ -444,7 +444,8 @@
         window.open(routeData.href, '_blank');
       },
       updateCondition(q){
-        let query = q || this.$route.query;
+        let tempQuery = q || this.$route.query;
+        let query = this.formatQuery(tempQuery)
         console.log('22222',query)
         for(let i in query){
               if(i == 'query')
