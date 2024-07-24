@@ -151,8 +151,9 @@
                                   click: () => {
                                       let routeData = this.$router.resolve({name:'crosslinking',params:{id:params.row.accession}});
                                       // console.log('routeData',routeData)
-                                      window.open(routeData.href, '_blank');
-                                      // this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
+                                       // window.open(routeData.href, '_blank');
+                                      console.log('routeData.href',routeData.href)
+                                      this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
                                   }
                               }
                           }, params.row.accession),
@@ -287,7 +288,11 @@
     },
     beforeRouteUpdate:function (to, from, next) {
       this.updateCondition(to.query)
-      this.queryXiviewData(to.query)
+      //make sure the dom is rendered before we deal with the dom Data
+      this.$nextTick(() => {
+        this.queryXiviewData(to.query)
+      });
+    
       next();
     },
     components: {
@@ -305,7 +310,8 @@
       queryXiviewData(q){
            let tempQuery = q || this.$route.query;
            let query = this.formatQuery(tempQuery)
-           console.log('query111',query)
+           // console.log('tempQuery',tempQuery)
+           // console.log('tempQuery',query)
            this.queryXiviewDataLoading = true;
            this.xiviewTableData=[]
            this.$http
@@ -382,7 +388,6 @@
       },  
       xiviewPageSizeChange(size){
           this.pageSizeXiview = size;
-          console.log('xiviewPageSizeChange')
           this.$router.push({name: 'Xiview', query: this.query});
       },
       xiviewTableFold(val){
@@ -452,7 +457,7 @@
         window.open(routeData.href, '_blank');
       },
       updateCondition(q){
-        let tempQuery = q || this.$route.query;
+        let tempQuery = q || this.$route.query; 
         let query = this.formatQuery(tempQuery)
         for(let i in query){
               if(i == 'query')
@@ -461,7 +466,7 @@
                 this.pageXiview = parseInt(query[i]);
               else if(i =='page_size'){
                   let tempPageSize = parseInt(query[i]);
-                  console.log('tempPageSize',tempPageSize)
+                  // console.log('tempPageSize',tempPageSize)
                   if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
                     this.pageSizeXiview = parseInt(query[i]);
                   else 
@@ -470,6 +475,8 @@
           }
       },
       formatQuery(q){
+        if(Object.keys(q).length == 0)
+          return null
         let normalQuery = {}
         normalQuery.query = q.keyword;
         // normalQuery.sortDirection = q.sortDirection
