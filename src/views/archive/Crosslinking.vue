@@ -14,7 +14,7 @@
                 <template v-if="true">
                     <div class="card-item-wrapper">
                         <div class="summary-content-header">Project ID</div>
-                        <a style="border-bottom-style:dotted" @click="gotoDetails(accession)">{{accession}}</a><Icon type="md-open" size="18" style="margin-left: 5px;cursor: pointer;" @click="gotoExternal()" />
+                        <a style="border-bottom-style:dotted" @click="gotoDetails(accession)">{{accession}}</a><Icon type="md-stats" size="18" style="margin-left: 5px;cursor: pointer;" @click="gotoExternal(accession)" />
                     </div>
                     <div class="card-item-wrapper">
                         <div class="summary-content-header" style="margin-top: 20px">Title</div>
@@ -325,15 +325,9 @@
       gotoPubmed(id){
           window.open('http://europepmc.org/article/MED/' + id)
       },
-      gotoExternal(){
-        let query = {
-          keyword:'crosslinking,cross-linking',
-          sortDirection:'DESC',
-          page:0,
-          pageSize:20
-        }
-        let routeData = this.$router.resolve({name:'archive',query:query});
-        window.open(routeData.href, '_blank');
+      gotoExternal(accession){
+        let href = "https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=" + accession;
+        window.open(href, '_blank');
         //window.open("https://www.ebi.ac.uk/pride/archive?keyword=crosslinking,cross-linking&sortDirection=DESC&page=0&pageSize=40", '_blank');
       }, 
     },
