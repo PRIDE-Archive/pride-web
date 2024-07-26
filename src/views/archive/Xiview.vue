@@ -15,10 +15,6 @@
                             Crosslinking datasets
                           </span>
                           <span v-if="true" class="right">
-                              <span class="icon-wrapper">
-                                <!-- <Icon type="md-open" size="18" style="margin-right: 5px;cursor: pointer;" @click="gotoExternal()" />   -->
-                                <Icon type="md-help-circle" size="19" style="margin-right: 5px;cursor: pointer;" @click="gotoHelp()"/>
-                              </span>
                               <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="submitSearch">
                               <Button slot="append" icon="ios-search" @click="submitSearch"></Button>
                               </Input>
@@ -34,7 +30,10 @@
                       </div>
                       <div v-if="xiviewTableData.length > 0" class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
-                         <a style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px;}" @click="gotoExternal()">Other crosslinking datasets in PRIDE</a>
+                         <div style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px; display: flex; align-items: center;">
+                            <a @click="gotoExternal()">Partial crosslinking datasets in PRIDE</a>
+                            <Icon type="md-help-circle" size="19" style="margin-left: 5px; cursor: pointer;" @click="gotoHelp()"/>
+                         </div>
                       </div>
                   </Card>
                 </div>
