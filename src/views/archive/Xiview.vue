@@ -30,11 +30,10 @@
                       </div>
                       <div v-if="xiviewTableData.length > 0" class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
-                         <a style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px;}" @click="gotoExternal()">Partial crosslinking datasets in PRIDE</a>
-                        <span class="icon-wrapper">
-                                <!-- <Icon type="md-open" size="18" style="margin-right: 5px;cursor: pointer;" @click="gotoExternal()" />   -->
-                          <Icon type="md-help-circle" size="19" style="margin-right: 5px;cursor: pointer;" @click="gotoHelp()"/>
-                        </span>
+                         <div style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px; display: flex; align-items: center;">
+                            <a @click="gotoExternal()">Partial crosslinking datasets in PRIDE</a>
+                            <Icon type="md-help-circle" size="19" style="margin-left: 5px; cursor: pointer;" @click="gotoHelp()"/>
+                         </div>
                       </div>
                   </Card>
                 </div>
