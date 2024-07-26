@@ -34,7 +34,7 @@
                       </div>
                       <div v-if="xiviewTableData.length > 0" class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
-                         <a style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px;}" @click="gotoExternal()">Other crosslinking datasets in PRIDE</a>
+                         <a style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px;}" @click="gotoExternal()">Partial crosslinking datasets in PRIDE</a>
                       </div>
                   </Card>
                 </div>
