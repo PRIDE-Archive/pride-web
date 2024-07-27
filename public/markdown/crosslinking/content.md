@@ -29,7 +29,7 @@ While multiple tools can be used to analyze crosslinking data, only the followin
 - [xiSEARCH and xiFDR](https://www.rappsilberlab.org/software/xisearch/): xiSEARCH is a library of routines for peptide-based mass spectrometry, prominently featuring a search engine for identifying crosslinked peptides. xiFDR is a tool for calculating false discovery rates for crosslinked peptides. [Example dataset: PXD019437](https://www.ebi.ac.uk/pride/archive/projects/PXD019437)
 - [Scout](https://github.com/diogobor/Scout): Scout is a computational methodology that facilitates interactomic analysis by identifying mass spectra of peptides linked with cleavable cross-linking reagents. Utilizing machine learning techniques, Scout ensures a controlled false discovery rate (FDR) at multiple levels, including cross-linked spectrum matches, residue pairs, and protein-protein interactions (PPIs).
 
-> Note: If you have used a different tool to analyze your crosslinking data, please contact the PRIDE team at pride-support@ebi.ac.uk to discuss the possibility of submitting your data to the PRIDE crosslinking resource.
+> Note: If you have used a different tool to analyze your crosslinking data, and you are not able to perform a complete submission following the previous guidelines, please contact the PRIDE team at pride-support@ebi.ac.uk.
 
 
 
