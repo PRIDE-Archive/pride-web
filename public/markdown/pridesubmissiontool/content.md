@@ -130,4 +130,6 @@ This is the actual step when all your files are uploaded to PRIDE (as part of Pr
 
 By default, the submission Tool (since version 2.1) is using the faster Aspera upload transfer protocol with which terabytes can be potentially transferred within a day. Aspera functionality usually provides much faster file transfer speeds than FTP (typically up to 50 times). Should there be any issues with the Aspera upload (probably due to the Internet/ data transfer local settings in your Institute/University), the tool will automatically try to perform the file upload using FTP or manually change to FTP when upload fails with Aspera by clicking back button and click FTP.
 
+![Change Upload Method](../markdown/pridesubmissiontool/files/change-aspera-ftp.png)
+
 You will be also issued with a temporary submission reference to help us to quickly identify and track your submission should you have any questions. **This is not the final PXD dataset identifier**.
