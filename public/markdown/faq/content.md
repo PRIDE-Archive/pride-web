@@ -51,6 +51,10 @@ Please check for the permission of the folder where you have your PRIDE submissi
 
 If you can login to PRIDE web then you should be able to login to submission tool. Try deleting the history/cache and reinstall the submission tool.
 
+### How to change Aspera to FTP manually on px submission tool
+
+PX tool has the option on the step 9 to change Aspera to FTP. If you are stuck/ failed with the submission of the dataset via Aspera, click the back option and then click on FTP and submit the data again.
+
 ### Where can I find the log file in submission tool
 
 Log file can be found inside the submission tool ->log folder
