@@ -22,12 +22,13 @@ Crosslinking data submitted to PRIDE will receive complete submission status whe
 
 3. Doesn’t support the “combined spectra file type” from mzIdentML 1.2.0
 
-## Tools Supporting PRIDE Crosslinking Data Submission
+## Tools tested in PRIDE crosslinking resource
 
-While multiple tools can be used to analyze crosslinking data, only the following tools have been tested and produce valid files that can be loaded into the PRIDE crosslinking resource:
+While multiple tools can be used to analyze crosslinking data, only the following tools have been tested and produce valid files that can be loaded into the [PRIDE crosslinking resource](https://www.ebi.ac.uk/pride/archive/crosslinking):
 
 - [xiSEARCH and xiFDR](https://www.rappsilberlab.org/software/xisearch/): xiSEARCH is a library of routines for peptide-based mass spectrometry, prominently featuring a search engine for identifying crosslinked peptides. xiFDR is a tool for calculating false discovery rates for crosslinked peptides. [Example dataset: PXD019437](https://www.ebi.ac.uk/pride/archive/projects/PXD019437)
-- [Scout](https://github.com/diogobor/Scout): Scout is a computational methodology that facilitates interactomic analysis by identifying mass spectra of peptides linked with cleavable cross-linking reagents. Utilizing machine learning techniques, Scout ensures a controlled false discovery rate (FDR) at multiple levels, including cross-linked spectrum matches, residue pairs, and protein-protein interactions (PPIs).
+- [Scout](https://github.com/diogobor/Scout): Scout is a computational methodology that facilitates interactomic analysis by identifying mass spectra of peptides linked with cleavable cross-linking reagents. Utilizing machine learning techniques, Scout ensures a controlled false discovery rate (FDR) at multiple levels, including cross-linked spectrum matches, residue pairs, and protein-protein interactions (PPIs). [Example dataset: PXD042173](https://www.ebi.ac.uk/pride/archive/projects/PXD042173)
+- [Mascot](https://www.matrixscience.com/): Mascot is a powerful search engine and proteomics analysis sofware that uses mass spectrometry data to identify proteins from primary sequence databases. [Example dataset: PXD054720](https://www.ebi.ac.uk/pride/archive/projects/PXD054720)
 
 > Note: If you have used a different tool to analyze your crosslinking data, and you are not able to perform a complete submission following the previous guidelines, please contact the PRIDE team at pride-support@ebi.ac.uk.
 
