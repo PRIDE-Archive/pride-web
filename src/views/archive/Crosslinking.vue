@@ -65,8 +65,8 @@
     name: 'archive',
     data(){
       return {
-         queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/',
-         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/'+this.$route.params.id+'/proteins',
+         queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects/',
+         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects/'+this.$route.params.id+'/proteins',
          preteinKeyword:'',
          xiviewDataTableFoldBool:false,
          accession: '',
