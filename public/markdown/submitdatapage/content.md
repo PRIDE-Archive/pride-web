@@ -1,8 +1,8 @@
 ## How to submit data to PRIDE
 
-PRIDE welcomes direct user submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
+PRIDE welcomes submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
-The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf). This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf) and Globus [check the full documentation](../markdown/globus/content.md), an alternate way to submit data to PRIDE. This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
 ## What happens to my data after upload
  
@@ -10,7 +10,7 @@ The current way of submitting data to PRIDE is using the PRIDE Submission tool [
  - Important information: Your submission reference is not the final dataset accession number.
  - Standard procedure once your dataset is uploaded to PRIDE -
  - 1st Step – A curator will perform an initial assessment of the dataset including PRIDE Validation pipeline. Initial checks involve checking the metadata, type of submission
- - 2nd Step – If data validation is successful, the submission is performed. The submitter gets an e-mail including the dataset identifier and reviewer’s credentials
+ - 2nd Step – If data validation is successful, the submission is performed. The submitter gets an e-mail including the dataset identifier (PXD000000) and reviewer’s credentials
  - Please note, PRIDE receives high numbers of submitted datasets every day, so the processing of your dataset can take up to 5 working days, although it may happen earlier than that.
 
 
@@ -18,7 +18,7 @@ The following [open access publication](https://onlinelibrary.wiley.com/doi/full
 
 ## Register as a user in PRIDE
 
-Before submitting to PRIDE database the user need to be sure that it has an account with PRIDE resource. If you don't have already a PRIDE account, please create one [here](https://www.ebi.ac.uk/pride/register). Currently we don't send out automatic emails upon successful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
+Before submitting to PRIDE database the user need to register an account with PRIDE resource. If you don't have a PRIDE account, please create one [here](https://www.ebi.ac.uk/pride/register). Currently we don't send out automatic emails upon successful registration. Please contact pride-support@ebi.ac.uk if your login information is not valid after 24 hours following registration.
 
 ## What constitutes a PRIDE dataset?
 
@@ -113,11 +113,10 @@ During the review process of the manuscript, the user may want to modify their d
 - In the PRIDE user profile, the user can modify the title, description, and other fields from the metadata. 
 - Using the PRIDE Submission Tool, the user can perform a resubmission which allows to add, modify or remove files from the private submission. 
 
-### How can I upload a big dataset? 
+### How can I upload a large dataset? 
 
-For big submissions, we suggest generating the submission.px file, which includes the list of files and submission metadata, through the PRIDE Submission Tool. Following this, save the submission.px file to your local computer. Then, we recommend reaching out to the PRIDE support team to obtain an FTP account and dedicated folder for uploading your files, including the submission.px and checksum. Once you've secured access, you can employ your preferred FTP or Aspera client to transfer your data. Once all the data is successfully uploaded, please contact the PRIDE team to initiate the submission process.
+For large submissions, we suggest "Globus" which is an alternate tool to upload large datasets to the PRIDE database.
 
-**Note**: It is important to note that big submissions these recommendations depend on your internet connection and the size of the dataset. On average, for submissions less than 1 terabyte, we recommend using the PRIDE Submission Tool. For submissions bigger than 1 terabyte, we recommend using the FTP/Aspera client.
-
+[check the full documentation](../markdown/globus/content.md)
 
 

@@ -33,7 +33,7 @@ There are several factors that may cause the PRIDE Submission Tool to encounter 
 
 ### How to switch the PRIDE Submission Tool from Aspera to FTP?
 
-Should there be problems with the Aspera upload submitters can switch to the slower FTP file transfer protocol by changing the ‘px.upload.protocol = aspera’ line to ‘px.upload.protocol = ftp’ in the plain config.props text file located in the ‘config’ subdirectory in the PRIDE Submission Tool’s working directory.
+If there is any issues with the Aspera upload (probably due to the Internet/ data transfer local settings in your Institute/University), the tool will automatically try to perform the file upload using FTP or manually change to FTP when upload fails with Aspera by clicking back button and click FTP, submit the data again to the PRIDE database.
 
 ### Aspera does not connect
 
@@ -46,7 +46,7 @@ Ensure that the following port allows outbound traffic on your router, firewall,
 
 Please confirm that you can log into the main PRIDE website with your account:
 [http://www.ebi.ac.uk/pride/archive/login](http://www.ebi.ac.uk/pride/archive/login)
-Perhaps you can try changing your password, and then trying again.
+Perhaps you can try changing your password, and then try again.
 
 ### How to export the summary and checksum file with the PRIDE Submission Tool?
 
