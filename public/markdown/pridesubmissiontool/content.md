@@ -18,7 +18,7 @@ Below are the steps for using the PRIDE submission tool or PX tool
 
 ## Login Panel
 
-The first step to submit a dataset to PRIDE Archive is to log into PRIDE using an existing account as shown:
+To submit a dataset to PRIDE Archive, log into PRIDE using an existing account with email and password as shown:
 
 </br>
 
@@ -36,7 +36,7 @@ Additionally, users have to pick a mass spectrometry experiment type from a drop
 
 ## Add Files and assign file types
 
-In this stage, you should choose the files to be submitted. Files can be added by clicking on the highlighted button.
+In this stage, you should choose the files to be submitted. Files can be added by clicking on the "Add files" button on the top left side of px tool, highlighted.
 
 Note : It is recommended to name your file in a self descriptive way, for instance : experimentname_samplename_replicates_fractions. We only accept A-Za-z0-9_. in file names. Please remove any other special characters from your file name.
 
@@ -104,6 +104,7 @@ If that’s the case, you have to select the OLS (Ontology Lookup Service) panel
 ## Last steps
 
 ### Providing contact details for the Lab Head
+As shown in the image below provide your lab head name, email and the affiliation which includes department, institute and country
 
 ![Add Lab Head](../markdown/pridesubmissiontool/files/la-head.png)
  
