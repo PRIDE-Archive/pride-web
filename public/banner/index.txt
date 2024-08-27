@@ -1,5 +1,1 @@
-<p>
-Scheduled Maintenance from 20-August-2024 08:00 AM to 22-August-2024 12:00 PM BST (UK Time).
-<br/> During this time logging in submitting new data, publishing and all actions related to private data and user profiles will be unavailable.
-<br/> Browsing public data won't be affected.
-</p>
+
