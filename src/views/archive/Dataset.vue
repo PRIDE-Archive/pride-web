@@ -903,7 +903,7 @@
           license:'',
           filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
           filesNumber:'',
-          visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/data/visualisations/',
+          visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/data/visualisations/',
           visualisationTableShow:false
       }
     },

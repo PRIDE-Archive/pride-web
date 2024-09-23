@@ -12,7 +12,7 @@ It is recommended to name your file in a self descriptive way, for instance : ex
 
 Login to your PRIDE web account, go to your profile and select your private dataset. On the right-hand corner of the screen, you can see the ‘Transfer Ownership’ tab. There you can provide your new (submitter’s)email id which must be registered with PRIDE.
 
-### How can I publish my private dataset in PRIDE?
+### How do I publish my private dataset in PRIDE?
 
 - Login to your PRIDE web account and go to profile and select your private dataset. On the right-hand corner of the screen, you can see the ‘Publish’ tab. You can provide the details there.
 - Please fill in either PubmedID or DOI by selecting the correct option from dropdown and submit
@@ -24,7 +24,7 @@ For now, NO, but in the future. Please follow PRIDE on Twitter or PRIDE web for 
 
 ### What is the current version of PRIDE submission tool?
 
-2.7.3
+2.8.0
 
 ### I am not able to use PRIDE Inspector tool?
 
@@ -50,6 +50,10 @@ Please check for the permission of the folder where you have your PRIDE submissi
 ### I am unable to login to PRIDE submission tool
 
 If you can login to PRIDE web then you should be able to login to submission tool. Try deleting the history/cache and reinstall the submission tool.
+
+### How to change Aspera to FTP manually on px submission tool
+
+PX tool has the option on the step 9 to change Aspera to FTP. If you are stuck/ failed with the submission of the dataset via Aspera, click the back option and then click on FTP and submit the data again.
 
 ### Where can I find the log file in submission tool
 

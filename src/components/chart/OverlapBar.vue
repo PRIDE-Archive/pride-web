@@ -71,7 +71,7 @@ export default {
   },
   methods:{
       setOptions(data){
-        console.log('OverlapBar',data)
+        // console.log('OverlapBar',data)
         // let pieData = []
         // for(let i in data){
         //     let item = {}

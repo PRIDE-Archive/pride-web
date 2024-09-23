@@ -15,8 +15,8 @@
                             Crosslinking datasets
                           </span>
                           <span v-if="true" class="right">
-                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="queryXiviewData">
-                              <Button slot="append" icon="ios-search" @click="queryXiviewData"></Button>
+                              <Input v-if ="!xiviewTableFoldBool" type="text" v-model="xiviewDataSearchKeyword" placeholder="" size="small" @on-enter="submitSearch">
+                              <Button slot="append" icon="ios-search" @click="submitSearch"></Button>
                               </Input>
                               <a v-if="xiviewTableFoldBool" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="20" @click="xiviewTableFold(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="xiviewTableFold(true)"></Icon></a>
@@ -28,8 +28,12 @@
                           </div>
                           <Table v-if ="true" row-key="id" class="xiview-table" :loading="queryXiviewDataLoading" border :columns="xiviewTableCol" :data="xiviewTableData" size="small"></Table>
                       </div>
-                      <div class="page-container">
+                      <div v-if="xiviewTableData.length > 0" class="page-container">
                          <Page :total="totalXiviewData" :page-size="pageSizeXiview" :current="pageXiview" size="small" show-sizer show-total @on-change="xiviewPageChange" @on-page-size-change="xiviewPageSizeChange"></Page>
+                         <div style="position: absolute;right: 0;bottom: 3px; color:gray; font-size: 13px; display: flex; align-items: center;">
+                            <a @click="gotoExternal()">Partial crosslinking datasets in PRIDE</a>
+                            <Icon type="md-help-circle" size="19" style="margin-left: 5px; cursor: pointer;" @click="gotoHelp()"/>
+                         </div>
                       </div>
                   </Card>
                 </div>
@@ -102,11 +106,11 @@
     name: 'xview',
     data(){
       return {
-          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects',
-          barHorizontalApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/peptide-per-protein',
-          pieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects-per-species',
-          areaPieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/statistics-count',
-          // projectSearchApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/search?query=PXD038060&page=1&page_size=10'
+          queryXiviewDataApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects',
+          barHorizontalApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/peptide-per-protein',
+          pieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects-per-species',
+          areaPieXiviewApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/statistics-count',
+          // projectSearchApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects/search?query=PXD038060&page=1&page_size=10'
           bannerContent:"The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab, PRIDE and PDB teams",
           // queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           logoURL:'/logo/xiview_logo_horizon_1.png',
@@ -145,10 +149,11 @@
                               },
                               on: {
                                   click: () => {
-                                      // this.$Message.success({content:'Coming Soon.', duration:1});
+                                      let routeData = this.$router.resolve({name:'crosslinking',params:{id:params.row.accession}});
+                                      // console.log('routeData',routeData)
+                                       // window.open(routeData.href, '_blank');
+                                      console.log('routeData.href',routeData.href)
                                       this.$router.push({name:'crosslinking',params:{id:params.row.accession}});
-                                      // this.$router.push({name: 'crosslinking', query: {id:params.row.accession}});
-                                      // window.open('http://europepmc.org/article/MED/' + params.row.accession)
                                   }
                               }
                           }, params.row.accession),
@@ -161,7 +166,8 @@
                   sortable: false,
                   align:'left',
                   className: 'nobreak-cell',
-              },{
+              },
+              {
                   title: 'Publication',
                   key: 'pubmed_id',
                   width: 120,
@@ -188,7 +194,7 @@
                           }, params.row.pubmed_id),
                       ]);
                   },
-            },
+              },
               {
                   title: 'Organism',
                   key: 'organism',
@@ -259,7 +265,7 @@
                               on: {
                                   click: (value) => {
                                       // console.log(value)
-                                      console.log(params.row.link);
+                                      // console.log(params.row.link);
                                       //window.location.href = params.row.url.ftp;
                                       window.open(params.row.link)
                                      
@@ -281,7 +287,12 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      this.queryXiviewData();
+      this.updateCondition(to.query)
+      //make sure the dom is rendered before we deal with the dom Data
+      this.$nextTick(() => {
+        this.queryXiviewData(to.query)
+      });
+    
       next();
     },
     components: {
@@ -293,13 +304,20 @@
       OverlapBar
     },
     methods:{
-      queryXiviewData(){
+      submitSearch(){
+        this.$router.push({name: 'Xiview', query: this.query});
+      },
+      queryXiviewData(q){
+           let tempQuery = q || this.$route.query;
+           let query = this.formatQuery(tempQuery)
+           // console.log('tempQuery',tempQuery)
+           // console.log('tempQuery',query)
            this.queryXiviewDataLoading = true;
            this.xiviewTableData=[]
            this.$http
-            .get(this.queryXiviewDataApi,{params: this.query})
+            .get(this.queryXiviewDataApi,{params: query})
             .then(function(res){
-              console.log('queryXiviewData',res.body)
+              // console.log('queryXiviewData',res.body)
               this.queryXiviewDataLoading = false;
               let res_page = res.body.page
               let res_projects =  res.body.projects
@@ -366,23 +384,27 @@
       },
       xiviewPageChange(page){
           this.pageXiview = page;
-          this.queryXiviewData()
+          this.$router.push({name: 'Xiview', query: this.query});
       },  
       xiviewPageSizeChange(size){
           this.pageSizeXiview = size;
-          this.queryXiviewData()
+          this.$router.push({name: 'Xiview', query: this.query});
       },
       xiviewTableFold(val){
           this.xiviewTableFoldBool = val
           if(this.xiviewTableFoldBool){
             if(document.querySelector('.xiview-table'))
               document.querySelector('.xiview-table').style.display = 'none'
+            if(document.querySelector('.icon-wrapper'))
+              document.querySelector('.icon-wrapper').style.display = 'none'
             if(document.querySelector('.page-container'))
               document.querySelector('.page-container').style.display = 'none'
           }
           else{
             if(document.querySelector('.xiview-table'))
               document.querySelector('.xiview-table').style.display = 'block'
+            if(document.querySelector('.icon-wrapper'))
+              document.querySelector('.icon-wrapper').style.display = 'inline-block'
             if(document.querySelector('.page-container'))
               document.querySelector('.page-container').style.display = 'block'
           } 
@@ -417,25 +439,71 @@
 
             });
       },
+      gotoExternal(){
+        let query = {
+                    keyword:'crosslinking,cross-linking',
+                    sortDirection:'DESC',
+                    page:0,
+                    pageSize:20
+                  }
+        let routeData = this.$router.resolve({name:'archive',query:query});
+        window.open(routeData.href, '_blank');
+        //window.open("https://www.ebi.ac.uk/pride/archive?keyword=crosslinking,cross-linking&sortDirection=DESC&page=0&pageSize=40", '_blank');
+      }, 
+      gotoHelp(){
+        let routeData = this.$router.resolve({name:'markdownpage',params:{subpage:'crosslinking'}});
+        // http://localhost:8081/markdownpage/crosslinking
+        // console.log('routeData',routeData)
+        window.open(routeData.href, '_blank');
+      },
+      updateCondition(q){
+        let tempQuery = q || this.$route.query; 
+        let query = this.formatQuery(tempQuery)
+        for(let i in query){
+              if(i == 'query')
+                 this.xiviewDataSearchKeyword = query[i]
+              else if(i =='page')
+                this.pageXiview = parseInt(query[i]);
+              else if(i =='page_size'){
+                  let tempPageSize = parseInt(query[i]);
+                  // console.log('tempPageSize',tempPageSize)
+                  if(tempPageSize == 10 || tempPageSize == 20 || tempPageSize == 30 || tempPageSize == 40)
+                    this.pageSizeXiview = parseInt(query[i]);
+                  else 
+                    this.pageSizeXiview = 10;
+              }
+          }
+      },
+      formatQuery(q){
+        if(Object.keys(q).length == 0)
+          return null
+        let normalQuery = {}
+        normalQuery.query = q.keyword;
+        // normalQuery.sortDirection = q.sortDirection
+        normalQuery.page = q.page;
+        normalQuery.page_size = q.pageSize;
+        return normalQuery
+      }
     },
     computed:{
-      //this variable is not used anymore and only for updating this.normalQuery;
       query:function(){
           let normalQuery = {}
-          normalQuery.query = this.xiviewDataSearchKeyword;
+          normalQuery.keyword = this.xiviewDataSearchKeyword;
+          normalQuery.sortDirection = 'DESC';
           normalQuery.page = this.pageXiview;
-          normalQuery.page_size = this.pageSizeXiview;
+          normalQuery.pageSize = this.pageSizeXiview;
+          // normalQuery.query = this.xiviewDataSearchKeyword;
+          // normalQuery.page = this.pageXiview;
+          // normalQuery.page_size = this.pageSizeXiview;
           return normalQuery;  
         }
     },
     mounted: function(){
+        this.updateCondition()
         this.queryXiviewData()
         this.queryBarHorizontal()
         this.queryPieXiview()
         this.queryOverlapBar()
-
-
-        // this.queryAreaPieXiview()
     }
   }
 </script>
@@ -516,6 +584,7 @@
   .page-container{
     text-align: center;
     margin-top: 20px;
+    position: relative;
   }
   .title-wrapper{
     display: flex;

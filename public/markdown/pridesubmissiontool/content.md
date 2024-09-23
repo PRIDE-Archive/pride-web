@@ -18,7 +18,7 @@ Below are the steps for using the PRIDE submission tool or PX tool
 
 ## Login Panel
 
-The first step to submit a dataset to PRIDE Archive is to log into PRIDE using an existing account as shown:
+To submit a dataset to PRIDE Archive, log into PRIDE using an existing account with email and password as shown:
 
 </br>
 
@@ -36,7 +36,7 @@ Additionally, users have to pick a mass spectrometry experiment type from a drop
 
 ## Add Files and assign file types
 
-In this stage, you should choose the files to be submitted. Files can be added by clicking on the highlighted button.
+In this stage, you should choose the files to be submitted. Files can be added by clicking on the "Add files" button on the top left side of px tool, highlighted.
 
 Note : It is recommended to name your file in a self descriptive way, for instance : experimentname_samplename_replicates_fractions. We only accept A-Za-z0-9_. in file names. Please remove any other special characters from your file name.
 
@@ -104,6 +104,7 @@ If that’s the case, you have to select the OLS (Ontology Lookup Service) panel
 ## Last steps
 
 ### Providing contact details for the Lab Head
+As shown in the image below provide your lab head name, email and the affiliation which includes department, institute and country
 
 ![Add Lab Head](../markdown/pridesubmissiontool/files/la-head.png)
  
@@ -128,6 +129,8 @@ This is the last step before the file upload process actually starts. You should
 
 This is the actual step when all your files are uploaded to PRIDE (as part of ProteomeXchange). Once the upload is finished, an e-mail will be sent to you to confirm that all your files have been uploaded successfully and that they are waiting to be validated. If for any reason the tool crashes at this point, the Submission Tool can be restarted and the file upload will attempt to restart in the same point before it did.
 
-By default, the submission Tool (since version 2.1) is using the faster Aspera upload transfer protocol with which terabytes can be potentially transferred within a day. Aspera functionality usually provides much faster file transfer speeds than FTP (typically up to 50 times). Should there be any issues with the Aspera upload (probably due to the Internet/ data transfer local settings in your Institute/University), the tool will automatically try to perform the file upload using FTP.
+By default, the submission Tool (since version 2.1) is using the faster Aspera upload transfer protocol with which terabytes can be potentially transferred within a day. Aspera functionality usually provides much faster file transfer speeds than FTP (typically up to 50 times). Should there be any issues with the Aspera upload (probably due to the Internet/ data transfer local settings in your Institute/University), the tool will automatically try to perform the file upload using FTP or manually change to FTP when upload fails with Aspera by clicking back button and click FTP.
+
+![Change Upload Method](../markdown/pridesubmissiontool/files/change-aspera-ftp.png)
 
 You will be also issued with a temporary submission reference to help us to quickly identify and track your submission should you have any questions. **This is not the final PXD dataset identifier**.

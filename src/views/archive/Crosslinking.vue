@@ -14,7 +14,7 @@
                 <template v-if="true">
                     <div class="card-item-wrapper">
                         <div class="summary-content-header">Project ID</div>
-                        <a style="border-bottom-style:dotted" @click="gotoDetails(accession)">{{accession}}</a>
+                        <a style="border-bottom-style:dotted" @click="gotoDetails(accession)">{{accession}}</a><Icon type="md-stats" size="18" style="margin-left: 5px;cursor: pointer;" @click="gotoExternal(accession)" />
                     </div>
                     <div class="card-item-wrapper">
                         <div class="summary-content-header" style="margin-top: 20px">Title</div>
@@ -65,8 +65,8 @@
     name: 'archive',
     data(){
       return {
-         queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/',
-         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/projects/'+this.$route.params.id+'/proteins',
+         queryXiviewDataDetailApi: 'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects/',
+         queryProteinDetailsApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/projects/'+this.$route.params.id+'/proteins',
          preteinKeyword:'',
          xiviewDataTableFoldBool:false,
          accession: '',
@@ -324,7 +324,12 @@
       },
       gotoPubmed(id){
           window.open('http://europepmc.org/article/MED/' + id)
-      }
+      },
+      gotoExternal(accession){
+        let href = "https://www.ebi.ac.uk/pride/archive/xiview/network.html?project=" + accession;
+        window.open(href, '_blank');
+        //window.open("https://www.ebi.ac.uk/pride/archive?keyword=crosslinking,cross-linking&sortDirection=DESC&page=0&pageSize=40", '_blank');
+      }, 
     },
     computed:{
       query:function(){
