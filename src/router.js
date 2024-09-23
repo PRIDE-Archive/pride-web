@@ -64,6 +64,11 @@ export default new Router({
       component: Archive
     },
     {
+      path: '/archive/',
+      name: 'archive',
+      component: Archive
+    },
+    {
       path: '/relevant',
       name: 'relevant',
       component: Relevant
