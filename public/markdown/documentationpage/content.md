@@ -11,7 +11,6 @@
 - [PRIDE Archive Data Downloading](./pridefiledownload)
 - [How to submit complete crosslinking dataset](./crosslinking)
 - [Search PRIDE datasets in PRIDE Archive](./searchpridearchive)
-- [Miscellaneous queries](./misc)
 
 ## Tools Help Pages
 
