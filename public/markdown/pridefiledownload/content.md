@@ -2,12 +2,32 @@
 
 Once a given dataset has been publicly released it is accessible to all PRIDE users. The corresponding files can be downloaded from PRIDE using multiple mechanisms: 
 
-- **1) HTTPS download**: Data files can be downloaded using the HTTPS protocol. Each dataset directory is accessible via a unique URL (e.g. https://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001/).
-- **2) FTP download**: Data files can be downloaded using the FTP protocol. Each dataset directory is accessible via a unique URL (e.g. ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001/).
-- **3) Aspera download**: Data files can also be downloaded using the Aspera file transfer protocol. Each dataset directory is accessible via a unique URL.
-- **4) PRIDE Streaming API (Application Programming Interface)**: Finally, data files can be streamed using the pride-archive-downloader service (e.g. https://www.ebi.ac.uk/pride/ws/archive-file-downloader/swagger-ui/index.html). 
+- **1) Globus download**: Data files can be downloaded using the [Globus](https://app.globus.org/file-manager?origin_id=47772002-3e5b-4fd3-b97c-18cee38d6df2&origin_path=/pride-archive)
+- **2) HTTPS download**: Data files can be downloaded using the HTTPS protocol. Each dataset directory is accessible via a unique URL (e.g. https://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001/).
+- **3) FTP download**: Data files can be downloaded using the FTP protocol. Each dataset directory is accessible via a unique URL (e.g. ftp://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001/).
+- **4) Aspera download**: Data files can also be downloaded using the Aspera file transfer protocol. Each dataset directory is accessible via a unique URL.
+- **5) PRIDE Streaming API (Application Programming Interface)**: Finally, data files can be streamed using the pride-archive-downloader service (e.g. https://www.ebi.ac.uk/pride/ws/archive-file-downloader/swagger-ui/index.html). 
 
-## 1) Downloading Data using HTTPS
+## 1) Downloading Data using Globus
+This is recommended for:
+ * Downloading large datasets 
+ * For cases with connection issues, downloads will resume automatically when the connection recovers.
+
+### To download public files using Globus
+* Install and configure [Globus connect personal](https://docs.globus.org/globus-connect-personal/install/)
+* Go through [this Globus tutorial](https://docs.globus.org/guides/tutorials/manage-files/transfer-files/)
+* Login to the [Globus web](https://www.globus.org/)
+* Navigate to [FILE MANAGER](https://app.globus.org/file-manager)
+* Click on one of the `Collection` text box and search for `EMBL-EBI Public Data` collection OR [click this URL](https://app.globus.org/file-manager?origin_id=47772002-3e5b-4fd3-b97c-18cee38d6df2&two_pane=true)
+    * The path of the dataset will be : `/pride-archive/<year_of_publication>/<month_of_publication>/<PXD_accession>`
+      Example: `/pride-archive/2024/04/PXD014361/`
+* Click on the other `Collection` text box to select your collection (This is the one you created using Globus connect personal)
+    * You can find it under `Your Collections` tab.
+    * Make sure Globus connect personal application is running on your machine
+* Start transferring the files as mentioned the [Globus tutorial](https://docs.globus.org/guides/tutorials/manage-files/transfer-files/)
+
+
+## 2) Downloading Data using HTTPS
 
 The most common way to download files is using the HTTPS protocol. In the dataset page one can find the **Project FTP** link. This link will take users to the dataset folder in the FTP server. Also, one will find the **FTP** for each file in the dataset page.
 
@@ -26,7 +46,7 @@ Different tools can be used to download files using the HTTPS protocol. For exam
     wget https://ftp.pride.ebi.ac.uk/pride/data/archive/2012/03/PXD000001/TMT_Erwinia_1uLSike_Top10HCD_isol2_45stepped_60min_01.raw
 
 
-## 2) Downloading Data using FTP
+## 3) Downloading Data using FTP
 
 The other most common way and/or easiest way to download files in bulk is using FTP clients. 
 
@@ -43,11 +63,11 @@ Eg: One can download files through a web browser https://ftp.pride.ebi.ac.uk/pri
     Path: pride/data/archive/<year>/<month>/<accession>
     Username can be empty or in somecases, one need to explicitly provide "anonymous" as the username.
 
-## 3) Downloading Data using Aspera
+## 4) Downloading Data using Aspera
 
 Aspera is a client-server protocol for fast and secure file transfer. It is a high-speed file transfer protocol that uses a client-server model to transfer files. It is designed to transfer large files over long distances. **Aspera is the fastest way to donwload data from PRIDE.**
 
-### 3.1) Using the Aspera client Tool
+### 4.1) Using the Aspera client Tool
 
 The Aspera ascp command line client can be downloaded [here](https://www.ibm.com/support/fixcentral/swg/selectFixes?parent=ibm%7EOther%20software&product=ibm/Other+software/IBM+Aspera+Connect&release=4.1.3&platform=All&function=all).
 
@@ -63,7 +83,7 @@ The below command has to be used after the client has been installed:
 
 **Important Note**: `~/Applications/Aspera\ Connect.app/Contents/Resources/asperaweb_id_dsa.openssh` is the  private key file provided after installing Aspera, and `/pride/data/archive/2017/05/PXD005207/CDPK1_TP_10_R5.raw` is the public file path for the file. 
 
-### 3.2) Using the Aspera Docker Image
+### 4.2) Using the Aspera Docker Image
 
 Aspera client can also be executed using the [IBM aspera client docker container](https://hub.docker.com/r/ibmcom/aspera-cli). A pre-requisite to use this container is to have Docker installed in your machine [help here](https://docs.docker.com/install/).
 
@@ -77,7 +97,7 @@ To download one file, the Docker image can be executed using the following comma
 
 **Important Note**: `/user/data/folder` is the local folder where the file will be downloaded. `/home/aspera/.aspera/cli/etc/asperaweb_id_dsa.openssh` is the  private key file provided after installing Aspera, and `/pride/data/archive/2017/02/PXD004683/20150820_Haura-Pilot-TMT2-bRPLC06-2.raw` is the public file path for the file.
 
-## 4) Downloading Data using the PRIDE Streaming API
+## 5) Downloading Data using the PRIDE Streaming API
 
 The PRIDE Streaming API is a RESTful API that allows users to download data from PRIDE. The API only has one endpoint that can be used to download files. The endpoint is:
 
