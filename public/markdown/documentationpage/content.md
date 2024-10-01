@@ -26,9 +26,6 @@
 ## Submit data using Globus
 - [Submit data using Globus](./globus)
 
-## Download data using Globus
-- [Download data using Globus](./globusdownload)
-
 ## FAQ
 
 - [FAQ](./faq)
