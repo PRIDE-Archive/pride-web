@@ -190,7 +190,8 @@
                               <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchFile">
                                   <Button slot="append" icon="ios-search" @click="searchFile"></Button>
                               </Input>
-                              <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
+                              <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.ftp)">FTP</Button>
+                              <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.globus)">GLOBUS</Button>
                           </span>
                         </p>
 
@@ -445,10 +446,13 @@
           projectTags:[],
           softwares:[],
           modification:[],
+          //*****
           //queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
           queryArchiveProjectApi: this.$store.state.baseApiURL_new + '/projects',
           //queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL_new + '/projects',
+          queryFilePathApi: this.$store.state.baseApiURL_new + '/projects/files-path',
+          //*******
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           doiApi:'https://dx.doi.org/',
@@ -881,7 +885,10 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
-          projectDownload:'',
+          projectDownload:{
+            ftp:'',
+            globus:''
+          },
           fileName:'',
           sdrfTableCollapse:true,
           sdrfTableLoading:false,
@@ -928,6 +935,23 @@
       svgLogo
     },
     methods:{
+      queryFilePath(id){
+          // this.queryProjectDetailsLoading = true;
+           var id = id || this.$route.params.id;
+           this.$http
+            .get(this.queryFilePathApi + '/' +id)
+            .then(function(res){
+                this.projectDownload.ftp = res.body.ftp || ''
+                this.projectDownload.globus = res.body.globus || ''
+            },function(err){
+                // this.queryProjectDetailsLoading = false;
+                // if(err.bodyText.match('not in the database')){
+                   
+                // }
+                // else
+                //   this.$Message.error({content:'No results', duration:3});
+            });
+      },
       queryProjectDetails(id){
            this.queryProjectDetailsLoading = true;
            var id = id || this.$route.params.id;
@@ -953,7 +977,6 @@
                 this.experimentTypes = res.body.experimentTypes || [];
                 this.projectTags = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body.additionalAttributes[0] ? res.body.additionalAttributes[0].value.replace('ftp://', 'https://') : '';
                 this.license = res.body.license
                 this.licenseURL = 'https://www.ebi.ac.uk/about/terms-of-use/';
                 if (this.license == 'Creative Commons Public Domain (CC0)'){
@@ -1084,6 +1107,7 @@
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
                 console.log('bai',res)
+                console.log('bai headers',res.headers.map)
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
                 this.fileList=[];
@@ -1241,7 +1265,10 @@
           this.projectTags=[]
           this.softwares=[]
           this.modification=[]
-          this.projectDownload=''
+          this.projectDownload={
+            ftp:'',
+            globus:''
+          }
       },
       searchProperties(filter){
           let normalQuery = {}
@@ -1348,8 +1375,8 @@
             query.filter = 'fileName=regex='+this.fileName
           this.queryArchiveProjectFiles(query)
       },
-      projectFtp(ftp){
-          window.open(ftp)
+      datasetDownload(url){
+          window.open(url)
       },
       projectFilesTableSortChange(item){
         // console.log(item)
@@ -1611,7 +1638,7 @@
               .then(function(res){
                  this.iconLoading = false
                  let iconList = res.body.datasets
-                 console.log('resresres',res)
+                 // console.log('resresres',res)
                  for(let i=0;i<iconList.length; i++){
                     if(accession == iconList[i].id){
                         this.iconFound = true
@@ -1663,6 +1690,7 @@
         this.queryReanalysis();
         this.queryFilesNumber();
         this.queryVisFileList();
+        this.queryFilePath();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1784,6 +1812,8 @@
     color: #f8f8f8;
     display: inline-block;
     padding: 2px 0px;
+    width: 80px;
+    margin-left:5px
   }
   .download-button:hover{
     opacity: .8;
