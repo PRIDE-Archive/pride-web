@@ -445,8 +445,10 @@
           projectTags:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          //queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectApi: this.$store.state.baseApiURL_new + '/projects',
+          //queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL_new + '/projects',
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           doiApi:'https://dx.doi.org/',
@@ -932,7 +934,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-              // console.log('queryProjectDetails',res.body)
+              console.log('queryProjectDetails',res.body)
                 this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
@@ -951,12 +953,13 @@
                 this.experimentTypes = res.body.experimentTypes || [];
                 this.projectTags = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
+                this.projectDownload = res.body.additionalAttributes[0] ? res.body.additionalAttributes[0].value.replace('ftp://', 'https://') : '';
                 this.license = res.body.license
                 this.licenseURL = 'https://www.ebi.ac.uk/about/terms-of-use/';
                 if (this.license == 'Creative Commons Public Domain (CC0)'){
                   this.licenseURL = 'https://creativecommons.org/share-your-work/public-domain/cc0/';
                 }
+
                 //for ssr
                 this.keywords = res.body.keywords[0]
                 //for contactors
@@ -969,7 +972,7 @@
                   }
                   this.contactors.push(item);
                 }
-                console.log('res.body.submitters',res.body.submitters)
+                // console.log('res.body.submitters',res.body.submitters)
                 // lab head in contactors which could be edited in the editdataset page.
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
@@ -981,7 +984,7 @@
                     }
                     this.labheads.push(item);
                   }
-                  console.log('this.labheads',this.labheads)
+                // console.log('this.labheads',this.labheads)
                 //for publications
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
@@ -994,6 +997,7 @@
                     item.desc = res.body.references[i].referenceLine
                   this.publications.push(item);
                 }
+                // console.log('this.publications',this.publications)
                 // this.getMSRunTableData()
                 this.getProteinEvidences()
                 this.ssr()
@@ -1043,7 +1047,7 @@
             .get(this.reanalysisApi + id)
             .then(function(res){
                 this.reanalysisReferences = res.body.references;
-                console.log(this.reanalysisReferences)
+                // console.log(this.reanalysisReferences)
             },function(err){
 
             });
@@ -1067,7 +1071,7 @@
                                      'RESULT'+' ('+result+')'+', '+
                                      'OTHER'+' ('+other+')';
                 }
-                console.log('res',res)
+                // console.log('res',res)
             },function(err){
 
             });
@@ -1079,6 +1083,7 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
+                console.log('bai',res)
                 this.fileListLoading = false;
                 this.totalDownLoad = res.body.page.totalElements;
                 this.fileList=[];
@@ -1606,7 +1611,7 @@
               .then(function(res){
                  this.iconLoading = false
                  let iconList = res.body.datasets
-                 // console.log('resresres',res)
+                 console.log('resresres',res)
                  for(let i=0;i<iconList.length; i++){
                     if(accession == iconList[i].id){
                         this.iconFound = true
@@ -1626,7 +1631,7 @@
            this.$http
             .get(this.visFileListApi + this.$route.params.id)
             .then(function(res){
-              console.log('queryVisFileList',res)
+              // console.log('queryVisFileList',res)
                 this.visFileListLoading = false;
                 if(res.body.length === 0)
                   this.visualisationTableShow = false
