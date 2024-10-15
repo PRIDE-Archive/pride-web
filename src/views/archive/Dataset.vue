@@ -1106,13 +1106,13 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
-                console.log('bai',res)
-                console.log('bai headers',res.headers.map)
+                // console.log('bai',res)
+                // console.log('bai headers',)
                 this.fileListLoading = false;
-                this.totalDownLoad = res.body.page.totalElements;
+                this.totalDownLoad = parseInt(res.headers.get('total_records'));
                 this.fileList=[];
-                if(res.body._embedded && res.body._embedded.files){
-                  let filesArray = res.body._embedded.files;
+                if(res){
+                  let filesArray = res.body;
                   //console.log('filesArray',filesArray)
                   this.fileList = this.createFileList(filesArray)
                 }
@@ -1449,7 +1449,7 @@
                 }
               }
               else{
-                  this.$Message.error({content:'No Samples Data', duration:1});
+                  this.$Message.error({content:'No SDRF Samples Data', duration:1});
               }
           },function(err){
               this.sdrfTableLoading = false;
