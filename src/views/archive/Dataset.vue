@@ -452,6 +452,7 @@
           //queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL_new + '/projects',
           queryFilePathApi: this.$store.state.baseApiURL_new + '/projects/files-path',
+          sdrfTableApi:this.$store.state.baseApiURL_new + '/files/sdrf',
           //*******
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
@@ -894,7 +895,6 @@
           sdrfTableLoading:false,
           sdrfTableData:[],
           sdrfTableCol:[],
-          sdrfTableApi:this.$store.state.baseApiURL + '/files/sdrfByAccession',
           sdrfTableLoading:false,
           pageSizeSdrf:200,
           pageSdrf:1,
@@ -958,7 +958,7 @@
            this.$http
             .get(this.queryArchiveProjectApi + '/' +id)
             .then(function(res){
-              console.log('queryProjectDetails',res.body)
+              // console.log('queryProjectDetails',res.body)
                 this.queryProjectDetailsLoading = false;
                 this.init();
                 this.accession = res.body.accession;
@@ -1427,8 +1427,8 @@
               // this.sdrfTableLoading = false; // We need to let the showSamples function to decide loading state
               this.sdrfFileList = []
               let tempFilelist = []
-              if(res.body._embedded && res.body._embedded.files){
-                let filesArray = res.body._embedded.files;
+              if(res){
+                let filesArray = res.body;
                 tempFilelist = this.createFileList(filesArray)
                 for(let i=0;i<tempFilelist.length;i++){
                     if(tempFilelist[i].name.match('sdrf')){
