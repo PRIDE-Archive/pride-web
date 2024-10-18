@@ -453,6 +453,8 @@
           queryArchiveProjectFilesApi: this.$store.state.baseApiURL_new + '/projects',
           queryFilePathApi: this.$store.state.baseApiURL_new + '/projects/files-path',
           sdrfTableApi:this.$store.state.baseApiURL_new + '/files/sdrf',
+          // filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
+          filesNumberURL:this.$store.state.baseApiURL_new + '/files/getCountOfFilesByType',
           //*******
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
@@ -910,7 +912,6 @@
           sdrfFile:'',  
           sdrfFileList:[],
           license:'',
-          filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
           filesNumber:'',
           visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/data/visualisations/',
           visualisationTableShow:false
@@ -1079,7 +1080,7 @@
           let query = {};
           query.accession=this.$route.params.id //'PXD012991'
           this.$http
-            .get(this.filesNumberURL,{params: query}) 
+            .get(this.filesNumberURL + '/' + query.accession) 
             .then(function(res){
                 if(res.body){
                   let raw = res.body.RAW || 0
@@ -1113,7 +1114,6 @@
                 this.fileList=[];
                 if(res){
                   let filesArray = res.body;
-                  //console.log('filesArray',filesArray)
                   this.fileList = this.createFileList(filesArray)
                 }
                 else{
@@ -1124,10 +1124,12 @@
             });
       },
       createFileList(filesArray){
+        // console.log('filesArray',filesArray)
          let tempArray = [];
          for(let i=0;i<filesArray.length;i++){
               let item ={
                     accession: filesArray[i].accession,
+                    projectAccession: filesArray[i].projectAccessions[0],
                     name: filesArray[i].fileName,
                     type: filesArray[i].fileCategory.value,
                     size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
@@ -1430,15 +1432,18 @@
               if(res){
                 let filesArray = res.body;
                 tempFilelist = this.createFileList(filesArray)
+                // console.log('tempFilelist',tempFilelist)
                 for(let i=0;i<tempFilelist.length;i++){
                     if(tempFilelist[i].name.match('sdrf')){
                       let item = {
                         name: tempFilelist[i].name,
                         accession: tempFilelist[i].accession,
+                        projectAccession: tempFilelist[i].projectAccession
                       }
                       this.sdrfFileList.push(item)
                     }
                 }
+                // console.log('this.sdrfFileList',this.sdrfFileList)
                 if(this.sdrfFileList.length>0){
                     this.sdrfFile = this.sdrfFileList[0].name
                     this.showSamples(this.sdrfFileList[0])
@@ -1458,17 +1463,20 @@
       sdrfFileChange(){
       },
       showSamples(row){
-        //console.log(row)
+        // console.log('row',row)
         if(row.name.match('sdrf')){
           this.sdrfTableCollapse = false
           this.sdrfTableLoading = true
-          let query = {accession:row.accession}
+          let query = {projectAccession:row.projectAccession}
+          // console.log('query',query)
           this.$http
-              .get(this.sdrfTableApi,{params: query})
+              .get(this.sdrfTableApi + '/' + query.projectAccession)
               .then(function(res){
+                // console.log('showSamples',res)
                   this.sdrfTableLoading = false
-                  if(res.data){
-                    this.mapSdrfFileText(res.data)
+                  if(res){
+                    let url = 'http://'+res.body[0].split('//')[1]
+                    this.queryTSVfromFTP(url)
                   }
                   else
                      this.$Message.error({content:'No Samples Data', duration:1});
@@ -1478,7 +1486,20 @@
               });
         }
       },
-      mapSdrfFileText(data){
+      queryTSVfromFTP(url){
+        this.$http
+              .get(url)
+              .then(function(res){
+                  if(res)
+                    this.mapSdrfFileText(res.body)
+                  else
+                     this.$Message.error({content:'No FTP Data', duration:1});
+              },function(err){
+                  this.sdrfTableLoading = false
+                  this.$Message.error({content:'FTP Data Error', duration:3});
+              });
+      },
+      mapSdrfFileText(data){ //data is the tsv raw file, this function is to map the tsv to a table
         let arr = data.split('\n');
         this.totalSdrf = 0
         this.sdrfTableData = []
