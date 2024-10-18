@@ -76,7 +76,7 @@
                   <p slot="title" class="resource-list-title-container">
                     <span>List of Datasets ({{total}})</span>
                     <span v-if="publicaitionList.length>0" class="sort-wrapper">
-                        <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.ftp)">FTP</Button>
+                        <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.ftp)">Download JSON</Button>
                         <span>Order by: </span>
                         <div class="sortOption"> 
                             <a class="order-action"><Icon v-if="order=='DESC'" type="md-arrow-dropdown" size="22" @click="orderChange('ASC')"/></a>
@@ -1249,8 +1249,8 @@
       color: #f8f8f8;
       display: inline-block;
       padding: 2px 0px;
-      width: 80px;
-      margin-left:5px;
+      width: 110px;
+      margin-right:10px;
       height:20px;
     }
     .download-button:hover{
