@@ -1825,7 +1825,7 @@
     opacity: .8;
   }
   .download-button{
-    padding: 0;
+    padding: 0 !important;
     font-size: 12px;
     font-weight: 700;
     background-color: #5bc0be;
@@ -1834,7 +1834,8 @@
     display: inline-block;
     padding: 2px 0px;
     width: 80px;
-    margin-left:5px
+    margin-left:5px;
+    height:20px;
   }
   .download-button:hover{
     opacity: .8;
