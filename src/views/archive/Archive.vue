@@ -204,7 +204,7 @@
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
           queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
-          downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/all',
+          downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/download', 
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -958,24 +958,27 @@
       gotoIconHelpPage(){
         window.open('http://blog.omicsdi.org/post/rosette-chart/')
       },
-      datasetJSON(){
-        this.loading = true
-        this.$http
-          .get(this.downLoadJSONApi)
-          .then(function(res){
-             this.loading = false
-             // console.log('datasetJSON res',res)
+      // datasetJSON(){
+      //   this.loading = true
+      //   this.$http
+      //     .get(this.downLoadJSONApi)
+      //     .then(function(res){
+      //        this.loading = false
+      //        // console.log('datasetJSON res',res)
 
-              let a = document.createElement("a");
-              let file = new Blob([JSON.stringify(res.body, null, 2)], {type: 'application/json'});
-              a.href = URL.createObjectURL(file);
-              a.download = 'Pride Dataset.json';
-              a.click();
-              document.body.removeChild(a);
-          },function(err){
-             this.loading = false
-             this.$Message.error({content:'Download JSON Error', duration:3});
-          });
+      //         let a = document.createElement("a");
+      //         let file = new Blob([JSON.stringify(res.body, null, 2)], {type: 'application/json'});
+      //         a.href = URL.createObjectURL(file);
+      //         a.download = 'Pride Dataset.json';
+      //         a.click();
+      //         document.body.removeChild(a);
+      //     },function(err){
+      //        this.loading = false
+      //        this.$Message.error({content:'Download JSON Error', duration:3});
+      //     });
+      // }
+      datasetJSON(){
+        window.open(this.downLoadJSONApi)
       }
     },
 
