@@ -76,7 +76,7 @@
                   <p slot="title" class="resource-list-title-container">
                     <span>List of Datasets ({{total}})</span>
                     <span v-if="publicaitionList.length>0" class="sort-wrapper">
-                        <!-- <Button class= "download-button" size="small" @click="datasetJSON()">Download JSON</Button> -->
+                        <Button class= "download-button" size="small" @click="datasetJSON()">Download JSON</Button>
                         <span>Order by: </span>
                         <div class="sortOption"> 
                             <a class="order-action"><Icon v-if="order=='DESC'" type="md-arrow-dropdown" size="22" @click="orderChange('ASC')"/></a>
@@ -204,6 +204,7 @@
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
           queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
           autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
+          downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/all',
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -958,7 +959,23 @@
         window.open('http://blog.omicsdi.org/post/rosette-chart/')
       },
       datasetJSON(){
-        
+        this.loading = true
+        this.$http
+          .get(this.downLoadJSONApi)
+          .then(function(res){
+             this.loading = false
+             // console.log('datasetJSON res',res)
+
+              let a = document.createElement("a");
+              let file = new Blob([JSON.stringify(res.body, null, 2)], {type: 'application/json'});
+              a.href = URL.createObjectURL(file);
+              a.download = 'Pride Dataset.json';
+              a.click();
+              document.body.removeChild(a);
+          },function(err){
+             this.loading = false
+             this.$Message.error({content:'Download JSON Error', duration:3});
+          });
       }
     },
 
