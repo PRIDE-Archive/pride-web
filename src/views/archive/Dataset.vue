@@ -1475,7 +1475,7 @@
                 // console.log('showSamples',res)
                   this.sdrfTableLoading = false
                   if(res){
-                    let url = 'http://'+res.body[0].split('//')[1]
+                    let url = 'https://'+res.body[0].split('//')[1]
                     this.queryTSVfromFTP(url)
                   }
                   else
