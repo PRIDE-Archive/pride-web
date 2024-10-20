@@ -487,6 +487,7 @@
                 newSubmissionRequestURL: this.$store.state.basePrivateURL + '/submission/new-submission-request',
                 submissionCompleteURL: this.$store.state.basePrivateURL + '/submission/upload-complete',
                 pendingSubmissionsURL: this.$store.state.basePrivateURL + '/submission/get-pending-tickets',
+                // publicSubmissionURL: this.$store.state.baseApiURL_new + '/projects/private', //use query to differ with private
                 publicSubmissionURL: this.$store.state.baseApiURL + '/projects/private', //use query to differ with private
                 reviewSubmissionURL: this.$store.state.basePrivateURL + '/projects/reviewer-submissions',
                 changePasswordURL: this.$store.state.basePrivateURL + '/user/change-password',
