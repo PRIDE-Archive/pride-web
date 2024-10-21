@@ -1361,8 +1361,10 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          // if(this.fileName)
+          //   query.filter = 'fileName=regex='+this.fileName
           if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
           this.queryArchiveProjectFiles(query)
       },
       downloadPageSizeChange(size){
@@ -1373,8 +1375,10 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          // if(this.fileName)
+          //   query.filter = 'fileName=regex='+this.fileName
           if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
           this.queryArchiveProjectFiles(query)
       },
       datasetDownload(url){
@@ -1398,8 +1402,10 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        // if(this.fileName)
+        //     query.filter = 'fileName=regex='+this.fileName
         if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
         this.queryArchiveProjectFiles(query)
       },
       searchFile(){
@@ -1409,8 +1415,10 @@
             page: 0,//this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        // if(this.fileName)
+        //     query.filter = 'fileName=regex='+this.fileName
         if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
         this.queryArchiveProjectFiles(query)
       },
       sdrfTableCollapseChange(val){
