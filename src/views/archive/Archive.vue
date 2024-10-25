@@ -199,7 +199,7 @@
           querySpecificFacetsLoading:false,
           highlightKeyword:'',
           HighlightKeywordSensitive:false,
-          facetsURL: this.$store.state.baseApiURL + '/facet/projects',
+          facetsURL: this.$store.state.baseApiURL_new + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
           queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
@@ -314,10 +314,30 @@
           this.$http
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
-                //console.log('res.body._embedded',res.body._embedded);
-                let facetsMap = res.body._embedded.facets;
+                console.log('res setFilter',res);
+                
+                           /*
+                          "project_identified_ptms_facet": {
+                              "name": "Modification"
+                          },
+                          "additionalAttributes":{
+                              "name":"XXXX"
+                          },
+                          "experimentalFactors":{
+                              "name":"XXXX"
+                          },
+                          "softwares":{
+                              "name":"XXXX"
+                          },
+                          "updatedDate":{
+                              "name":"XXXX"
+                          },*/
+                
+                let facetsMap = res.body;
+                let temp_fieldSelectors=[]
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;
+                    // console.log('archiveObj',archiveObj)
                     for(let i in archiveObj){
                         let item = {
                             value: archiveObj[i].name,
@@ -325,21 +345,29 @@
                             containItems:[]
                         }
                         for(let j in facetsMap){
-                            if(facetsMap[j].field == i){
-                              for(let k=0; k<facetsMap[j].values.length; k++){
+                          // console.log('facetsMap',facetsMap[j])
+                          // console.log('j',j)
+                          // console.log('i',i)
+                            if(j == i){
+                              for(let k in facetsMap[j]){
+                                // console.log('facetsMap[j]',facetsMap[j])
+                                // console.log('k',k)
                                   let containItem = {
-                                      value: facetsMap[j].values[k].value,
-                                      label: facetsMap[j].values[k].value,
+                                      value: k,
+                                      label: k,
                                       check: false,
-                                      number: facetsMap[j].values[k].count
+                                      number: facetsMap[j][k]
                                   }
                                   item.containItems.push(containItem);
                               }
                               break;
                             }
                         }
-                        this.fieldSelectors.push(item);
+                        temp_fieldSelectors.push(item);
                     }
+                     // this.fieldSelectors = temp_fieldSelectors
+                    this.fieldSelectors = this.sortFieldSelectors(temp_fieldSelectors);
+                    console.log('this.fieldSelectors ',this.fieldSelectors )
                     this.fieldValue = this.fieldSelectors[0].value;
                     //console.log( this.fieldSelectors[0].value);
                     //console.log('this.fieldValue',this.fieldValue);
@@ -347,6 +375,16 @@
             },function(err){
 
             });
+      },
+      sortFieldSelectors(temp_fieldSelectors){
+        for(let i=0; i<temp_fieldSelectors.length; i++){
+          // console.log(temp_fieldSelectors[i].value)
+          if(temp_fieldSelectors[i].value.indexOf('Date')<0){ // we do the sort only for the item without date keyword
+            // console.log(temp_fieldSelectors[i].value)
+            temp_fieldSelectors[i].containItems = temp_fieldSelectors[i].containItems.sort((a, b) => b.number - a.number)
+          }
+        }
+        return temp_fieldSelectors
       },
       setSearchCondition(){
           let condition='';       
