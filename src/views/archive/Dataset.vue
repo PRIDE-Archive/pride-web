@@ -462,7 +462,7 @@
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
-          similarityApi: this.$store.state.baseApiURL + '/projects/',
+          similarityApi: this.$store.state.baseApiURL_new + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           reanalysisApi: this.$store.state.baseApiURL + '/projects/reanalysis/',
           similarProjects:[],
@@ -1228,15 +1228,17 @@
       },
       querySimilarity(id){
           var id = id || this.$route.params.id;
+          let temp_query = { // we just set this query as the default params
+            page:0,
+            pageSize:5
+          }
           this.similarProjects=[];
           this.similarityLoading=true;
           this.$http
-            .get(this.similarityApi +id+'/similarProjects')
+            .get(this.similarityApi +id+'/similarProjects',{params: temp_query})
             .then(function(res){
                 this.similarityLoading=false;
-                this.similarProjects=res.body._embedded.compactprojects;
-
-                //console.log(this.similarProjects)
+                this.similarProjects=res.body;
             },function(err){
 
             });
