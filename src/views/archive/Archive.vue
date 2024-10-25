@@ -203,7 +203,7 @@
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
           queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
-          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
+          autoCompleteApi: this.$store.state.baseApiURL_new + '/search/autocomplete?keyword=',
           downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/download', 
           containItemSearch:'',
           fieldSelectors:[],
