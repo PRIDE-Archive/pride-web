@@ -314,7 +314,7 @@
           this.$http
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
-                console.log('res setFilter',res);
+                // console.log('res setFilter',res);
                 
                            /*
                           "project_identified_ptms_facet": {
@@ -337,7 +337,6 @@
                 let temp_fieldSelectors=[]
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;
-                    // console.log('archiveObj',archiveObj)
                     for(let i in archiveObj){
                         let item = {
                             value: archiveObj[i].name,
@@ -345,13 +344,8 @@
                             containItems:[]
                         }
                         for(let j in facetsMap){
-                          // console.log('facetsMap',facetsMap[j])
-                          // console.log('j',j)
-                          // console.log('i',i)
                             if(j == i){
                               for(let k in facetsMap[j]){
-                                // console.log('facetsMap[j]',facetsMap[j])
-                                // console.log('k',k)
                                   let containItem = {
                                       value: k,
                                       label: k,
@@ -367,7 +361,7 @@
                     }
                      // this.fieldSelectors = temp_fieldSelectors
                     this.fieldSelectors = this.sortFieldSelectors(temp_fieldSelectors);
-                    console.log('this.fieldSelectors ',this.fieldSelectors )
+                    // console.log('this.fieldSelectors ',this.fieldSelectors )
                     this.fieldValue = this.fieldSelectors[0].value;
                     //console.log( this.fieldSelectors[0].value);
                     //console.log('this.fieldValue',this.fieldValue);
@@ -426,12 +420,13 @@
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
-                this.total = res.body.page.totalElements;
+              console.log('queryArchiveProjectListApi',res)
+                this.total = res.headers.map.total_records ? parseInt(res.headers.map.total_records) : 0;
                 this.loading = false;
-                if(res.body._embedded && res.body._embedded.compactprojects){
+                if(res.body && res.body.length>0){
                       this.setHighlightKeywords();
-                      let projectsList = res.body._embedded.compactprojects;
-                      // console.log('projectsList',projectsList);
+                      let projectsList = res.body;
+                      console.log('projectsList',projectsList);
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -504,10 +499,11 @@
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
+                          console.log('item',item)
                           this.publicaitionList.push(item);  
                       }
                       // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
-                      // console.log('this.publicaitionList', this.publicaitionList);
+                      console.log('this.publicaitionList', this.publicaitionList);
                       this.generateIcons()
                 }
                 else{
@@ -568,23 +564,23 @@
                                   this.$http
                                     .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
                                     .then(function(res){
-                                        //console.log(res.body._embedded);
-                                         if(res.body._embedded && res.body._embedded.facets){
-                                              let facetsArray = res.body._embedded.facets;
+                                        // console.log("facetsURL",res.body);
+                                         if(res.body){
+                                              let facetsArray = res.body;
                                               let fieldFind = false;
-                                              for(let j=0; j<facetsArray.length; j++){
+                                              for(let j in facetsArray){
                                                 //console.log('ddd');
-                                                  if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                                  if(this.facetsConfigRes.body.archive[j] && this.facetsConfigRes.body.archive[j].name == this.fieldValue && Object.keys(facetsArray[j]).length>0){
                                                       fieldFind = true;
                                                       this.querySpecificFacetsLoading = false;
                                                       let itemArray = [];
-                                                      for(let k=0; k<facetsArray[j].values.length; k++){
+                                                      for(let k in facetsArray[j]){
                                                         //console.log('eee');
                                                             let item = {
-                                                                value: facetsArray[j].values[k].value,
-                                                                label: facetsArray[j].values[k].value,
+                                                                value: k,
+                                                                label: k,
                                                                 check: false,
-                                                                number: facetsArray[j].values[k].count,
+                                                                number: facetsArray[j][k],
                                                             }
                                                             itemArray.push(item);
                                                       }
@@ -613,27 +609,27 @@
                         .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
                         .then(function(res){
                             //console.log(res.body._embedded);
-                             if(res.body._embedded && res.body._embedded.facets){
-                                  let facetsArray = res.body._embedded.facets;
+                             if(res.body){
+                                  let facetsArray = res.body;
                                   let fieldFind = false;
-                                  for(let j=0; j<facetsArray.length; j++){
-                                    //console.log('ddd');
-                                      if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                  for(let j in facetsArray){
+                                      if(this.facetsConfigRes.body.archive[j] && this.facetsConfigRes.body.archive[j].name ==  this.fieldValue && Object.keys(facetsArray[j]).length>0){
                                           fieldFind = true;
                                           this.querySpecificFacetsLoading = false;
                                           let itemArray = [];
-                                          for(let k=0; k<facetsArray[j].values.length; k++){
+                                          for(let k in facetsArray[j]){
                                             //console.log('eee');
                                                 let item = {
-                                                    value: facetsArray[j].values[k].value,
-                                                    label: facetsArray[j].values[k].value,
+                                                    value: k,
+                                                    label: k,
                                                     check: false,
-                                                    number: facetsArray[j].values[k].count,
+                                                    number: facetsArray[j][k],
                                                 }
                                                 itemArray.push(item);
                                           }
                                           this.containSelectors = itemArray;
                                       }
+                                      
                                   }
                                   if(!fieldFind){
                                       this.querySpecificFacetsLoading = false;
