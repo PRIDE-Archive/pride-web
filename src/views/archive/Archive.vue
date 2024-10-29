@@ -310,9 +310,10 @@
             this.autoCompleteArray = [];
           }
       },
-      setFilter(){
+      setFilter(){//only for filter/facet not for keywords, but we need the keywords to query the filter/facet
+          let searchKeywordForFacet = this.keyword ? ('&keyword='+this.keyword) : '' // this one is different from the querySpecificFacets
           this.$http
-            .get(this.facetsURL + '?facetPageSize=100')
+            .get(this.facetsURL + '?facetPageSize=100'+ searchKeywordForFacet)
             .then(function(res){
                 // console.log('res setFilter',res);
                 
@@ -416,18 +417,14 @@
             if(Object.hasOwn(query, 'keyword'))
               delete query.keyword;
           }
-          //console.log(encodeURIComponent('*:*'));
-          //console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
-              console.log('queryArchiveProjectListApi',res)
                 this.total = res.headers.map.total_records ? parseInt(res.headers.map.total_records) : 0;
                 this.loading = false;
                 if(res.body && res.body.length>0){
                       this.setHighlightKeywords();
                       let projectsList = res.body;
-                      console.log('projectsList',projectsList);
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -482,17 +479,13 @@
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
                                 //let temp = projectsList[i].highlights[j].k;
-                                //console.log(projectsList[i].highlights[j][k]);
                                 content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
                               }
-                              // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
-                              // console.log(j)
                               let hightlightItem={
 
                                   name:this.projectItemsConfigRes[j] ? this.projectItemsConfigRes[j] : j,
                                   content:content.replace(/,$/gi,'')
                               }
-                              // console.log('hightlightItem',hightlightItem)
                               item.hightlightItemArray.push(hightlightItem);
                           }
 
@@ -500,11 +493,8 @@
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
-                          console.log('item',item)
                           this.publicaitionList.push(item);  
                       }
-                      // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
-                      console.log('this.publicaitionList', this.publicaitionList);
                       this.generateIcons()
                 }
                 else{
@@ -532,10 +522,10 @@
             this.highlightKeyword = this.keyword.split(',');
           // console.log('this.highlightKeyword',this.highlightKeyword);
       },
-      querySpecificFacets(keyword){
+      querySpecificFacets(keyword){//this keyword will be passed into this function automatically from the facet input
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
             return;
-         
+          let searchKeywordForFacet = this.keyword ? ('keyword='+this.keyword) : '' // it will be used to filter the facet if we have input something in the search input. As facet could be searched in two part: facet input and search input.
           if(keyword.length<4 && keyword.length>0) {
               this.querySpecificFacetsLoading = true;
               for(let i=0; i<this.fieldSelectors.length; i++){
@@ -563,7 +553,7 @@
                           for(let i in this.facetsConfigRes.body.archive){
                               if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                                   this.$http
-                                    .get(this.facetsURL + '&filter='+i+'=='+keyword)
+                                    .get(this.facetsURL + '?filter='+i+'=='+keyword + searchKeywordForFacet)
                                     .then(function(res){
                                         // console.log("facetsURL",res.body);
                                          if(res.body){
@@ -607,7 +597,7 @@
               for(let i in this.facetsConfigRes.body.archive){
                   if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                       this.$http
-                        .get(this.facetsURL + '&filter='+i+'=='+keyword)
+                        .get(this.facetsURL + '?filter='+i+'=='+keyword + searchKeywordForFacet)
                         .then(function(res){
                             //console.log(res.body._embedded);
                              if(res.body){
@@ -850,6 +840,7 @@
                     this.pageSize = 20;
               }
           }
+          this.setFilter();
           //console.log();
         //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
@@ -894,8 +885,7 @@
                   .get(this.projectItemsConfigURL)
                   .then(function(projectItemsConfigRes){
                       this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
-                      // console.log('1111this.projectItemsConfigRes',this.projectItemsConfigRes);
-                      this.setFilter();
+                      //we do not put the setFilter function in here due to some logic issue. We need to do the updateCondition, after that, the filter could set based on the new conditions. Because, setfilter needs keywords for facet query in backend. Keywords will be updated after updateCondition.
                       this.updateCondition();
                       this.queryArchiveProjectList();
                   },function(err){
