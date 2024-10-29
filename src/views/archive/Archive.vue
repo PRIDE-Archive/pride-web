@@ -202,7 +202,7 @@
           facetsURL: this.$store.state.baseApiURL_new + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
-          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL_new + '/search/projects',
           autoCompleteApi: this.$store.state.baseApiURL_new + '/search/autocomplete?keyword=',
           downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/download', 
           containItemSearch:'',
@@ -263,7 +263,7 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      console.log('to query',to.query);
+      // console.log('to query',to.query);
       /*
       let filter = to.query.split('?')[1].split('filter');
       if(filter.length>1)

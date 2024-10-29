@@ -942,7 +942,7 @@
            this.$http
             .get(this.queryFilePathApi + '/' +id)
             .then(function(res){
-                this.projectDownload.ftp = res.body.ftp || ''
+                this.projectDownload.ftp = res.body.ftp.replace("ftp://", "https://") || ''
                 this.projectDownload.globus = res.body.globus || ''
             },function(err){
                 // this.queryProjectDetailsLoading = false;
