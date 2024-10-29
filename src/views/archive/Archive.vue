@@ -312,7 +312,7 @@
       },
       setFilter(){
           this.$http
-            .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
+            .get(this.facetsURL + '?facetPageSize=100')
             .then(function(res){
                 // console.log('res setFilter',res);
                 
@@ -562,7 +562,7 @@
                           for(let i in this.facetsConfigRes.body.archive){
                               if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                                   this.$http
-                                    .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                                    .get(this.facetsURL + '&filter='+i+'=='+keyword)
                                     .then(function(res){
                                         // console.log("facetsURL",res.body);
                                          if(res.body){
@@ -606,7 +606,7 @@
               for(let i in this.facetsConfigRes.body.archive){
                   if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                       this.$http
-                        .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                        .get(this.facetsURL + '&filter='+i+'=='+keyword)
                         .then(function(res){
                             //console.log(res.body._embedded);
                              if(res.body){
