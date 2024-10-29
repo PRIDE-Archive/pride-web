@@ -413,7 +413,8 @@
           else{
             //for highlight mode
             this.hightlightMode = false;
-            query.keyword ='*:*';
+            if(Object.hasOwn(query, 'keyword'))
+              delete query.keyword;
           }
           //console.log(encodeURIComponent('*:*'));
           //console.log('search query',query);
@@ -1034,7 +1035,7 @@
           for(let i=0; i<this.tagArray.length; i++){
 
           }
-          if(this.keyword)
+          if(this.keyword)// if no keyword, in the normalQuery, we should not put the item 'keyword' inside, this is the backend search requirement
             normalQuery.keyword = this.keyword;
 
           if(this.filter)
