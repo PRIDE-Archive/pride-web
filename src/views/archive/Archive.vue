@@ -64,7 +64,7 @@
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable @on-close="conditionDelete(index,item)">
-                            {{item.field}} > {{item.contains}}
+                            {{item.field}}: {{item.contains}}
                           </Tag>
                       </div>
                     </div>
