@@ -397,7 +397,7 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
-          query.dateGap = '+1YEAR';
+          // query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
