@@ -1417,6 +1417,7 @@
             page: 0,//this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        this.pageDownLoad = 1 //query.page + 1
         // if(this.fileName)
         //     query.filter = 'fileName=regex='+this.fileName
         if(this.fileName)
