@@ -104,11 +104,13 @@
           querySpecificFacetsLoading:false,
           highlightKeyword:'',
           HighlightKeywordSensitive:false,
+          //facetsURL: this.$store.state.baseApiURL_new + '/facet/projects', // this api is totally different for the old one 
           facetsURL: this.$store.state.baseApiURL + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
-          queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary',
-          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
+          // queryClusterListApi: this.$store.state.baseApiURL_new+'/peptidesummary', // this one does not work
+          queryClusterListApi: this.$store.state.baseApiURL+'/peptidesummary', // this one does not work either
+          autoCompleteApi: this.$store.state.baseApiURL_new + '/search/autocomplete?keyword=',
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -262,6 +264,7 @@
           this.$http
             .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
             .then(function(res){
+              console.log('facest',res)
                 let facetsMap = res.body._embedded.facets;
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;

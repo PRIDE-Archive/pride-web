@@ -130,14 +130,14 @@
     export default {
         data () {
             return {
-                treePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
-                sunburstPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
-                sankeyPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi: this.$store.state.baseApiURL +'/stats/SUBMISSIONS_PER_COUNTRY',
-                linePrideYearApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
-                //linePrideMonthApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
-                linePrideMonthApi: this.$store.state.baseApiURL + '/stats/submissions-monthly', 
-                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE',
+                treePrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sunburstPrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sankeyPrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi: this.$store.state.baseApiURL_new +'/stats/SUBMISSIONS_PER_COUNTRY',
+                linePrideYearApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_YEAR',
+                //linePrideMonthApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_MONTH',
+                linePrideMonthApi: this.$store.state.baseApiURL_new + '/stats/submissions-monthly', 
+                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE', // this api is still v2 version
                 sunburstPrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,

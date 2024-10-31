@@ -521,6 +521,7 @@
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
+          // similarityApi: this.$store.state.baseApiURL_new + '/projects/',
           similarityApi: this.$store.state.baseApiURL + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           publishAPI: this.$store.state.basePrivateURL + '/projects/publish',

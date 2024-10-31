@@ -56,12 +56,12 @@
     export default {
         data () {
             return {
-                treePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_CATEGORIES',
-                sankeyPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_MONTH',
-                mapPrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_COUNTRY',
+                treePrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_CATEGORIES',
+                sankeyPrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_MONTH',
+                mapPrideApi: this.$store.state.baseApiURL_new + '/stats/SUBMISSIONS_PER_COUNTRY',
                 //linePrideApi: this.$store.state.baseApiURL + '/stats/SUBMISSIONS_PER_YEAR',
-                linePrideApi: this.$store.state.baseApiURL + '/stats/submissions-monthly',
-                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE',
+                linePrideApi: this.$store.state.baseApiURL_new + '/stats/submissions-monthly',
+                barHorizontalApi: this.$store.state.baseApiURL + '/stats/EVIDENCES_IN_ARCHIVE',// this api is still v2
                 treePrideShow:true,
                 sankeyPrideShow:true,
                 mapPrideShow:true,

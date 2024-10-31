@@ -64,7 +64,7 @@
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
                       <div class="tag-container">
                           <Tag type="border" closable @on-close="conditionDelete(index,item)">
-                            {{item.field}} > {{item.contains}}
+                            {{item.field}}: {{item.contains}}
                           </Tag>
                       </div>
                     </div>
@@ -76,6 +76,7 @@
                   <p slot="title" class="resource-list-title-container">
                     <span>List of Datasets ({{total}})</span>
                     <span v-if="publicaitionList.length>0" class="sort-wrapper">
+                        <Button class= "download-button" size="small" @click="datasetJSON()">Download JSON</Button>
                         <span>Order by: </span>
                         <div class="sortOption"> 
                             <a class="order-action"><Icon v-if="order=='DESC'" type="md-arrow-dropdown" size="22" @click="orderChange('ASC')"/></a>
@@ -198,11 +199,12 @@
           querySpecificFacetsLoading:false,
           highlightKeyword:'',
           HighlightKeywordSensitive:false,
-          facetsURL: this.$store.state.baseApiURL + '/facet/projects',
+          facetsURL: this.$store.state.baseApiURL_new + '/facet/projects',
           searchConfigURL: this.$store.state.baseURL + '/config/facets/config.json', 
           projectItemsConfigURL: this.$store.state.baseURL + '/config/projectItems/config.json',
-          queryArchiveProjectListApi: this.$store.state.baseApiURL + '/search/projects',
-          autoCompleteApi: this.$store.state.baseApiURL + '/search/autocomplete?keyword=',
+          queryArchiveProjectListApi: this.$store.state.baseApiURL_new + '/search/projects',
+          autoCompleteApi: this.$store.state.baseApiURL_new + '/search/autocomplete?keyword=',
+          downLoadJSONApi: this.$store.state.baseApiURL_new + '/projects/download', 
           containItemSearch:'',
           fieldSelectors:[],
           currentPage:1,
@@ -261,7 +263,7 @@
       }
     },
     beforeRouteUpdate:function (to, from, next) {
-      console.log('to query',to.query);
+      // console.log('to query',to.query);
       /*
       let filter = to.query.split('?')[1].split('filter');
       if(filter.length>1)
@@ -308,12 +310,32 @@
             this.autoCompleteArray = [];
           }
       },
-      setFilter(){
+      setFilter(){//only for filter/facet not for keywords, but we need the keywords to query the filter/facet
+          let searchKeywordForFacet = this.keyword ? ('&keyword='+this.keyword) : '' // this one is different from the querySpecificFacets
           this.$http
-            .get(this.facetsURL + '?dateGap=%2B1YEAR&facetPageSize=100')
+            .get(this.facetsURL + '?facetPageSize=100'+ searchKeywordForFacet)
             .then(function(res){
-                //console.log('res.body._embedded',res.body._embedded);
-                let facetsMap = res.body._embedded.facets;
+                // console.log('res setFilter',res);
+                
+                           /*
+                          "project_identified_ptms_facet": {
+                              "name": "Modification"
+                          },
+                          "additionalAttributes":{
+                              "name":"XXXX"
+                          },
+                          "experimentalFactors":{
+                              "name":"XXXX"
+                          },
+                          "softwares":{
+                              "name":"XXXX"
+                          },
+                          "updatedDate":{
+                              "name":"XXXX"
+                          },*/
+                
+                let facetsMap = res.body;
+                let temp_fieldSelectors=[]
                 this.fieldSelectors = [];
                     let archiveObj = this.facetsConfigRes.body.archive;
                     for(let i in archiveObj){
@@ -323,21 +345,24 @@
                             containItems:[]
                         }
                         for(let j in facetsMap){
-                            if(facetsMap[j].field == i){
-                              for(let k=0; k<facetsMap[j].values.length; k++){
+                            if(j == i){
+                              for(let k in facetsMap[j]){
                                   let containItem = {
-                                      value: facetsMap[j].values[k].value,
-                                      label: facetsMap[j].values[k].value,
+                                      value: k,
+                                      label: k,
                                       check: false,
-                                      number: facetsMap[j].values[k].count
+                                      number: facetsMap[j][k]
                                   }
                                   item.containItems.push(containItem);
                               }
                               break;
                             }
                         }
-                        this.fieldSelectors.push(item);
+                        temp_fieldSelectors.push(item);
                     }
+                     // this.fieldSelectors = temp_fieldSelectors
+                    this.fieldSelectors = this.sortFieldSelectors(temp_fieldSelectors);
+                    // console.log('this.fieldSelectors ',this.fieldSelectors )
                     this.fieldValue = this.fieldSelectors[0].value;
                     //console.log( this.fieldSelectors[0].value);
                     //console.log('this.fieldValue',this.fieldValue);
@@ -345,6 +370,16 @@
             },function(err){
 
             });
+      },
+      sortFieldSelectors(temp_fieldSelectors){
+        for(let i=0; i<temp_fieldSelectors.length; i++){
+          // console.log(temp_fieldSelectors[i].value)
+          if(temp_fieldSelectors[i].value.indexOf('Date')<0){ // we do the sort only for the item without date keyword
+            // console.log(temp_fieldSelectors[i].value)
+            temp_fieldSelectors[i].containItems = temp_fieldSelectors[i].containItems.sort((a, b) => b.number - a.number)
+          }
+        }
+        return temp_fieldSelectors
       },
       setSearchCondition(){
           let condition='';       
@@ -363,7 +398,7 @@
           this.publicaitionList = [];
           this.loading = true;
           let query = q || this.$route.query;
-          query.dateGap = '+1YEAR';
+          // query.dateGap = '+1YEAR';
           let pageSizeFound = false;
           for(let i in query){
               if(i == 'pageSize'){
@@ -379,19 +414,17 @@
           else{
             //for highlight mode
             this.hightlightMode = false;
-            query.keyword ='*:*';
+            if(Object.hasOwn(query, 'keyword'))
+              delete query.keyword;
           }
-          //console.log(encodeURIComponent('*:*'));
-          //console.log('search query',query);
           this.$http
             .get(this.queryArchiveProjectListApi,{params: query})
             .then(function(res){
-                this.total = res.body.page.totalElements;
+                this.total = res.headers.map.total_records ? parseInt(res.headers.map.total_records) : 0;
                 this.loading = false;
-                if(res.body._embedded && res.body._embedded.compactprojects){
+                if(res.body && res.body.length>0){
                       this.setHighlightKeywords();
-                      let projectsList = res.body._embedded.compactprojects;
-                      // console.log('projectsList',projectsList);
+                      let projectsList = res.body;
                       for(let i=0; i<projectsList.length; i++){
                           let item = {
                               accession: projectsList[i].accession,
@@ -446,17 +479,13 @@
                               let content='';
                               for(let k=0; k<projectsList[i].highlights[j].length;k++){
                                 //let temp = projectsList[i].highlights[j].k;
-                                //console.log(projectsList[i].highlights[j][k]);
                                 content += (projectsList[i].highlights[j][k]+'').replace(/<(\w+|\/\w+)>/g,'')+',';
                               }
-                              // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
-                              // console.log(j)
                               let hightlightItem={
 
                                   name:this.projectItemsConfigRes[j] ? this.projectItemsConfigRes[j] : j,
                                   content:content.replace(/,$/gi,'')
                               }
-                              // console.log('hightlightItem',hightlightItem)
                               item.hightlightItemArray.push(hightlightItem);
                           }
 
@@ -466,8 +495,6 @@
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);  
                       }
-                      // console.log('this.projectItemsConfigRes',this.projectItemsConfigRes)
-                      // console.log('this.publicaitionList', this.publicaitionList);
                       this.generateIcons()
                 }
                 else{
@@ -495,10 +522,10 @@
             this.highlightKeyword = this.keyword.split(',');
           // console.log('this.highlightKeyword',this.highlightKeyword);
       },
-      querySpecificFacets(keyword){
+      querySpecificFacets(keyword){//this keyword will be passed into this function automatically from the facet input
           if(this.containSelectors[0] && !this.containSelectors[0].value || this.containValue == keyword)
             return;
-         
+          let searchKeywordForFacet = this.keyword ? ('keyword='+this.keyword) : '' // it will be used to filter the facet if we have input something in the search input. As facet could be searched in two part: facet input and search input.
           if(keyword.length<4 && keyword.length>0) {
               this.querySpecificFacetsLoading = true;
               for(let i=0; i<this.fieldSelectors.length; i++){
@@ -526,25 +553,25 @@
                           for(let i in this.facetsConfigRes.body.archive){
                               if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                                   this.$http
-                                    .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                                    .get(this.facetsURL + '?filter='+i+'=='+keyword + searchKeywordForFacet)
                                     .then(function(res){
-                                        //console.log(res.body._embedded);
-                                         if(res.body._embedded && res.body._embedded.facets){
-                                              let facetsArray = res.body._embedded.facets;
+                                        // console.log("facetsURL",res.body);
+                                         if(res.body){
+                                              let facetsArray = res.body;
                                               let fieldFind = false;
-                                              for(let j=0; j<facetsArray.length; j++){
+                                              for(let j in facetsArray){
                                                 //console.log('ddd');
-                                                  if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                                  if(this.facetsConfigRes.body.archive[j] && this.facetsConfigRes.body.archive[j].name == this.fieldValue && Object.keys(facetsArray[j]).length>0){
                                                       fieldFind = true;
                                                       this.querySpecificFacetsLoading = false;
                                                       let itemArray = [];
-                                                      for(let k=0; k<facetsArray[j].values.length; k++){
+                                                      for(let k in facetsArray[j]){
                                                         //console.log('eee');
                                                             let item = {
-                                                                value: facetsArray[j].values[k].value,
-                                                                label: facetsArray[j].values[k].value,
+                                                                value: k,
+                                                                label: k,
                                                                 check: false,
-                                                                number: facetsArray[j].values[k].count,
+                                                                number: facetsArray[j][k],
                                                             }
                                                             itemArray.push(item);
                                                       }
@@ -570,30 +597,30 @@
               for(let i in this.facetsConfigRes.body.archive){
                   if(this.facetsConfigRes.body.archive[i].name == this.fieldValue){
                       this.$http
-                        .get(this.facetsURL + '?dateGap=%2B1YEAR' + '&filter='+i+'=='+keyword)
+                        .get(this.facetsURL + '?filter='+i+'=='+keyword + searchKeywordForFacet)
                         .then(function(res){
                             //console.log(res.body._embedded);
-                             if(res.body._embedded && res.body._embedded.facets){
-                                  let facetsArray = res.body._embedded.facets;
+                             if(res.body){
+                                  let facetsArray = res.body;
                                   let fieldFind = false;
-                                  for(let j=0; j<facetsArray.length; j++){
-                                    //console.log('ddd');
-                                      if(this.facetsConfigRes.body.archive[facetsArray[j].field] && this.facetsConfigRes.body.archive[facetsArray[j].field].name == this.fieldValue && facetsArray[j].values.length>0){
+                                  for(let j in facetsArray){
+                                      if(this.facetsConfigRes.body.archive[j] && this.facetsConfigRes.body.archive[j].name ==  this.fieldValue && Object.keys(facetsArray[j]).length>0){
                                           fieldFind = true;
                                           this.querySpecificFacetsLoading = false;
                                           let itemArray = [];
-                                          for(let k=0; k<facetsArray[j].values.length; k++){
+                                          for(let k in facetsArray[j]){
                                             //console.log('eee');
                                                 let item = {
-                                                    value: facetsArray[j].values[k].value,
-                                                    label: facetsArray[j].values[k].value,
+                                                    value: k,
+                                                    label: k,
                                                     check: false,
-                                                    number: facetsArray[j].values[k].count,
+                                                    number: facetsArray[j][k],
                                                 }
                                                 itemArray.push(item);
                                           }
                                           this.containSelectors = itemArray;
                                       }
+                                      
                                   }
                                   if(!fieldFind){
                                       this.querySpecificFacetsLoading = false;
@@ -813,6 +840,7 @@
                     this.pageSize = 20;
               }
           }
+          this.setFilter();
           //console.log();
         //this.normalQuery = {keyword:this.keyword, page:0, pageSize:20}
       },
@@ -857,8 +885,7 @@
                   .get(this.projectItemsConfigURL)
                   .then(function(projectItemsConfigRes){
                       this.projectItemsConfigRes = projectItemsConfigRes.body.projectItems;
-                      // console.log('1111this.projectItemsConfigRes',this.projectItemsConfigRes);
-                      this.setFilter();
+                      //we do not put the setFilter function in here due to some logic issue. We need to do the updateCondition, after that, the filter could set based on the new conditions. Because, setfilter needs keywords for facet query in backend. Keywords will be updated after updateCondition.
                       this.updateCondition();
                       this.queryArchiveProjectList();
                   },function(err){
@@ -955,6 +982,28 @@
       },
       gotoIconHelpPage(){
         window.open('http://blog.omicsdi.org/post/rosette-chart/')
+      },
+      // datasetJSON(){
+      //   this.loading = true
+      //   this.$http
+      //     .get(this.downLoadJSONApi)
+      //     .then(function(res){
+      //        this.loading = false
+      //        // console.log('datasetJSON res',res)
+
+      //         let a = document.createElement("a");
+      //         let file = new Blob([JSON.stringify(res.body, null, 2)], {type: 'application/json'});
+      //         a.href = URL.createObjectURL(file);
+      //         a.download = 'Pride Dataset.json';
+      //         a.click();
+      //         document.body.removeChild(a);
+      //     },function(err){
+      //        this.loading = false
+      //        this.$Message.error({content:'Download JSON Error', duration:3});
+      //     });
+      // }
+      datasetJSON(){
+        window.open(this.downLoadJSONApi)
       }
     },
 
@@ -976,7 +1025,7 @@
           for(let i=0; i<this.tagArray.length; i++){
 
           }
-          if(this.keyword)
+          if(this.keyword)// if no keyword, in the normalQuery, we should not put the item 'keyword' inside, this is the backend search requirement
             normalQuery.keyword = this.keyword;
 
           if(this.filter)
@@ -1238,6 +1287,22 @@
     .sortOption .order-action:hover{
       color:#5bc0be;
 
+    }
+    .download-button{
+      padding: 0 !important;
+      font-size: 12px;
+      font-weight: 700;
+      background-color: #5bc0be;
+      border-radius: 3px;
+      color: #f8f8f8;
+      display: inline-block;
+      padding: 2px 0px;
+      width: 110px;
+      margin-right:10px;
+      height:20px;
+    }
+    .download-button:hover{
+      opacity: .8;
     }
 </style>
 

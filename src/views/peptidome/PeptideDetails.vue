@@ -175,7 +175,8 @@
         data () {
             return {
                 iframeURL: this.$store.state.baseURL + '/lorikeet/html/pride.html',
-                clusterIDApi: this.$store.state.baseApiURL + '/peptidedetails',
+                // clusterIDApi: this.$store.state.baseApiURL_new + '/peptidedetails',
+                clusterIDApi: this.$store.state.baseApiURL + '/peptidedetails', // this one does not work
                 clusterPeptidesApi:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/peptide',
                 clusterConsensusSpectrum:'https://www.ebi.ac.uk/pride/ws/cluster/cluster/'+this.$route.params.id+'/consensusSpectrum',
                 europmcUrl:'https://europepmc.org/article/MED/',
@@ -426,6 +427,7 @@
                 this.$http
                   .get(this.clusterIDApi,{params:query })
                   .then(function(res){
+                    console.log('queryPeptideDetail',res)
                     this.detailsSpinShow=false;
                     this.queryPeptideDetailBool = true
                     let body = res.body

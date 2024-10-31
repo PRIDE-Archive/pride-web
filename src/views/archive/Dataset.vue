@@ -190,7 +190,8 @@
                               <Input type="text" v-model="fileName" placeholder="" size="small" style="margin-right: 10px;width:auto" @on-enter="searchFile">
                                   <Button slot="append" icon="ios-search" @click="searchFile"></Button>
                               </Input>
-                              <Button class= "download-button" size="small" @click="projectFtp(projectDownload)">Project FTP</Button>
+                              <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.ftp)">FTP</Button>
+                              <Button class= "download-button" size="small" @click="datasetDownload(projectDownload.globus)">GLOBUS</Button>
                           </span>
                         </p>
 
@@ -445,15 +446,23 @@
           projectTags:[],
           softwares:[],
           modification:[],
-          queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
-          queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          //*****
+          //queryArchiveProjectApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectApi: this.$store.state.baseApiURL_new + '/projects',
+          //queryArchiveProjectFilesApi: this.$store.state.baseApiURL + '/projects',
+          queryArchiveProjectFilesApi: this.$store.state.baseApiURL_new + '/projects',
+          queryFilePathApi: this.$store.state.baseApiURL_new + '/projects/files-path',
+          sdrfTableApi:this.$store.state.baseApiURL_new + '/files/sdrf',
+          // filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
+          filesNumberURL:this.$store.state.baseApiURL_new + '/files/getCountOfFilesByType',
+          //*******
           queryAssayApi: this.$store.state.baseApiURL + '/assay/list/project/',
           europepmcApi:'http://europepmc.org/abstract/MED/',
           doiApi:'https://dx.doi.org/',
           reactomeApi:'https://reactome.org/AnalysisService/identifiers/url?pageSize=1&page=1',
           viewInreactomeApi: this.$store.state.baseApiURL + '/protein/list/assay/',
           msRunApi:this.$store.state.baseApiURL+ '/msruns/byProject',
-          similarityApi: this.$store.state.baseApiURL + '/projects/',
+          similarityApi: this.$store.state.baseApiURL_new + '/projects/',
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           reanalysisApi: this.$store.state.baseApiURL + '/projects/reanalysis/',
           similarProjects:[],
@@ -879,13 +888,15 @@
           msRunModalTableData:[],
           msRunTableLoading:false,
           moleculesButtonState:true,
-          projectDownload:'',
+          projectDownload:{
+            ftp:'',
+            globus:''
+          },
           fileName:'',
           sdrfTableCollapse:true,
           sdrfTableLoading:false,
           sdrfTableData:[],
           sdrfTableCol:[],
-          sdrfTableApi:this.$store.state.baseApiURL + '/files/sdrfByAccession',
           sdrfTableLoading:false,
           pageSizeSdrf:200,
           pageSdrf:1,
@@ -901,9 +912,8 @@
           sdrfFile:'',  
           sdrfFileList:[],
           license:'',
-          filesNumberURL:this.$store.state.baseApiURL + '/files/getCountOfFilesByType',
           filesNumber:'',
-          visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/data/visualisations/',
+          visFileListApi:'https://www.ebi.ac.uk/pride/ws/archive/crosslinking/v2/data/visualisations/',
           visualisationTableShow:false
       }
     },
@@ -926,6 +936,23 @@
       svgLogo
     },
     methods:{
+      queryFilePath(id){
+          // this.queryProjectDetailsLoading = true;
+           var id = id || this.$route.params.id;
+           this.$http
+            .get(this.queryFilePathApi + '/' +id)
+            .then(function(res){
+                this.projectDownload.ftp = res.body.ftp.replace("ftp://", "https://") || ''
+                this.projectDownload.globus = res.body.globus || ''
+            },function(err){
+                // this.queryProjectDetailsLoading = false;
+                // if(err.bodyText.match('not in the database')){
+                   
+                // }
+                // else
+                //   this.$Message.error({content:'No results', duration:3});
+            });
+      },
       queryProjectDetails(id){
            this.queryProjectDetailsLoading = true;
            var id = id || this.$route.params.id;
@@ -951,12 +978,12 @@
                 this.experimentTypes = res.body.experimentTypes || [];
                 this.projectTags = res.body.projectTags || [];
                 this.modification = res.body.identifiedPTMStrings || [];
-                this.projectDownload = res.body.additionalAttributes[0].value.replace('ftp://', 'https://') || '';
                 this.license = res.body.license
                 this.licenseURL = 'https://www.ebi.ac.uk/about/terms-of-use/';
                 if (this.license == 'Creative Commons Public Domain (CC0)'){
                   this.licenseURL = 'https://creativecommons.org/share-your-work/public-domain/cc0/';
                 }
+
                 //for ssr
                 this.keywords = res.body.keywords[0]
                 //for contactors
@@ -969,7 +996,7 @@
                   }
                   this.contactors.push(item);
                 }
-                console.log('res.body.submitters',res.body.submitters)
+                // console.log('res.body.submitters',res.body.submitters)
                 // lab head in contactors which could be edited in the editdataset page.
                 if(res.body.labPIs)
                   for(let i=0; i<res.body.labPIs.length; i++){
@@ -981,7 +1008,7 @@
                     }
                     this.labheads.push(item);
                   }
-                  console.log('this.labheads',this.labheads)
+                // console.log('this.labheads',this.labheads)
                 //for publications
                 // console.log('res.body',res.body);
                 for(let i=0; i<res.body.references.length; i++){
@@ -994,6 +1021,7 @@
                     item.desc = res.body.references[i].referenceLine
                   this.publications.push(item);
                 }
+                // console.log('this.publications',this.publications)
                 // this.getMSRunTableData()
                 this.getProteinEvidences()
                 this.ssr()
@@ -1043,7 +1071,7 @@
             .get(this.reanalysisApi + id)
             .then(function(res){
                 this.reanalysisReferences = res.body.references;
-                console.log(this.reanalysisReferences)
+                // console.log(this.reanalysisReferences)
             },function(err){
 
             });
@@ -1052,7 +1080,7 @@
           let query = {};
           query.accession=this.$route.params.id //'PXD012991'
           this.$http
-            .get(this.filesNumberURL,{params: query}) 
+            .get(this.filesNumberURL + '/' + query.accession) 
             .then(function(res){
                 if(res.body){
                   let raw = res.body.RAW || 0
@@ -1067,7 +1095,7 @@
                                      'RESULT'+' ('+result+')'+', '+
                                      'OTHER'+' ('+other+')';
                 }
-                console.log('res',res)
+                // console.log('res',res)
             },function(err){
 
             });
@@ -1079,12 +1107,13 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
+                // console.log('bai',res)
+                // console.log('bai headers',)
                 this.fileListLoading = false;
-                this.totalDownLoad = res.body.page.totalElements;
+                this.totalDownLoad = parseInt(res.headers.get('total_records'));
                 this.fileList=[];
-                if(res.body._embedded && res.body._embedded.files){
-                  let filesArray = res.body._embedded.files;
-                  //console.log('filesArray',filesArray)
+                if(res){
+                  let filesArray = res.body;
                   this.fileList = this.createFileList(filesArray)
                 }
                 else{
@@ -1095,10 +1124,12 @@
             });
       },
       createFileList(filesArray){
+        // console.log('filesArray',filesArray)
          let tempArray = [];
          for(let i=0;i<filesArray.length;i++){
               let item ={
                     accession: filesArray[i].accession,
+                    projectAccession: filesArray[i].projectAccessions[0],
                     name: filesArray[i].fileName,
                     type: filesArray[i].fileCategory.value,
                     size: Math.round(filesArray[i].fileSizeBytes/1024/1024) > 0 ? Math.round(filesArray[i].fileSizeBytes/1024/1024) : (filesArray[i].fileSizeBytes)+' bit',
@@ -1197,15 +1228,17 @@
       },
       querySimilarity(id){
           var id = id || this.$route.params.id;
+          let temp_query = { // we just set this query as the default params
+            page:0,
+            pageSize:5
+          }
           this.similarProjects=[];
           this.similarityLoading=true;
           this.$http
-            .get(this.similarityApi +id+'/similarProjects')
+            .get(this.similarityApi +id+'/similarProjects',{params: temp_query})
             .then(function(res){
                 this.similarityLoading=false;
-                this.similarProjects=res.body._embedded.compactprojects;
-
-                //console.log(this.similarProjects)
+                this.similarProjects=res.body;
             },function(err){
 
             });
@@ -1236,7 +1269,10 @@
           this.projectTags=[]
           this.softwares=[]
           this.modification=[]
-          this.projectDownload=''
+          this.projectDownload={
+            ftp:'',
+            globus:''
+          }
       },
       searchProperties(filter){
           let normalQuery = {}
@@ -1327,8 +1363,10 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          // if(this.fileName)
+          //   query.filter = 'fileName=regex='+this.fileName
           if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
           this.queryArchiveProjectFiles(query)
       },
       downloadPageSizeChange(size){
@@ -1339,12 +1377,14 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
           }
+          // if(this.fileName)
+          //   query.filter = 'fileName=regex='+this.fileName
           if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
           this.queryArchiveProjectFiles(query)
       },
-      projectFtp(ftp){
-          window.open(ftp)
+      datasetDownload(url){
+          window.open(url)
       },
       projectFilesTableSortChange(item){
         // console.log(item)
@@ -1364,8 +1404,10 @@
             page:this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        // if(this.fileName)
+        //     query.filter = 'fileName=regex='+this.fileName
         if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
         this.queryArchiveProjectFiles(query)
       },
       searchFile(){
@@ -1375,8 +1417,11 @@
             page: 0,//this.pageDownLoad-1,
             pageSize :this.pageSizeDownLoad,
         }
+        this.pageDownLoad = 1 //query.page + 1
+        // if(this.fileName)
+        //     query.filter = 'fileName=regex='+this.fileName
         if(this.fileName)
-            query.filter = 'fileName=regex='+this.fileName
+             query.filenameFilter = this.fileName
         this.queryArchiveProjectFiles(query)
       },
       sdrfTableCollapseChange(val){
@@ -1395,18 +1440,21 @@
               // this.sdrfTableLoading = false; // We need to let the showSamples function to decide loading state
               this.sdrfFileList = []
               let tempFilelist = []
-              if(res.body._embedded && res.body._embedded.files){
-                let filesArray = res.body._embedded.files;
+              if(res){
+                let filesArray = res.body;
                 tempFilelist = this.createFileList(filesArray)
+                // console.log('tempFilelist',tempFilelist)
                 for(let i=0;i<tempFilelist.length;i++){
                     if(tempFilelist[i].name.match('sdrf')){
                       let item = {
                         name: tempFilelist[i].name,
                         accession: tempFilelist[i].accession,
+                        projectAccession: tempFilelist[i].projectAccession
                       }
                       this.sdrfFileList.push(item)
                     }
                 }
+                // console.log('this.sdrfFileList',this.sdrfFileList)
                 if(this.sdrfFileList.length>0){
                     this.sdrfFile = this.sdrfFileList[0].name
                     this.showSamples(this.sdrfFileList[0])
@@ -1417,7 +1465,7 @@
                 }
               }
               else{
-                  this.$Message.error({content:'No Samples Data', duration:1});
+                  this.$Message.error({content:'No SDRF Samples Data', duration:1});
               }
           },function(err){
               this.sdrfTableLoading = false;
@@ -1426,17 +1474,20 @@
       sdrfFileChange(){
       },
       showSamples(row){
-        //console.log(row)
+        // console.log('row',row)
         if(row.name.match('sdrf')){
           this.sdrfTableCollapse = false
           this.sdrfTableLoading = true
-          let query = {accession:row.accession}
+          let query = {projectAccession:row.projectAccession}
+          // console.log('query',query)
           this.$http
-              .get(this.sdrfTableApi,{params: query})
+              .get(this.sdrfTableApi + '/' + query.projectAccession)
               .then(function(res){
+                // console.log('showSamples',res)
                   this.sdrfTableLoading = false
-                  if(res.data){
-                    this.mapSdrfFileText(res.data)
+                  if(res){
+                    let url = 'https://'+res.body[0].split('//')[1]
+                    this.queryTSVfromFTP(url)
                   }
                   else
                      this.$Message.error({content:'No Samples Data', duration:1});
@@ -1446,7 +1497,20 @@
               });
         }
       },
-      mapSdrfFileText(data){
+      queryTSVfromFTP(url){
+        this.$http
+              .get(url)
+              .then(function(res){
+                  if(res)
+                    this.mapSdrfFileText(res.body)
+                  else
+                     this.$Message.error({content:'No FTP Data', duration:1});
+              },function(err){
+                  this.sdrfTableLoading = false
+                  this.$Message.error({content:'FTP Data Error', duration:3});
+              });
+      },
+      mapSdrfFileText(data){ //data is the tsv raw file, this function is to map the tsv to a table
         let arr = data.split('\n');
         this.totalSdrf = 0
         this.sdrfTableData = []
@@ -1626,7 +1690,7 @@
            this.$http
             .get(this.visFileListApi + this.$route.params.id)
             .then(function(res){
-              console.log('queryVisFileList',res)
+              // console.log('queryVisFileList',res)
                 this.visFileListLoading = false;
                 if(res.body.length === 0)
                   this.visualisationTableShow = false
@@ -1658,6 +1722,7 @@
         this.queryReanalysis();
         this.queryFilesNumber();
         this.queryVisFileList();
+        this.queryFilePath();
     },
     computed:{//TODO for queryAssayApi
       query:function(){
@@ -1771,7 +1836,7 @@
     opacity: .8;
   }
   .download-button{
-    padding: 0;
+    padding: 0 !important;
     font-size: 12px;
     font-weight: 700;
     background-color: #5bc0be;
@@ -1779,6 +1844,9 @@
     color: #f8f8f8;
     display: inline-block;
     padding: 2px 0px;
+    width: 80px;
+    margin-left:5px;
+    height:20px;
   }
   .download-button:hover{
     opacity: .8;

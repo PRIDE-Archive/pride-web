@@ -12,7 +12,7 @@ It is recommended to name your file in a self descriptive way, for instance : ex
 
 Login to your PRIDE web account, go to your profile and select your private dataset. On the right-hand corner of the screen, you can see the ‘Transfer Ownership’ tab. There you can provide your new (submitter’s)email id which must be registered with PRIDE.
 
-### How can I publish my private dataset in PRIDE?
+### How do I publish my private dataset in PRIDE?
 
 - Login to your PRIDE web account and go to profile and select your private dataset. On the right-hand corner of the screen, you can see the ‘Publish’ tab. You can provide the details there.
 - Please fill in either PubmedID or DOI by selecting the correct option from dropdown and submit
@@ -24,7 +24,7 @@ For now, NO, but in the future. Please follow PRIDE on Twitter or PRIDE web for 
 
 ### What is the current version of PRIDE submission tool?
 
-2.7.3
+2.8.0
 
 ### I am not able to use PRIDE Inspector tool?
 

@@ -152,6 +152,7 @@
         image3URL: this.$store.state.baseURL + '/tutorial/tutorial-3.png',
         // barPeptideSimpleShow:false,
         chartShow:true,
+        // chartDataApi: this.$store.state.baseApiURL_new + '/stats/peptidome-stats', //this one does not work
         chartDataApi: this.$store.state.baseApiURL + '/stats/peptidome-stats',
       }
     },
