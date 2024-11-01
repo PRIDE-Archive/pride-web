@@ -39,7 +39,7 @@
                                     </Option>
                                 </Select>
                             </div>
-                            <span class="separator">></span>
+                            <span class="separator">:</span>
                             <div class="filter-condition ">
                                 <Select ref="containRef" class="filter-selector input-search-needed" v-model="containValue" style="min-width:200px" size="small" filterable remote :remote-method="querySpecificFacets" :loading="querySpecificFacetsLoading" @on-change="containChange" loading-text="loading..." @on-open-change="containDropdownOpen" @on-query-change="queryChange">
                                     <Option v-for="item in containSelectors" :value="item.value" :label="item.label" :key="item.value">
