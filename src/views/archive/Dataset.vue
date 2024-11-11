@@ -209,9 +209,6 @@
                         <p slot="title" class="sdrf-file-title-container">
                           <span>Experimental Design (Samples)</span>
                           <span class="right" style="display: flex;">
-                              <Select v-model="sdrfFile" size="small" style="width:225px" @on-change="sdrfFileChange">
-                                  <Option v-for="item in sdrfFileList" :value="item.name" :key="item.accession">{{ item.name }}</Option>
-                              </Select>
                               <a v-if="sdrfTableCollapse" href="javascript:void(0)"><Icon type="md-arrow-dropright" size="24" @click="sdrfTableCollapseChange(false)"></Icon></a>
                               <a v-else href="javascript:void(0)"><Icon type="md-arrow-dropdown" size="20" @click="sdrfTableCollapseChange(true)"></Icon></a>
                           </span>
@@ -1427,88 +1424,35 @@
       sdrfTableCollapseChange(val){
         this.sdrfTableCollapse = val
       },
-      querySdrfFiles(){
-         this.sdrfTableCollapse = true
-         this.sdrfTableLoading = true
-         let query = {
-            page:0,
-            pageSize:100000//in order to query all the files and find the sdrf in it
-         }
-         this.$http
-          .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
-          .then(function(res){
-              // this.sdrfTableLoading = false; // We need to let the showSamples function to decide loading state
-              this.sdrfFileList = []
-              let tempFilelist = []
-              if(res){
-                let filesArray = res.body;
-                tempFilelist = this.createFileList(filesArray)
-                // console.log('tempFilelist',tempFilelist)
-                for(let i=0;i<tempFilelist.length;i++){
-                    if(tempFilelist[i].name.match('sdrf')){
-                      let item = {
-                        name: tempFilelist[i].name,
-                        accession: tempFilelist[i].accession,
-                        projectAccession: tempFilelist[i].projectAccession
-                      }
-                      this.sdrfFileList.push(item)
-                    }
-                }
-                // console.log('this.sdrfFileList',this.sdrfFileList)
-                if(this.sdrfFileList.length>0){
-                    this.sdrfFile = this.sdrfFileList[0].name
-                    this.showSamples(this.sdrfFileList[0])
-                }
-                else{
-                    this.sdrfTableCollapse = true
-                    this.sdrfTableLoading = false
-                }
-              }
-              else{
-                  this.$Message.error({content:'No SDRF Samples Data', duration:1});
-              }
-          },function(err){
-              this.sdrfTableLoading = false;
-          });   
-      },
       sdrfFileChange(){
       },
-      showSamples(row){
-        // console.log('row',row)
-        if(row.name.match('sdrf')){
-          this.sdrfTableCollapse = false
-          this.sdrfTableLoading = true
-          let query = {projectAccession:row.projectAccession}
-          // console.log('query',query)
-          this.$http
-              .get(this.sdrfTableApi + '/' + query.projectAccession)
-              .then(function(res){
-                // console.log('showSamples',res)
-                  this.sdrfTableLoading = false
-                  if(res){
-                    let url = 'https://'+res.body[0].split('//')[1]
-                    this.queryTSVfromFTP(url)
-                  }
-                  else
-                     this.$Message.error({content:'No Samples Data', duration:1});
-              },function(err){
-                  this.sdrfTableLoading = false
-                  this.$Message.error({content:'Sample Data Error', duration:3});
-              });
-        }
-      },
-      queryTSVfromFTP(url){
+      querySdrfFiles(row){
+        this.sdrfTableCollapse = false
+        this.sdrfTableLoading = true
         this.$http
-              .get(url)
-              .then(function(res){
-                  if(res)
-                    this.mapSdrfFileText(res.body)
-                  else
-                     this.$Message.error({content:'No FTP Data', duration:1});
-              },function(err){
-                  this.sdrfTableLoading = false
-                  this.$Message.error({content:'FTP Data Error', duration:3});
-              });
+            .get(this.sdrfTableApi + '/' + this.$route.params.id)
+            .then(function(res){
+                if(res){
+                  let url = 'https://'+res.body[0].split('//')[1]
+                  this.$http
+                    .get(url)
+                    .then(function(res){
+                        this.sdrfTableLoading = false
+                        if(res) 
+                          this.mapSdrfFileText(res.body)
+                        else
+                           this.$Message.error({content:'No FTP Data', duration:1});
+                    },function(err){
+                        this.sdrfTableLoading = false
+                        this.$Message.error({content:'FTP Data Error', duration:3});
+                    });
+                }
+                else
+                   this.$Message.error({content:'No Samples Data', duration:1});
+            },function(err){
+                this.sdrfTableLoading = false
+                this.$Message.error({content:'Sample Data Error', duration:3});
+            });
       },
       mapSdrfFileText(data){ //data is the tsv raw file, this function is to map the tsv to a table
         let arr = data.split('\n');
