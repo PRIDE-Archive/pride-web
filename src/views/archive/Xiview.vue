@@ -83,7 +83,8 @@
           </Row>
           <Row :gutter="48" class="row">
             <Col span="18">
-              <span style="color:gray; font-size: 20px">The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab (Technische Universität Berlin, Edinburgh University), PRIDE and PDB teams (EMBL-EBI)</span>
+              <span style="color:gray; font-size: 20px"> You can add your crosslinking dataset to this newly developed resource by providing a COMPLETE submission with valid mzIdentML 1.2.0 files. Please read the <a href="https://www.ebi.ac.uk/pride/markdownpage/crosslinking" >complete guideline</a> first and feel free to contract us if further support needed.
+                The PRIDE Crosslinking Database, visualisation components and integration with PDB-KB has been developed and maintained by Juri Rappsilber's Lab (Technische Universität Berlin, Edinburgh University), PRIDE and PDB teams (EMBL-EBI)</span>
             </Col>
             <Col span="6">
               <div class="logo_container" style="background-image:url(../logo/xiview_logo_horizon_1.png)"></div>

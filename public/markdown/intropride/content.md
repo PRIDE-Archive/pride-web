@@ -16,6 +16,6 @@ As part of PRIDE resources, PRIDE provides the [PRIDE spectra service](https://w
 
 You can read more about PRIDE in the following publications:
 
-- Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences. Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. PMID: 34723319; PMCID: PMC8728295.
+- Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA. The PRIDE database at 20 years: 2025 update. Nucleic Acids Res. 2024 Nov:gkae1011. doi: 10.1093/nar/gkae1011. PMID: 39494541.
 
 - Perez-Riverol Y, Csordas A, Bai J, Bernal-Llinares M, Hewapathirana S, Kundu DJ, Inuganti A, Griss J, Mayer G, Eisenacher M, Pérez E, Uszkoreit J, Pfeuffer J, Sachsenberg T, Yilmaz S, Tiwary S, Cox J, Audain E, Walzer M, Jarnuczak AF, Ternent T, Brazma A, Vizcaíno JA. The PRIDE database and related tools and resources in 2019: improving support for quantification data. Nucleic Acids Res. 2019 Jan 8;47(D1):D442-D450. doi: 10.1093/nar/gky1106. PMID: 30395289; PMCID: PMC6323896.

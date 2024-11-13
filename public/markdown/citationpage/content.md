@@ -28,7 +28,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
 ## Citing PRIDE Resources
 
-- **Citing the PRIDE database generally**: Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. [The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences](https://academic.oup.com/nar/article/50/D1/D543/6415112). Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. PMID: 34723319; PMCID: PMC8728295.
+- **Citing the PRIDE database generally**: Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA. The PRIDE database at 20 years: 2025 update. Nucleic Acids Res. 2024 Nov:gkae1011. doi: 10.1093/nar/gkae1011. PMID: 39494541.
 
 - **Citing ProteomeXchange**: Deutsch EW, Bandeira N, Perez-Riverol Y, Sharma V, Carver J, Mendoza L, Kundu DJ, Wang S, Bandla C, Kamatchinathan S, Hewapathirana S, Pullman B, Wertz J, Sun Z, Kawano S, Okuda S, Watanabe Y, MacLean B, MacCoss M, Zhu Y, Ishihama Y and Vizcaíno JA .
   [The ProteomeXchange Consortium at 10 years: 2023 update](https://academic.oup.com/nar/article/51/D1/D1539/6825347).  Nucleic Acids Res. 2023 Jan 6; 51(D1): D1539–D1548. PubMed ID: 36370099.
@@ -39,7 +39,7 @@ All PRIDE Archive and PX identifiers for a dataset.
 
   **PX Complete**: The mass spectrometry proteomics data have been deposited to the ProteomeXchange Consortium (http://proteomecentral.proteomexchange.org) via the PRIDE partner repository [1] with the dataset identifier PXDxxxxxx and DOI 10.6019/PXDxxxxxx.
 
-  [1] Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. [The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences](https://academic.oup.com/nar/article/50/D1/D543/6415112). Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. PMID: 34723319; PMCID: PMC8728295.
+  [1] Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA. The PRIDE database at 20 years: 2025 update. Nucleic Acids Res. 2024 Nov:gkae1011. doi: 10.1093/nar/gkae1011. PMID: 39494541.
 
   See some examples: [PX Partial Submission](https://www.sciencedirect.com/science/article/pii/S0092867416315914), [PX Complete Submission](https://www.frontiersin.org/articles/10.3389/fmicb.2018.00680/full).
 

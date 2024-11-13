@@ -14,6 +14,31 @@ Crosslinking data submitted to PRIDE will receive complete submission status whe
 
 6. Every **&lt;**DBSequence**&gt;** element that describes a target protein MUST include the protein sequence in a **&lt;**Seq**&gt;** subelement. This is the protein sequence in the protein database used to perform the analysis.
 
+## Validate Dataset
+
+Please follow the following three simple steps to validate your dataset prior submitting your dataset to PRIDE which will help to get completed the submission without a delay.
+
+**STEP 1:** As the first step, place your all the mzIdentML files and peak files into a one folder. Peakfiles needs to be corrected reference by mzIdentML files to read them.<br/>
+
+**STEP 2:** Secondly, make sure you have `python > 3.10` and `pip` installed in your machine. Pip installation guide can be found <a href="https://pip.pypa.io/en/stable/installation/">here<a/>.
+Then please install a python library in order to validate your dataset.
+
+Install thePython library using the following command:<br/>
+`pip install xi-mzidentml-converter`
+
+**STEP 3:** Run the validation and check for any errors in the console
+
+In order to run the validation, run the following command:<br/>
+`process_dataset -v "/absolute/file/path/to/the/folder/here"`
+
+### What will be validated?
+
+1. Check if all the mzIdentML files match with the <a href="https://github.com/HUPO-PSI/mzIdentML/blob/master/schema/mzIdentML1.2.0.xsd">schema file<a/>
+2. Check the references to the peaklist files are correct
+3. Check all the accession references of protein, peptide and spectra are correctly referenced
+4. Check for any duplicate IDs in protein, peptide and spectra
+
+
 ## Limitations of Support
 
 1. Information in mzIdentML files on scores and the passing of thresholds at higher levels of consolidation (unique peptide; crosslink level; PPI) are not processed by https://github.com/PRIDE-Archive/xi-mzidentml-converter, only the PSM level scores/threshold passes.
@@ -29,6 +54,7 @@ While multiple tools can be used to analyze crosslinking data, only the followin
 - [xiSEARCH and xiFDR](https://www.rappsilberlab.org/software/xisearch/): xiSEARCH is a library of routines for peptide-based mass spectrometry, prominently featuring a search engine for identifying crosslinked peptides. xiFDR is a tool for calculating false discovery rates for crosslinked peptides. [Example dataset: PXD019437](https://www.ebi.ac.uk/pride/archive/projects/PXD019437)
 - [Scout](https://github.com/diogobor/Scout): Scout is a computational methodology that facilitates interactomic analysis by identifying mass spectra of peptides linked with cleavable cross-linking reagents. Utilizing machine learning techniques, Scout ensures a controlled false discovery rate (FDR) at multiple levels, including cross-linked spectrum matches, residue pairs, and protein-protein interactions (PPIs). [Example dataset: PXD042173](https://www.ebi.ac.uk/pride/archive/projects/PXD042173)
 - [Mascot](https://www.matrixscience.com/): Mascot is a powerful search engine and proteomics analysis sofware that uses mass spectrometry data to identify proteins from primary sequence databases. [Example dataset: PXD054720](https://www.ebi.ac.uk/pride/archive/projects/PXD054720)
+- [Kojak](https://kojak-ms.systemsbiology.net/): Kojak is a free, open-source application for identification of cross-linked peptides from mass spectra. [Example dataset: PXD056910](https://www.ebi.ac.uk/pride/archive/crosslinking/PXD056910)
 
 > Note: If you have used a different tool to analyze your crosslinking data, and you are not able to perform a complete submission following the previous guidelines, please contact the PRIDE team at pride-support@ebi.ac.uk.
 
