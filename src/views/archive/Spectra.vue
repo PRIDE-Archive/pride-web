@@ -191,7 +191,7 @@
                       <div class="citations-container">
                           <ul>
                             <li>
-                              Perez-Riverol Y, Bai J, Bandla C, García-Seisdedos D, Hewapathirana S, Kamatchinathan S, Kundu DJ, Prakash A, Frericks-Zipper A, Eisenacher M, Walzer M, Wang S, Brazma A, Vizcaíno JA. The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences. Nucleic Acids Res. 2022 Jan 7;50(D1):D543-D552. doi: 10.1093/nar/gkab1038. <a href="https://academic.oup.com/nar/article/50/D1/D543/6415112">PMID: 34723319</a>.
+                              Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA. The PRIDE database at 20 years: 2025 update. Nucleic Acids Res. 2024 Nov:gkae1011. doi: 10.1093/nar/gkae1011. <a href="https://academic.oup.com/nar/advance-article/doi/10.1093/nar/gkae1011/7874848">PMID: 39494541</a>.
                             </li>
                             <Divider />
                             <li>
