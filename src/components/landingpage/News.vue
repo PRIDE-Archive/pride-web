@@ -45,7 +45,7 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitter" size="80" color="#5bc0be"></Icon></div>
+                    <div class="item-icon"><Icon type="fa-brands fa-bluesky" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
                       <div>Bluesky Posts</div>
                     </div>
