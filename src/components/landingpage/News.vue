@@ -45,9 +45,9 @@
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
                 <div class="item-container">
-                    <div class="item-icon"><Icon type="social-twitter" size="80" color="#5bc0be"></Icon></div>
+                    <div class="item-icon"><Icon type="fa-brands fa-bluesky" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
-                      <div>Tweets</div>
+                      <div>Bluesky Posts</div>
                     </div>
                     
                     <Spin class="bsky-spin" v-if="tweetLoading"></Spin>
@@ -59,13 +59,12 @@
                                 <div class="content-title">
                                     {{item.date}}
                                 </div>
-                                <div class="content-text">
-                                    {{item.content}}
+                                <div class="content-text" v-html="item.content">
                                 </div>
                                 <a class="content-button" @click="bskyMoreButtonAction(item.id)">More</a>
                             </div>
                         </div>
-                        <Button class="news-button" @click="gotoBsky()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                        <Button class="news-button" @click="gotoBsky()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow in Bluesky</Button>
                     </template>
                 </div>
             </Col>
@@ -166,7 +165,7 @@
                         // tweetIDList.push(res.body[i].id)
 
                         let item = {}
-                        item.content = res.body[i].content
+                        item.content = res.body[i].content.replace(/\n/g, '<br>');
                         item.date = res.body[i].createdAt.split('T')[0]
                         item.id = res.body[i].id
                         this.tweetsSection.push(item)
