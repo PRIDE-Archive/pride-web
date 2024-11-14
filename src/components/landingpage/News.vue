@@ -49,10 +49,24 @@
                     <div class="item-title">
                       <div>Tweets</div>
                     </div>
-                    <div class="item-content tweet">
-                        <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/>
-                    </div>
-                    <Button class="news-button" @click="twitterMoreButtonAction()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                    
+                    <Spin class="bsky-spin" v-if="tweetLoading"></Spin>
+                   
+                    <template v-else>
+                        <div class="item-content tweet">
+                            <!-- <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/> -->
+                            <div v-for="(item,index) in tweetsSection" :key="index" class="content-wrapper">
+                                <div class="content-title">
+                                    {{item.date}}
+                                </div>
+                                <div class="content-text">
+                                    {{item.content}}
+                                </div>
+                                <a class="content-button" @click="bskyMoreButtonAction(item.id)">More</a>
+                            </div>
+                        </div>
+                        <Button class="news-button" @click="gotoBsky()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                    </template>
                 </div>
             </Col>
             <Col :xs="{ span: 24 }" :sm="{span: 12}" :md="{ span: 12}" :lg="{ span: 6}">
@@ -113,7 +127,11 @@
                     linefour:'',
                     button:{}
                 },
-                landingPageJsonURL: this.$store.state.baseURL + '/landingPage/landing_page.json'
+                tweetsSection:[],
+                tweetLoading: false,
+                landingPageJsonURL: this.$store.state.baseURL + '/landingPage/landing_page.json',
+                blueSkyApi: this.$store.state.baseApiURL_new + '/misc/bluesky-posts',
+                blueSkyPostApi: 'https://bsky.app/profile/pride-ebi.bsky.social/post/'
             }
         },
         methods:{
@@ -138,15 +156,27 @@
             tweetQuery(){
                 //this.$Message.success({content:'documents update', duration:1});
                 this.info.tweet = Math.floor(Math.random()* 1000);
-                /*
+                this.tweetLoading = true
                 this.$http
-                  .get("/tweet/get")
+                  .get(this.blueSkyApi)
                   .then(function(res){
-                    this.info.tweet = res.body.data.tweetNum;
-                  },function(err){
+                    // let tweetIDList = []
+                    this.tweetLoading = false
+                    for(let i =0; i<res.body.length; i++){
+                        // tweetIDList.push(res.body[i].id)
 
+                        let item = {}
+                        item.content = res.body[i].content
+                        item.date = res.body[i].createdAt.split('T')[0]
+                        item.id = res.body[i].id
+                        this.tweetsSection.push(item)
+                    }
+                    console.log('resresres',tweetIDList)
+
+                  },function(err){
+                        this.tweetLoading = false
                   });
-                */
+                
             },
             citationQuery(){
                 //this.$Message.success({content:'documents update', duration:1});
@@ -174,8 +204,11 @@
                     this.$router.push({path:'/markdownpage/'+subpage});
                 //this.$router.push({name:'/markdownpage#123',params: { subpage: subpage }, query: { step: id }});
             },
-            twitterMoreButtonAction(){
-                window.open("https://twitter.com/pride_ebi");
+            bskyMoreButtonAction(id){
+                 window.open(this.blueSkyPostApi+id);
+            },
+            gotoBsky(){
+                window.open("https://bsky.app/profile/pride-ebi.bsky.social");
                 //location.href="https://twitter.com/pride_ebi"
             }
         },
@@ -298,14 +331,27 @@
         margin-bottom: 20px;
         text-align: center;
     }
-    .tweet-class{
-        /*overflow-y: scroll;*/
+    .tweet{
+        text-align: justify;
+        overflow-y: scroll;
     }
     ::-webkit-scrollbar {
         width: 1px;
     }
     .twitter-follow-button{
 
+    }
+    .bsky-spin{
+        position: absolute;
+        height: 100%;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        /* text-align: center; */
+        justify-content: center;
+        align-items: center;
+        background-color: #f7f7f78f;
     }
     /*@media (min-width: 768px) {
         .news-container{
