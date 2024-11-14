@@ -47,7 +47,7 @@
                 <div class="item-container">
                     <div class="item-icon"><Icon type="social-twitter" size="80" color="#5bc0be"></Icon></div>
                     <div class="item-title">
-                      <div>Tweets</div>
+                      <div>Bluesky Posts</div>
                     </div>
                     
                     <Spin class="bsky-spin" v-if="tweetLoading"></Spin>
@@ -65,7 +65,7 @@
                                 <a class="content-button" @click="bskyMoreButtonAction(item.id)">More</a>
                             </div>
                         </div>
-                        <Button class="news-button" @click="gotoBsky()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow @PRIDE</Button>
+                        <Button class="news-button" @click="gotoBsky()"><Icon class="twitter-icon" type="social-twitter"></Icon>Follow in Bluesky</Button>
                     </template>
                 </div>
             </Col>
