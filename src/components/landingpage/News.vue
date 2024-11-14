@@ -59,8 +59,7 @@
                                 <div class="content-title">
                                     {{item.date}}
                                 </div>
-                                <div class="content-text">
-                                    {{item.content}}
+                                <div class="content-text" v-html="item.content">
                                 </div>
                                 <a class="content-button" @click="bskyMoreButtonAction(item.id)">More</a>
                             </div>
@@ -166,7 +165,7 @@
                         // tweetIDList.push(res.body[i].id)
 
                         let item = {}
-                        item.content = res.body[i].content
+                        item.content = res.body[i].content.replace(/\n/g, '<br>');
                         item.date = res.body[i].createdAt.split('T')[0]
                         item.id = res.body[i].id
                         this.tweetsSection.push(item)
