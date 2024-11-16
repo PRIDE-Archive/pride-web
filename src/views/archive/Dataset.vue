@@ -1432,25 +1432,37 @@
         this.$http
             .get(this.sdrfTableApi + '/' + this.$route.params.id)
             .then(function(res){
-                if(res){
+                if(res.body.length>0){
                   let url = 'https://'+res.body[0].split('//')[1]
+                  if(url)
+                    return
                   this.$http
                     .get(url)
                     .then(function(res){
+                      console.log(2222222)
                         this.sdrfTableLoading = false
                         if(res) 
                           this.mapSdrfFileText(res.body)
-                        else
-                           this.$Message.error({content:'No FTP Data', duration:1});
+                        else{
+                          this.sdrfTableCollapseChange(true)
+                          this.$Message.error({content:'No FTP Data', duration:1});
+                        }
+                           
                     },function(err){
                         this.sdrfTableLoading = false
+                        this.sdrfTableCollapseChange(true)
                         this.$Message.error({content:'FTP Data Error', duration:3});
                     });
                 }
-                else
-                   this.$Message.error({content:'No Samples Data', duration:1});
+                else{
+                    this.sdrfTableLoading = false
+                    this.sdrfTableCollapseChange(true)
+                    this.$Message.warning({content:'No SDRF Data', duration:3});
+                }
+                   
             },function(err){
                 this.sdrfTableLoading = false
+                this.sdrfTableCollapseChange(true)
                 this.$Message.error({content:'Sample Data Error', duration:3});
             });
       },
