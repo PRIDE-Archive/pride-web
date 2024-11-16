@@ -1,1 +1,1 @@
-We have released the new <a href="https://www.ebi.ac.uk/pride/ws/archive/v3/webjars/swagger-ui/index.html"> PRIDE API version 3.0</a>. The version v2 of the API will be retired on the 1st of February 2025.
+We have some technical difficulties in EBI infrastructure with the storage, there would be issues downloading the files from PRIDE
