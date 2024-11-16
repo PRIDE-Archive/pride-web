@@ -57,7 +57,7 @@
                             <!-- <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/> -->
                             <div v-for="(item,index) in tweetsSection" :key="index" class="content-wrapper">
                                 <div class="content-title bluesky">
-                                    {{item.date}}
+                                    <img v-bind:src="blueSkyLogo" style="width:20px" /> {{item.date}}
                                 </div>
                                 <p class="content-text bluesky" v-for="line of item.content" >
                                     {{line}}
@@ -131,7 +131,8 @@
                 tweetLoading: false,
                 landingPageJsonURL: this.$store.state.baseURL + '/landingPage/landing_page.json',
                 blueSkyApi: this.$store.state.baseApiURL_new + '/misc/bluesky-posts',
-                blueSkyPostApi: 'https://bsky.app/profile/pride-ebi.bsky.social/post/'
+                blueSkyPostApi: 'https://bsky.app/profile/pride-ebi.bsky.social/post/',
+                blueSkyLogo:'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcCAMAAABF0y+mAAAAMFBMVEVHcEwRhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf4Rhf7t/aLrAAAAD3RSTlMASvPZbOWuNxbPgSC/nVvEU+OhAAAAtElEQVQokaWSSwLDIAhER/EfE+5/2+aHQpNVOyvgISAK/K5A3T2jrlMACu+iYlGhI1rg+JQ5PGK3wUE1YoGZv6kwzljElMpuBBaAtQOVzNDQH9AbqLwEJJtbp8s5K6fusCk/RuU0mKZW1678G/Ky0S2RrseR0qYW1u2plAfK/FQV+DpOesBKs/QN5zBtXlrqbiNSZvvx+n1my52l5Sycx0tXKJ2DrCNvtf8tRN8ua6W04F99AP3mF/7GxnNrAAAAAElFTkSuQmCC'
             }
         },
         methods:{
