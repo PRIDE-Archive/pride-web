@@ -56,12 +56,12 @@
                         <div class="item-content tweet">
                             <!-- <Timeline :id="'pride_ebi'" :widget-class="`tweet-class`" :sourceType="'profile'" :options="{ tweetLimit: '5   ', chrome:'transparent', linkColor:'#656665', borderColor:'#656665'}"/> -->
                             <div v-for="(item,index) in tweetsSection" :key="index" class="content-wrapper">
-                                <div class="content-title">
+                                <div class="content-title bluesky">
                                     {{item.date}}
                                 </div>
-                                <div class="content-text">
-                                    {{item.content}}
-                                </div>
+                                <p class="content-text bluesky" v-for="line of item.content" >
+                                    {{line}}
+                                </p>
                                 <a class="content-button" @click="bskyMoreButtonAction(item.id)">More</a>
                             </div>
                         </div>
@@ -166,11 +166,12 @@
                         // tweetIDList.push(res.body[i].id)
 
                         let item = {}
-                        item.content = res.body[i].content
+                        item.content = res.body[i].content.split('\n').filter(Boolean) 
                         item.date = res.body[i].createdAt.split('T')[0]
                         item.id = res.body[i].id
                         this.tweetsSection.push(item)
                     }
+                    console.log(this.tweetsSection)
                     console.log('resresres',res.body)
 
                   },function(err){
@@ -277,13 +278,22 @@
         color: rgb(41, 47, 51);
         padding-top: 10px;
     }
+    .item-container .item-content .content-title.bluesky{
+        border-bottom: 1px solid rgb(0, 0, 0) !important;
+        padding-bottom: 10px;
+    }
     .item-container .item-content .content-text{
         margin: 10px 0;
         padding: 10px 0;
         border-top: 1px solid rgb(0, 0, 0);
         font-size: 14px;
     }
-
+    .item-container .item-content .content-text.bluesky{
+        /*margin-bottom: 2px;*/
+        padding: 0;
+        border-top: none;
+        font-size: 13px;
+    }
     .item-title{
         font-size:18px;
         margin-bottom: 30px;
