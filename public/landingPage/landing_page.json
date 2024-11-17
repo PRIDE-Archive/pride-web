@@ -112,9 +112,9 @@
     },
     "citation":{
       "lineone": "Citing PRIDE",
-      "linetwo": "Perez-Riverol, Y., Bai, J., Bandla, C., García-Seisdedos, D., Hewapathirana, S., Kamatchinathan, S., Kundu, D. J., Prakash, A., Frericks-Zipper, A., Eisenacher, M., Walzer, M., Wang, S., Brazma, A., & Vizcaíno, JA.",
-      "linethree": "The PRIDE database resources in 2022: a hub for mass spectrometry-based proteomics evidences.",
-      "linefour": "Nucleic Acids Res. 2022 Jan 7; 50(D1): D543–D552. doi: 10.1093/nar/gkab1038",
+      "linetwo": "Perez-Riverol Y, Bandla C, Kundu DJ, Kamatchinathan S, Bai J, Hewapathirana S, John NS, Prakash A, Walzer M, Wang S, Vizcaíno JA.",
+      "linethree": "The PRIDE database at 20 years: 2025 update.",
+      "linefour": "Nucleic Acids Res. 2024 Nov 4. doi:10.1093/nar/gkae1011. PMID:39494541",
       "button":{
         "moreID":"",
         "markdownFolder":"citationpage"
