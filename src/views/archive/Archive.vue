@@ -11,7 +11,7 @@
                         <div class="search-input-wrapper">
                             <div class="fake-input">
                               <div class="tag-wrapper">
-                                  <Tag class="tag-in-search-input" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
+                                  <Tag class="tag-in-search-input" v-for="(item,index) in tagArray" :key="index" :name="item" closable @on-close="tagDelete">{{item}}</Tag>
                                   <Select
                                       ref="searchRef"
                                       v-model="selectTemp"
@@ -58,7 +58,7 @@
                     </div>
                     <div class="search-condition-container">
                       <div class="tag-container">
-                          <Tag type="border" v-for="(item,index) in tagArray" :key="index" closable @on-close="tagDelete">{{item}}</Tag>
+                          <Tag type="border" v-for="(item,index) in tagArray" :key="index" :name="item" closable @on-close="tagDelete">{{item}}</Tag>
                       </div>
                     </div>
                     <div v-for="(item, index) in filterCombination" class="search-condition-container">
@@ -290,6 +290,10 @@
     methods:{
       searchInputChange (query, splitBool) {
           if(splitBool){
+            if(this.checkRepeateKeyword(query)){
+              this.$Message.error({content:'Keywords Repeated!', duration:1});
+              return
+            }
             //console.log('searchInputChange',query);
             this.tadAdd(query);
             this.$refs.searchRef.setQuery(null);
@@ -309,6 +313,16 @@
           else{
             this.autoCompleteArray = [];
           }
+      },
+      checkRepeateKeyword(query){
+        let bool = false
+        for(let i =0; i<this.tagArray.length; i++){
+          if(query == this.tagArray[i]){
+            bool = true
+            break;
+          }
+        }
+        return bool
       },
       setFilter(){//only for filter/facet not for keywords, but we need the keywords to query the filter/facet
           let searchKeywordForFacet = this.keyword ? ('&keyword='+this.keyword) : '' // this one is different from the querySpecificFacets
@@ -643,7 +657,6 @@
           }
       },
       searchInputLoadingDropdownOpen(open){
-        // console.log('open',open)
           if(open){
               window.addEventListener('mousedown', this.searchInputBlur, false);
               window.addEventListener('touchstart', this.searchInputBlur, false);
