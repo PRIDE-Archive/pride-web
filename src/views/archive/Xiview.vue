@@ -442,7 +442,7 @@
       },
       gotoExternal(){
         let query = {
-                    keyword:'crosslinking',
+                    keyword:'crosslinking,cross-linking',
                     sortDirection:'DESC',
                     page:0,
                     pageSize:20
