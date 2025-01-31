@@ -13,9 +13,13 @@ Importantly, before starting, you should make sure that **File names can't have 
 
 `pride_checksum --out_path /path/to/save/computed_checksum/ --files_dir /dir_path/where/files/are/located/`
 
+`python -m pride_checksum --out_path /path/to/save/computed_checksum/ --files_dir /dir_path/where/files/are/located/`
+
 OR
 
 `pride_checksum --out_path /path/to/save/computed_checksum/ --files_list_path /path/to/file/containing/list_of_files.txt`
+
+`python -m pride_checksum --out_path /path/to/save/computed_checksum/ --files_list_path /path/to/file/containing/list_of_files.txt`
 
 Sample `list_of_files.txt`:
 
