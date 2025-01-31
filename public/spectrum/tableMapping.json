@@ -19,7 +19,7 @@
   "missedCleavages":"Missed Cleavages",
   "modifications":"Modifications",
   "qualityEstimationMethods":"Quality Estimation Methods",
-  "sampleProperties":"Sample Properties",
+  "sample_properties":"Sample Properties",
   "properties":"Properties",
 
   "project reference": "Reference",
