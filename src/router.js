@@ -93,12 +93,13 @@ export default new Router({
       name: 'peptidome',
       component: Peptidome
     },
-    // {
-    //   path: '/peptidome',
-    //   redirect: to => {
-    //        return { name: 'peptidesearch' }
-    //   }
-    // },
+    {
+      path: '/help',
+      redirect: {
+        name: 'markdownpage',
+        params: { subpage: 'documentationpage' }
+      },
+    },
     {
       path: '/peptidome/peptidesearch',
       name: 'peptidesearch',
