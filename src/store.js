@@ -33,6 +33,7 @@ export default new Vuex.Store({
 		baseApiURL_new: (mode == 'dev' || mode == 'prod') ? 'https://www.ebi.ac.uk/pride/ws/archive/v3' : 'https://wwwdev.ebi.ac.uk/pride/ws/archive/v3',
 		basePrivateURL: (mode == 'prod') ? 'https://www.ebi.ac.uk/pride/private/ws/archive/v2' : 'https://wwwdev.ebi.ac.uk/pride/private/ws/archive/v2',
 		baseMoleculesApiURL:'https://www.ebi.ac.uk/pride/molecules/ws',
+		baseMoleculesApiURL_new:'https://www.ebi.ac.uk/pride/ws/usi/v1',
 		username: '',
 		token:'',
 		type:''
