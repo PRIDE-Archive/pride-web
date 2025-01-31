@@ -368,7 +368,7 @@
                                   }
                                   if (history.pushState) {
                                     console.log('history.pushState',history.pushState)
-                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&resultType=FULL';
+                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
                                          window.history.pushState({path:newurl},'',newurl);
                                   }
                                   
@@ -912,7 +912,7 @@
         this.getSpectrum({usi:this.keyword});
         this.getPSM()
         if (history.pushState) {
-              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&resultType=FULL';
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword;
               window.history.pushState({path:newurl},'',newurl);
           }
       },
