@@ -450,8 +450,8 @@
           msRunApi: this.$store.state.baseApiURL + '/msruns/byProject', 
           proteinEvidencesApi: this.$store.state.baseApiURL+ '/proteinevidences',
           peptideEvidencesApi: this.$store.state.baseApiURL+ '/peptideevidences',
-          spectraApi: this.$store.state.baseMoleculesApiURL+ '/spectra/search',
-          spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
+          // spectrumApi: this.$store.state.baseMoleculesApiURL+ '/spectrum',
+          spectrumApi: this.$store.state.baseMoleculesApiURL_new+ '/spectrum',
           psmApi: this.$store.state.baseMoleculesApiURL+ '/search/usi',
           tableMappingJsonURL: this.$store.state.baseURL + '/spectrum/tableMapping.json'
       }
@@ -482,7 +482,7 @@
           }
           else{
                 this.spinShow = true
-                let query = {usi:q.usi,resultType:'FULL'};
+                let query = {usi:q.usi,use_cache:'false'};
                 this.$http
                     .get(this.spectrumApi,{
                       params: query,
@@ -497,9 +497,9 @@
                         this.spectrumTableHint = 'Click to show more'
                         this.usiTableHint = 'Click to show more'
                         let psm = res.body;
-                        let peptideSequence = psm.peptideSequence
-                        let charge = psm.precursorCharge
-                        let precursorMz = psm.precursorMz
+                        let peptideSequence = psm.peptide_sequence
+                        let charge = psm.precursor_charge
+                        let precursorMz = psm.precursor_mz
                         // console.log(psm)
                         //calculate peaks for spectrum
                         let peaks 
@@ -526,7 +526,7 @@
                                 let item = {
                                   index: psm.modifications[j].positionMap[k].key,
                                   modMass: parseFloat(psm.modifications[j].modification.value),
-                                  aminoAcid: psm.peptideSequence.split('')[psm.modifications[j].positionMap[k].key - 1]
+                                  aminoAcid: psm.peptide_sequence.split('')[psm.modifications[j].positionMap[k].key - 1]
                                 };
                                 variableModsArray.push(item)
                               }else if(psm.modifications[j].positionMap[k].key == 0){
@@ -541,7 +541,7 @@
                         this.spectrumTableFold(false)
                         this.usiTableFold(false)
                         this.showSpectrum(true, peptideSequence, peaks, charge, precursorMz, variableMods, ntermMod, ctermMod)
-                        //for USI Details
+                        //for USI Details Table below the specturm viewer
                         let array = []
                         let samplePropertiesChildArray = []
                         let propertiesChildArray = []
@@ -555,10 +555,10 @@
                               continue
                             if( i == 'provider' && psm[i].toLowerCase() == 'pride') // change the "Project Accession" linking page when the provider is Massive.
                               this.prideBool = true
-                            if(i == 'bestSearchEngineScore'){//add some more action when bestSearchEngineScore shows up
+                            if(i == 'best_search_engine_score'){//add some more action when best_search_engine_score shows up. // this property is changed from "bestSearchEngineScore" to "best_search_engine_score"
                               this.addBestSearchHighlight()
                             }
-                            if(Array.isArray(psm[i])){ // currently, the array we need to care is "Projects", "Sample Properties" and "Score"
+                            if(Array.isArray(psm[i])){ // if psm[i] is array, it should use some extra scheme to deal with. Currently, the array we need to care is "Projects", "Sample Properties" and "Score"
                               for(let j=0;j<psm[i].length;j++){
                                     let item = {}
                                     item.key = psm[i][j].name
@@ -566,11 +566,11 @@
                                     // console.log('item',item)
                                     if(!item.value || item.value.indexOf('not available')!= -1 || item.value.indexOf('not applicable')!= -1)//remove the value of "null", or "not available", or "not applicable"
                                       continue
-                                    if(item.key.indexOf('project')!= -1) //find project property
+                                    if(item.key.indexOf('project')!= -1) //find project property, it always in the "sample_properties" item, so the following if condition" below in "sample_properties", we need to remove the key containing the 'project' key word
                                       projectChildArray.push(item)
                                     if(item.key.indexOf('project title')!= -1) //query the title content and use later
                                       projectTitle = item.value  
-                                    else if(i == 'sampleProperties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
+                                    else if(i == 'sample_properties' && item.key.indexOf('project') == -1)  // deal with the "sampleProperties" array and "properties"
                                       samplePropertiesChildArray.push(item)
                                     else if(i == 'properties' && item.key.indexOf('project') == -1) // deal with the "properties" array 
                                       propertiesChildArray.push(item)
@@ -637,7 +637,7 @@
                                 //set Id for the array and order the "project" item order
                                 array[i].id = '103'+ i
                                 //set the key based on json or just capitalized the first 'char'
-                                if(array[i].key == 'sampleProperties'){
+                                if(array[i].key == 'sample_properties'){
                                   for(let j=0; j<array[i].children.length; j++){
                                       array[i].children[j].key = res.body[array[i].children[j].key] ? res.body[array[i].children[j].key] : array[i].children[j].key.charAt(0).toUpperCase() + array[i].children[j].key.slice(1)
                                   }
@@ -668,7 +668,7 @@
                         this.$Message.error({content:'The USI provided is not found in PRIDE Archive. Check the PSM Search for other USIs', duration:3}); // put the error message outside the "getSpectrumFail" function, so that this function could be used when we deselect the checkbox in the PSM table
                       }
                     },function(err){
-                      console.log(err)
+                      console.log('getSpectrum',err)
                         this.getSpectrumFail()
                         if(err){
                           if(err.status == '500')
