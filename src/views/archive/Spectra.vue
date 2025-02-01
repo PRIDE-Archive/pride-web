@@ -459,7 +459,7 @@
     beforeRouteUpdate:function (to, from, next) {
       if(to.query){
         console.log('123',to.query)
-        this.getSpectrum(to.query); 
+        this.getSpectrum(to.query);
       }
       next();
     },
