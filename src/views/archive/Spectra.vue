@@ -524,20 +524,18 @@
                           console.log(psm.modifications)
                           let variableModsArray = [];
                           for (let j = 0; j < psm.modifications.length; j++) {
-                            for (let k = 0; k < psm.modifications[j].positionMap.length; k++) {
-                              if ((psm.modifications[j].positionMap[k].key != 0) && (psm.modifications[j].positionMap[k].key != peptideSequence.length + 1)) {
+                              if ((psm.modifications[j].position !== 'N-term') && (psm.modifications[j].position != 'C-term')) {
                                 let item = {
-                                  index: psm.modifications[j].positionMap[k].key,
-                                  modMass: parseFloat(psm.modifications[j].modification.value),
-                                  aminoAcid: psm.peptide_sequence.split('')[psm.modifications[j].positionMap[k].key - 1]
+                                  index: parseInt(psm.modifications[j].position) + 1,
+                                  modMass: parseFloat(psm.modifications[j].mass),
+                                  aminoAcid: psm.peptide_sequence.split('')[parseInt(psm.modifications[j].position)]
                                 };
                                 variableModsArray.push(item)
-                              }else if(psm.modifications[j].positionMap[k].key == 0){
-                                ntermMod = parseFloat(psm.modifications[j].modification.value)
+                              }else if(psm.modifications[j].position == 'N-term'){
+                                ntermMod = parseFloat(psm.modifications[j].mass)
                               }else{
-                                ctermMod = parseFloat(psm.modifications[j].modification.value)
+                                ctermMod = parseFloat(psm.modifications[j].mass)
                               }
-                            }
                           }
                           variableMods = variableModsArray;
                         }
