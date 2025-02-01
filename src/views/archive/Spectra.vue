@@ -524,14 +524,14 @@
                           console.log(psm.modifications)
                           let variableModsArray = [];
                           for (let j = 0; j < psm.modifications.length; j++) {
-                              if ((psm.modifications[j].position !== 0) && (psm.modifications[j].position != peptideSequence.length + 1)) {
+                              if ((psm.modifications[j].position !== 'N-term') && (psm.modifications[j].position != 'C-term')) {
                                 let item = {
-                                  index: psm.modifications[j].position,
+                                  index: parseInt(psm.modifications[j].position) + 1,
                                   modMass: parseFloat(psm.modifications[j].mass),
-                                  aminoAcid: psm.peptide_sequence.split('')[psm.modifications[j].position]
+                                  aminoAcid: psm.peptide_sequence.split('')[parseInt(psm.modifications[j].position)]
                                 };
                                 variableModsArray.push(item)
-                              }else if(psm.modifications[j].position == 0){
+                              }else if(psm.modifications[j].position == 'N-term'){
                                 ntermMod = parseFloat(psm.modifications[j].mass)
                               }else{
                                 ctermMod = parseFloat(psm.modifications[j].mass)
