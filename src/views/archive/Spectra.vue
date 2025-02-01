@@ -368,7 +368,7 @@
                                   }
                                   if (history.pushState) {
                                     console.log('history.pushState',history.pushState)
-                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi;
+                                         var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + params.row.usi + '&use_cache=false';
                                          window.history.pushState({path:newurl},'',newurl);
                                   }
                                   
@@ -458,7 +458,8 @@
     },
     beforeRouteUpdate:function (to, from, next) {
       if(to.query){
-        this.getSpectrum(to.query); 
+        console.log('123',to.query)
+        this.getSpectrum(to.query);
       }
       next();
     },
@@ -482,12 +483,13 @@
           }
           else{
                 this.spinShow = true
-                let query = {usi:q.usi,use_cache:'false'};
+                let query = {usi:q.usi,use_cache:false};
                 this.$http
                     .get(this.spectrumApi,{
                       params: query,
                       headers: header
                     }).then(function(res){
+                      console.log('getSpectrum',res.body)
                       this.spinShow = false
                       this.usiTableResults=[]
                       this.usiTableResultsRAW=[]
@@ -518,7 +520,8 @@
                         let variableMods = [];
                         let ntermMod = 0;
                         let ctermMod =  0;
-                        if(psm.modifications) {
+                        if(psm.modifications && psm.modifications.length > 0) {
+                          console.log(psm.modifications)
                           let variableModsArray = [];
                           for (let j = 0; j < psm.modifications.length; j++) {
                             for (let k = 0; k < psm.modifications[j].positionMap.length; k++) {
@@ -910,9 +913,9 @@
           return
         }
         this.getSpectrum({usi:this.keyword});
-        this.getPSM()
+        // this.getPSM()
         if (history.pushState) {
-              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword;
+              var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + this.keyword + '&use_cache=false';
               window.history.pushState({path:newurl},'',newurl);
           }
       },
@@ -922,7 +925,7 @@
       gotoExampleUSI(keyword){
         this.keyword = keyword
         this.getSpectrum({usi:keyword});
-        this.getPSM()
+        // this.getPSM()
         if (history.pushState) {
               var newurl = window.location.protocol + "//" + window.location.host + window.location.pathname + '?usi=' + keyword;
               window.history.pushState({path:newurl},'',newurl);
@@ -981,11 +984,11 @@
       },
       psmTablePageChange(page){
           this.currentPsmTablePage = page;
-          this.getPSM()
+          // this.getPSM()
       },
       psmTablePageSizeChange(size){
           this.psmTablePageSize = size;
-          this.getPSM()
+          // this.getPSM()
       },
       addBestSearchHighlight(){
         this.bestSearch = true
@@ -1042,7 +1045,7 @@
           if('usi' in this.$route.query){
             this.keyword = this.$route.query.usi
             this.getSpectrum({usi:this.$route.query.usi});
-            this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
+            // this.getPSM() // keyword is set above, so the "psmTableQuery" will be computed
           }
           else{
              //if there no usi in the query, do nothing
