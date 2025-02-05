@@ -106,6 +106,7 @@
                             </span>
                             <p><span class="project-info">{{projectItemsSubmitters}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.submitters}}</text-highlight></p>
                             <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
+                            <p><span class="project-info">{{projectItemsDownloadCount}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.downloadCount}}</text-highlight></p>
                             <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                                 <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                                    <Icon type="ios-pricetag"></Icon>
@@ -258,6 +259,7 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
+          projectItemsDownloadCount:'',
           projectItemsSubmitters:'',
           normalQuery:{},
           autoCompleteArray:[],
@@ -451,6 +453,7 @@
                               species: projectsList[i].organisms || [],
                               projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                               publicationDate: projectsList[i].publicationDate,
+                              downloadCount: projectsList[i].downloadCount,
                               projectTags: projectsList[i].projectTags || [],
                               submissionType: projectsList[i].submissionType || '',
                               hightlightItemArray:[],
@@ -510,6 +513,7 @@
                           this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
+                          this.projectItemsDownloadCount = this.projectItemsConfigRes['downloadCount'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);  
                       }
