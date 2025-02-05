@@ -1416,10 +1416,10 @@
 
     }
     .sortOption .ivu-select-dropdown{
-      width:140px!important;
+      width:190px!important;
     }
     .sortOption.page .ivu-select-dropdown{
-      width:90px!important;
+      width:130px!important;
     }
     .sortOption .ivu-select-dropdown .ivu-select-item{
       font-weight: normal !important;
