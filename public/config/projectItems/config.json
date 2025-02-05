@@ -12,6 +12,7 @@
     "organisms":"Species",
     "organisms_facet":"Organisms Facet",
     "publicationDate":"Made public",
+    "downloadCount": "Download Count",
     "submissionType":"Submission Type",
     "submitters":"Submitters",
     "labPIs":"Lab Head",

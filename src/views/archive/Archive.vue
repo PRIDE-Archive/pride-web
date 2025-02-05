@@ -106,6 +106,7 @@
                             </span>
                             <p><span class="project-info">{{projectItemsSubmitters}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.submitters}}</text-highlight></p>
                             <p><span class="project-info">{{projectItemsPublicationDate}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.publicationDate}}</text-highlight></p>
+                            <p><span class="project-info">{{projectItemsDownloadCount}}: </span><text-highlight :queries="highlightKeyword" :caseSensitive="HighlightKeywordSensitive">{{publicationItem.downloadCount}}</text-highlight></p>
                             <Dropdown class="dataset-wrapper" v-for="(datesetItem, index) in publicationItem.projectTags" :key="index">
                                 <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
                                    <Icon type="ios-pricetag"></Icon>
@@ -224,10 +225,6 @@
                 label: 'Accession'
             },
             {
-                value: 'Title',
-                label: 'Title'
-            },
-            {
                 value: 'Relevance',
                 label: 'Relevance'
             },
@@ -238,6 +235,14 @@
             {
                 value: 'Publication Date',
                 label: 'Publication Date'
+            },
+            {
+              value: "Number of Downloads",
+              label: "Number of Downloads"
+            },
+            {
+              value: "Avg Number of Downloads",
+              label: "Avg Number of Downloads"
             },
           ],
           page:0,
@@ -254,6 +259,7 @@
           projectItemsSpecies:'',
           projectItemsProjectDescription:'',
           projectItemsPublicationDate:'',
+          projectItemsDownloadCount:'',
           projectItemsSubmitters:'',
           normalQuery:{},
           autoCompleteArray:[],
@@ -447,6 +453,7 @@
                               species: projectsList[i].organisms || [],
                               projectDescription: projectsList[i].projectDescription.replace(/\s*$/g,"").slice(0,200) + '...',
                               publicationDate: projectsList[i].publicationDate,
+                              downloadCount: projectsList[i].downloadCount,
                               projectTags: projectsList[i].projectTags || [],
                               submissionType: projectsList[i].submissionType || '',
                               hightlightItemArray:[],
@@ -506,6 +513,7 @@
                           this.projectItemsSpecies = this.projectItemsConfigRes['organisms'];
                           this.projectItemsProjectDescription = this.projectItemsConfigRes['projectDescription'];
                           this.projectItemsPublicationDate = this.projectItemsConfigRes['publicationDate'];
+                          this.projectItemsDownloadCount = this.projectItemsConfigRes['downloadCount'];
                           this.projectItemsSubmitters = this.projectItemsConfigRes['submitters'];
                           this.publicaitionList.push(item);  
                       }
@@ -791,16 +799,18 @@
       },
       sortChange(type){
         // console.log(type);
-        if(type == 'Title')
-          this.sort = 'project_title'
+        if(type == 'Relevance')
+          console.log('Relevance doesnt need a field');
         else if(type == 'Accession')
           this.sort = 'accession'
-        else if(type == 'Relevance')
-          this.sort = 'score'
         else if(type == 'Submission Date')
-          this.sort = 'submission_date';
+          this.sort = 'submissionDate';
         else if(type == 'Publication Date')
-          this.sort = 'publication_date';
+          this.sort = 'publicationDate';
+        else if(type == 'Number of Downloads')
+          this.sort = 'downloadCount';
+        else if(type == 'Avg Number of Downloads')
+          this.sort = 'avgDownloadsPerFile';
        
         this.setFilter();
         this.$router.push({name: 'archive', query: this.query});
