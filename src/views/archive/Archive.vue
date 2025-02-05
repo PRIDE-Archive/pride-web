@@ -224,10 +224,6 @@
                 label: 'Accession'
             },
             {
-                value: 'Title',
-                label: 'Title'
-            },
-            {
                 value: 'Relevance',
                 label: 'Relevance'
             },
@@ -238,6 +234,14 @@
             {
                 value: 'Publication Date',
                 label: 'Publication Date'
+            },
+            {
+              value: "Number of Downloads",
+              label: "Number of Downloads"
+            },
+            {
+              value: "Avg Number of Downloads",
+              label: "Avg Number of Downloads"
             },
           ],
           page:0,
@@ -791,16 +795,18 @@
       },
       sortChange(type){
         // console.log(type);
-        if(type == 'Title')
-          this.sort = 'project_title'
+        if(type == 'Relevance')
+          console.log('Relevance doesnt need a field');
         else if(type == 'Accession')
           this.sort = 'accession'
-        else if(type == 'Relevance')
-          this.sort = 'score'
         else if(type == 'Submission Date')
-          this.sort = 'submission_date';
+          this.sort = 'submissionDate';
         else if(type == 'Publication Date')
-          this.sort = 'publication_date';
+          this.sort = 'publicationDate';
+        else if(type == 'Number of Downloads')
+          this.sort = 'downloadCount';
+        else if(type == 'Avg Number of Downloads')
+          this.sort = 'avgDownloadsPerFile';
        
         this.setFilter();
         this.$router.push({name: 'archive', query: this.query});
