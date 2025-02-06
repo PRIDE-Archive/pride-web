@@ -9,6 +9,7 @@ Useful links
 
 ## Uploading files to Globus shared folder
 * Install and configure [Globus connect personal](https://docs.globus.org/globus-connect-personal/install/)
+* If you encounter any issues in the above step, refer to [Troubleshooting Guide](https://docs.globus.org/globus-connect-personal/troubleshooting-guide/)
 * Go through [this Globus tutorial](https://docs.globus.org/guides/tutorials/manage-files/transfer-files/)
 * Login to the [Globus web](https://www.globus.org/)
 * Navigate to [FILE MANAGER](https://app.globus.org/file-manager)
