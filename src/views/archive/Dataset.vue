@@ -1067,8 +1067,11 @@
           this.$http
             .get(this.reanalysisApi + id)
             .then(function(res){
-                this.reanalysisReferences = res.body.references;
-                // console.log(this.reanalysisReferences)
+              if(res.body && res.body.references){
+                  console.log('queryReanalysis',res)
+                  this.reanalysisReferences = res.body.references;
+                  // console.log(this.reanalysisReferences)
+                }
             },function(err){
 
             });
@@ -1104,7 +1107,7 @@
            this.$http
             .get(this.queryArchiveProjectFilesApi + '/' +this.$route.params.id+ '/files',{params: query})
             .then(function(res){
-                // console.log('bai',res)
+                
                 // console.log('bai headers',)
                 this.fileListLoading = false;
                 this.totalDownLoad = parseInt(res.headers.get('total_records'));
@@ -1158,7 +1161,6 @@
 
                   return 0
               });
-              //console.log('file type',item.type)
               tempArray.push(item);
           }
          return tempArray
