@@ -17,67 +17,25 @@
                 <div class="tag-wrapper">
                     <!-- <span v-if="experimentTypes.length>0">PRIDE Assigned Tags: </span> -->
                     <span class="dataset-wrapper" v-for="(datesetItem, index) in projectTags" :key="index">
-                        <!-- <a v-if="datesetItem == 'Biological'" class="button biological-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
-                           <Icon type="ios-pricetag"></Icon>
-                            {{datesetItem}}
-                        </a>
-                        <a v-else-if="datesetItem == 'Biomedical'" class="button biomedical-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
-                           <Icon type="ios-pricetag"></Icon>
-                            {{datesetItem}}
-                        </a>
-                        <a v-else-if="datesetItem == 'Highlighted'" class="button highlighted-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
-                           <Icon type="ios-pricetag"></Icon>
-                            {{datesetItem}}
-                        </a>
-                        <a v-else-if="datesetItem == 'Technical'" class="button technical-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
-                           <Icon type="ios-pricetag"></Icon>
-                            {{datesetItem}}
-                        </a>
-                        <a v-else class="button gray-dataset-button" href="javascript:void(0)" @click="searchByLabel('project_tags_facet=='+datesetItem )">
-                           <Icon type="ios-pricetag"></Icon>
-                            {{datesetItem}}
-                        </a> -->
-                        <!-- <DropdownMenu slot="list">
-                            <DropdownItem>{{datesetItem}}</DropdownItem>
-                        </DropdownMenu> -->
                         <Tag color="blue" v-if="datesetItem == 'Biological'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                          <span style="cursor: pointer;" @click="searchByLabel('projectTags=='+datesetItem )">{{datesetItem}}</span>
                         </Tag>
                         <Tag color="cyan" v-else-if="datesetItem == 'Biomedical'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                          <span style="cursor: pointer;" @click="searchByLabel('projectTags=='+datesetItem )">{{datesetItem}}</span>
                         </Tag>
                         <Tag color="geekblue" v-else-if="datesetItem == 'Highlighted'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                          <span style="cursor: pointer;" @click="searchByLabel('projectTags=='+datesetItem )">{{datesetItem}}</span>
                         </Tag>
                         <Tag color="purple" v-else-if="datesetItem == 'Technical'">
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                          <span style="cursor: pointer;" @click="searchByLabel('projectTags=='+datesetItem )">{{datesetItem}}</span>
                         </Tag>
                         <Tag color="volcano" v-else>
-                          <span style="cursor: pointer;" @click="searchByLabel('project_tags_facet=='+datesetItem )">{{datesetItem}}</span>
+                          <span style="cursor: pointer;" @click="searchByLabel('projectTags=='+datesetItem )">{{datesetItem}}</span>
                         </Tag>
                     </span>
                 </div>
             </Col>
-            <!-- <Col span= "4">
-                <Spin style="position: absolute; right: 30px; top: 70px;"   size="small" v-if="iconLoading || queryProjectDetailsLoading"></Spin>
-                  <span v-else>
-                      <svgLogo v-if="iconFound" :icon="iconData" :height="100" :width="100"></svgLogo>  
-                      <Poptip v-else trigger="hover" placement="left" style="position: absolute; right: 0;">
-                        <img :src="archive_logo" width="60px" height="60px">
-                        <div class="" slot="title" style="display: flex; justify-content: space-between; align-items: center; width: 150px" >
-                          <span>Omics score: 0</span>
-                          <Icon type="md-help-circle" @click="gotoIconHelpPage"/>
-                        </div>
-                        <div class="" slot="content">
-                          <div><span style="margin-right: 5px">0</span><span>Views</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Connections</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Citations</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Reanalyses</span></div>
-                          <div><span style="margin-right: 5px">0</span><span>Downloads</span></div>
-                        </div>
-                      </Poptip>
-                  </span>
-            </Col> -->
+
           </Row>
           <Row :gutter="48">
               <Col span="16">
