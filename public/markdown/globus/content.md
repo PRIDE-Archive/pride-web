@@ -6,6 +6,10 @@
 Useful links
 * [Generate submission.px file](./submissionpx)
 * [Generate checksum.txt](./checksum)
+* [Troubleshoot Globus issues](https://docs.globus.org/globus-connect-personal/troubleshooting-guide/)
+* Useful information to know if Globus is blocked by your organisation
+  * [Organisations using Globus](https://www.globus.org/user-stories) 
+  * [Partners](https://www.globus.org/partners)
 
 ## Uploading files to Globus shared folder
 * Install and configure [Globus connect personal](https://docs.globus.org/globus-connect-personal/install/)
