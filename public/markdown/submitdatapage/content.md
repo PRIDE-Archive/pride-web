@@ -2,7 +2,7 @@
 
 PRIDE welcomes submissions of protein and peptide identification/quantification data with the accompanying mass spectra evidence and any other related data types, usually to be published in peer-reviewed publications. The  focus of PRIDE is to support the deposition of proteomics datasets from any experimental approach.
 
-The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf) and Globus [check the full documentation](../markdown/globus), an alternate way to submit data to PRIDE. This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
+The current way of submitting data to PRIDE is using the PRIDE Submission tool [check the full documentation](../markdown/submitdatapage/files/Submission_Tutorial.pdf) and Globus [check the full documentation](../markdownpage/globus), an alternate way to submit data to PRIDE. This page contains a summarized introduction of the document explaining the steps about How to Submit datasets to PRIDE database following the ProteomeXchange guidelines. Alternatively please contact pride-support@ebi.ac.uk for assistance or advice.
 
 ## What happens to my data after upload
  
@@ -117,6 +117,6 @@ During the review process of the manuscript, the user may want to modify their d
 
 For large submissions, we suggest "Globus" which is an alternate tool to upload large datasets to the PRIDE database.
 
-[check the full documentation](../markdown/globus)
+[check the full documentation](../markdownpage/globus)
 
 
